@@ -1,78 +1,294 @@
-openapi: 3.0.1
-servers:
-  - url: https://bulkexports.twilio.com
+basePath: /
+definitions:
+  bulkexports.v1.export:
+    properties:
+      links:
+        description: Nested resource URLs.
+        format: uri-map
+        type: object
+        x-nullable: true
+      resource_type:
+        description: >-
+          The type of communication – Messages, Calls, Conferences, and
+          Participants
+        type: string
+        x-nullable: true
+      url:
+        description: The URL of this resource.
+        format: uri
+        type: string
+        x-nullable: true
+    type: object
+  bulkexports.v1.export.day:
+    properties:
+      create_date:
+        description: The date when resource is created
+        type: string
+        x-nullable: true
+      day:
+        description: The date of the data in the file
+        type: string
+        x-nullable: true
+      friendly_name:
+        description: The friendly name specified when creating the job
+        type: string
+        x-nullable: true
+      resource_type:
+        description: >-
+          The type of communication – Messages, Calls, Conferences, and
+          Participants
+        type: string
+        x-nullable: true
+      size:
+        description: Size of the file in bytes
+        type: integer
+        x-nullable: true
+    type: object
+  bulkexports.v1.export.day-instance:
+    properties:
+      redirect_to:
+        format: uri
+        type: string
+        x-nullable: true
+    type: object
+  bulkexports.v1.export.export_custom_job:
+    properties:
+      details:
+        description: >-
+          The details of a job state which is an object that contains a `status`
+          string, a day count integer, and list of days in the job
+        x-nullable: true
+      email:
+        description: The optional email to send the completion notification to
+        type: string
+        x-nullable: true
+      end_day:
+        description: >-
+          The end day for the custom export specified as a string in the format
+          of yyyy-MM-dd. This will be the last day exported. For instance, to
+          export a single day, choose the same day for start and end day. To
+          export the first 4 days of July, you would set the start date to
+          2020-07-01 and the end date to 2020-07-04. The end date must be the
+          UTC day before yesterday.
+        type: string
+        x-nullable: true
+      estimated_completion_time:
+        description: >-
+          this is the time estimated until your job is complete. This is
+          calculated each time you request the job list. The time is calculated
+          based on the current rate of job completion (which may vary) and your
+          job queue position
+        type: string
+        x-nullable: true
+      friendly_name:
+        description: The friendly name specified when creating the job
+        type: string
+        x-nullable: true
+      job_queue_position:
+        description: >-
+          This is the job position from the 1st in line. Your queue position
+          will never increase. As jobs ahead of yours in the queue are
+          processed, the queue position number will decrease
+        type: string
+        x-nullable: true
+      job_sid:
+        description: >-
+          The unique job_sid returned when the custom export was created. This
+          can be used to look up the status of the job.
+        maxLength: 34
+        minLength: 34
+        pattern: '^JS[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      resource_type:
+        description: >-
+          The type of communication – Messages, Calls, Conferences, and
+          Participants
+        type: string
+        x-nullable: true
+      start_day:
+        description: >-
+          The start day for the custom export specified as a string in the
+          format of yyyy-MM-dd
+        type: string
+        x-nullable: true
+      webhook_method:
+        description: This is the method used to call the webhook
+        type: string
+        x-nullable: true
+      webhook_url:
+        description: The optional webhook url called on completion
+        type: string
+        x-nullable: true
+    type: object
+  bulkexports.v1.export.job:
+    properties:
+      details:
+        description: >-
+          The details of a job state which is an object that contains a `status`
+          string, a day count integer, and list of days in the job
+        x-nullable: true
+      email:
+        description: The optional email to send the completion notification to
+        type: string
+        x-nullable: true
+      end_day:
+        description: The end time for the export specified when creating the job
+        type: string
+        x-nullable: true
+      estimated_completion_time:
+        description: >-
+          this is the time estimated until your job is complete. This is
+          calculated each time you request the job list. The time is calculated
+          based on the current rate of job completion (which may vary) and your
+          job queue position
+        type: string
+        x-nullable: true
+      friendly_name:
+        description: The friendly name specified when creating the job
+        type: string
+        x-nullable: true
+      job_queue_position:
+        description: >-
+          This is the job position from the 1st in line. Your queue position
+          will never increase. As jobs ahead of yours in the queue are
+          processed, the queue position number will decrease
+        type: string
+        x-nullable: true
+      job_sid:
+        description: The job_sid returned when the export was created
+        maxLength: 34
+        minLength: 34
+        pattern: '^JS[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      resource_type:
+        description: >-
+          The type of communication – Messages, Calls, Conferences, and
+          Participants
+        type: string
+        x-nullable: true
+      start_day:
+        description: The start time for the export specified when creating the job
+        type: string
+        x-nullable: true
+      url:
+        format: uri
+        type: string
+        x-nullable: true
+      webhook_method:
+        description: This is the method used to call the webhook
+        type: string
+        x-nullable: true
+      webhook_url:
+        description: The optional webhook url called on completion
+        type: string
+        x-nullable: true
+    type: object
+  bulkexports.v1.export_configuration:
+    properties:
+      enabled:
+        description: Whether files are automatically generated
+        type: boolean
+        x-nullable: true
+      resource_type:
+        description: >-
+          The type of communication – Messages, Calls, Conferences, and
+          Participants
+        type: string
+        x-nullable: true
+      url:
+        description: The URL of this resource.
+        format: uri
+        type: string
+        x-nullable: true
+      webhook_method:
+        description: Whether to GET or POST to the webhook url
+        type: string
+        x-nullable: true
+      webhook_url:
+        description: URL targeted at export
+        format: uri
+        type: string
+        x-nullable: true
+    type: object
+host: bulkexports.twilio.com
 info:
   contact:
     email: support@twilio.com
     name: Twilio Support
-    url: https://support.twilio.com
+    url: 'https://support.twilio.com'
   description: This is the public Twilio REST API.
   license:
     name: Apache 2.0
-    url: https://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: https://www.twilio.com/legal/tos
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+  termsOfService: 'https://www.twilio.com/legal/tos'
   title: Twilio - Bulkexports
   version: 1.29.2
   x-apisguru-categories:
     - telecom
     - messaging
   x-logo:
-    url: https://static1.twilio.com/marketing/bundles/marketing/img/logos/wordmark-red.svg
+    url: >-
+      https://static1.twilio.com/marketing/bundles/marketing/img/logos/wordmark-red.svg
   x-origin:
     - format: openapi
-      url: https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_bulkexports_v1.json
-      version: "3.0"
+      url: >-
+        https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_bulkexports_v1.json
+      version: '3.0'
   x-providerName: twilio.com
   x-serviceName: twilio_bulkexports_v1
 paths:
-  "/v1/Exports/Jobs/{JobSid}":
+  '/v1/Exports/Jobs/{JobSid}':
     delete:
-      description: ""
+      description: ''
       operationId: DeleteJob
       parameters:
-        - description: The unique string that that we created to identify the Bulk Export job
+        - description: >-
+            The unique string that that we created to identify the Bulk Export
+            job
           in: path
+          maxLength: 34
+          minLength: 34
           name: JobSid
+          pattern: '^JS[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^JS[0-9a-fA-F]{32}$
-            type: string
+          type: string
       responses:
-        "204":
+        '204':
           description: The resource was deleted successfully.
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
-    description: "TODO: Resource-level docs"
+    description: 'TODO: Resource-level docs'
     get:
-      description: ""
+      description: ''
       operationId: FetchJob
       parameters:
-        - description: The unique string that that we created to identify the Bulk Export job
+        - description: >-
+            The unique string that that we created to identify the Bulk Export
+            job
           in: path
+          maxLength: 34
+          minLength: 34
           name: JobSid
+          pattern: '^JS[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^JS[0-9a-fA-F]{32}$
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/bulkexports.v1.export.job"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/bulkexports.v1.export.job'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://bulkexports.twilio.com
+      - url: 'https://bulkexports.twilio.com'
     x-twilio:
       defaultOutputProperties:
         - details
@@ -88,97 +304,105 @@ paths:
         - webhook_url
       parent: /Exports
       pathType: instance
-  "/v1/Exports/{ResourceType}":
-    description: "TODO: Resource-level docs"
+  '/v1/Exports/{ResourceType}':
+    description: 'TODO: Resource-level docs'
     get:
       description: Fetch a specific Export.
       operationId: FetchExport
       parameters:
-        - description: The type of communication – Messages, Calls, Conferences, and Participants
+        - description: >-
+            The type of communication – Messages, Calls, Conferences, and
+            Participants
           in: path
           name: ResourceType
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/bulkexports.v1.export"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/bulkexports.v1.export'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://bulkexports.twilio.com
+      - url: 'https://bulkexports.twilio.com'
     x-twilio:
       defaultOutputProperties: []
       pathType: instance
-  "/v1/Exports/{ResourceType}/Configuration":
-    description: "TODO: Resource-level docs"
+  '/v1/Exports/{ResourceType}/Configuration':
+    description: 'TODO: Resource-level docs'
     get:
       description: Fetch a specific Export Configuration.
       operationId: FetchExportConfiguration
       parameters:
-        - description: The type of communication – Messages, Calls, Conferences, and Participants
+        - description: >-
+            The type of communication – Messages, Calls, Conferences, and
+            Participants
           in: path
           name: ResourceType
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/bulkexports.v1.export_configuration"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/bulkexports.v1.export_configuration'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     post:
+      consumes:
+        - application/x-www-form-urlencoded
       description: Update a specific Export Configuration.
       operationId: UpdateExportConfiguration
       parameters:
-        - description: The type of communication – Messages, Calls, Conferences, and Participants
+        - description: >-
+            The type of communication – Messages, Calls, Conferences, and
+            Participants
           in: path
           name: ResourceType
           required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              properties:
-                Enabled:
-                  description: If true, Twilio will automatically generate every day's file when the day is over.
-                  type: boolean
-                WebhookMethod:
-                  description: Sets whether Twilio should call a webhook URL when the automatic generation is complete, using GET or POST. The actual destination is set in the webhook_url
-                  type: string
-                WebhookUrl:
-                  description: Stores the URL destination for the method specified in webhook_method.
-                  format: uri
-                  type: string
-              title: UpdateExportConfigurationRequest
-              type: object
+          type: string
+        - description: >-
+            If true, Twilio will automatically generate every day's file when
+            the day is over.
+          in: formData
+          name: Enabled
+          type: boolean
+        - description: >-
+            Sets whether Twilio should call a webhook URL when the automatic
+            generation is complete, using GET or POST. The actual destination is
+            set in the webhook_url
+          in: formData
+          name: WebhookMethod
+          type: string
+        - description: >-
+            Stores the URL destination for the method specified in
+            webhook_method.
+          format: uri
+          in: formData
+          name: WebhookUrl
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/bulkexports.v1.export_configuration"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/bulkexports.v1.export_configuration'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://bulkexports.twilio.com
+      - url: 'https://bulkexports.twilio.com'
     x-twilio:
       className: export_configuration
       defaultOutputProperties:
@@ -188,65 +412,67 @@ paths:
         - webhook_method
         - webhook_url
       pathType: instance
-  "/v1/Exports/{ResourceType}/Days":
-    description: "TODO: Resource-level docs"
+  '/v1/Exports/{ResourceType}/Days':
+    description: 'TODO: Resource-level docs'
     get:
       description: Retrieve a list of all Days for a resource.
       operationId: ListDay
       parameters:
-        - description: The type of communication – Messages, Calls, Conferences, and Participants
+        - description: >-
+            The type of communication – Messages, Calls, Conferences, and
+            Participants
           in: path
           name: ResourceType
           required: true
-          schema:
-            type: string
-        - description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+          type: string
+        - description: >-
+            How many resources to return in each list page. The default is 50,
+            and the maximum is 1000.
           in: query
+          maximum: 1000
+          minimum: 1
           name: PageSize
-          schema:
-            maximum: 1000
-            minimum: 1
-            type: integer
+          type: integer
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  days:
-                    items:
-                      $ref: "#/components/schemas/bulkexports.v1.export.day"
-                    type: array
-                  meta:
-                    properties:
-                      first_page_url:
-                        format: uri
-                        type: string
-                      key:
-                        type: string
-                      next_page_url:
-                        format: uri
-                        type: string
-                      page:
-                        type: integer
-                      page_size:
-                        type: integer
-                      previous_page_url:
-                        format: uri
-                        type: string
-                      url:
-                        format: uri
-                        type: string
-                    type: object
-                title: ListDayResponse
-                type: object
+        '200':
           description: OK
+          schema:
+            properties:
+              days:
+                items:
+                  $ref: '#/definitions/bulkexports.v1.export.day'
+                type: array
+              meta:
+                properties:
+                  first_page_url:
+                    format: uri
+                    type: string
+                  key:
+                    type: string
+                  next_page_url:
+                    format: uri
+                    type: string
+                  page:
+                    type: integer
+                  page_size:
+                    type: integer
+                  previous_page_url:
+                    format: uri
+                    type: string
+                  url:
+                    format: uri
+                    type: string
+                type: object
+            title: ListDayResponse
+            type: object
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://bulkexports.twilio.com
+      - url: 'https://bulkexports.twilio.com'
     x-twilio:
       defaultOutputProperties:
         - friendly_name
@@ -257,37 +483,37 @@ paths:
         - redirectTo
       parent: /Exports
       pathType: list
-  "/v1/Exports/{ResourceType}/Days/{Day}":
-    description: "TODO: Resource-level docs"
+  '/v1/Exports/{ResourceType}/Days/{Day}':
+    description: 'TODO: Resource-level docs'
     get:
       description: Fetch a specific Day.
       operationId: FetchDay
       parameters:
-        - description: The type of communication – Messages, Calls, Conferences, and Participants
+        - description: >-
+            The type of communication – Messages, Calls, Conferences, and
+            Participants
           in: path
           name: ResourceType
           required: true
-          schema:
-            type: string
-        - description: The ISO 8601 format date of the resources in the file, for a UTC day
+          type: string
+        - description: 'The ISO 8601 format date of the resources in the file, for a UTC day'
           in: path
           name: Day
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "307":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/bulkexports.v1.export.day-instance"
+        '307':
           description: Temporary Redirect
+          schema:
+            $ref: '#/definitions/bulkexports.v1.export.day-instance'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://bulkexports.twilio.com
+      - url: 'https://bulkexports.twilio.com'
     x-twilio:
       defaultOutputProperties:
         - friendly_name
@@ -298,115 +524,133 @@ paths:
         - redirectTo
       parent: /Exports
       pathType: instance
-  "/v1/Exports/{ResourceType}/Jobs":
-    description: "TODO: Resource-level docs"
+  '/v1/Exports/{ResourceType}/Jobs':
+    description: 'TODO: Resource-level docs'
     get:
-      description: ""
+      description: ''
       operationId: ListExportCustomJob
       parameters:
-        - description: The type of communication – Messages, Calls, Conferences, and Participants
+        - description: >-
+            The type of communication – Messages, Calls, Conferences, and
+            Participants
           in: path
           name: ResourceType
           required: true
-          schema:
-            type: string
-        - description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+          type: string
+        - description: >-
+            How many resources to return in each list page. The default is 50,
+            and the maximum is 1000.
           in: query
+          maximum: 1000
+          minimum: 1
           name: PageSize
-          schema:
-            maximum: 1000
-            minimum: 1
-            type: integer
+          type: integer
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  jobs:
-                    items:
-                      $ref: "#/components/schemas/bulkexports.v1.export.export_custom_job"
-                    type: array
-                  meta:
-                    properties:
-                      first_page_url:
-                        format: uri
-                        type: string
-                      key:
-                        type: string
-                      next_page_url:
-                        format: uri
-                        type: string
-                      page:
-                        type: integer
-                      page_size:
-                        type: integer
-                      previous_page_url:
-                        format: uri
-                        type: string
-                      url:
-                        format: uri
-                        type: string
-                    type: object
-                title: ListExportCustomJobResponse
-                type: object
+        '200':
           description: OK
+          schema:
+            properties:
+              jobs:
+                items:
+                  $ref: '#/definitions/bulkexports.v1.export.export_custom_job'
+                type: array
+              meta:
+                properties:
+                  first_page_url:
+                    format: uri
+                    type: string
+                  key:
+                    type: string
+                  next_page_url:
+                    format: uri
+                    type: string
+                  page:
+                    type: integer
+                  page_size:
+                    type: integer
+                  previous_page_url:
+                    format: uri
+                    type: string
+                  url:
+                    format: uri
+                    type: string
+                type: object
+            title: ListExportCustomJobResponse
+            type: object
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     post:
-      description: ""
+      consumes:
+        - application/x-www-form-urlencoded
+      description: ''
       operationId: CreateExportCustomJob
       parameters:
-        - description: The type of communication – Messages or Calls, Conferences, and Participants
+        - description: >-
+            The type of communication – Messages or Calls, Conferences, and
+            Participants
           in: path
           name: ResourceType
           required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              properties:
-                Email:
-                  description: The optional email to send the completion notification to. You can set both webhook, and email, or one or the other. If you set neither, the job will run but you will have to query to determine your job's status.
-                  type: string
-                EndDay:
-                  description: The end day for the custom export specified as a string in the format of yyyy-mm-dd. End day is inclusive and must be 2 days earlier than the current UTC day.
-                  type: string
-                FriendlyName:
-                  description: The friendly name specified when creating the job
-                  type: string
-                StartDay:
-                  description: The start day for the custom export specified as a string in the format of yyyy-mm-dd
-                  type: string
-                WebhookMethod:
-                  description: This is the method used to call the webhook on completion of the job. If this is supplied, `WebhookUrl` must also be supplied.
-                  type: string
-                WebhookUrl:
-                  description: The optional webhook url called on completion of the job. If this is supplied, `WebhookMethod` must also be supplied. If you set neither webhook nor email, you will have to check your job's status manually.
-                  type: string
-              required:
-                - StartDay
-                - EndDay
-                - FriendlyName
-              title: CreateExportCustomJobRequest
-              type: object
+          type: string
+        - description: >-
+            The optional email to send the completion notification to. You can
+            set both webhook, and email, or one or the other. If you set
+            neither, the job will run but you will have to query to determine
+            your job's status.
+          in: formData
+          name: Email
+          type: string
+        - description: >-
+            The end day for the custom export specified as a string in the
+            format of yyyy-mm-dd. End day is inclusive and must be 2 days
+            earlier than the current UTC day.
+          in: formData
+          name: EndDay
+          required: true
+          type: string
+        - description: The friendly name specified when creating the job
+          in: formData
+          name: FriendlyName
+          required: true
+          type: string
+        - description: >-
+            The start day for the custom export specified as a string in the
+            format of yyyy-mm-dd
+          in: formData
+          name: StartDay
+          required: true
+          type: string
+        - description: >-
+            This is the method used to call the webhook on completion of the
+            job. If this is supplied, `WebhookUrl` must also be supplied.
+          in: formData
+          name: WebhookMethod
+          type: string
+        - description: >-
+            The optional webhook url called on completion of the job. If this is
+            supplied, `WebhookMethod` must also be supplied. If you set neither
+            webhook nor email, you will have to check your job's status
+            manually.
+          in: formData
+          name: WebhookUrl
+          type: string
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/bulkexports.v1.export.export_custom_job"
+        '201':
           description: Created
+          schema:
+            $ref: '#/definitions/bulkexports.v1.export.export_custom_job'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://bulkexports.twilio.com
+      - url: 'https://bulkexports.twilio.com'
     x-twilio:
       className: export_custom_job
       defaultOutputProperties:
@@ -423,186 +667,14 @@ paths:
         - webhook_url
       parent: /Exports
       pathType: list
-components:
-  schemas:
-    bulkexports.v1.export:
-      properties:
-        links:
-          description: Nested resource URLs.
-          format: uri-map
-          nullable: true
-          type: object
-        resource_type:
-          description: The type of communication – Messages, Calls, Conferences, and Participants
-          nullable: true
-          type: string
-        url:
-          description: The URL of this resource.
-          format: uri
-          nullable: true
-          type: string
-      type: object
-    bulkexports.v1.export.day:
-      properties:
-        create_date:
-          description: The date when resource is created
-          nullable: true
-          type: string
-        day:
-          description: The date of the data in the file
-          nullable: true
-          type: string
-        friendly_name:
-          description: The friendly name specified when creating the job
-          nullable: true
-          type: string
-        resource_type:
-          description: The type of communication – Messages, Calls, Conferences, and Participants
-          nullable: true
-          type: string
-        size:
-          description: Size of the file in bytes
-          nullable: true
-          type: integer
-      type: object
-    bulkexports.v1.export.day-instance:
-      properties:
-        redirect_to:
-          format: uri
-          nullable: true
-          type: string
-      type: object
-    bulkexports.v1.export.export_custom_job:
-      properties:
-        details:
-          description: The details of a job state which is an object that contains a `status` string, a day count integer, and list of days in the job
-          nullable: true
-        email:
-          description: The optional email to send the completion notification to
-          nullable: true
-          type: string
-        end_day:
-          description: The end day for the custom export specified as a string in the format of yyyy-MM-dd. This will be the last day exported. For instance, to export a single day, choose the same day for start and end day. To export the first 4 days of July, you would set the start date to 2020-07-01 and the end date to 2020-07-04. The end date must be the UTC day before yesterday.
-          nullable: true
-          type: string
-        estimated_completion_time:
-          description: this is the time estimated until your job is complete. This is calculated each time you request the job list. The time is calculated based on the current rate of job completion (which may vary) and your job queue position
-          nullable: true
-          type: string
-        friendly_name:
-          description: The friendly name specified when creating the job
-          nullable: true
-          type: string
-        job_queue_position:
-          description: This is the job position from the 1st in line. Your queue position will never increase. As jobs ahead of yours in the queue are processed, the queue position number will decrease
-          nullable: true
-          type: string
-        job_sid:
-          description: The unique job_sid returned when the custom export was created. This can be used to look up the status of the job.
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^JS[0-9a-fA-F]{32}$
-          type: string
-        resource_type:
-          description: The type of communication – Messages, Calls, Conferences, and Participants
-          nullable: true
-          type: string
-        start_day:
-          description: The start day for the custom export specified as a string in the format of yyyy-MM-dd
-          nullable: true
-          type: string
-        webhook_method:
-          description: This is the method used to call the webhook
-          nullable: true
-          type: string
-        webhook_url:
-          description: The optional webhook url called on completion
-          nullable: true
-          type: string
-      type: object
-    bulkexports.v1.export.job:
-      properties:
-        details:
-          description: The details of a job state which is an object that contains a `status` string, a day count integer, and list of days in the job
-          nullable: true
-        email:
-          description: The optional email to send the completion notification to
-          nullable: true
-          type: string
-        end_day:
-          description: The end time for the export specified when creating the job
-          nullable: true
-          type: string
-        estimated_completion_time:
-          description: this is the time estimated until your job is complete. This is calculated each time you request the job list. The time is calculated based on the current rate of job completion (which may vary) and your job queue position
-          nullable: true
-          type: string
-        friendly_name:
-          description: The friendly name specified when creating the job
-          nullable: true
-          type: string
-        job_queue_position:
-          description: This is the job position from the 1st in line. Your queue position will never increase. As jobs ahead of yours in the queue are processed, the queue position number will decrease
-          nullable: true
-          type: string
-        job_sid:
-          description: The job_sid returned when the export was created
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^JS[0-9a-fA-F]{32}$
-          type: string
-        resource_type:
-          description: The type of communication – Messages, Calls, Conferences, and Participants
-          nullable: true
-          type: string
-        start_day:
-          description: The start time for the export specified when creating the job
-          nullable: true
-          type: string
-        url:
-          format: uri
-          nullable: true
-          type: string
-        webhook_method:
-          description: This is the method used to call the webhook
-          nullable: true
-          type: string
-        webhook_url:
-          description: The optional webhook url called on completion
-          nullable: true
-          type: string
-      type: object
-    bulkexports.v1.export_configuration:
-      properties:
-        enabled:
-          description: Whether files are automatically generated
-          nullable: true
-          type: boolean
-        resource_type:
-          description: The type of communication – Messages, Calls, Conferences, and Participants
-          nullable: true
-          type: string
-        url:
-          description: The URL of this resource.
-          format: uri
-          nullable: true
-          type: string
-        webhook_method:
-          description: Whether to GET or POST to the webhook url
-          nullable: true
-          type: string
-        webhook_url:
-          description: URL targeted at export
-          format: uri
-          nullable: true
-          type: string
-      type: object
-  securitySchemes:
-    accountSid_authToken:
-      scheme: basic
-      type: http
+schemes:
+  - https
+securityDefinitions:
+  accountSid_authToken:
+    type: basic
+swagger: '2.0'
+x-components: {}
 x-maturity:
   - description: This product is Generally Available.
     name: GA
+

@@ -1,27 +1,489 @@
-openapi: 3.0.1
-servers:
-  - url: https://studio.twilio.com
+basePath: /
+definitions:
+  studio.v1.flow:
+    properties:
+      account_sid:
+        description: The SID of the Account that created the resource
+        maxLength: 34
+        minLength: 34
+        pattern: '^AC[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      date_created:
+        description: The ISO 8601 date and time in GMT when the resource was created
+        format: date-time
+        type: string
+        x-nullable: true
+      date_updated:
+        description: The ISO 8601 date and time in GMT when the resource was last updated
+        format: date-time
+        type: string
+        x-nullable: true
+      friendly_name:
+        description: The string that you assigned to describe the Flow
+        type: string
+        x-nullable: true
+      links:
+        description: Nested resource URLs
+        format: uri-map
+        type: object
+        x-nullable: true
+      sid:
+        description: The unique string that identifies the resource
+        maxLength: 34
+        minLength: 34
+        pattern: '^FW[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      status:
+        description: The status of the Flow
+        enum:
+          - draft
+          - published
+        type: string
+        x-nullable: true
+      url:
+        description: The absolute URL of the resource
+        format: uri
+        type: string
+        x-nullable: true
+      version:
+        description: The latest version number of the Flow's definition
+        type: integer
+        x-nullable: true
+    type: object
+  studio.v1.flow.engagement:
+    properties:
+      account_sid:
+        description: The SID of the Account that created the resource
+        maxLength: 34
+        minLength: 34
+        pattern: '^AC[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      contact_channel_address:
+        description: >-
+          The phone number, SIP address or Client identifier that triggered this
+          Engagement
+        type: string
+        x-nullable: true
+      contact_sid:
+        description: The SID of the Contact
+        maxLength: 34
+        minLength: 34
+        pattern: '^FC[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      context:
+        description: The current state of the execution flow
+        x-nullable: true
+      date_created:
+        description: The ISO 8601 date and time in GMT when the Engagement was created
+        format: date-time
+        type: string
+        x-nullable: true
+      date_updated:
+        description: The ISO 8601 date and time in GMT when the Engagement was last updated
+        format: date-time
+        type: string
+        x-nullable: true
+      flow_sid:
+        description: The SID of the Flow
+        maxLength: 34
+        minLength: 34
+        pattern: '^FW[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      links:
+        description: The URLs of the Engagement's nested resources
+        format: uri-map
+        type: object
+        x-nullable: true
+      sid:
+        description: The unique string that identifies the resource
+        maxLength: 34
+        minLength: 34
+        pattern: '^FN[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      status:
+        description: The status of the Engagement
+        enum:
+          - active
+          - ended
+        type: string
+        x-nullable: true
+      url:
+        description: The absolute URL of the resource
+        format: uri
+        type: string
+        x-nullable: true
+    type: object
+  studio.v1.flow.engagement.engagement_context:
+    properties:
+      account_sid:
+        description: Account SID
+        maxLength: 34
+        minLength: 34
+        pattern: '^AC[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      context:
+        description: Flow state
+        x-nullable: true
+      engagement_sid:
+        description: Engagement SID
+        maxLength: 34
+        minLength: 34
+        pattern: '^FN[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      flow_sid:
+        description: Flow SID
+        maxLength: 34
+        minLength: 34
+        pattern: '^FW[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      url:
+        description: The URL of the resource
+        format: uri
+        type: string
+        x-nullable: true
+    type: object
+  studio.v1.flow.engagement.step:
+    properties:
+      account_sid:
+        description: The SID of the Account that created the resource
+        maxLength: 34
+        minLength: 34
+        pattern: '^AC[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      context:
+        description: The current state of the flow
+        x-nullable: true
+      date_created:
+        description: The ISO 8601 date and time in GMT when the resource was created
+        format: date-time
+        type: string
+        x-nullable: true
+      date_updated:
+        description: The ISO 8601 date and time in GMT when the resource was last updated
+        format: date-time
+        type: string
+        x-nullable: true
+      engagement_sid:
+        description: The SID of the Engagement
+        maxLength: 34
+        minLength: 34
+        pattern: '^FN[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      flow_sid:
+        description: The SID of the Flow
+        maxLength: 34
+        minLength: 34
+        pattern: '^FW[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      links:
+        description: The URLs of related resources
+        format: uri-map
+        type: object
+        x-nullable: true
+      name:
+        description: The event that caused the Flow to transition to the Step
+        type: string
+        x-nullable: true
+      sid:
+        description: The unique string that identifies the resource
+        maxLength: 34
+        minLength: 34
+        pattern: '^FT[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      transitioned_from:
+        description: The Widget that preceded the Widget for the Step
+        type: string
+        x-nullable: true
+      transitioned_to:
+        description: The Widget that will follow the Widget for the Step
+        type: string
+        x-nullable: true
+      url:
+        description: The absolute URL of the resource
+        format: uri
+        type: string
+        x-nullable: true
+    type: object
+  studio.v1.flow.engagement.step.step_context:
+    properties:
+      account_sid:
+        description: The SID of the Account that created the resource
+        maxLength: 34
+        minLength: 34
+        pattern: '^AC[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      context:
+        description: The current state of the flow
+        x-nullable: true
+      engagement_sid:
+        description: The SID of the Engagement
+        maxLength: 34
+        minLength: 34
+        pattern: '^FN[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      flow_sid:
+        description: The SID of the Flow
+        maxLength: 34
+        minLength: 34
+        pattern: '^FW[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      step_sid:
+        description: Step SID
+        maxLength: 34
+        minLength: 34
+        pattern: '^FT[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      url:
+        description: The absolute URL of the resource
+        format: uri
+        type: string
+        x-nullable: true
+    type: object
+  studio.v1.flow.execution:
+    properties:
+      account_sid:
+        description: The SID of the Account that created the resource
+        maxLength: 34
+        minLength: 34
+        pattern: '^AC[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      contact_channel_address:
+        description: >-
+          The phone number, SIP address or Client identifier that triggered the
+          Execution
+        type: string
+        x-nullable: true
+      contact_sid:
+        description: The SID of the Contact
+        maxLength: 34
+        minLength: 34
+        pattern: '^FC[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      context:
+        description: The current state of the flow
+        x-nullable: true
+      date_created:
+        description: The ISO 8601 date and time in GMT when the resource was created
+        format: date-time
+        type: string
+        x-nullable: true
+      date_updated:
+        description: The ISO 8601 date and time in GMT when the resource was last updated
+        format: date-time
+        type: string
+        x-nullable: true
+      flow_sid:
+        description: The SID of the Flow
+        maxLength: 34
+        minLength: 34
+        pattern: '^FW[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      links:
+        description: Nested resource URLs
+        format: uri-map
+        type: object
+        x-nullable: true
+      sid:
+        description: The unique string that identifies the resource
+        maxLength: 34
+        minLength: 34
+        pattern: '^FN[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      status:
+        description: The status of the Execution
+        enum:
+          - active
+          - ended
+        type: string
+        x-nullable: true
+      url:
+        description: The absolute URL of the resource
+        format: uri
+        type: string
+        x-nullable: true
+    type: object
+  studio.v1.flow.execution.execution_context:
+    properties:
+      account_sid:
+        description: The SID of the Account that created the resource
+        maxLength: 34
+        minLength: 34
+        pattern: '^AC[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      context:
+        description: The current state of the flow
+        x-nullable: true
+      execution_sid:
+        description: The SID of the Execution
+        maxLength: 34
+        minLength: 34
+        pattern: '^FN[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      flow_sid:
+        description: The SID of the Flow
+        maxLength: 34
+        minLength: 34
+        pattern: '^FW[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      url:
+        description: The absolute URL of the resource
+        format: uri
+        type: string
+        x-nullable: true
+    type: object
+  studio.v1.flow.execution.execution_step:
+    properties:
+      account_sid:
+        description: The SID of the Account that created the resource
+        maxLength: 34
+        minLength: 34
+        pattern: '^AC[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      context:
+        description: The current state of the flow
+        x-nullable: true
+      date_created:
+        description: The ISO 8601 date and time in GMT when the resource was created
+        format: date-time
+        type: string
+        x-nullable: true
+      date_updated:
+        description: The ISO 8601 date and time in GMT when the resource was last updated
+        format: date-time
+        type: string
+        x-nullable: true
+      execution_sid:
+        description: The SID of the Execution
+        maxLength: 34
+        minLength: 34
+        pattern: '^FN[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      flow_sid:
+        description: The SID of the Flow
+        maxLength: 34
+        minLength: 34
+        pattern: '^FW[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      links:
+        description: The URLs of related resources
+        format: uri-map
+        type: object
+        x-nullable: true
+      name:
+        description: The event that caused the Flow to transition to the Step
+        type: string
+        x-nullable: true
+      sid:
+        description: The unique string that identifies the resource
+        maxLength: 34
+        minLength: 34
+        pattern: '^FT[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      transitioned_from:
+        description: The Widget that preceded the Widget for the Step
+        type: string
+        x-nullable: true
+      transitioned_to:
+        description: The Widget that will follow the Widget for the Step
+        type: string
+        x-nullable: true
+      url:
+        description: The absolute URL of the resource
+        format: uri
+        type: string
+        x-nullable: true
+    type: object
+  studio.v1.flow.execution.execution_step.execution_step_context:
+    properties:
+      account_sid:
+        description: The SID of the Account that created the resource
+        maxLength: 34
+        minLength: 34
+        pattern: '^AC[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      context:
+        description: The current state of the flow
+        x-nullable: true
+      execution_sid:
+        description: The SID of the Execution
+        maxLength: 34
+        minLength: 34
+        pattern: '^FN[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      flow_sid:
+        description: The SID of the Flow
+        maxLength: 34
+        minLength: 34
+        pattern: '^FW[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      step_sid:
+        description: Step SID
+        maxLength: 34
+        minLength: 34
+        pattern: '^FT[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      url:
+        description: The absolute URL of the resource
+        format: uri
+        type: string
+        x-nullable: true
+    type: object
+host: studio.twilio.com
 info:
   contact:
     email: support@twilio.com
     name: Twilio Support
-    url: https://support.twilio.com
+    url: 'https://support.twilio.com'
   description: This is the public Twilio REST API.
   license:
     name: Apache 2.0
-    url: https://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: https://www.twilio.com/legal/tos
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+  termsOfService: 'https://www.twilio.com/legal/tos'
   title: Twilio - Studio
   version: 1.29.2
   x-apisguru-categories:
     - telecom
     - messaging
   x-logo:
-    url: https://static1.twilio.com/marketing/bundles/marketing/img/logos/wordmark-red.svg
+    url: >-
+      https://static1.twilio.com/marketing/bundles/marketing/img/logos/wordmark-red.svg
   x-origin:
     - format: openapi
-      url: https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_studio_v1.json
-      version: "3.0"
+      url: >-
+        https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_studio_v1.json
+      version: '3.0'
   x-providerName: twilio.com
   x-serviceName: twilio_studio_v1
 paths:
@@ -31,53 +493,54 @@ paths:
       description: Retrieve a list of all Flows.
       operationId: ListFlow
       parameters:
-        - description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - description: >-
+            How many resources to return in each list page. The default is 50,
+            and the maximum is 1000.
           in: query
+          maximum: 1000
+          minimum: 1
           name: PageSize
-          schema:
-            maximum: 1000
-            minimum: 1
-            type: integer
+          type: integer
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  flows:
-                    items:
-                      $ref: "#/components/schemas/studio.v1.flow"
-                    type: array
-                  meta:
-                    properties:
-                      first_page_url:
-                        format: uri
-                        type: string
-                      key:
-                        type: string
-                      next_page_url:
-                        format: uri
-                        type: string
-                      page:
-                        type: integer
-                      page_size:
-                        type: integer
-                      previous_page_url:
-                        format: uri
-                        type: string
-                      url:
-                        format: uri
-                        type: string
-                    type: object
-                title: ListFlowResponse
-                type: object
+        '200':
           description: OK
+          schema:
+            properties:
+              flows:
+                items:
+                  $ref: '#/definitions/studio.v1.flow'
+                type: array
+              meta:
+                properties:
+                  first_page_url:
+                    format: uri
+                    type: string
+                  key:
+                    type: string
+                  next_page_url:
+                    format: uri
+                    type: string
+                  page:
+                    type: integer
+                  page_size:
+                    type: integer
+                  previous_page_url:
+                    format: uri
+                    type: string
+                  url:
+                    format: uri
+                    type: string
+                type: object
+            title: ListFlowResponse
+            type: object
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://studio.twilio.com
+      - url: 'https://studio.twilio.com'
     x-twilio:
       defaultOutputProperties:
         - sid
@@ -85,112 +548,120 @@ paths:
         - status
         - version
       pathType: list
-  "/v1/Flows/{FlowSid}/Engagements":
-    description: "[DEPRECATED] Excecutions of Studio flows"
+  '/v1/Flows/{FlowSid}/Engagements':
+    description: '[DEPRECATED] Excecutions of Studio flows'
     get:
       description: Retrieve a list of all Engagements for the Flow.
       operationId: ListEngagement
       parameters:
         - description: The SID of the Flow to read Engagements from.
           in: path
+          maxLength: 34
+          minLength: 34
           name: FlowSid
+          pattern: '^FW[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FW[0-9a-fA-F]{32}$
-            type: string
-        - description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+          type: string
+        - description: >-
+            How many resources to return in each list page. The default is 50,
+            and the maximum is 1000.
           in: query
+          maximum: 1000
+          minimum: 1
           name: PageSize
-          schema:
-            maximum: 1000
-            minimum: 1
-            type: integer
+          type: integer
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  engagements:
-                    items:
-                      $ref: "#/components/schemas/studio.v1.flow.engagement"
-                    type: array
-                  meta:
-                    properties:
-                      first_page_url:
-                        format: uri
-                        type: string
-                      key:
-                        type: string
-                      next_page_url:
-                        format: uri
-                        type: string
-                      page:
-                        type: integer
-                      page_size:
-                        type: integer
-                      previous_page_url:
-                        format: uri
-                        type: string
-                      url:
-                        format: uri
-                        type: string
-                    type: object
-                title: ListEngagementResponse
-                type: object
+        '200':
           description: OK
+          schema:
+            properties:
+              engagements:
+                items:
+                  $ref: '#/definitions/studio.v1.flow.engagement'
+                type: array
+              meta:
+                properties:
+                  first_page_url:
+                    format: uri
+                    type: string
+                  key:
+                    type: string
+                  next_page_url:
+                    format: uri
+                    type: string
+                  page:
+                    type: integer
+                  page_size:
+                    type: integer
+                  previous_page_url:
+                    format: uri
+                    type: string
+                  url:
+                    format: uri
+                    type: string
+                type: object
+            title: ListEngagementResponse
+            type: object
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     post:
+      consumes:
+        - application/x-www-form-urlencoded
       description: Triggers a new Engagement for the Flow
       operationId: CreateEngagement
       parameters:
         - description: The SID of the Flow.
           in: path
+          maxLength: 34
+          minLength: 34
           name: FlowSid
+          pattern: '^FW[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FW[0-9a-fA-F]{32}$
-            type: string
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              properties:
-                From:
-                  description: The Twilio phone number to send messages or initiate calls from during the Flow Engagement. Available as variable `{{flow.channel.address}}`
-                  format: phone-number
-                  type: string
-                Parameters:
-                  description: "A JSON string we will add to your flow's context and that you can access as variables inside your flow. For example, if you pass in `Parameters={'name':'Zeke'}` then inside a widget you can reference the variable `{{flow.data.name}}` which will return the string 'Zeke'. Note: the JSON value must explicitly be passed as a string, not as a hash object. Depending on your particular HTTP library, you may need to add quotes or URL encode your JSON string."
-                To:
-                  description: The Contact phone number to start a Studio Flow Engagement, available as variable `{{contact.channel.address}}`.
-                  format: phone-number
-                  type: string
-              required:
-                - To
-                - From
-              title: CreateEngagementRequest
-              type: object
+          type: string
+        - description: >-
+            The Twilio phone number to send messages or initiate calls from
+            during the Flow Engagement. Available as variable
+            `{{flow.channel.address}}`
+          format: phone-number
+          in: formData
+          name: From
+          required: true
+          type: string
+        - description: >-
+            A JSON string we will add to your flow's context and that you can
+            access as variables inside your flow. For example, if you pass in
+            `Parameters={'name':'Zeke'}` then inside a widget you can reference
+            the variable `{{flow.data.name}}` which will return the string
+            'Zeke'. Note: the JSON value must explicitly be passed as a string,
+            not as a hash object. Depending on your particular HTTP library, you
+            may need to add quotes or URL encode your JSON string.
+          in: formData
+          name: Parameters
+        - description: >-
+            The Contact phone number to start a Studio Flow Engagement,
+            available as variable `{{contact.channel.address}}`.
+          format: phone-number
+          in: formData
+          name: To
+          required: true
+          type: string
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/studio.v1.flow.engagement"
+        '201':
           description: Created
+          schema:
+            $ref: '#/definitions/studio.v1.flow.engagement'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://studio.twilio.com
+      - url: 'https://studio.twilio.com'
     x-twilio:
       defaultOutputProperties:
         - sid
@@ -199,50 +670,48 @@ paths:
         - date_created
       parent: /Flows
       pathType: list
-  "/v1/Flows/{FlowSid}/Engagements/{EngagementSid}/Context":
-    description: "[DEPRECATED] JSON context for engagements"
+  '/v1/Flows/{FlowSid}/Engagements/{EngagementSid}/Context':
+    description: '[DEPRECATED] JSON context for engagements'
     get:
       description: Retrieve the most recent context for an Engagement.
       operationId: FetchEngagementContext
       parameters:
         - description: The SID of the Flow.
           in: path
+          maxLength: 34
+          minLength: 34
           name: FlowSid
+          pattern: '^FW[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FW[0-9a-fA-F]{32}$
-            type: string
+          type: string
         - description: The SID of the Engagement.
           in: path
+          maxLength: 34
+          minLength: 34
           name: EngagementSid
+          pattern: '^FN[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FN[0-9a-fA-F]{32}$
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/studio.v1.flow.engagement.engagement_context"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/studio.v1.flow.engagement.engagement_context'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://studio.twilio.com
+      - url: 'https://studio.twilio.com'
     x-twilio:
       className: engagement_context
       defaultOutputProperties:
         - context
-      parent: /Flows/{FlowSid}/Engagements
+      parent: '/Flows/{FlowSid}/Engagements'
       pathType: instance
-  "/v1/Flows/{FlowSid}/Engagements/{EngagementSid}/Steps":
+  '/v1/Flows/{FlowSid}/Engagements/{EngagementSid}/Steps':
     description: Steps within a Studio flow
     get:
       description: Retrieve a list of all Steps for an Engagement.
@@ -250,78 +719,77 @@ paths:
       parameters:
         - description: The SID of the Flow with the Step to read.
           in: path
+          maxLength: 34
+          minLength: 34
           name: FlowSid
+          pattern: '^FW[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FW[0-9a-fA-F]{32}$
-            type: string
+          type: string
         - description: The SID of the Engagement with the Step to read.
           in: path
+          maxLength: 34
+          minLength: 34
           name: EngagementSid
+          pattern: '^FN[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FN[0-9a-fA-F]{32}$
-            type: string
-        - description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+          type: string
+        - description: >-
+            How many resources to return in each list page. The default is 50,
+            and the maximum is 1000.
           in: query
+          maximum: 1000
+          minimum: 1
           name: PageSize
-          schema:
-            maximum: 1000
-            minimum: 1
-            type: integer
+          type: integer
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  meta:
-                    properties:
-                      first_page_url:
-                        format: uri
-                        type: string
-                      key:
-                        type: string
-                      next_page_url:
-                        format: uri
-                        type: string
-                      page:
-                        type: integer
-                      page_size:
-                        type: integer
-                      previous_page_url:
-                        format: uri
-                        type: string
-                      url:
-                        format: uri
-                        type: string
-                    type: object
-                  steps:
-                    items:
-                      $ref: "#/components/schemas/studio.v1.flow.engagement.step"
-                    type: array
-                title: ListStepResponse
-                type: object
+        '200':
           description: OK
+          schema:
+            properties:
+              meta:
+                properties:
+                  first_page_url:
+                    format: uri
+                    type: string
+                  key:
+                    type: string
+                  next_page_url:
+                    format: uri
+                    type: string
+                  page:
+                    type: integer
+                  page_size:
+                    type: integer
+                  previous_page_url:
+                    format: uri
+                    type: string
+                  url:
+                    format: uri
+                    type: string
+                type: object
+              steps:
+                items:
+                  $ref: '#/definitions/studio.v1.flow.engagement.step'
+                type: array
+            title: ListStepResponse
+            type: object
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://studio.twilio.com
+      - url: 'https://studio.twilio.com'
     x-twilio:
       defaultOutputProperties:
         - sid
         - name
         - transitioned_from
         - transitioned_to
-      parent: /Flows/{FlowSid}/Engagements
+      parent: '/Flows/{FlowSid}/Engagements'
       pathType: list
-  "/v1/Flows/{FlowSid}/Engagements/{EngagementSid}/Steps/{Sid}":
+  '/v1/Flows/{FlowSid}/Engagements/{EngagementSid}/Steps/{Sid}':
     description: Steps within a Studio flow
     get:
       description: Retrieve a Step.
@@ -329,53 +797,50 @@ paths:
       parameters:
         - description: The SID of the Flow with the Step to fetch.
           in: path
+          maxLength: 34
+          minLength: 34
           name: FlowSid
+          pattern: '^FW[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FW[0-9a-fA-F]{32}$
-            type: string
+          type: string
         - description: The SID of the Engagement with the Step to fetch.
           in: path
+          maxLength: 34
+          minLength: 34
           name: EngagementSid
+          pattern: '^FN[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FN[0-9a-fA-F]{32}$
-            type: string
+          type: string
         - description: The SID of the Step resource to fetch.
           in: path
+          maxLength: 34
+          minLength: 34
           name: Sid
+          pattern: '^FT[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FT[0-9a-fA-F]{32}$
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/studio.v1.flow.engagement.step"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/studio.v1.flow.engagement.step'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://studio.twilio.com
+      - url: 'https://studio.twilio.com'
     x-twilio:
       defaultOutputProperties:
         - sid
         - name
         - transitioned_from
         - transitioned_to
-      parent: /Flows/{FlowSid}/Engagements
+      parent: '/Flows/{FlowSid}/Engagements'
       pathType: instance
-  "/v1/Flows/{FlowSid}/Engagements/{EngagementSid}/Steps/{StepSid}/Context":
+  '/v1/Flows/{FlowSid}/Engagements/{EngagementSid}/Steps/{StepSid}/Context':
     description: JSON context for individual steps
     get:
       description: Retrieve the context for an Engagement Step.
@@ -383,116 +848,109 @@ paths:
       parameters:
         - description: The SID of the Flow with the Step to fetch.
           in: path
+          maxLength: 34
+          minLength: 34
           name: FlowSid
+          pattern: '^FW[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FW[0-9a-fA-F]{32}$
-            type: string
+          type: string
         - description: The SID of the Engagement with the Step to fetch.
           in: path
+          maxLength: 34
+          minLength: 34
           name: EngagementSid
+          pattern: '^FN[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FN[0-9a-fA-F]{32}$
-            type: string
+          type: string
         - description: The SID of the Step to fetch
           in: path
+          maxLength: 34
+          minLength: 34
           name: StepSid
+          pattern: '^FT[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FT[0-9a-fA-F]{32}$
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/studio.v1.flow.engagement.step.step_context"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/studio.v1.flow.engagement.step.step_context'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://studio.twilio.com
+      - url: 'https://studio.twilio.com'
     x-twilio:
       className: step_context
       defaultOutputProperties:
         - context
-      parent: /Flows/{FlowSid}/Engagements/{EngagementSid}/Steps
+      parent: '/Flows/{FlowSid}/Engagements/{EngagementSid}/Steps'
       pathType: instance
-  "/v1/Flows/{FlowSid}/Engagements/{Sid}":
+  '/v1/Flows/{FlowSid}/Engagements/{Sid}':
     delete:
       description: Delete this Engagement and all Steps relating to it.
       operationId: DeleteEngagement
       parameters:
         - description: The SID of the Flow to delete Engagements from.
           in: path
+          maxLength: 34
+          minLength: 34
           name: FlowSid
+          pattern: '^FW[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FW[0-9a-fA-F]{32}$
-            type: string
+          type: string
         - description: The SID of the Engagement resource to delete.
           in: path
+          maxLength: 34
+          minLength: 34
           name: Sid
+          pattern: '^FN[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FN[0-9a-fA-F]{32}$
-            type: string
+          type: string
       responses:
-        "204":
+        '204':
           description: The resource was deleted successfully.
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
-    description: "[DEPRECATED] Excecutions of Studio flows"
+    description: '[DEPRECATED] Excecutions of Studio flows'
     get:
       description: Retrieve an Engagement
       operationId: FetchEngagement
       parameters:
         - description: The SID of the Flow.
           in: path
+          maxLength: 34
+          minLength: 34
           name: FlowSid
+          pattern: '^FW[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FW[0-9a-fA-F]{32}$
-            type: string
+          type: string
         - description: The SID of the Engagement resource to fetch.
           in: path
+          maxLength: 34
+          minLength: 34
           name: Sid
+          pattern: '^FN[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FN[0-9a-fA-F]{32}$
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/studio.v1.flow.engagement"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/studio.v1.flow.engagement'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://studio.twilio.com
+      - url: 'https://studio.twilio.com'
     x-twilio:
       defaultOutputProperties:
         - sid
@@ -501,7 +959,7 @@ paths:
         - date_created
       parent: /Flows
       pathType: instance
-  "/v1/Flows/{FlowSid}/Executions":
+  '/v1/Flows/{FlowSid}/Executions':
     description: Executions of Studio flows
     get:
       description: Retrieve a list of all Executions for the Flow.
@@ -509,116 +967,129 @@ paths:
       parameters:
         - description: The SID of the Flow with the Execution resources to read.
           in: path
+          maxLength: 34
+          minLength: 34
           name: FlowSid
+          pattern: '^FW[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FW[0-9a-fA-F]{32}$
-            type: string
-        - description: Only show Execution resources starting on or after this [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date-time, given as `YYYY-MM-DDThh:mm:ss-hh:mm`.
+          type: string
+        - description: >-
+            Only show Execution resources starting on or after this [ISO
+            8601](https://en.wikipedia.org/wiki/ISO_8601) date-time, given as
+            `YYYY-MM-DDThh:mm:ss-hh:mm`.
+          format: date-time
           in: query
           name: DateCreatedFrom
-          schema:
-            format: date-time
-            type: string
-        - description: Only show Execution resources starting before this [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date-time, given as `YYYY-MM-DDThh:mm:ss-hh:mm`.
+          type: string
+        - description: >-
+            Only show Execution resources starting before this [ISO
+            8601](https://en.wikipedia.org/wiki/ISO_8601) date-time, given as
+            `YYYY-MM-DDThh:mm:ss-hh:mm`.
+          format: date-time
           in: query
           name: DateCreatedTo
-          schema:
-            format: date-time
-            type: string
-        - description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+          type: string
+        - description: >-
+            How many resources to return in each list page. The default is 50,
+            and the maximum is 1000.
           in: query
+          maximum: 1000
+          minimum: 1
           name: PageSize
-          schema:
-            maximum: 1000
-            minimum: 1
-            type: integer
+          type: integer
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  executions:
-                    items:
-                      $ref: "#/components/schemas/studio.v1.flow.execution"
-                    type: array
-                  meta:
-                    properties:
-                      first_page_url:
-                        format: uri
-                        type: string
-                      key:
-                        type: string
-                      next_page_url:
-                        format: uri
-                        type: string
-                      page:
-                        type: integer
-                      page_size:
-                        type: integer
-                      previous_page_url:
-                        format: uri
-                        type: string
-                      url:
-                        format: uri
-                        type: string
-                    type: object
-                title: ListExecutionResponse
-                type: object
+        '200':
           description: OK
+          schema:
+            properties:
+              executions:
+                items:
+                  $ref: '#/definitions/studio.v1.flow.execution'
+                type: array
+              meta:
+                properties:
+                  first_page_url:
+                    format: uri
+                    type: string
+                  key:
+                    type: string
+                  next_page_url:
+                    format: uri
+                    type: string
+                  page:
+                    type: integer
+                  page_size:
+                    type: integer
+                  previous_page_url:
+                    format: uri
+                    type: string
+                  url:
+                    format: uri
+                    type: string
+                type: object
+            title: ListExecutionResponse
+            type: object
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     post:
+      consumes:
+        - application/x-www-form-urlencoded
       description: Triggers a new Execution for the Flow
       operationId: CreateExecution
       parameters:
         - description: The SID of the Excecution's Flow.
           in: path
+          maxLength: 34
+          minLength: 34
           name: FlowSid
+          pattern: '^FW[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FW[0-9a-fA-F]{32}$
-            type: string
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              properties:
-                From:
-                  description: The Twilio phone number to send messages or initiate calls from during the Flow's Execution. Available as variable `{{flow.channel.address}}`. For SMS, this can also be a Messaging Service SID.
-                  format: phone-number
-                  type: string
-                Parameters:
-                  description: "JSON data that will be added to the Flow's context and that can be accessed as variables inside your Flow. For example, if you pass in `Parameters={\"name\":\"Zeke\"}`, a widget in your Flow can reference the variable `{{flow.data.name}}`, which returns \"Zeke\". Note: the JSON value must explicitly be passed as a string, not as a hash object. Depending on your particular HTTP library, you may need to add quotes or URL encode the JSON string."
-                To:
-                  description: The Contact phone number to start a Studio Flow Execution, available as variable `{{contact.channel.address}}`.
-                  format: phone-number
-                  type: string
-              required:
-                - To
-                - From
-              title: CreateExecutionRequest
-              type: object
+          type: string
+        - description: >-
+            The Twilio phone number to send messages or initiate calls from
+            during the Flow's Execution. Available as variable
+            `{{flow.channel.address}}`. For SMS, this can also be a Messaging
+            Service SID.
+          format: phone-number
+          in: formData
+          name: From
+          required: true
+          type: string
+        - description: >-
+            JSON data that will be added to the Flow's context and that can be
+            accessed as variables inside your Flow. For example, if you pass in
+            `Parameters={"name":"Zeke"}`, a widget in your Flow can reference
+            the variable `{{flow.data.name}}`, which returns "Zeke". Note: the
+            JSON value must explicitly be passed as a string, not as a hash
+            object. Depending on your particular HTTP library, you may need to
+            add quotes or URL encode the JSON string.
+          in: formData
+          name: Parameters
+        - description: >-
+            The Contact phone number to start a Studio Flow Execution, available
+            as variable `{{contact.channel.address}}`.
+          format: phone-number
+          in: formData
+          name: To
+          required: true
+          type: string
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/studio.v1.flow.execution"
+        '201':
           description: Created
+          schema:
+            $ref: '#/definitions/studio.v1.flow.execution'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://studio.twilio.com
+      - url: 'https://studio.twilio.com'
     x-twilio:
       defaultOutputProperties:
         - sid
@@ -627,7 +1098,7 @@ paths:
         - date_created
       parent: /Flows
       pathType: list
-  "/v1/Flows/{FlowSid}/Executions/{ExecutionSid}/Context":
+  '/v1/Flows/{FlowSid}/Executions/{ExecutionSid}/Context':
     description: JSON context for executions
     get:
       description: Retrieve the most recent context for an Execution.
@@ -635,42 +1106,40 @@ paths:
       parameters:
         - description: The SID of the Flow with the Execution context to fetch.
           in: path
+          maxLength: 34
+          minLength: 34
           name: FlowSid
+          pattern: '^FW[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FW[0-9a-fA-F]{32}$
-            type: string
+          type: string
         - description: The SID of the Execution context to fetch.
           in: path
+          maxLength: 34
+          minLength: 34
           name: ExecutionSid
+          pattern: '^FN[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FN[0-9a-fA-F]{32}$
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/studio.v1.flow.execution.execution_context"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/studio.v1.flow.execution.execution_context'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://studio.twilio.com
+      - url: 'https://studio.twilio.com'
     x-twilio:
       className: execution_context
       defaultOutputProperties:
         - context
-      parent: /Flows/{FlowSid}/Executions
+      parent: '/Flows/{FlowSid}/Executions'
       pathType: instance
-  "/v1/Flows/{FlowSid}/Executions/{ExecutionSid}/Steps":
+  '/v1/Flows/{FlowSid}/Executions/{ExecutionSid}/Steps':
     description: Individual steps within an execution
     get:
       description: Retrieve a list of all Steps for an Execution.
@@ -678,78 +1147,77 @@ paths:
       parameters:
         - description: The SID of the Flow with the Steps to read.
           in: path
+          maxLength: 34
+          minLength: 34
           name: FlowSid
+          pattern: '^FW[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FW[0-9a-fA-F]{32}$
-            type: string
+          type: string
         - description: The SID of the Execution with the Steps to read.
           in: path
+          maxLength: 34
+          minLength: 34
           name: ExecutionSid
+          pattern: '^FN[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FN[0-9a-fA-F]{32}$
-            type: string
-        - description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+          type: string
+        - description: >-
+            How many resources to return in each list page. The default is 50,
+            and the maximum is 1000.
           in: query
+          maximum: 1000
+          minimum: 1
           name: PageSize
-          schema:
-            maximum: 1000
-            minimum: 1
-            type: integer
+          type: integer
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  meta:
-                    properties:
-                      first_page_url:
-                        format: uri
-                        type: string
-                      key:
-                        type: string
-                      next_page_url:
-                        format: uri
-                        type: string
-                      page:
-                        type: integer
-                      page_size:
-                        type: integer
-                      previous_page_url:
-                        format: uri
-                        type: string
-                      url:
-                        format: uri
-                        type: string
-                    type: object
-                  steps:
-                    items:
-                      $ref: "#/components/schemas/studio.v1.flow.execution.execution_step"
-                    type: array
-                title: ListExecutionStepResponse
-                type: object
+        '200':
           description: OK
+          schema:
+            properties:
+              meta:
+                properties:
+                  first_page_url:
+                    format: uri
+                    type: string
+                  key:
+                    type: string
+                  next_page_url:
+                    format: uri
+                    type: string
+                  page:
+                    type: integer
+                  page_size:
+                    type: integer
+                  previous_page_url:
+                    format: uri
+                    type: string
+                  url:
+                    format: uri
+                    type: string
+                type: object
+              steps:
+                items:
+                  $ref: '#/definitions/studio.v1.flow.execution.execution_step'
+                type: array
+            title: ListExecutionStepResponse
+            type: object
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://studio.twilio.com
+      - url: 'https://studio.twilio.com'
     x-twilio:
       className: execution_step
       defaultOutputProperties:
         - sid
         - name
         - date_created
-      parent: /Flows/{FlowSid}/Executions
+      parent: '/Flows/{FlowSid}/Executions'
       pathType: list
-  "/v1/Flows/{FlowSid}/Executions/{ExecutionSid}/Steps/{Sid}":
+  '/v1/Flows/{FlowSid}/Executions/{ExecutionSid}/Steps/{Sid}':
     description: Individual steps within an execution
     get:
       description: Retrieve a Step.
@@ -757,53 +1225,50 @@ paths:
       parameters:
         - description: The SID of the Flow with the Step to fetch.
           in: path
+          maxLength: 34
+          minLength: 34
           name: FlowSid
+          pattern: '^FW[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FW[0-9a-fA-F]{32}$
-            type: string
+          type: string
         - description: The SID of the Execution resource with the Step to fetch.
           in: path
+          maxLength: 34
+          minLength: 34
           name: ExecutionSid
+          pattern: '^FN[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FN[0-9a-fA-F]{32}$
-            type: string
+          type: string
         - description: The SID of the ExecutionStep resource to fetch.
           in: path
+          maxLength: 34
+          minLength: 34
           name: Sid
+          pattern: '^FT[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FT[0-9a-fA-F]{32}$
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/studio.v1.flow.execution.execution_step"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/studio.v1.flow.execution.execution_step'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://studio.twilio.com
+      - url: 'https://studio.twilio.com'
     x-twilio:
       className: execution_step
       defaultOutputProperties:
         - sid
         - name
         - date_created
-      parent: /Flows/{FlowSid}/Executions
+      parent: '/Flows/{FlowSid}/Executions'
       pathType: instance
-  "/v1/Flows/{FlowSid}/Executions/{ExecutionSid}/Steps/{StepSid}/Context":
+  '/v1/Flows/{FlowSid}/Executions/{ExecutionSid}/Steps/{StepSid}/Context':
     description: JSON context for an individual step within an execution
     get:
       description: Retrieve the context for an Execution Step.
@@ -811,75 +1276,71 @@ paths:
       parameters:
         - description: The SID of the Flow with the Step to fetch.
           in: path
+          maxLength: 34
+          minLength: 34
           name: FlowSid
+          pattern: '^FW[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FW[0-9a-fA-F]{32}$
-            type: string
+          type: string
         - description: The SID of the Execution resource with the Step to fetch.
           in: path
+          maxLength: 34
+          minLength: 34
           name: ExecutionSid
+          pattern: '^FN[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FN[0-9a-fA-F]{32}$
-            type: string
+          type: string
         - description: The SID of the Step to fetch.
           in: path
+          maxLength: 34
+          minLength: 34
           name: StepSid
+          pattern: '^FT[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FT[0-9a-fA-F]{32}$
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/studio.v1.flow.execution.execution_step.execution_step_context"
+        '200':
           description: OK
+          schema:
+            $ref: >-
+              #/definitions/studio.v1.flow.execution.execution_step.execution_step_context
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://studio.twilio.com
+      - url: 'https://studio.twilio.com'
     x-twilio:
       className: execution_step_context
       defaultOutputProperties:
         - context
-      parent: /Flows/{FlowSid}/Executions/{ExecutionSid}/Steps
+      parent: '/Flows/{FlowSid}/Executions/{ExecutionSid}/Steps'
       pathType: instance
-  "/v1/Flows/{FlowSid}/Executions/{Sid}":
+  '/v1/Flows/{FlowSid}/Executions/{Sid}':
     delete:
       description: Delete the Execution and all Steps relating to it.
       operationId: DeleteExecution
       parameters:
         - description: The SID of the Flow with the Execution resources to delete.
           in: path
+          maxLength: 34
+          minLength: 34
           name: FlowSid
+          pattern: '^FW[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FW[0-9a-fA-F]{32}$
-            type: string
+          type: string
         - description: The SID of the Execution resource to delete.
           in: path
+          maxLength: 34
+          minLength: 34
           name: Sid
+          pattern: '^FN[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FN[0-9a-fA-F]{32}$
-            type: string
+          type: string
       responses:
-        "204":
+        '204':
           description: The resource was deleted successfully.
       security:
         - accountSid_authToken: []
@@ -892,83 +1353,74 @@ paths:
       parameters:
         - description: The SID of the Flow with the Execution resource to fetch
           in: path
+          maxLength: 34
+          minLength: 34
           name: FlowSid
+          pattern: '^FW[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FW[0-9a-fA-F]{32}$
-            type: string
+          type: string
         - description: The SID of the Execution resource to fetch.
           in: path
+          maxLength: 34
+          minLength: 34
           name: Sid
+          pattern: '^FN[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FN[0-9a-fA-F]{32}$
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/studio.v1.flow.execution"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/studio.v1.flow.execution'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     post:
+      consumes:
+        - application/x-www-form-urlencoded
       description: Update the status of an Execution to `ended`.
       operationId: UpdateExecution
       parameters:
         - description: The SID of the Flow with the Execution resources to update.
           in: path
+          maxLength: 34
+          minLength: 34
           name: FlowSid
+          pattern: '^FW[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FW[0-9a-fA-F]{32}$
-            type: string
+          type: string
         - description: The SID of the Execution resource to update.
           in: path
+          maxLength: 34
+          minLength: 34
           name: Sid
+          pattern: '^FN[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FN[0-9a-fA-F]{32}$
-            type: string
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              properties:
-                Status:
-                  description: The status of the Execution. Can only be `ended`.
-                  enum:
-                    - active
-                    - ended
-                  type: string
-              required:
-                - Status
-              title: UpdateExecutionRequest
-              type: object
+          type: string
+        - description: The status of the Execution. Can only be `ended`.
+          enum:
+            - active
+            - ended
+          in: formData
+          name: Status
+          required: true
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/studio.v1.flow.execution"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/studio.v1.flow.execution'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://studio.twilio.com
+      - url: 'https://studio.twilio.com'
     x-twilio:
       defaultOutputProperties:
         - sid
@@ -977,22 +1429,21 @@ paths:
         - date_created
       parent: /Flows
       pathType: instance
-  "/v1/Flows/{Sid}":
+  '/v1/Flows/{Sid}':
     delete:
       description: Delete a specific Flow.
       operationId: DeleteFlow
       parameters:
         - description: The SID of the Flow resource to delete.
           in: path
+          maxLength: 34
+          minLength: 34
           name: Sid
+          pattern: '^FW[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FW[0-9a-fA-F]{32}$
-            type: string
+          type: string
       responses:
-        "204":
+        '204':
           description: The resource was deleted successfully.
       security:
         - accountSid_authToken: []
@@ -1005,26 +1456,25 @@ paths:
       parameters:
         - description: The SID of the Flow resource to fetch.
           in: path
+          maxLength: 34
+          minLength: 34
           name: Sid
+          pattern: '^FW[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^FW[0-9a-fA-F]{32}$
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/studio.v1.flow"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/studio.v1.flow'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://studio.twilio.com
+      - url: 'https://studio.twilio.com'
     x-twilio:
       defaultOutputProperties:
         - sid
@@ -1032,468 +1482,14 @@ paths:
         - status
         - version
       pathType: instance
-components:
-  schemas:
-    studio.v1.flow:
-      properties:
-        account_sid:
-          description: The SID of the Account that created the resource
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^AC[0-9a-fA-F]{32}$
-          type: string
-        date_created:
-          description: The ISO 8601 date and time in GMT when the resource was created
-          format: date-time
-          nullable: true
-          type: string
-        date_updated:
-          description: The ISO 8601 date and time in GMT when the resource was last updated
-          format: date-time
-          nullable: true
-          type: string
-        friendly_name:
-          description: The string that you assigned to describe the Flow
-          nullable: true
-          type: string
-        links:
-          description: Nested resource URLs
-          format: uri-map
-          nullable: true
-          type: object
-        sid:
-          description: The unique string that identifies the resource
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FW[0-9a-fA-F]{32}$
-          type: string
-        status:
-          description: The status of the Flow
-          enum:
-            - draft
-            - published
-          nullable: true
-          type: string
-        url:
-          description: The absolute URL of the resource
-          format: uri
-          nullable: true
-          type: string
-        version:
-          description: The latest version number of the Flow's definition
-          nullable: true
-          type: integer
-      type: object
-    studio.v1.flow.engagement:
-      properties:
-        account_sid:
-          description: The SID of the Account that created the resource
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^AC[0-9a-fA-F]{32}$
-          type: string
-        contact_channel_address:
-          description: The phone number, SIP address or Client identifier that triggered this Engagement
-          nullable: true
-          type: string
-        contact_sid:
-          description: The SID of the Contact
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FC[0-9a-fA-F]{32}$
-          type: string
-        context:
-          description: The current state of the execution flow
-          nullable: true
-        date_created:
-          description: The ISO 8601 date and time in GMT when the Engagement was created
-          format: date-time
-          nullable: true
-          type: string
-        date_updated:
-          description: The ISO 8601 date and time in GMT when the Engagement was last updated
-          format: date-time
-          nullable: true
-          type: string
-        flow_sid:
-          description: The SID of the Flow
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FW[0-9a-fA-F]{32}$
-          type: string
-        links:
-          description: The URLs of the Engagement's nested resources
-          format: uri-map
-          nullable: true
-          type: object
-        sid:
-          description: The unique string that identifies the resource
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FN[0-9a-fA-F]{32}$
-          type: string
-        status:
-          description: The status of the Engagement
-          enum:
-            - active
-            - ended
-          nullable: true
-          type: string
-        url:
-          description: The absolute URL of the resource
-          format: uri
-          nullable: true
-          type: string
-      type: object
-    studio.v1.flow.engagement.engagement_context:
-      properties:
-        account_sid:
-          description: Account SID
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^AC[0-9a-fA-F]{32}$
-          type: string
-        context:
-          description: Flow state
-          nullable: true
-        engagement_sid:
-          description: Engagement SID
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FN[0-9a-fA-F]{32}$
-          type: string
-        flow_sid:
-          description: Flow SID
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FW[0-9a-fA-F]{32}$
-          type: string
-        url:
-          description: The URL of the resource
-          format: uri
-          nullable: true
-          type: string
-      type: object
-    studio.v1.flow.engagement.step:
-      properties:
-        account_sid:
-          description: The SID of the Account that created the resource
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^AC[0-9a-fA-F]{32}$
-          type: string
-        context:
-          description: The current state of the flow
-          nullable: true
-        date_created:
-          description: The ISO 8601 date and time in GMT when the resource was created
-          format: date-time
-          nullable: true
-          type: string
-        date_updated:
-          description: The ISO 8601 date and time in GMT when the resource was last updated
-          format: date-time
-          nullable: true
-          type: string
-        engagement_sid:
-          description: The SID of the Engagement
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FN[0-9a-fA-F]{32}$
-          type: string
-        flow_sid:
-          description: The SID of the Flow
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FW[0-9a-fA-F]{32}$
-          type: string
-        links:
-          description: The URLs of related resources
-          format: uri-map
-          nullable: true
-          type: object
-        name:
-          description: The event that caused the Flow to transition to the Step
-          nullable: true
-          type: string
-        sid:
-          description: The unique string that identifies the resource
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FT[0-9a-fA-F]{32}$
-          type: string
-        transitioned_from:
-          description: The Widget that preceded the Widget for the Step
-          nullable: true
-          type: string
-        transitioned_to:
-          description: The Widget that will follow the Widget for the Step
-          nullable: true
-          type: string
-        url:
-          description: The absolute URL of the resource
-          format: uri
-          nullable: true
-          type: string
-      type: object
-    studio.v1.flow.engagement.step.step_context:
-      properties:
-        account_sid:
-          description: The SID of the Account that created the resource
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^AC[0-9a-fA-F]{32}$
-          type: string
-        context:
-          description: The current state of the flow
-          nullable: true
-        engagement_sid:
-          description: The SID of the Engagement
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FN[0-9a-fA-F]{32}$
-          type: string
-        flow_sid:
-          description: The SID of the Flow
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FW[0-9a-fA-F]{32}$
-          type: string
-        step_sid:
-          description: Step SID
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FT[0-9a-fA-F]{32}$
-          type: string
-        url:
-          description: The absolute URL of the resource
-          format: uri
-          nullable: true
-          type: string
-      type: object
-    studio.v1.flow.execution:
-      properties:
-        account_sid:
-          description: The SID of the Account that created the resource
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^AC[0-9a-fA-F]{32}$
-          type: string
-        contact_channel_address:
-          description: The phone number, SIP address or Client identifier that triggered the Execution
-          nullable: true
-          type: string
-        contact_sid:
-          description: The SID of the Contact
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FC[0-9a-fA-F]{32}$
-          type: string
-        context:
-          description: The current state of the flow
-          nullable: true
-        date_created:
-          description: The ISO 8601 date and time in GMT when the resource was created
-          format: date-time
-          nullable: true
-          type: string
-        date_updated:
-          description: The ISO 8601 date and time in GMT when the resource was last updated
-          format: date-time
-          nullable: true
-          type: string
-        flow_sid:
-          description: The SID of the Flow
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FW[0-9a-fA-F]{32}$
-          type: string
-        links:
-          description: Nested resource URLs
-          format: uri-map
-          nullable: true
-          type: object
-        sid:
-          description: The unique string that identifies the resource
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FN[0-9a-fA-F]{32}$
-          type: string
-        status:
-          description: The status of the Execution
-          enum:
-            - active
-            - ended
-          nullable: true
-          type: string
-        url:
-          description: The absolute URL of the resource
-          format: uri
-          nullable: true
-          type: string
-      type: object
-    studio.v1.flow.execution.execution_context:
-      properties:
-        account_sid:
-          description: The SID of the Account that created the resource
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^AC[0-9a-fA-F]{32}$
-          type: string
-        context:
-          description: The current state of the flow
-          nullable: true
-        execution_sid:
-          description: The SID of the Execution
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FN[0-9a-fA-F]{32}$
-          type: string
-        flow_sid:
-          description: The SID of the Flow
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FW[0-9a-fA-F]{32}$
-          type: string
-        url:
-          description: The absolute URL of the resource
-          format: uri
-          nullable: true
-          type: string
-      type: object
-    studio.v1.flow.execution.execution_step:
-      properties:
-        account_sid:
-          description: The SID of the Account that created the resource
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^AC[0-9a-fA-F]{32}$
-          type: string
-        context:
-          description: The current state of the flow
-          nullable: true
-        date_created:
-          description: The ISO 8601 date and time in GMT when the resource was created
-          format: date-time
-          nullable: true
-          type: string
-        date_updated:
-          description: The ISO 8601 date and time in GMT when the resource was last updated
-          format: date-time
-          nullable: true
-          type: string
-        execution_sid:
-          description: The SID of the Execution
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FN[0-9a-fA-F]{32}$
-          type: string
-        flow_sid:
-          description: The SID of the Flow
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FW[0-9a-fA-F]{32}$
-          type: string
-        links:
-          description: The URLs of related resources
-          format: uri-map
-          nullable: true
-          type: object
-        name:
-          description: The event that caused the Flow to transition to the Step
-          nullable: true
-          type: string
-        sid:
-          description: The unique string that identifies the resource
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FT[0-9a-fA-F]{32}$
-          type: string
-        transitioned_from:
-          description: The Widget that preceded the Widget for the Step
-          nullable: true
-          type: string
-        transitioned_to:
-          description: The Widget that will follow the Widget for the Step
-          nullable: true
-          type: string
-        url:
-          description: The absolute URL of the resource
-          format: uri
-          nullable: true
-          type: string
-      type: object
-    studio.v1.flow.execution.execution_step.execution_step_context:
-      properties:
-        account_sid:
-          description: The SID of the Account that created the resource
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^AC[0-9a-fA-F]{32}$
-          type: string
-        context:
-          description: The current state of the flow
-          nullable: true
-        execution_sid:
-          description: The SID of the Execution
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FN[0-9a-fA-F]{32}$
-          type: string
-        flow_sid:
-          description: The SID of the Flow
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FW[0-9a-fA-F]{32}$
-          type: string
-        step_sid:
-          description: Step SID
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^FT[0-9a-fA-F]{32}$
-          type: string
-        url:
-          description: The absolute URL of the resource
-          format: uri
-          nullable: true
-          type: string
-      type: object
-  securitySchemes:
-    accountSid_authToken:
-      scheme: basic
-      type: http
+schemes:
+  - https
+securityDefinitions:
+  accountSid_authToken:
+    type: basic
+swagger: '2.0'
+x-components: {}
 x-maturity:
   - description: This product is Generally Available.
     name: GA
+

@@ -1,131 +1,153 @@
-openapi: 3.0.0
-servers:
-  - url: https://firefox.settings.services.mozilla.com/v1
+basePath: /v1
+host: firefox.settings.services.mozilla.com
 info:
   title: Remote Settings
-  version: "1.22"
+  version: '1.22'
   x-apisguru-categories:
     - cloud
   x-logo:
-    backgroundColor: "#FFFFFF"
-    url: https://cloud.githubusercontent.com/assets/21603/24036792/23286ed2-0af3-11e7-9353-7a772636dee1.png
+    backgroundColor: '#FFFFFF'
+    url: >-
+      https://cloud.githubusercontent.com/assets/21603/24036792/23286ed2-0af3-11e7-9353-7a772636dee1.png
   x-origin:
     - format: openapi
-      url: https://firefox.settings.services.mozilla.com/v1/__api__
-      version: "3.0"
+      url: 'https://firefox.settings.services.mozilla.com/v1/__api__'
+      version: '3.0'
   x-providerName: mozilla.com
   x-serviceName: kinto
-tags:
-  - name: Blocklist
-  - name: Collection-changeset
-  - name: Changess
-  - name: Attachment
-  - name: Batch
-  - name: Utilities
-  - name: Buckets
-  - name: Collections
-  - name: Groups
-  - name: Records
 paths:
   /:
     get:
       operationId: server_info
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                additionalProperties: {}
-                title: SchemaNode
-                type: object
+        '200':
           description: Return information about the running Instance.
+          schema:
+            additionalProperties: {}
+            title: SchemaNode
+            type: object
       security: []
       tags:
         - Utilities
   /__api__:
     get:
       operationId: get_openapi_spec
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                additionalProperties: {}
-                title: SchemaNode
-                type: object
+        '200':
           description: Return an OpenAPI description of the running instance.
+          schema:
+            additionalProperties: {}
+            title: SchemaNode
+            type: object
       security: []
       tags:
         - Utilities
   /__heartbeat__:
     get:
       operationId: __heartbeat__
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                additionalProperties: {}
-                title: SchemaNode
-                type: object
+        '200':
           description: Server is working properly.
-        "503":
-          content:
-            application/json:
-              schema:
-                additionalProperties: {}
-                title: SchemaNode
-                type: object
+          schema:
+            additionalProperties: {}
+            title: SchemaNode
+            type: object
+        '503':
           description: One or more subsystems failing.
+          schema:
+            additionalProperties: {}
+            title: SchemaNode
+            type: object
       security: []
       tags:
         - Utilities
   /__lbheartbeat__:
     get:
       operationId: __lbheartbeat__
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                title: SchemaNode
-                type: object
+        '200':
           description: Returned if server is reachable.
+          schema:
+            title: SchemaNode
+            type: object
       security: []
       tags:
         - Utilities
   /__user_data__: {}
-  "/__user_data__/{principal}":
+  '/__user_data__/{principal}':
     parameters:
       - in: path
         name: principal
         required: true
-        schema:
-          type: string
+        type: string
   /__version__:
     get:
       operationId: __version__
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                additionalProperties: {}
-                title: SchemaNode
-                type: object
+        '200':
           description: Return the running Instance version information.
+          schema:
+            additionalProperties: {}
+            title: SchemaNode
+            type: object
       security: []
       tags:
         - Utilities
   /batch:
     post:
+      consumes:
+        - application/json
       operationId: batch
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                defaults:
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              defaults:
+                properties:
+                  body:
+                    additionalProperties: {}
+                    title: Body
+                    type: object
+                  headers:
+                    additionalProperties: {}
+                    title: Headers
+                    type: object
+                  method:
+                    enum:
+                      - GET
+                      - HEAD
+                      - DELETE
+                      - TRACE
+                      - POST
+                      - PUT
+                      - PATCH
+                    title: Method
+                    type: string
+                  path:
+                    pattern: ^/
+                    title: Path
+                    type: string
+                title: Defaults
+                type: object
+              requests:
+                items:
                   properties:
                     body:
                       additionalProperties: {}
@@ -150,134 +172,101 @@ paths:
                       pattern: ^/
                       title: Path
                       type: string
-                  title: Defaults
+                  required:
+                    - path
                   type: object
-                requests:
-                  items:
-                    properties:
-                      body:
-                        additionalProperties: {}
-                        title: Body
-                        type: object
-                      headers:
-                        additionalProperties: {}
-                        title: Headers
-                        type: object
-                      method:
-                        enum:
-                          - GET
-                          - HEAD
-                          - DELETE
-                          - TRACE
-                          - POST
-                          - PUT
-                          - PATCH
-                        title: Method
-                        type: string
-                      path:
-                        pattern: ^/
-                        title: Path
-                        type: string
-                    required:
-                      - path
-                    type: object
-                  title: Requests
-                  type: array
-              required:
-                - requests
-              title: BatchPayloadSchema
-              type: object
-        required: true
+                title: Requests
+                type: array
+            required:
+              - requests
+            title: BatchPayloadSchema
+            type: object
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  responses:
-                    items:
-                      properties:
-                        body:
-                          additionalProperties: {}
-                          title: Body
-                          type: object
-                        headers:
-                          additionalProperties: {}
-                          title: Headers
-                          type: object
-                        path:
-                          title: Path
-                          type: string
-                        status:
-                          title: Status
-                          type: integer
-                      required:
-                        - status
-                        - path
-                      type: object
-                    title: Responses
-                    type: array
-                required:
-                  - responses
-                title: BatchResponseBodySchema
-                type: object
+        '200':
           description: Return a list of operation responses.
-        "400":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              responses:
+                items:
+                  properties:
+                    body:
+                      additionalProperties: {}
+                      title: Body
+                      type: object
+                    headers:
+                      additionalProperties: {}
+                      title: Headers
+                      type: object
+                    path:
+                      title: Path
+                      type: string
+                    status:
+                      title: Status
+                      type: integer
+                  required:
+                    - status
+                    - path
+                  type: object
+                title: Responses
+                type: array
+            required:
+              - responses
+            title: BatchResponseBodySchema
+            type: object
+        '400':
           description: The request was badly formatted.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
         default:
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
           description: an unknown error occurred.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
       security: []
       tags:
         - Batch
@@ -286,292 +275,263 @@ paths:
       operationId: get_buckets
       parameters:
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: _limit
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
-        - explode: false
+          type: integer
+        - collectionFormat: csv
           in: query
+          items:
+            type: string
           name: _sort
           required: false
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          type: array
         - in: query
           name: _token
           required: false
-          schema:
-            type: string
+          type: string
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: _since
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
+          type: integer
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: _to
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
+          type: integer
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: _before
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
+          type: integer
         - in: query
           name: id
           required: false
-          schema:
-            type: string
+          type: string
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: last_modified
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
-        - explode: false
+          type: integer
+        - collectionFormat: csv
           in: query
+          items:
+            type: string
           name: _fields
           required: false
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          type: array
         - in: header
           name: If-Match
+          pattern: '^"([0-9]+?)"$|\*'
           required: false
-          schema:
-            pattern: ^"([0-9]+?)"$|\*
-            type: string
+          type: string
         - in: header
           name: If-None-Match
+          pattern: '^"([0-9]+?)"$|\*'
           required: false
-          schema:
-            pattern: ^"([0-9]+?)"$|\*
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  data:
-                    items:
-                      additionalProperties: {}
-                      default: {}
-                      properties:
-                        collection:schema:
-                          additionalProperties: {}
-                          type: object
-                        group:schema:
-                          additionalProperties: {}
-                          type: object
-                        record:schema:
-                          additionalProperties: {}
-                          type: object
-                      title: Data
-                      type: object
-                    type: array
-                title: Schema
-                type: object
+        '200':
           description: Return a list of matching objects.
           headers:
             Etag:
-              schema:
-                pattern: ^"([0-9]+?)"$|\*
-                type: string
+              type: string
             Last-Modified:
-              schema:
-                type: string
-        "304":
+              type: string
+          schema:
+            properties:
+              data:
+                items:
+                  additionalProperties: {}
+                  default: {}
+                  properties:
+                    'collection:schema':
+                      additionalProperties: {}
+                      type: object
+                    'group:schema':
+                      additionalProperties: {}
+                      type: object
+                    'record:schema':
+                      additionalProperties: {}
+                      type: object
+                  title: Data
+                  type: object
+                type: array
+            title: Schema
+            type: object
+        '304':
           description: Reponse has not changed since value in If-None-Match header
           headers:
             Etag:
-              schema:
-                pattern: ^"([0-9]+?)"$|\*
-                type: string
+              type: string
             Last-Modified:
-              schema:
-                type: string
-        "400":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+              type: string
+        '400':
           description: The request is invalid.
-        "401":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '401':
           description: The request is missing authentication headers.
-        "403":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
-          description: The user is not allowed to perform the operation, or the resource is not accessible.
-        "406":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '403':
+          description: >-
+            The user is not allowed to perform the operation, or the resource is
+            not accessible.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '406':
           description: The client doesn't accept supported responses Content-Type.
-        "412":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '412':
           description: Object was changed or deleted since value in `If-Match` header.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
         default:
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
           description: Unexpected error.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
       security: []
       tags:
         - Buckets
@@ -580,327 +540,293 @@ paths:
       operationId: get_changess
       parameters:
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: _limit
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
-        - explode: false
+          type: integer
+        - collectionFormat: csv
           in: query
+          items:
+            type: string
           name: _sort
           required: false
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          type: array
         - in: query
           name: _token
           required: false
-          schema:
-            type: string
+          type: string
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: _since
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
+          type: integer
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: _to
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
+          type: integer
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: _before
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
+          type: integer
         - in: query
           name: id
           required: false
-          schema:
-            type: string
+          type: string
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: last_modified
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
-        - explode: false
+          type: integer
+        - collectionFormat: csv
           in: query
+          items:
+            type: string
           name: _fields
           required: false
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          type: array
         - in: header
           name: If-Match
+          pattern: '^"([0-9]+?)"$|\*'
           required: false
-          schema:
-            pattern: ^"([0-9]+?)"$|\*
-            type: string
+          type: string
         - in: header
           name: If-None-Match
+          pattern: '^"([0-9]+?)"$|\*'
           required: false
-          schema:
-            pattern: ^"([0-9]+?)"$|\*
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  data:
-                    items:
-                      properties:
-                        bucket:
-                          title: Bucket
-                          type: string
-                        collection:
-                          title: Collection
-                          type: string
-                        host:
-                          title: Host
-                          type: string
-                      required:
-                        - host
-                        - bucket
-                        - collection
-                      title: Data
-                      type: object
-                    type: array
-                title: Schema
-                type: object
+        '200':
           description: Return a list of matching objects.
           headers:
             Etag:
-              schema:
-                pattern: ^"([0-9]+?)"$|\*
-                type: string
+              type: string
             Last-Modified:
-              schema:
-                type: string
-        "304":
+              type: string
+          schema:
+            properties:
+              data:
+                items:
+                  properties:
+                    bucket:
+                      title: Bucket
+                      type: string
+                    collection:
+                      title: Collection
+                      type: string
+                    host:
+                      title: Host
+                      type: string
+                  required:
+                    - host
+                    - bucket
+                    - collection
+                  title: Data
+                  type: object
+                type: array
+            title: Schema
+            type: object
+        '304':
           description: Reponse has not changed since value in If-None-Match header
           headers:
             Etag:
-              schema:
-                pattern: ^"([0-9]+?)"$|\*
-                type: string
+              type: string
             Last-Modified:
-              schema:
-                type: string
-        "400":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+              type: string
+        '400':
           description: The request is invalid.
-        "401":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '401':
           description: The request is missing authentication headers.
-        "403":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
-          description: The user is not allowed to perform the operation, or the resource is not accessible.
-        "406":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '403':
+          description: >-
+            The user is not allowed to perform the operation, or the resource is
+            not accessible.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '406':
           description: The client doesn't accept supported responses Content-Type.
-        "412":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '412':
           description: Object was changed or deleted since value in `If-Match` header.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
         default:
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
           description: Unexpected error.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
       security: []
       tags:
         - Changess
-  "/buckets/{bid}/collections/{cid}/changeset":
+  '/buckets/{bid}/collections/{cid}/changeset':
     get:
       operationId: get_collection-changeset
       parameters:
         - in: query
           name: _since
+          pattern: '^"([0-9]+?)"$'
           required: false
-          schema:
-            pattern: ^"([0-9]+?)"$
-            type: string
+          type: string
         - in: query
           name: _expected
           required: true
-          schema:
-            type: string
+          type: string
         - in: query
           name: _limit
           required: false
-          schema:
-            type: integer
+          type: integer
         - in: query
           name: bucket
           required: false
-          schema:
-            type: string
+          type: string
         - in: query
           name: collection
           required: false
-          schema:
-            type: string
+          type: string
       responses:
         default:
           description: UNDOCUMENTED RESPONSE
@@ -911,302 +837,271 @@ paths:
       - in: path
         name: bid
         required: true
-        schema:
-          type: string
+        type: string
       - in: path
         name: cid
         required: true
-        schema:
-          type: string
-  "/buckets/{bucket_id}/collections":
+        type: string
+  '/buckets/{bucket_id}/collections':
     get:
       operationId: get_collections
       parameters:
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: _limit
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
-        - explode: false
+          type: integer
+        - collectionFormat: csv
           in: query
+          items:
+            type: string
           name: _sort
           required: false
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          type: array
         - in: query
           name: _token
           required: false
-          schema:
-            type: string
+          type: string
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: _since
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
+          type: integer
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: _to
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
+          type: integer
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: _before
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
+          type: integer
         - in: query
           name: id
           required: false
-          schema:
-            type: string
+          type: string
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: last_modified
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
-        - explode: false
+          type: integer
+        - collectionFormat: csv
           in: query
+          items:
+            type: string
           name: _fields
           required: false
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          type: array
         - in: header
           name: If-Match
+          pattern: '^"([0-9]+?)"$|\*'
           required: false
-          schema:
-            pattern: ^"([0-9]+?)"$|\*
-            type: string
+          type: string
         - in: header
           name: If-None-Match
+          pattern: '^"([0-9]+?)"$|\*'
           required: false
-          schema:
-            pattern: ^"([0-9]+?)"$|\*
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  data:
-                    items:
-                      additionalProperties: {}
-                      default: {}
-                      properties:
-                        cache_expires:
-                          title: Cache Expires
-                          type: integer
-                        schema:
-                          additionalProperties: {}
-                          title: Schema
-                          type: object
-                      title: Data
-                      type: object
-                    type: array
-                title: Schema
-                type: object
+        '200':
           description: Return a list of matching objects.
           headers:
             Etag:
-              schema:
-                pattern: ^"([0-9]+?)"$|\*
-                type: string
+              type: string
             Last-Modified:
-              schema:
-                type: string
-        "304":
+              type: string
+          schema:
+            properties:
+              data:
+                items:
+                  additionalProperties: {}
+                  default: {}
+                  properties:
+                    cache_expires:
+                      title: Cache Expires
+                      type: integer
+                    schema:
+                      additionalProperties: {}
+                      title: Schema
+                      type: object
+                  title: Data
+                  type: object
+                type: array
+            title: Schema
+            type: object
+        '304':
           description: Reponse has not changed since value in If-None-Match header
           headers:
             Etag:
-              schema:
-                pattern: ^"([0-9]+?)"$|\*
-                type: string
+              type: string
             Last-Modified:
-              schema:
-                type: string
-        "400":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+              type: string
+        '400':
           description: The request is invalid.
-        "401":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '401':
           description: The request is missing authentication headers.
-        "403":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
-          description: The user is not allowed to perform the operation, or the resource is not accessible.
-        "406":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '403':
+          description: >-
+            The user is not allowed to perform the operation, or the resource is
+            not accessible.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '406':
           description: The client doesn't accept supported responses Content-Type.
-        "412":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '412':
           description: Object was changed or deleted since value in `If-Match` header.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
         default:
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
           description: Unexpected error.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
       security: []
       tags:
         - Collections
@@ -1214,289 +1109,259 @@ paths:
       - in: path
         name: bucket_id
         required: true
-        schema:
-          type: string
-  "/buckets/{bucket_id}/collections/{collection_id}/records":
+        type: string
+  '/buckets/{bucket_id}/collections/{collection_id}/records':
     get:
       operationId: get_records
       parameters:
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: _limit
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
-        - explode: false
+          type: integer
+        - collectionFormat: csv
           in: query
+          items:
+            type: string
           name: _sort
           required: false
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          type: array
         - in: query
           name: _token
           required: false
-          schema:
-            type: string
+          type: string
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: _since
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
+          type: integer
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: _to
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
+          type: integer
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: _before
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
+          type: integer
         - in: query
           name: id
           required: false
-          schema:
-            type: string
+          type: string
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: last_modified
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
-        - explode: false
+          type: integer
+        - collectionFormat: csv
           in: query
+          items:
+            type: string
           name: _fields
           required: false
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          type: array
         - in: header
           name: If-Match
+          pattern: '^"([0-9]+?)"$|\*'
           required: false
-          schema:
-            pattern: ^"([0-9]+?)"$|\*
-            type: string
+          type: string
         - in: header
           name: If-None-Match
+          pattern: '^"([0-9]+?)"$|\*'
           required: false
-          schema:
-            pattern: ^"([0-9]+?)"$|\*
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  data:
-                    items:
-                      additionalProperties: {}
-                      default: {}
-                      title: Data
-                      type: object
-                    type: array
-                title: Schema
-                type: object
+        '200':
           description: Return a list of matching objects.
           headers:
             Etag:
-              schema:
-                pattern: ^"([0-9]+?)"$|\*
-                type: string
+              type: string
             Last-Modified:
-              schema:
-                type: string
-        "304":
+              type: string
+          schema:
+            properties:
+              data:
+                items:
+                  additionalProperties: {}
+                  default: {}
+                  title: Data
+                  type: object
+                type: array
+            title: Schema
+            type: object
+        '304':
           description: Reponse has not changed since value in If-None-Match header
           headers:
             Etag:
-              schema:
-                pattern: ^"([0-9]+?)"$|\*
-                type: string
+              type: string
             Last-Modified:
-              schema:
-                type: string
-        "400":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+              type: string
+        '400':
           description: The request is invalid.
-        "401":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '401':
           description: The request is missing authentication headers.
-        "403":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
-          description: The user is not allowed to perform the operation, or the resource is not accessible.
-        "406":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '403':
+          description: >-
+            The user is not allowed to perform the operation, or the resource is
+            not accessible.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '406':
           description: The client doesn't accept supported responses Content-Type.
-        "412":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '412':
           description: Object was changed or deleted since value in `If-Match` header.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
         default:
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
           description: Unexpected error.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
       security: []
       tags:
         - Records
@@ -1504,280 +1369,256 @@ paths:
       - in: path
         name: bucket_id
         required: true
-        schema:
-          type: string
+        type: string
       - in: path
         name: collection_id
         required: true
-        schema:
-          type: string
-  "/buckets/{bucket_id}/collections/{collection_id}/records/{id}":
+        type: string
+  '/buckets/{bucket_id}/collections/{collection_id}/records/{id}':
     get:
       operationId: get_record
       parameters:
-        - explode: false
+        - collectionFormat: csv
           in: query
+          items:
+            type: string
           name: _fields
           required: false
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          type: array
         - in: header
           name: If-Match
+          pattern: '^"([0-9]+?)"$|\*'
           required: false
-          schema:
-            pattern: ^"([0-9]+?)"$|\*
-            type: string
+          type: string
         - in: header
           name: If-None-Match
+          pattern: '^"([0-9]+?)"$|\*'
           required: false
-          schema:
-            pattern: ^"([0-9]+?)"$|\*
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  data:
-                    additionalProperties: {}
-                    default: {}
-                    title: Data
-                    type: object
-                  permissions:
-                    properties:
-                      read:
-                        items:
-                          type: string
-                        title: Read
-                        type: array
-                      write:
-                        items:
-                          type: string
-                        title: Write
-                        type: array
-                    title: Permissions
-                    type: object
-                title: ObjectSchema
-                type: object
+        '200':
           description: Return the target object.
           headers:
             Etag:
-              schema:
-                pattern: ^"([0-9]+?)"$|\*
-                type: string
+              type: string
             Last-Modified:
-              schema:
-                type: string
-        "304":
+              type: string
+          schema:
+            properties:
+              data:
+                additionalProperties: {}
+                default: {}
+                title: Data
+                type: object
+              permissions:
+                properties:
+                  read:
+                    items:
+                      type: string
+                    title: Read
+                    type: array
+                  write:
+                    items:
+                      type: string
+                    title: Write
+                    type: array
+                title: Permissions
+                type: object
+            title: ObjectSchema
+            type: object
+        '304':
           description: Reponse has not changed since value in If-None-Match header
           headers:
             Etag:
-              schema:
-                pattern: ^"([0-9]+?)"$|\*
-                type: string
+              type: string
             Last-Modified:
-              schema:
-                type: string
-        "400":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+              type: string
+        '400':
           description: The request is invalid.
-        "401":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '401':
           description: The request is missing authentication headers.
-        "403":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
-          description: The user is not allowed to perform the operation, or the resource is not accessible.
-        "404":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '403':
+          description: >-
+            The user is not allowed to perform the operation, or the resource is
+            not accessible.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '404':
           description: The object does not exist or was deleted.
-        "406":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '406':
           description: The client doesn't accept supported responses Content-Type.
-        "412":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '412':
           description: Object was changed or deleted since value in `If-Match` header.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
         default:
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
           description: Unexpected error.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
       security: []
       tags:
         - Records
@@ -1785,21 +1626,19 @@ paths:
       - in: path
         name: bucket_id
         required: true
-        schema:
-          type: string
+        type: string
       - in: path
         name: collection_id
         required: true
-        schema:
-          type: string
+        type: string
       - in: path
         name: id
         required: true
-        schema:
-          type: string
-  "/buckets/{bucket_id}/collections/{collection_id}/records/{id}/attachment":
+        type: string
+  '/buckets/{bucket_id}/collections/{collection_id}/records/{id}/attachment':
     delete:
       operationId: delete_attachment
+      parameters: []
       responses:
         default:
           description: UNDOCUMENTED RESPONSE
@@ -1810,306 +1649,282 @@ paths:
       - in: path
         name: bucket_id
         required: true
-        schema:
-          type: string
+        type: string
       - in: path
         name: collection_id
         required: true
-        schema:
-          type: string
+        type: string
       - in: path
         name: id
         required: true
-        schema:
-          type: string
+        type: string
     post:
       operationId: create_attachment
+      parameters: []
       responses:
         default:
           description: UNDOCUMENTED RESPONSE
       security: []
       tags:
         - Attachment
-  "/buckets/{bucket_id}/collections/{id}":
+  '/buckets/{bucket_id}/collections/{id}':
     get:
       operationId: get_collection
       parameters:
-        - explode: false
+        - collectionFormat: csv
           in: query
+          items:
+            type: string
           name: _fields
           required: false
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          type: array
         - in: header
           name: If-Match
+          pattern: '^"([0-9]+?)"$|\*'
           required: false
-          schema:
-            pattern: ^"([0-9]+?)"$|\*
-            type: string
+          type: string
         - in: header
           name: If-None-Match
+          pattern: '^"([0-9]+?)"$|\*'
           required: false
-          schema:
-            pattern: ^"([0-9]+?)"$|\*
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  data:
-                    additionalProperties: {}
-                    default: {}
-                    properties:
-                      cache_expires:
-                        title: Cache Expires
-                        type: integer
-                      schema:
-                        additionalProperties: {}
-                        title: Schema
-                        type: object
-                    title: Data
-                    type: object
-                  permissions:
-                    properties:
-                      read:
-                        items:
-                          type: string
-                        title: Read
-                        type: array
-                      record:create:
-                        items:
-                          type: string
-                        title: Record:Create
-                        type: array
-                      write:
-                        items:
-                          type: string
-                        title: Write
-                        type: array
-                    title: Permissions
-                    type: object
-                title: ObjectSchema
-                type: object
+        '200':
           description: Return the target object.
           headers:
             Etag:
-              schema:
-                pattern: ^"([0-9]+?)"$|\*
-                type: string
+              type: string
             Last-Modified:
-              schema:
-                type: string
-        "304":
+              type: string
+          schema:
+            properties:
+              data:
+                additionalProperties: {}
+                default: {}
+                properties:
+                  cache_expires:
+                    title: Cache Expires
+                    type: integer
+                  schema:
+                    additionalProperties: {}
+                    title: Schema
+                    type: object
+                title: Data
+                type: object
+              permissions:
+                properties:
+                  read:
+                    items:
+                      type: string
+                    title: Read
+                    type: array
+                  'record:create':
+                    items:
+                      type: string
+                    title: 'Record:Create'
+                    type: array
+                  write:
+                    items:
+                      type: string
+                    title: Write
+                    type: array
+                title: Permissions
+                type: object
+            title: ObjectSchema
+            type: object
+        '304':
           description: Reponse has not changed since value in If-None-Match header
           headers:
             Etag:
-              schema:
-                pattern: ^"([0-9]+?)"$|\*
-                type: string
+              type: string
             Last-Modified:
-              schema:
-                type: string
-        "400":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+              type: string
+        '400':
           description: The request is invalid.
-        "401":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '401':
           description: The request is missing authentication headers.
-        "403":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
-          description: The user is not allowed to perform the operation, or the resource is not accessible.
-        "404":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '403':
+          description: >-
+            The user is not allowed to perform the operation, or the resource is
+            not accessible.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '404':
           description: The object does not exist or was deleted.
-        "406":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '406':
           description: The client doesn't accept supported responses Content-Type.
-        "412":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '412':
           description: Object was changed or deleted since value in `If-Match` header.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
         default:
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
           description: Unexpected error.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
       security: []
       tags:
         - Collections
@@ -2117,300 +1932,269 @@ paths:
       - in: path
         name: bucket_id
         required: true
-        schema:
-          type: string
+        type: string
       - in: path
         name: id
         required: true
-        schema:
-          type: string
-  "/buckets/{bucket_id}/groups":
+        type: string
+  '/buckets/{bucket_id}/groups':
     get:
       operationId: get_groups
       parameters:
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: _limit
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
-        - explode: false
+          type: integer
+        - collectionFormat: csv
           in: query
+          items:
+            type: string
           name: _sort
           required: false
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          type: array
         - in: query
           name: _token
           required: false
-          schema:
-            type: string
+          type: string
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: _since
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
+          type: integer
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: _to
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
+          type: integer
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: _before
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
+          type: integer
         - in: query
           name: id
           required: false
-          schema:
-            type: string
+          type: string
         - in: query
+          maximum: 9223372036854776000
+          minimum: 0
           name: last_modified
           required: false
-          schema:
-            maximum: 9223372036854776000
-            minimum: 0
-            type: integer
-        - explode: false
+          type: integer
+        - collectionFormat: csv
           in: query
+          items:
+            type: string
           name: _fields
           required: false
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          type: array
         - in: header
           name: If-Match
+          pattern: '^"([0-9]+?)"$|\*'
           required: false
-          schema:
-            pattern: ^"([0-9]+?)"$|\*
-            type: string
+          type: string
         - in: header
           name: If-None-Match
+          pattern: '^"([0-9]+?)"$|\*'
           required: false
-          schema:
-            pattern: ^"([0-9]+?)"$|\*
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  data:
-                    items:
-                      additionalProperties: {}
-                      default: {}
-                      properties:
-                        members:
-                          items:
-                            type: string
-                          title: Members
-                          type: array
-                      title: Data
-                      type: object
-                    type: array
-                title: Schema
-                type: object
+        '200':
           description: Return a list of matching objects.
           headers:
             Etag:
-              schema:
-                pattern: ^"([0-9]+?)"$|\*
-                type: string
+              type: string
             Last-Modified:
-              schema:
-                type: string
-        "304":
+              type: string
+          schema:
+            properties:
+              data:
+                items:
+                  additionalProperties: {}
+                  default: {}
+                  properties:
+                    members:
+                      items:
+                        type: string
+                      title: Members
+                      type: array
+                  title: Data
+                  type: object
+                type: array
+            title: Schema
+            type: object
+        '304':
           description: Reponse has not changed since value in If-None-Match header
           headers:
             Etag:
-              schema:
-                pattern: ^"([0-9]+?)"$|\*
-                type: string
+              type: string
             Last-Modified:
-              schema:
-                type: string
-        "400":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+              type: string
+        '400':
           description: The request is invalid.
-        "401":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '401':
           description: The request is missing authentication headers.
-        "403":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
-          description: The user is not allowed to perform the operation, or the resource is not accessible.
-        "406":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '403':
+          description: >-
+            The user is not allowed to perform the operation, or the resource is
+            not accessible.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '406':
           description: The client doesn't accept supported responses Content-Type.
-        "412":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '412':
           description: Object was changed or deleted since value in `If-Match` header.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
         default:
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
           description: Unexpected error.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
       security: []
       tags:
         - Groups
@@ -2418,281 +2202,258 @@ paths:
       - in: path
         name: bucket_id
         required: true
-        schema:
-          type: string
-  "/buckets/{bucket_id}/groups/{id}":
+        type: string
+  '/buckets/{bucket_id}/groups/{id}':
     get:
       operationId: get_group
       parameters:
-        - explode: false
+        - collectionFormat: csv
           in: query
+          items:
+            type: string
           name: _fields
           required: false
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          type: array
         - in: header
           name: If-Match
+          pattern: '^"([0-9]+?)"$|\*'
           required: false
-          schema:
-            pattern: ^"([0-9]+?)"$|\*
-            type: string
+          type: string
         - in: header
           name: If-None-Match
+          pattern: '^"([0-9]+?)"$|\*'
           required: false
-          schema:
-            pattern: ^"([0-9]+?)"$|\*
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  data:
-                    additionalProperties: {}
-                    default: {}
-                    properties:
-                      members:
-                        items:
-                          type: string
-                        title: Members
-                        type: array
-                    title: Data
-                    type: object
-                  permissions:
-                    properties:
-                      read:
-                        items:
-                          type: string
-                        title: Read
-                        type: array
-                      write:
-                        items:
-                          type: string
-                        title: Write
-                        type: array
-                    title: Permissions
-                    type: object
-                title: ObjectSchema
-                type: object
+        '200':
           description: Return the target object.
           headers:
             Etag:
-              schema:
-                pattern: ^"([0-9]+?)"$|\*
-                type: string
+              type: string
             Last-Modified:
-              schema:
-                type: string
-        "304":
+              type: string
+          schema:
+            properties:
+              data:
+                additionalProperties: {}
+                default: {}
+                properties:
+                  members:
+                    items:
+                      type: string
+                    title: Members
+                    type: array
+                title: Data
+                type: object
+              permissions:
+                properties:
+                  read:
+                    items:
+                      type: string
+                    title: Read
+                    type: array
+                  write:
+                    items:
+                      type: string
+                    title: Write
+                    type: array
+                title: Permissions
+                type: object
+            title: ObjectSchema
+            type: object
+        '304':
           description: Reponse has not changed since value in If-None-Match header
           headers:
             Etag:
-              schema:
-                pattern: ^"([0-9]+?)"$|\*
-                type: string
+              type: string
             Last-Modified:
-              schema:
-                type: string
-        "400":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+              type: string
+        '400':
           description: The request is invalid.
-        "401":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '401':
           description: The request is missing authentication headers.
-        "403":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
-          description: The user is not allowed to perform the operation, or the resource is not accessible.
-        "404":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '403':
+          description: >-
+            The user is not allowed to perform the operation, or the resource is
+            not accessible.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '404':
           description: The object does not exist or was deleted.
-        "406":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '406':
           description: The client doesn't accept supported responses Content-Type.
-        "412":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '412':
           description: Object was changed or deleted since value in `If-Match` header.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
         default:
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
           description: Unexpected error.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
       security: []
       tags:
         - Groups
@@ -2700,300 +2461,276 @@ paths:
       - in: path
         name: bucket_id
         required: true
-        schema:
-          type: string
+        type: string
       - in: path
         name: id
         required: true
-        schema:
-          type: string
-  "/buckets/{id}":
+        type: string
+  '/buckets/{id}':
     get:
       operationId: get_bucket
       parameters:
-        - explode: false
+        - collectionFormat: csv
           in: query
+          items:
+            type: string
           name: _fields
           required: false
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          type: array
         - in: header
           name: If-Match
+          pattern: '^"([0-9]+?)"$|\*'
           required: false
-          schema:
-            pattern: ^"([0-9]+?)"$|\*
-            type: string
+          type: string
         - in: header
           name: If-None-Match
+          pattern: '^"([0-9]+?)"$|\*'
           required: false
-          schema:
-            pattern: ^"([0-9]+?)"$|\*
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  data:
-                    additionalProperties: {}
-                    default: {}
-                    properties:
-                      collection:schema:
-                        additionalProperties: {}
-                        type: object
-                      group:schema:
-                        additionalProperties: {}
-                        type: object
-                      record:schema:
-                        additionalProperties: {}
-                        type: object
-                    title: Data
-                    type: object
-                  permissions:
-                    properties:
-                      collection:create:
-                        items:
-                          type: string
-                        title: Collection:Create
-                        type: array
-                      group:create:
-                        items:
-                          type: string
-                        title: Group:Create
-                        type: array
-                      read:
-                        items:
-                          type: string
-                        title: Read
-                        type: array
-                      write:
-                        items:
-                          type: string
-                        title: Write
-                        type: array
-                    title: Permissions
-                    type: object
-                title: ObjectSchema
-                type: object
+        '200':
           description: Return the target object.
           headers:
             Etag:
-              schema:
-                pattern: ^"([0-9]+?)"$|\*
-                type: string
+              type: string
             Last-Modified:
-              schema:
-                type: string
-        "304":
+              type: string
+          schema:
+            properties:
+              data:
+                additionalProperties: {}
+                default: {}
+                properties:
+                  'collection:schema':
+                    additionalProperties: {}
+                    type: object
+                  'group:schema':
+                    additionalProperties: {}
+                    type: object
+                  'record:schema':
+                    additionalProperties: {}
+                    type: object
+                title: Data
+                type: object
+              permissions:
+                properties:
+                  'collection:create':
+                    items:
+                      type: string
+                    title: 'Collection:Create'
+                    type: array
+                  'group:create':
+                    items:
+                      type: string
+                    title: 'Group:Create'
+                    type: array
+                  read:
+                    items:
+                      type: string
+                    title: Read
+                    type: array
+                  write:
+                    items:
+                      type: string
+                    title: Write
+                    type: array
+                title: Permissions
+                type: object
+            title: ObjectSchema
+            type: object
+        '304':
           description: Reponse has not changed since value in If-None-Match header
           headers:
             Etag:
-              schema:
-                pattern: ^"([0-9]+?)"$|\*
-                type: string
+              type: string
             Last-Modified:
-              schema:
-                type: string
-        "400":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+              type: string
+        '400':
           description: The request is invalid.
-        "401":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '401':
           description: The request is missing authentication headers.
-        "403":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
-          description: The user is not allowed to perform the operation, or the resource is not accessible.
-        "404":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '403':
+          description: >-
+            The user is not allowed to perform the operation, or the resource is
+            not accessible.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '404':
           description: The object does not exist or was deleted.
-        "406":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '406':
           description: The client doesn't accept supported responses Content-Type.
-        "412":
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
+        '412':
           description: Object was changed or deleted since value in `If-Match` header.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
         default:
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    title: Code
-                    type: integer
-                  details: {}
-                  errno:
-                    title: Errno
-                    type: integer
-                  error:
-                    title: Error
-                    type: string
-                  info:
-                    title: Info
-                    type: string
-                  message:
-                    title: Message
-                    type: string
-                required:
-                  - code
-                  - errno
-                  - error
-                title: ErrorSchema
-                type: object
           description: Unexpected error.
+          schema:
+            properties:
+              code:
+                title: Code
+                type: integer
+              details: {}
+              errno:
+                title: Errno
+                type: integer
+              error:
+                title: Error
+                type: string
+              info:
+                title: Info
+                type: string
+              message:
+                title: Message
+                type: string
+            required:
+              - code
+              - errno
+              - error
+            title: ErrorSchema
+            type: object
       security: []
       tags:
         - Buckets
@@ -3001,39 +2738,37 @@ paths:
       - in: path
         name: id
         required: true
-        schema:
-          type: string
+        type: string
   /contribute.json:
     get:
       operationId: contribute
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                additionalProperties: {}
-                title: SchemaNode
-                type: object
+        '200':
           description: Return open source contributing information.
+          schema:
+            additionalProperties: {}
+            title: SchemaNode
+            type: object
       security: []
       tags:
         - Utilities
-  "/{prefix}/{api_ver:\\d+}/{application_guid}/{application_ver}/{metrics:.*}":
+  '/{prefix}/{api_ver:\d+}/{application_guid}/{application_ver}/{metrics:.*}':
     get:
       operationId: get_blocklist
       parameters:
         - description: Automatically added
           in: path
-          name: api_ver:\d+
+          name: 'api_ver:\d+'
           required: true
-          schema:
-            type: string
+          type: string
         - description: Automatically added
           in: path
-          name: metrics:.*
+          name: 'metrics:.*'
           required: true
-          schema:
-            type: string
+          type: string
       responses:
         default:
           description: UNDOCUMENTED RESPONSE
@@ -3044,27 +2779,37 @@ paths:
       - in: path
         name: prefix
         required: true
-        schema:
-          type: string
+        type: string
       - in: query
         name: api_ver
+        pattern: \d+
         required: true
-        schema:
-          pattern: \d+
-          type: string
+        type: string
       - in: path
         name: application_guid
         required: true
-        schema:
-          type: string
+        type: string
       - in: path
         name: application_ver
         required: true
-        schema:
-          type: string
+        type: string
       - in: query
         name: metrics
+        pattern: .*
         required: true
-        schema:
-          pattern: .*
-          type: string
+        type: string
+schemes:
+  - https
+swagger: '2.0'
+tags:
+  - name: Blocklist
+  - name: Collection-changeset
+  - name: Changess
+  - name: Attachment
+  - name: Batch
+  - name: Utilities
+  - name: Buckets
+  - name: Collections
+  - name: Groups
+  - name: Records
+

@@ -1,1378 +1,1400 @@
-openapi: 3.0.0
-info:
-  version: '2019-12-03'
-  x-release: v4
-  title: AWS Outposts
-  description: 'AWS Outposts is a fully managed service that extends AWS infrastructure, APIs, and tools to customer premises. By providing local access to AWS managed infrastructure, AWS Outposts enables customers to build and run applications on premises using the same programming interfaces as in AWS Regions, while using local compute and storage resources for lower latency and local data processing needs.'
-  x-logo:
-    url: 'https://twitter.com/awscloud/profile_image?size=original'
-    backgroundColor: '#FFFFFF'
-  termsOfService: 'https://aws.amazon.com/service-terms/'
-  contact:
-    name: Mike Ralphson
-    email: mike.ralphson@gmail.com
-    url: 'https://github.com/mermade/aws2openapi'
-    x-twitter: PermittedSoc
-  license:
-    name: Apache 2.0 License
-    url: 'http://www.apache.org/licenses/'
-  x-providerName: amazonaws.com
-  x-serviceName: outposts
-  x-aws-signingName: outposts
-  x-origin:
-    - contentType: application/json
-      url: 'https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/outposts-2019-12-03.normal.json'
-      converter:
-        url: 'https://github.com/mermade/aws2openapi'
-        version: 1.0.0
-      x-apisguru-driver: external
-  x-apiClientRegistration:
-    url: 'https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct'
-  x-apisguru-categories:
-    - cloud
-  x-preferred: true
+basePath: /
+definitions:
+  AccessDeniedException: {}
+  AccountId:
+    description: The ID of the AWS account.
+    maxLength: 12
+    minLength: 12
+    pattern: '\d{12}'
+    type: string
+  Arn:
+    maxLength: 1011
+    pattern: >-
+      ^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:([a-z\d-]+)/)[a-z]{2,8}-[a-f0-9]{17}$
+    type: string
+  AvailabilityZone:
+    description: The Availability Zone.
+    maxLength: 1000
+    minLength: 1
+    pattern: '^([a-zA-Z]+-){1,3}([a-zA-Z]+)?(\d+[a-zA-Z]?)?$'
+    type: string
+  AvailabilityZoneId:
+    description: The ID of the Availability Zone.
+    maxLength: 255
+    minLength: 1
+    pattern: '^[a-zA-Z]+\d-[a-zA-Z]+\d$'
+    type: string
+  AvailabilityZoneIdList:
+    items:
+      $ref: '#/definitions/AvailabilityZoneId'
+    maxItems: 5
+    minItems: 1
+    type: array
+  AvailabilityZoneList:
+    items:
+      $ref: '#/definitions/AvailabilityZone'
+    maxItems: 5
+    minItems: 1
+    type: array
+  ConflictException: {}
+  CreateOrderInput:
+    properties:
+      LineItems:
+        allOf:
+          - $ref: '#/definitions/LineItemRequestListDefinition'
+          - description: The line items that make up the order.
+      OutpostIdentifier:
+        allOf:
+          - $ref: '#/definitions/OutpostIdentifier'
+          - description: ' The ID or the Amazon Resource Name (ARN) of the Outpost. '
+      PaymentOption:
+        allOf:
+          - $ref: '#/definitions/PaymentOption'
+          - description: The payment option for the order.
+      PaymentTerm:
+        allOf:
+          - $ref: '#/definitions/PaymentTerm'
+          - description: The payment terms for the order.
+    required:
+      - OutpostIdentifier
+      - LineItems
+      - PaymentOption
+    title: CreateOrderInput
+    type: object
+  CreateOrderOutput:
+    properties:
+      Order:
+        allOf:
+          - $ref: '#/definitions/Order'
+          - description: Information about this order.
+    type: object
+  CreateOutpostInput:
+    properties:
+      AvailabilityZone:
+        $ref: '#/definitions/AvailabilityZone'
+      AvailabilityZoneId:
+        $ref: '#/definitions/AvailabilityZoneId'
+      Description:
+        $ref: '#/definitions/OutpostDescription'
+      Name:
+        $ref: '#/definitions/OutpostName'
+      SiteId:
+        $ref: '#/definitions/SiteId'
+      Tags:
+        allOf:
+          - $ref: '#/definitions/TagMap'
+          - description: The tags to apply to the Outpost.
+    required:
+      - Name
+      - SiteId
+    title: CreateOutpostInput
+    type: object
+  CreateOutpostOutput:
+    properties:
+      Outpost:
+        $ref: '#/definitions/Outpost'
+    type: object
+  DeleteOutpostInput:
+    properties: {}
+    title: DeleteOutpostInput
+    type: object
+  DeleteOutpostOutput:
+    properties: {}
+    type: object
+  DeleteSiteInput:
+    properties: {}
+    title: DeleteSiteInput
+    type: object
+  DeleteSiteOutput:
+    properties: {}
+    type: object
+  GetOutpostInput:
+    properties: {}
+    title: GetOutpostInput
+    type: object
+  GetOutpostInstanceTypesInput:
+    properties: {}
+    title: GetOutpostInstanceTypesInput
+    type: object
+  GetOutpostInstanceTypesOutput:
+    properties:
+      InstanceTypes:
+        $ref: '#/definitions/InstanceTypeListDefinition'
+      NextToken:
+        $ref: '#/definitions/Token'
+      OutpostArn:
+        $ref: '#/definitions/OutpostArn'
+      OutpostId:
+        allOf:
+          - $ref: '#/definitions/OutpostId'
+          - description: ' The ID of the Outpost. '
+    type: object
+  GetOutpostOutput:
+    properties:
+      Outpost:
+        $ref: '#/definitions/Outpost'
+    type: object
+  ISO8601Timestamp:
+    format: date-time
+    type: string
+  InstanceType:
+    description: The instance type.
+    type: string
+  InstanceTypeItem:
+    description: Information about an instance type.
+    properties:
+      InstanceType:
+        $ref: '#/definitions/InstanceType'
+    type: object
+  InstanceTypeListDefinition:
+    description: Information about the instance types.
+    items:
+      $ref: '#/definitions/InstanceTypeItem'
+    type: array
+  InternalServerException: {}
+  LifeCycleStatus:
+    description: The life cycle status.
+    maxLength: 20
+    minLength: 1
+    pattern: '^[ A-Za-z]+$'
+    type: string
+  LifeCycleStatusList:
+    items:
+      $ref: '#/definitions/LifeCycleStatus'
+    maxItems: 5
+    minItems: 1
+    type: array
+  LineItem:
+    description: Information about a line item.
+    properties:
+      CatalogItemId:
+        allOf:
+          - $ref: '#/definitions/SkuCode'
+          - description: ' The ID of the catalog item. '
+      LineItemId:
+        allOf:
+          - $ref: '#/definitions/LineItemId'
+          - description: The ID of the line item.
+      Quantity:
+        allOf:
+          - $ref: '#/definitions/LineItemQuantity'
+          - description: The quantity of the line item.
+      Status:
+        allOf:
+          - $ref: '#/definitions/Status'
+          - description: The status of the line item.
+    type: object
+  LineItemId:
+    pattern: 'ooi-[a-f0-9]{17}'
+    type: string
+  LineItemListDefinition:
+    items:
+      $ref: '#/definitions/LineItem'
+    type: array
+  LineItemQuantity:
+    maximum: 20
+    minimum: 1
+    type: integer
+  LineItemRequest:
+    description: Information about a line item request.
+    properties:
+      CatalogItemId:
+        allOf:
+          - $ref: '#/definitions/SkuCode'
+          - description: The ID of the catalog item.
+      Quantity:
+        allOf:
+          - $ref: '#/definitions/LineItemQuantity'
+          - description: The quantity of a line item request.
+    type: object
+  LineItemRequestListDefinition:
+    items:
+      $ref: '#/definitions/LineItemRequest'
+    maxItems: 20
+    minItems: 1
+    type: array
+  ListOutpostsInput:
+    properties: {}
+    title: ListOutpostsInput
+    type: object
+  ListOutpostsOutput:
+    properties:
+      NextToken:
+        $ref: '#/definitions/Token'
+      Outposts:
+        $ref: '#/definitions/outpostListDefinition'
+    type: object
+  ListSitesInput:
+    properties: {}
+    title: ListSitesInput
+    type: object
+  ListSitesOutput:
+    properties:
+      NextToken:
+        $ref: '#/definitions/Token'
+      Sites:
+        $ref: '#/definitions/siteListDefinition'
+    type: object
+  ListTagsForResourceRequest:
+    properties: {}
+    title: ListTagsForResourceRequest
+    type: object
+  ListTagsForResourceResponse:
+    properties:
+      Tags:
+        allOf:
+          - $ref: '#/definitions/TagMap'
+          - description: The resource tags.
+    type: object
+  MaxResults1000:
+    description: The maximum page size.
+    maximum: 1000
+    minimum: 1
+    type: integer
+  NotFoundException: {}
+  Order:
+    description: Information about an order.
+    properties:
+      LineItems:
+        allOf:
+          - $ref: '#/definitions/LineItemListDefinition'
+          - description: The line items for the order
+      OrderFulfilledDate:
+        allOf:
+          - $ref: '#/definitions/ISO8601Timestamp'
+          - description: The fulfillment date of the order.
+      OrderId:
+        allOf:
+          - $ref: '#/definitions/OrderId'
+          - description: The ID of the order.
+      OrderSubmissionDate:
+        allOf:
+          - $ref: '#/definitions/ISO8601Timestamp'
+          - description: The submission date for the order.
+      OutpostId:
+        allOf:
+          - $ref: '#/definitions/OutpostIdOnly'
+          - description: ' The ID of the Outpost. '
+      PaymentOption:
+        allOf:
+          - $ref: '#/definitions/PaymentOption'
+          - description: The payment option for the order.
+      Status:
+        allOf:
+          - $ref: '#/definitions/OrderStatus'
+          - description: The status of the order
+    type: object
+  OrderId:
+    maxLength: 20
+    minLength: 1
+    pattern: 'oo-[a-f0-9]{17}$'
+    type: string
+  OrderStatus:
+    enum:
+      - RECEIVED
+      - PENDING
+      - PROCESSING
+      - INSTALLING
+      - FULFILLED
+      - CANCELLED
+    type: string
+  Outpost:
+    description: Information about an Outpost.
+    properties:
+      AvailabilityZone:
+        $ref: '#/definitions/AvailabilityZone'
+      AvailabilityZoneId:
+        $ref: '#/definitions/AvailabilityZoneId'
+      Description:
+        $ref: '#/definitions/OutpostDescription'
+      LifeCycleStatus:
+        $ref: '#/definitions/LifeCycleStatus'
+      Name:
+        $ref: '#/definitions/OutpostName'
+      OutpostArn:
+        $ref: '#/definitions/OutpostArn'
+      OutpostId:
+        allOf:
+          - $ref: '#/definitions/OutpostId'
+          - description: ' The ID of the Outpost. '
+      OwnerId:
+        $ref: '#/definitions/OwnerId'
+      SiteArn:
+        $ref: '#/definitions/SiteArn'
+      SiteId:
+        $ref: '#/definitions/SiteId'
+      Tags:
+        allOf:
+          - $ref: '#/definitions/TagMap'
+          - description: The Outpost tags.
+    type: object
+  OutpostArn:
+    description: The Amazon Resource Name (ARN) of the Outpost.
+    maxLength: 255
+    minLength: 1
+    pattern: '^arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:outpost/op-[a-f0-9]{17}$'
+    type: string
+  OutpostDescription:
+    description: The description of the Outpost.
+    maxLength: 1000
+    minLength: 0
+    pattern: '^[\S ]*$'
+    type: string
+  OutpostId:
+    maxLength: 180
+    minLength: 1
+    pattern: '^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:outpost/)?op-[a-f0-9]{17}$'
+    type: string
+  OutpostIdOnly:
+    maxLength: 20
+    minLength: 1
+    pattern: '^op-[a-f0-9]{17}$'
+    type: string
+  OutpostIdentifier:
+    maxLength: 180
+    minLength: 1
+    pattern: '^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:outpost/)?op-[a-f0-9]{17}$'
+    type: string
+  OutpostName:
+    description: The name of the Outpost.
+    maxLength: 255
+    minLength: 1
+    pattern: '^[\S ]+$'
+    type: string
+  OwnerId:
+    description: The AWS account ID of the Outpost owner.
+    maxLength: 12
+    minLength: 12
+    pattern: '\d{12}'
+    type: string
+  PaymentOption:
+    enum:
+      - ALL_UPFRONT
+      - NO_UPFRONT
+      - PARTIAL_UPFRONT
+    type: string
+  PaymentTerm:
+    enum:
+      - THREE_YEARS
+    type: string
+  ServiceQuotaExceededException: {}
+  Site:
+    description: Information about a site.
+    properties:
+      AccountId:
+        $ref: '#/definitions/AccountId'
+      Description:
+        $ref: '#/definitions/SiteDescription'
+      Name:
+        $ref: '#/definitions/SiteName'
+      SiteArn:
+        $ref: '#/definitions/SiteArn'
+      SiteId:
+        $ref: '#/definitions/SiteId'
+      Tags:
+        allOf:
+          - $ref: '#/definitions/TagMap'
+          - description: The site tags.
+    type: object
+  SiteArn:
+    description: The Amazon Resource Name (ARN) of the site.
+    maxLength: 255
+    minLength: 1
+    pattern: '^arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:site/(os-[a-f0-9]{17})$'
+    type: string
+  SiteDescription:
+    description: The description of the site.
+    maxLength: 1001
+    minLength: 1
+    pattern: '^[\S ]+$'
+    type: string
+  SiteId:
+    description: The ID of the site.
+    maxLength: 255
+    minLength: 1
+    pattern: '^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:site/)?(os-[a-f0-9]{17})$'
+    type: string
+  SiteName:
+    description: The name of the site.
+    maxLength: 1000
+    minLength: 1
+    pattern: '^[\S ]+$'
+    type: string
+  SkuCode:
+    maxLength: 10
+    minLength: 1
+    pattern: 'OR-[A-Z0-9]{7}'
+    type: string
+  Status:
+    maxLength: 1000
+    minLength: 1
+    pattern: '^[\S ]+$'
+    type: string
+  TagKey:
+    maxLength: 128
+    minLength: 1
+    pattern: '^(?!aws:)[a-zA-Z+-=._:/]+$'
+    type: string
+  TagKeyList:
+    items:
+      $ref: '#/definitions/TagKey'
+    maxItems: 50
+    minItems: 1
+    type: array
+  TagMap:
+    additionalProperties:
+      $ref: '#/definitions/TagValue'
+    maxProperties: 50
+    minProperties: 1
+    type: object
+  TagResourceRequest:
+    properties:
+      Tags:
+        allOf:
+          - $ref: '#/definitions/TagMap'
+          - description: The tags to add to the resource.
+    required:
+      - Tags
+    title: TagResourceRequest
+    type: object
+  TagResourceResponse:
+    properties: {}
+    type: object
+  TagValue:
+    maxLength: 256
+    pattern: '^[\S \n]+$'
+    type: string
+  Token:
+    description: The pagination token.
+    maxLength: 1005
+    minLength: 1
+    pattern: ^(\d+)##(\S+)$
+    type: string
+  UntagResourceRequest:
+    properties: {}
+    title: UntagResourceRequest
+    type: object
+  UntagResourceResponse:
+    properties: {}
+    type: object
+  ValidationException: {}
+  outpostListDefinition:
+    description: Information about the Outposts.
+    items:
+      $ref: '#/definitions/Outpost'
+    type: array
+  siteListDefinition:
+    description: Information about the sites.
+    items:
+      $ref: '#/definitions/Site'
+    type: array
 externalDocs:
   description: Amazon Web Services documentation
   url: 'https://docs.aws.amazon.com/outposts/'
-servers:
-  - url: 'http://outposts.{region}.amazonaws.com'
-    variables:
-      region:
-        description: The AWS region
-        enum:
-          - us-east-1
-          - us-east-2
-          - us-west-1
-          - us-west-2
-          - us-gov-west-1
-          - us-gov-east-1
-          - ca-central-1
-          - eu-north-1
-          - eu-west-1
-          - eu-west-2
-          - eu-west-3
-          - eu-central-1
-          - eu-south-1
-          - af-south-1
-          - ap-northeast-1
-          - ap-northeast-2
-          - ap-northeast-3
-          - ap-southeast-1
-          - ap-southeast-2
-          - ap-east-1
-          - ap-south-1
-          - sa-east-1
-          - me-south-1
-        default: us-east-1
-    description: The Outposts multi-region endpoint
-  - url: 'https://outposts.{region}.amazonaws.com'
-    variables:
-      region:
-        description: The AWS region
-        enum:
-          - us-east-1
-          - us-east-2
-          - us-west-1
-          - us-west-2
-          - us-gov-west-1
-          - us-gov-east-1
-          - ca-central-1
-          - eu-north-1
-          - eu-west-1
-          - eu-west-2
-          - eu-west-3
-          - eu-central-1
-          - eu-south-1
-          - af-south-1
-          - ap-northeast-1
-          - ap-northeast-2
-          - ap-northeast-3
-          - ap-southeast-1
-          - ap-southeast-2
-          - ap-east-1
-          - ap-south-1
-          - sa-east-1
-          - me-south-1
-        default: us-east-1
-    description: The Outposts multi-region endpoint
-  - url: 'http://outposts.{region}.amazonaws.com.cn'
-    variables:
-      region:
-        description: The AWS region
-        enum:
-          - cn-north-1
-          - cn-northwest-1
-        default: cn-north-1
-    description: The Outposts endpoint for China (Beijing) and China (Ningxia)
-  - url: 'https://outposts.{region}.amazonaws.com.cn'
-    variables:
-      region:
-        description: The AWS region
-        enum:
-          - cn-north-1
-          - cn-northwest-1
-        default: cn-north-1
-    description: The Outposts endpoint for China (Beijing) and China (Ningxia)
-x-hasEquivalentPaths: true
+host: outposts.us-east-1.amazonaws.com
+info:
+  contact:
+    email: mike.ralphson@gmail.com
+    name: Mike Ralphson
+    url: 'https://github.com/mermade/aws2openapi'
+    x-twitter: PermittedSoc
+  description: >-
+    AWS Outposts is a fully managed service that extends AWS infrastructure,
+    APIs, and tools to customer premises. By providing local access to AWS
+    managed infrastructure, AWS Outposts enables customers to build and run
+    applications on premises using the same programming interfaces as in AWS
+    Regions, while using local compute and storage resources for lower latency
+    and local data processing needs.
+  license:
+    name: Apache 2.0 License
+    url: 'http://www.apache.org/licenses/'
+  termsOfService: 'https://aws.amazon.com/service-terms/'
+  title: AWS Outposts
+  version: '2019-12-03'
+  x-apiClientRegistration:
+    url: >-
+      https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-aws-signingName: outposts
+  x-logo:
+    backgroundColor: '#FFFFFF'
+    url: 'https://twitter.com/awscloud/profile_image?size=original'
+  x-origin:
+    - contentType: application/json
+      converter:
+        url: 'https://github.com/mermade/aws2openapi'
+        version: 1.0.0
+      url: >-
+        https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/outposts-2019-12-03.normal.json
+      x-apisguru-driver: external
+  x-preferred: true
+  x-providerName: amazonaws.com
+  x-release: v4
+  x-serviceName: outposts
 paths:
   /orders:
+    parameters:
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
     post:
-      operationId: CreateOrder
+      consumes:
+        - application/json
       description: Creates an order for an Outpost.
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateOrderOutput'
-        '480':
-          description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-        '481':
-          description: ConflictException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConflictException'
-        '482':
-          description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
-        '483':
-          description: NotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundException'
-        '484':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-        '485':
-          description: ServiceQuotaExceededException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServiceQuotaExceededException'
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - OutpostIdentifier
-                - LineItems
-                - PaymentOption
-              properties:
-                OutpostIdentifier:
-                  description: ' The ID or the Amazon Resource Name (ARN) of the Outpost. '
-                  type: string
-                  pattern: '^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:outpost/)?op-[a-f0-9]{17}$'
-                  minLength: 1
-                  maxLength: 180
-                LineItems:
-                  description: The line items that make up the order.
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/LineItemRequest'
-                  minItems: 1
-                  maxItems: 20
-                PaymentOption:
-                  description: The payment option for the order.
-                  type: string
-                  enum:
-                    - ALL_UPFRONT
-                    - NO_UPFRONT
-                    - PARTIAL_UPFRONT
-                PaymentTerm:
-                  description: The payment terms for the order.
-                  type: string
-                  enum:
-                    - THREE_YEARS
-    parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
-  /outposts:
-    post:
-      operationId: CreateOutpost
-      description: <p>Creates an Outpost.</p> <p>You can specify <code>AvailabilityZone</code> or <code>AvailabilityZoneId</code>.</p>
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateOutpostOutput'
-        '480':
-          description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-        '481':
-          description: ConflictException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConflictException'
-        '482':
-          description: NotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundException'
-        '483':
-          description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
-        '484':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-        '485':
-          description: ServiceQuotaExceededException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServiceQuotaExceededException'
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - Name
-                - SiteId
-              properties:
-                Name:
-                  description: The name of the Outpost.
-                  type: string
-                  pattern: '^[\S ]+$'
-                  minLength: 1
-                  maxLength: 255
-                Description:
-                  description: The description of the Outpost.
-                  type: string
-                  pattern: '^[\S ]*$'
-                  minLength: 0
-                  maxLength: 1000
-                SiteId:
-                  description: The ID of the site.
-                  type: string
-                  pattern: '^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:site/)?(os-[a-f0-9]{17})$'
-                  minLength: 1
-                  maxLength: 255
-                AvailabilityZone:
-                  description: The Availability Zone.
-                  type: string
-                  pattern: '^([a-zA-Z]+-){1,3}([a-zA-Z]+)?(\d+[a-zA-Z]?)?$'
-                  minLength: 1
-                  maxLength: 1000
-                AvailabilityZoneId:
-                  description: The ID of the Availability Zone.
-                  type: string
-                  pattern: '^[a-zA-Z]+\d-[a-zA-Z]+\d$'
-                  minLength: 1
-                  maxLength: 255
-                Tags:
-                  description: The tags to apply to the Outpost.
-                  type: object
-                  minProperties: 1
-                  maxProperties: 50
-                  additionalProperties:
-                    $ref: '#/components/schemas/TagValue'
-    parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
-    get:
-      operationId: ListOutposts
-      description: '<p>Create a list of the Outposts for your AWS account. Add filters to your request to return a more specific list of results. Use filters to match an Outpost lifecycle status, Availibility Zone (<code>us-east-1a</code>), and AZ ID (<code>use1-az1</code>). </p> <p>If you specify multiple filters, the filters are joined with an <code>AND</code>, and the request returns only results that match all of the specified filters.</p>'
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListOutpostsOutput'
-        '480':
-          description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-        '481':
-          description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
-        '482':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
+      operationId: CreateOrder
       parameters:
-        - name: NextToken
-          in: query
-          required: false
-          description: ''
+        - in: body
+          name: body
+          required: true
           schema:
-            type: string
-            pattern: ^(\d+)##(\S+)$
-            description: The pagination token.
-            minLength: 1
-            maxLength: 1005
-        - name: MaxResults
-          in: query
-          required: false
-          description: ''
+            properties:
+              LineItems:
+                description: The line items that make up the order.
+                items:
+                  $ref: '#/definitions/LineItemRequest'
+                maxItems: 20
+                minItems: 1
+                type: array
+              OutpostIdentifier:
+                description: ' The ID or the Amazon Resource Name (ARN) of the Outpost. '
+                maxLength: 180
+                minLength: 1
+                pattern: >-
+                  ^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:outpost/)?op-[a-f0-9]{17}$
+                type: string
+              PaymentOption:
+                description: The payment option for the order.
+                enum:
+                  - ALL_UPFRONT
+                  - NO_UPFRONT
+                  - PARTIAL_UPFRONT
+                type: string
+              PaymentTerm:
+                description: The payment terms for the order.
+                enum:
+                  - THREE_YEARS
+                type: string
+            required:
+              - OutpostIdentifier
+              - LineItems
+              - PaymentOption
+            type: object
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
           schema:
-            type: integer
-            description: The maximum page size.
-            minimum: 1
-            maximum: 1000
-        - name: LifeCycleStatusFilter
-          in: query
-          required: false
-          description: '<p> A filter for the lifecycle status of the Outpost. </p> <p> Filter values are case sensitive. If you specify multiple values for a filter, the values are joined with an <code>OR</code>, and the request returns all results that match any of the specified values. </p>'
+            $ref: '#/definitions/CreateOrderOutput'
+        '480':
+          description: ValidationException
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/LifeCycleStatus'
-            minItems: 1
-            maxItems: 5
-        - name: AvailabilityZoneFilter
-          in: query
-          required: false
-          description: '<p> A filter for the Availibility Zone (<code>us-east-1a</code>) of the Outpost. </p> <p> Filter values are case sensitive. If you specify multiple values for a filter, the values are joined with an <code>OR</code>, and the request returns all results that match any of the specified values. </p>'
+            $ref: '#/definitions/ValidationException'
+        '481':
+          description: ConflictException
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/AvailabilityZone'
-            minItems: 1
-            maxItems: 5
-        - name: AvailabilityZoneIdFilter
-          in: query
-          required: false
-          description: '<p> A filter for the AZ IDs (<code>use1-az1</code>) of the Outpost. </p> <p> Filter values are case sensitive. If you specify multiple values for a filter, the values are joined with an <code>OR</code>, and the request returns all results that match any of the specified values. </p>'
+            $ref: '#/definitions/ConflictException'
+        '482':
+          description: AccessDeniedException
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/AvailabilityZoneId'
-            minItems: 1
-            maxItems: 5
+            $ref: '#/definitions/AccessDeniedException'
+        '483':
+          description: NotFoundException
+          schema:
+            $ref: '#/definitions/NotFoundException'
+        '484':
+          description: InternalServerException
+          schema:
+            $ref: '#/definitions/InternalServerException'
+        '485':
+          description: ServiceQuotaExceededException
+          schema:
+            $ref: '#/definitions/ServiceQuotaExceededException'
+  /outposts:
+    get:
+      description: >-
+        <p>Create a list of the Outposts for your AWS account. Add filters to
+        your request to return a more specific list of results. Use filters to
+        match an Outpost lifecycle status, Availibility Zone
+        (<code>us-east-1a</code>), and AZ ID (<code>use1-az1</code>). </p> <p>If
+        you specify multiple filters, the filters are joined with an
+        <code>AND</code>, and the request returns only results that match all of
+        the specified filters.</p>
+      operationId: ListOutposts
+      parameters:
+        - description: The pagination token.
+          in: query
+          maxLength: 1005
+          minLength: 1
+          name: NextToken
+          pattern: ^(\d+)##(\S+)$
+          required: false
+          type: string
+        - description: The maximum page size.
+          in: query
+          maximum: 1000
+          minimum: 1
+          name: MaxResults
+          required: false
+          type: integer
+        - collectionFormat: multi
+          description: >-
+            <p> A filter for the lifecycle status of the Outpost. </p> <p>
+            Filter values are case sensitive. If you specify multiple values for
+            a filter, the values are joined with an <code>OR</code>, and the
+            request returns all results that match any of the specified values.
+            </p>
+          in: query
+          items:
+            $ref: '#/definitions/LifeCycleStatus'
+          maxItems: 5
+          minItems: 1
+          name: LifeCycleStatusFilter
+          required: false
+          type: array
+        - collectionFormat: multi
+          description: >-
+            <p> A filter for the Availibility Zone (<code>us-east-1a</code>) of
+            the Outpost. </p> <p> Filter values are case sensitive. If you
+            specify multiple values for a filter, the values are joined with an
+            <code>OR</code>, and the request returns all results that match any
+            of the specified values. </p>
+          in: query
+          items:
+            $ref: '#/definitions/AvailabilityZone'
+          maxItems: 5
+          minItems: 1
+          name: AvailabilityZoneFilter
+          required: false
+          type: array
+        - collectionFormat: multi
+          description: >-
+            <p> A filter for the AZ IDs (<code>use1-az1</code>) of the Outpost.
+            </p> <p> Filter values are case sensitive. If you specify multiple
+            values for a filter, the values are joined with an <code>OR</code>,
+            and the request returns all results that match any of the specified
+            values. </p>
+          in: query
+          items:
+            $ref: '#/definitions/AvailabilityZoneId'
+          maxItems: 5
+          minItems: 1
+          name: AvailabilityZoneIdFilter
+          required: false
+          type: array
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/ListOutpostsOutput'
+        '480':
+          description: ValidationException
+          schema:
+            $ref: '#/definitions/ValidationException'
+        '481':
+          description: AccessDeniedException
+          schema:
+            $ref: '#/definitions/AccessDeniedException'
+        '482':
+          description: InternalServerException
+          schema:
+            $ref: '#/definitions/InternalServerException'
+    parameters:
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
+    post:
+      consumes:
+        - application/json
+      description: >-
+        <p>Creates an Outpost.</p> <p>You can specify
+        <code>AvailabilityZone</code> or <code>AvailabilityZoneId</code>.</p>
+      operationId: CreateOutpost
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              AvailabilityZone:
+                description: The Availability Zone.
+                maxLength: 1000
+                minLength: 1
+                pattern: '^([a-zA-Z]+-){1,3}([a-zA-Z]+)?(\d+[a-zA-Z]?)?$'
+                type: string
+              AvailabilityZoneId:
+                description: The ID of the Availability Zone.
+                maxLength: 255
+                minLength: 1
+                pattern: '^[a-zA-Z]+\d-[a-zA-Z]+\d$'
+                type: string
+              Description:
+                description: The description of the Outpost.
+                maxLength: 1000
+                minLength: 0
+                pattern: '^[\S ]*$'
+                type: string
+              Name:
+                description: The name of the Outpost.
+                maxLength: 255
+                minLength: 1
+                pattern: '^[\S ]+$'
+                type: string
+              SiteId:
+                description: The ID of the site.
+                maxLength: 255
+                minLength: 1
+                pattern: >-
+                  ^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:site/)?(os-[a-f0-9]{17})$
+                type: string
+              Tags:
+                additionalProperties:
+                  $ref: '#/definitions/TagValue'
+                description: The tags to apply to the Outpost.
+                maxProperties: 50
+                minProperties: 1
+                type: object
+            required:
+              - Name
+              - SiteId
+            type: object
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/CreateOutpostOutput'
+        '480':
+          description: ValidationException
+          schema:
+            $ref: '#/definitions/ValidationException'
+        '481':
+          description: ConflictException
+          schema:
+            $ref: '#/definitions/ConflictException'
+        '482':
+          description: NotFoundException
+          schema:
+            $ref: '#/definitions/NotFoundException'
+        '483':
+          description: AccessDeniedException
+          schema:
+            $ref: '#/definitions/AccessDeniedException'
+        '484':
+          description: InternalServerException
+          schema:
+            $ref: '#/definitions/InternalServerException'
+        '485':
+          description: ServiceQuotaExceededException
+          schema:
+            $ref: '#/definitions/ServiceQuotaExceededException'
   '/outposts/{OutpostId}':
     delete:
-      operationId: DeleteOutpost
       description: Deletes the Outpost.
+      operationId: DeleteOutpost
+      parameters:
+        - description: ' The ID of the Outpost. '
+          in: path
+          maxLength: 180
+          minLength: 1
+          name: OutpostId
+          pattern: >-
+            ^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:outpost/)?op-[a-f0-9]{17}$
+          required: true
+          type: string
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DeleteOutpostOutput'
+          schema:
+            $ref: '#/definitions/DeleteOutpostOutput'
         '480':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
+          schema:
+            $ref: '#/definitions/ValidationException'
         '481':
           description: ConflictException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConflictException'
+          schema:
+            $ref: '#/definitions/ConflictException'
         '482':
           description: NotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundException'
+          schema:
+            $ref: '#/definitions/NotFoundException'
         '483':
           description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
+          schema:
+            $ref: '#/definitions/AccessDeniedException'
         '484':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: OutpostId
-          in: path
-          required: true
-          description: ' The ID of the Outpost. '
           schema:
-            type: string
-            pattern: '^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:outpost/)?op-[a-f0-9]{17}$'
-            minLength: 1
-            maxLength: 180
-    parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
+            $ref: '#/definitions/InternalServerException'
     get:
-      operationId: GetOutpost
       description: Gets information about the specified Outpost.
+      operationId: GetOutpost
+      parameters:
+        - description: ' The ID of the Outpost. '
+          in: path
+          maxLength: 180
+          minLength: 1
+          name: OutpostId
+          pattern: >-
+            ^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:outpost/)?op-[a-f0-9]{17}$
+          required: true
+          type: string
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetOutpostOutput'
+          schema:
+            $ref: '#/definitions/GetOutpostOutput'
         '480':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
+          schema:
+            $ref: '#/definitions/ValidationException'
         '481':
           description: NotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundException'
+          schema:
+            $ref: '#/definitions/NotFoundException'
         '482':
           description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
+          schema:
+            $ref: '#/definitions/AccessDeniedException'
         '483':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: OutpostId
-          in: path
-          required: true
-          description: ' The ID of the Outpost. '
           schema:
-            type: string
-            pattern: '^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:outpost/)?op-[a-f0-9]{17}$'
-            minLength: 1
-            maxLength: 180
-  '/sites/{SiteId}':
-    delete:
-      operationId: DeleteSite
-      description: Deletes the site.
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DeleteSiteOutput'
-        '480':
-          description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-        '481':
-          description: ConflictException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConflictException'
-        '482':
-          description: NotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundException'
-        '483':
-          description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
-        '484':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: SiteId
-          in: path
-          required: true
-          description: ''
-          schema:
-            type: string
-            pattern: '^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:site/)?(os-[a-f0-9]{17})$'
-            description: The ID of the site.
-            minLength: 1
-            maxLength: 255
+            $ref: '#/definitions/InternalServerException'
     parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
   '/outposts/{OutpostId}/instanceTypes':
     get:
-      operationId: GetOutpostInstanceTypes
       description: Lists the instance types for the specified Outpost.
+      operationId: GetOutpostInstanceTypes
+      parameters:
+        - description: ' The ID of the Outpost. '
+          in: path
+          maxLength: 180
+          minLength: 1
+          name: OutpostId
+          pattern: >-
+            ^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:outpost/)?op-[a-f0-9]{17}$
+          required: true
+          type: string
+        - description: The pagination token.
+          in: query
+          maxLength: 1005
+          minLength: 1
+          name: NextToken
+          pattern: ^(\d+)##(\S+)$
+          required: false
+          type: string
+        - description: The maximum page size.
+          in: query
+          maximum: 1000
+          minimum: 1
+          name: MaxResults
+          required: false
+          type: integer
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetOutpostInstanceTypesOutput'
+          schema:
+            $ref: '#/definitions/GetOutpostInstanceTypesOutput'
         '480':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
+          schema:
+            $ref: '#/definitions/ValidationException'
         '481':
           description: NotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundException'
+          schema:
+            $ref: '#/definitions/NotFoundException'
         '482':
           description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
+          schema:
+            $ref: '#/definitions/AccessDeniedException'
         '483':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: OutpostId
-          in: path
-          required: true
-          description: ' The ID of the Outpost. '
           schema:
-            type: string
-            pattern: '^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:outpost/)?op-[a-f0-9]{17}$'
-            minLength: 1
-            maxLength: 180
-        - name: NextToken
-          in: query
-          required: false
-          description: ''
-          schema:
-            type: string
-            pattern: ^(\d+)##(\S+)$
-            description: The pagination token.
-            minLength: 1
-            maxLength: 1005
-        - name: MaxResults
-          in: query
-          required: false
-          description: ''
-          schema:
-            type: integer
-            description: The maximum page size.
-            minimum: 1
-            maximum: 1000
+            $ref: '#/definitions/InternalServerException'
     parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
   /sites:
     get:
-      operationId: ListSites
       description: Lists the sites for the specified AWS account.
+      operationId: ListSites
+      parameters:
+        - description: The pagination token.
+          in: query
+          maxLength: 1005
+          minLength: 1
+          name: NextToken
+          pattern: ^(\d+)##(\S+)$
+          required: false
+          type: string
+        - description: The maximum page size.
+          in: query
+          maximum: 1000
+          minimum: 1
+          name: MaxResults
+          required: false
+          type: integer
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListSitesOutput'
+          schema:
+            $ref: '#/definitions/ListSitesOutput'
         '480':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
+          schema:
+            $ref: '#/definitions/ValidationException'
         '481':
           description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
+          schema:
+            $ref: '#/definitions/AccessDeniedException'
         '482':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: NextToken
-          in: query
-          required: false
-          description: ''
           schema:
-            type: string
-            pattern: ^(\d+)##(\S+)$
-            description: The pagination token.
-            minLength: 1
-            maxLength: 1005
-        - name: MaxResults
-          in: query
-          required: false
-          description: ''
-          schema:
-            type: integer
-            description: The maximum page size.
-            minimum: 1
-            maximum: 1000
+            $ref: '#/definitions/InternalServerException'
     parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
+  '/sites/{SiteId}':
+    delete:
+      description: Deletes the site.
+      operationId: DeleteSite
+      parameters:
+        - description: The ID of the site.
+          in: path
+          maxLength: 255
+          minLength: 1
+          name: SiteId
+          pattern: >-
+            ^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:site/)?(os-[a-f0-9]{17})$
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/DeleteSiteOutput'
+        '480':
+          description: ValidationException
+          schema:
+            $ref: '#/definitions/ValidationException'
+        '481':
+          description: ConflictException
+          schema:
+            $ref: '#/definitions/ConflictException'
+        '482':
+          description: NotFoundException
+          schema:
+            $ref: '#/definitions/NotFoundException'
+        '483':
+          description: AccessDeniedException
+          schema:
+            $ref: '#/definitions/AccessDeniedException'
+        '484':
+          description: InternalServerException
+          schema:
+            $ref: '#/definitions/InternalServerException'
+    parameters:
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
   '/tags/{ResourceArn}':
     get:
-      operationId: ListTagsForResource
       description: Lists the tags for the specified resource.
+      operationId: ListTagsForResource
+      parameters:
+        - description: The Amazon Resource Name (ARN) of the resource.
+          in: path
+          maxLength: 1011
+          name: ResourceArn
+          pattern: >-
+            ^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:([a-z\d-]+)/)[a-z]{2,8}-[a-f0-9]{17}$
+          required: true
+          type: string
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListTagsForResourceResponse'
+          schema:
+            $ref: '#/definitions/ListTagsForResourceResponse'
         '480':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
+          schema:
+            $ref: '#/definitions/InternalServerException'
         '481':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
+          schema:
+            $ref: '#/definitions/ValidationException'
         '482':
           description: NotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundException'
-      parameters:
-        - name: ResourceArn
-          in: path
-          required: true
-          description: The Amazon Resource Name (ARN) of the resource.
           schema:
-            type: string
-            pattern: '^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:([a-z\d-]+)/)[a-z]{2,8}-[a-f0-9]{17}$'
-            maxLength: 1011
+            $ref: '#/definitions/NotFoundException'
     parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
     post:
-      operationId: TagResource
+      consumes:
+        - application/json
       description: Adds tags to the specified resource.
+      operationId: TagResource
+      parameters:
+        - description: The Amazon Resource Name (ARN) of the resource.
+          in: path
+          maxLength: 1011
+          name: ResourceArn
+          pattern: >-
+            ^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:([a-z\d-]+)/)[a-z]{2,8}-[a-f0-9]{17}$
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              Tags:
+                additionalProperties:
+                  $ref: '#/definitions/TagValue'
+                description: The tags to add to the resource.
+                maxProperties: 50
+                minProperties: 1
+                type: object
+            required:
+              - Tags
+            type: object
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TagResourceResponse'
+          schema:
+            $ref: '#/definitions/TagResourceResponse'
         '480':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
+          schema:
+            $ref: '#/definitions/InternalServerException'
         '481':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
+          schema:
+            $ref: '#/definitions/ValidationException'
         '482':
           description: NotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundException'
-      parameters:
-        - name: ResourceArn
-          in: path
-          required: true
-          description: The Amazon Resource Name (ARN) of the resource.
           schema:
-            type: string
-            pattern: '^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:([a-z\d-]+)/)[a-z]{2,8}-[a-f0-9]{17}$'
-            maxLength: 1011
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - Tags
-              properties:
-                Tags:
-                  description: The tags to add to the resource.
-                  type: object
-                  minProperties: 1
-                  maxProperties: 50
-                  additionalProperties:
-                    $ref: '#/components/schemas/TagValue'
+            $ref: '#/definitions/NotFoundException'
   '/tags/{ResourceArn}#tagKeys':
     delete:
-      operationId: UntagResource
       description: Removes tags from the specified resource.
+      operationId: UntagResource
+      parameters:
+        - description: The Amazon Resource Name (ARN) of the resource.
+          in: path
+          maxLength: 1011
+          name: ResourceArn
+          pattern: >-
+            ^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:([a-z\d-]+)/)[a-z]{2,8}-[a-f0-9]{17}$
+          required: true
+          type: string
+        - collectionFormat: multi
+          description: The tag keys.
+          in: query
+          items:
+            $ref: '#/definitions/TagKey'
+          maxItems: 50
+          minItems: 1
+          name: tagKeys
+          required: true
+          type: array
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UntagResourceResponse'
+          schema:
+            $ref: '#/definitions/UntagResourceResponse'
         '480':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
+          schema:
+            $ref: '#/definitions/InternalServerException'
         '481':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
+          schema:
+            $ref: '#/definitions/ValidationException'
         '482':
           description: NotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundException'
-      parameters:
-        - name: ResourceArn
-          in: path
-          required: true
-          description: The Amazon Resource Name (ARN) of the resource.
           schema:
-            type: string
-            pattern: '^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:([a-z\d-]+)/)[a-z]{2,8}-[a-f0-9]{17}$'
-            maxLength: 1011
-        - name: tagKeys
-          in: query
-          required: true
-          description: The tag keys.
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/TagKey'
-            minItems: 1
-            maxItems: 50
+            $ref: '#/definitions/NotFoundException'
     parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
-components:
-  parameters:
-    X-Amz-Content-Sha256:
-      name: X-Amz-Content-Sha256
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
         type: string
-      required: false
-    X-Amz-Date:
-      name: X-Amz-Date
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Date
+        required: false
         type: string
-      required: false
-    X-Amz-Algorithm:
-      name: X-Amz-Algorithm
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
         type: string
-      required: false
-    X-Amz-Credential:
-      name: X-Amz-Credential
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Credential
+        required: false
         type: string
-      required: false
-    X-Amz-Security-Token:
-      name: X-Amz-Security-Token
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
         type: string
-      required: false
-    X-Amz-Signature:
-      name: X-Amz-Signature
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Signature
+        required: false
         type: string
-      required: false
-    X-Amz-SignedHeaders:
-      name: X-Amz-SignedHeaders
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
         type: string
-      required: false
-  securitySchemes:
-    hmac:
-      type: apiKey
-      name: Authorization
-      in: header
-      description: Amazon Signature authorization v4
-      x-amazon-apigateway-authtype: awsSigv4
-  schemas:
-    CreateOrderOutput:
-      type: object
-      properties:
-        Order:
-          allOf:
-            - $ref: '#/components/schemas/Order'
-            - description: Information about this order.
-    LineItemRequest:
-      type: object
-      properties:
-        CatalogItemId:
-          allOf:
-            - $ref: '#/components/schemas/SkuCode'
-            - description: The ID of the catalog item.
-        Quantity:
-          allOf:
-            - $ref: '#/components/schemas/LineItemQuantity'
-            - description: The quantity of a line item request.
-      description: Information about a line item request.
-    ValidationException: {}
-    ConflictException: {}
-    AccessDeniedException: {}
-    NotFoundException: {}
-    InternalServerException: {}
-    ServiceQuotaExceededException: {}
-    CreateOutpostOutput:
-      type: object
-      properties:
-        Outpost:
-          $ref: '#/components/schemas/Outpost'
-    TagValue:
-      type: string
-      pattern: '^[\S \n]+$'
-      maxLength: 256
-    DeleteOutpostOutput:
-      type: object
-      properties: {}
-    DeleteSiteOutput:
-      type: object
-      properties: {}
-    GetOutpostOutput:
-      type: object
-      properties:
-        Outpost:
-          $ref: '#/components/schemas/Outpost'
-    GetOutpostInstanceTypesOutput:
-      type: object
-      properties:
-        InstanceTypes:
-          $ref: '#/components/schemas/InstanceTypeListDefinition'
-        NextToken:
-          $ref: '#/components/schemas/Token'
-        OutpostId:
-          allOf:
-            - $ref: '#/components/schemas/OutpostId'
-            - description: ' The ID of the Outpost. '
-        OutpostArn:
-          $ref: '#/components/schemas/OutpostArn'
-    ListOutpostsOutput:
-      type: object
-      properties:
-        Outposts:
-          $ref: '#/components/schemas/outpostListDefinition'
-        NextToken:
-          $ref: '#/components/schemas/Token'
-    LifeCycleStatus:
-      type: string
-      pattern: '^[ A-Za-z]+$'
-      description: The life cycle status.
-      minLength: 1
-      maxLength: 20
-    AvailabilityZone:
-      type: string
-      pattern: '^([a-zA-Z]+-){1,3}([a-zA-Z]+)?(\d+[a-zA-Z]?)?$'
-      description: The Availability Zone.
-      minLength: 1
-      maxLength: 1000
-    AvailabilityZoneId:
-      type: string
-      pattern: '^[a-zA-Z]+\d-[a-zA-Z]+\d$'
-      description: The ID of the Availability Zone.
-      minLength: 1
-      maxLength: 255
-    ListSitesOutput:
-      type: object
-      properties:
-        Sites:
-          $ref: '#/components/schemas/siteListDefinition'
-        NextToken:
-          $ref: '#/components/schemas/Token'
-    ListTagsForResourceResponse:
-      type: object
-      properties:
-        Tags:
-          allOf:
-            - $ref: '#/components/schemas/TagMap'
-            - description: The resource tags.
-    TagResourceResponse:
-      type: object
-      properties: {}
-    UntagResourceResponse:
-      type: object
-      properties: {}
-    TagKey:
-      type: string
-      pattern: '^(?!aws:)[a-zA-Z+-=._:/]+$'
-      minLength: 1
-      maxLength: 128
-    AccountId:
-      type: string
-      pattern: '\d{12}'
-      description: The ID of the AWS account.
-      minLength: 12
-      maxLength: 12
-    Arn:
-      type: string
-      pattern: '^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:([a-z\d-]+)/)[a-z]{2,8}-[a-f0-9]{17}$'
-      maxLength: 1011
-    AvailabilityZoneIdList:
-      type: array
-      items:
-        $ref: '#/components/schemas/AvailabilityZoneId'
-      minItems: 1
-      maxItems: 5
-    AvailabilityZoneList:
-      type: array
-      items:
-        $ref: '#/components/schemas/AvailabilityZone'
-      minItems: 1
-      maxItems: 5
-    OutpostIdentifier:
-      type: string
-      pattern: '^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:outpost/)?op-[a-f0-9]{17}$'
-      minLength: 1
-      maxLength: 180
-    LineItemRequestListDefinition:
-      type: array
-      items:
-        $ref: '#/components/schemas/LineItemRequest'
-      minItems: 1
-      maxItems: 20
-    PaymentOption:
-      type: string
-      enum:
-        - ALL_UPFRONT
-        - NO_UPFRONT
-        - PARTIAL_UPFRONT
-    PaymentTerm:
-      type: string
-      enum:
-        - THREE_YEARS
-    CreateOrderInput:
-      type: object
-      required:
-        - OutpostIdentifier
-        - LineItems
-        - PaymentOption
-      title: CreateOrderInput
-      properties:
-        OutpostIdentifier:
-          allOf:
-            - $ref: '#/components/schemas/OutpostIdentifier'
-            - description: ' The ID or the Amazon Resource Name (ARN) of the Outpost. '
-        LineItems:
-          allOf:
-            - $ref: '#/components/schemas/LineItemRequestListDefinition'
-            - description: The line items that make up the order.
-        PaymentOption:
-          allOf:
-            - $ref: '#/components/schemas/PaymentOption'
-            - description: The payment option for the order.
-        PaymentTerm:
-          allOf:
-            - $ref: '#/components/schemas/PaymentTerm'
-            - description: The payment terms for the order.
-    Order:
-      type: object
-      properties:
-        OutpostId:
-          allOf:
-            - $ref: '#/components/schemas/OutpostIdOnly'
-            - description: ' The ID of the Outpost. '
-        OrderId:
-          allOf:
-            - $ref: '#/components/schemas/OrderId'
-            - description: The ID of the order.
-        Status:
-          allOf:
-            - $ref: '#/components/schemas/OrderStatus'
-            - description: The status of the order
-        LineItems:
-          allOf:
-            - $ref: '#/components/schemas/LineItemListDefinition'
-            - description: The line items for the order
-        PaymentOption:
-          allOf:
-            - $ref: '#/components/schemas/PaymentOption'
-            - description: The payment option for the order.
-        OrderSubmissionDate:
-          allOf:
-            - $ref: '#/components/schemas/ISO8601Timestamp'
-            - description: The submission date for the order.
-        OrderFulfilledDate:
-          allOf:
-            - $ref: '#/components/schemas/ISO8601Timestamp'
-            - description: The fulfillment date of the order.
-      description: Information about an order.
-    OutpostName:
-      type: string
-      pattern: '^[\S ]+$'
-      description: The name of the Outpost.
-      minLength: 1
-      maxLength: 255
-    OutpostDescription:
-      type: string
-      pattern: '^[\S ]*$'
-      description: The description of the Outpost.
-      minLength: 0
-      maxLength: 1000
-    SiteId:
-      type: string
-      pattern: '^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:site/)?(os-[a-f0-9]{17})$'
-      description: The ID of the site.
-      minLength: 1
-      maxLength: 255
-    TagMap:
-      type: object
-      minProperties: 1
-      maxProperties: 50
-      additionalProperties:
-        $ref: '#/components/schemas/TagValue'
-    CreateOutpostInput:
-      type: object
-      required:
-        - Name
-        - SiteId
-      title: CreateOutpostInput
-      properties:
-        Name:
-          $ref: '#/components/schemas/OutpostName'
-        Description:
-          $ref: '#/components/schemas/OutpostDescription'
-        SiteId:
-          $ref: '#/components/schemas/SiteId'
-        AvailabilityZone:
-          $ref: '#/components/schemas/AvailabilityZone'
-        AvailabilityZoneId:
-          $ref: '#/components/schemas/AvailabilityZoneId'
-        Tags:
-          allOf:
-            - $ref: '#/components/schemas/TagMap'
-            - description: The tags to apply to the Outpost.
-    Outpost:
-      type: object
-      properties:
-        OutpostId:
-          allOf:
-            - $ref: '#/components/schemas/OutpostId'
-            - description: ' The ID of the Outpost. '
-        OwnerId:
-          $ref: '#/components/schemas/OwnerId'
-        OutpostArn:
-          $ref: '#/components/schemas/OutpostArn'
-        SiteId:
-          $ref: '#/components/schemas/SiteId'
-        Name:
-          $ref: '#/components/schemas/OutpostName'
-        Description:
-          $ref: '#/components/schemas/OutpostDescription'
-        LifeCycleStatus:
-          $ref: '#/components/schemas/LifeCycleStatus'
-        AvailabilityZone:
-          $ref: '#/components/schemas/AvailabilityZone'
-        AvailabilityZoneId:
-          $ref: '#/components/schemas/AvailabilityZoneId'
-        Tags:
-          allOf:
-            - $ref: '#/components/schemas/TagMap'
-            - description: The Outpost tags.
-        SiteArn:
-          $ref: '#/components/schemas/SiteArn'
-      description: Information about an Outpost.
-    OutpostId:
-      type: string
-      pattern: '^(arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:outpost/)?op-[a-f0-9]{17}$'
-      minLength: 1
-      maxLength: 180
-    DeleteOutpostInput:
-      type: object
-      title: DeleteOutpostInput
-      properties: {}
-    DeleteSiteInput:
-      type: object
-      title: DeleteSiteInput
-      properties: {}
-    GetOutpostInput:
-      type: object
-      title: GetOutpostInput
-      properties: {}
-    Token:
-      type: string
-      pattern: ^(\d+)##(\S+)$
-      description: The pagination token.
-      minLength: 1
-      maxLength: 1005
-    MaxResults1000:
-      type: integer
-      description: The maximum page size.
-      minimum: 1
-      maximum: 1000
-    GetOutpostInstanceTypesInput:
-      type: object
-      title: GetOutpostInstanceTypesInput
-      properties: {}
-    InstanceTypeListDefinition:
-      type: array
-      description: Information about the instance types.
-      items:
-        $ref: '#/components/schemas/InstanceTypeItem'
-    OutpostArn:
-      type: string
-      pattern: '^arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:outpost/op-[a-f0-9]{17}$'
-      description: The Amazon Resource Name (ARN) of the Outpost.
-      minLength: 1
-      maxLength: 255
-    ISO8601Timestamp:
-      type: string
-      format: date-time
-    InstanceType:
-      type: string
-      description: The instance type.
-    InstanceTypeItem:
-      type: object
-      properties:
-        InstanceType:
-          $ref: '#/components/schemas/InstanceType'
-      description: Information about an instance type.
-    LifeCycleStatusList:
-      type: array
-      items:
-        $ref: '#/components/schemas/LifeCycleStatus'
-      minItems: 1
-      maxItems: 5
-    SkuCode:
-      type: string
-      pattern: 'OR-[A-Z0-9]{7}'
-      minLength: 1
-      maxLength: 10
-    LineItemId:
-      type: string
-      pattern: 'ooi-[a-f0-9]{17}'
-    LineItemQuantity:
-      type: integer
-      minimum: 1
-      maximum: 20
-    Status:
-      type: string
-      pattern: '^[\S ]+$'
-      minLength: 1
-      maxLength: 1000
-    LineItem:
-      type: object
-      properties:
-        CatalogItemId:
-          allOf:
-            - $ref: '#/components/schemas/SkuCode'
-            - description: ' The ID of the catalog item. '
-        LineItemId:
-          allOf:
-            - $ref: '#/components/schemas/LineItemId'
-            - description: The ID of the line item.
-        Quantity:
-          allOf:
-            - $ref: '#/components/schemas/LineItemQuantity'
-            - description: The quantity of the line item.
-        Status:
-          allOf:
-            - $ref: '#/components/schemas/Status'
-            - description: The status of the line item.
-      description: Information about a line item.
-    LineItemListDefinition:
-      type: array
-      items:
-        $ref: '#/components/schemas/LineItem'
-    ListOutpostsInput:
-      type: object
-      title: ListOutpostsInput
-      properties: {}
-    outpostListDefinition:
-      type: array
-      description: Information about the Outposts.
-      items:
-        $ref: '#/components/schemas/Outpost'
-    ListSitesInput:
-      type: object
-      title: ListSitesInput
-      properties: {}
-    siteListDefinition:
-      type: array
-      description: Information about the sites.
-      items:
-        $ref: '#/components/schemas/Site'
-    ListTagsForResourceRequest:
-      type: object
-      title: ListTagsForResourceRequest
-      properties: {}
-    OutpostIdOnly:
-      type: string
-      pattern: '^op-[a-f0-9]{17}$'
-      minLength: 1
-      maxLength: 20
-    OrderId:
-      type: string
-      pattern: 'oo-[a-f0-9]{17}$'
-      minLength: 1
-      maxLength: 20
-    OrderStatus:
-      type: string
-      enum:
-        - RECEIVED
-        - PENDING
-        - PROCESSING
-        - INSTALLING
-        - FULFILLED
-        - CANCELLED
-    OwnerId:
-      type: string
-      pattern: '\d{12}'
-      description: The AWS account ID of the Outpost owner.
-      minLength: 12
-      maxLength: 12
-    SiteArn:
-      type: string
-      pattern: '^arn:aws([a-z-]+)?:outposts:[a-z\d-]+:\d{12}:site/(os-[a-f0-9]{17})$'
-      description: The Amazon Resource Name (ARN) of the site.
-      minLength: 1
-      maxLength: 255
-    SiteName:
-      type: string
-      pattern: '^[\S ]+$'
-      description: The name of the site.
-      minLength: 1
-      maxLength: 1000
-    SiteDescription:
-      type: string
-      pattern: '^[\S ]+$'
-      description: The description of the site.
-      minLength: 1
-      maxLength: 1001
-    Site:
-      type: object
-      properties:
-        SiteId:
-          $ref: '#/components/schemas/SiteId'
-        AccountId:
-          $ref: '#/components/schemas/AccountId'
-        Name:
-          $ref: '#/components/schemas/SiteName'
-        Description:
-          $ref: '#/components/schemas/SiteDescription'
-        Tags:
-          allOf:
-            - $ref: '#/components/schemas/TagMap'
-            - description: The site tags.
-        SiteArn:
-          $ref: '#/components/schemas/SiteArn'
-      description: Information about a site.
-    TagKeyList:
-      type: array
-      items:
-        $ref: '#/components/schemas/TagKey'
-      minItems: 1
-      maxItems: 50
-    TagResourceRequest:
-      type: object
-      required:
-        - Tags
-      title: TagResourceRequest
-      properties:
-        Tags:
-          allOf:
-            - $ref: '#/components/schemas/TagMap'
-            - description: The tags to add to the resource.
-    UntagResourceRequest:
-      type: object
-      title: UntagResourceRequest
-      properties: {}
+schemes:
+  - http
 security:
   - hmac: []
+securityDefinitions:
+  hmac:
+    description: Amazon Signature authorization v4
+    in: header
+    name: Authorization
+    type: apiKey
+    x-amazon-apigateway-authtype: awsSigv4
+swagger: '2.0'
+x-components:
+  parameters:
+    X-Amz-Algorithm:
+      in: header
+      name: X-Amz-Algorithm
+      required: false
+      type: string
+    X-Amz-Content-Sha256:
+      in: header
+      name: X-Amz-Content-Sha256
+      required: false
+      type: string
+    X-Amz-Credential:
+      in: header
+      name: X-Amz-Credential
+      required: false
+      type: string
+    X-Amz-Date:
+      in: header
+      name: X-Amz-Date
+      required: false
+      type: string
+    X-Amz-Security-Token:
+      in: header
+      name: X-Amz-Security-Token
+      required: false
+      type: string
+    X-Amz-Signature:
+      in: header
+      name: X-Amz-Signature
+      required: false
+      type: string
+    X-Amz-SignedHeaders:
+      in: header
+      name: X-Amz-SignedHeaders
+      required: false
+      type: string
+x-hasEquivalentPaths: true
+

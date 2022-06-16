@@ -1,1033 +1,1072 @@
-openapi: 3.0.0
-info:
-  version: '2021-03-12'
-  x-release: v4
-  title: FinSpace User Environment Management service
-  description: 'The FinSpace management service provides the APIs for managing the FinSpace environments. '
-  x-logo:
-    url: 'https://twitter.com/awscloud/profile_image?size=original'
-    backgroundColor: '#FFFFFF'
-  termsOfService: 'https://aws.amazon.com/service-terms/'
-  contact:
-    name: Mike Ralphson
-    email: mike.ralphson@gmail.com
-    url: 'https://github.com/mermade/aws2openapi'
-    x-twitter: PermittedSoc
-  license:
-    name: Apache 2.0 License
-    url: 'http://www.apache.org/licenses/'
-  x-providerName: amazonaws.com
-  x-serviceName: finspace
-  x-aws-signingName: finspace
-  x-origin:
-    - contentType: application/json
-      url: 'https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/finspace-2021-03-12.normal.json'
-      converter:
-        url: 'https://github.com/mermade/aws2openapi'
-        version: 1.0.0
-      x-apisguru-driver: external
-  x-apiClientRegistration:
-    url: 'https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct'
-  x-apisguru-categories:
-    - cloud
-  x-preferred: true
+basePath: /
+definitions:
+  AccessDeniedException: {}
+  AttributeMap:
+    additionalProperties:
+      $ref: '#/definitions/url'
+    type: object
+  CreateEnvironmentRequest:
+    properties:
+      description:
+        allOf:
+          - $ref: '#/definitions/Description'
+          - description: The description of the FinSpace environment to be created.
+      federationMode:
+        allOf:
+          - $ref: '#/definitions/FederationMode'
+          - description: >-
+              <p>Authentication mode for the environment.</p> <ul> <li> <p>
+              <code>FEDERATED</code> - Users access FinSpace through Single Sign
+              On (SSO) via your Identity provider.</p> </li> <li> <p>
+              <code>LOCAL</code> - Users access FinSpace via email and password
+              managed within the FinSpace environment.</p> </li> </ul>
+      federationParameters:
+        allOf:
+          - $ref: '#/definitions/FederationParameters'
+          - description: Configuration information when authentication mode is FEDERATED.
+      kmsKeyId:
+        allOf:
+          - $ref: '#/definitions/KmsKeyId'
+          - description: The KMS key id to encrypt your data in the FinSpace environment.
+      name:
+        allOf:
+          - $ref: '#/definitions/EnvironmentName'
+          - description: The name of the FinSpace environment to be created.
+      tags:
+        allOf:
+          - $ref: '#/definitions/TagMap'
+          - description: Add tags to your FinSpace environment.
+    required:
+      - name
+    title: CreateEnvironmentRequest
+    type: object
+  CreateEnvironmentResponse:
+    properties:
+      environmentArn:
+        allOf:
+          - $ref: '#/definitions/EnvironmentArn'
+          - description: >-
+              The Amazon Resource Name (ARN) of the FinSpace environment that
+              you created.
+      environmentId:
+        allOf:
+          - $ref: '#/definitions/IdType'
+          - description: The unique identifier for FinSpace environment that you created.
+      environmentUrl:
+        allOf:
+          - $ref: '#/definitions/url'
+          - description: >-
+              The sign-in url for the web application of the FinSpace
+              environment you created.
+    type: object
+  DeleteEnvironmentRequest:
+    properties: {}
+    title: DeleteEnvironmentRequest
+    type: object
+  DeleteEnvironmentResponse:
+    properties: {}
+    type: object
+  Description:
+    maxLength: 1000
+    minLength: 1
+    pattern: '^[a-zA-Z0-9. ]{1,1000}$'
+    type: string
+  Environment:
+    description: Represents an FinSpace environment.
+    properties:
+      awsAccountId:
+        allOf:
+          - $ref: '#/definitions/IdType'
+          - description: >-
+              The ID of the AWS account in which the FinSpace environment is
+              created.
+      dedicatedServiceAccountId:
+        allOf:
+          - $ref: '#/definitions/IdType'
+          - description: >-
+              The AWS account ID of the dedicated service account associated
+              with your FinSpace environment.
+      description:
+        allOf:
+          - $ref: '#/definitions/Description'
+          - description: The description of the FinSpace environment.
+      environmentArn:
+        allOf:
+          - $ref: '#/definitions/EnvironmentArn'
+          - description: The Amazon Resource Name (ARN) of your FinSpace environment.
+      environmentId:
+        allOf:
+          - $ref: '#/definitions/IdType'
+          - description: The identifier of the FinSpace environment.
+      environmentUrl:
+        allOf:
+          - $ref: '#/definitions/url'
+          - description: >-
+              The sign-in url for the web application of your FinSpace
+              environment.
+      federationMode:
+        allOf:
+          - $ref: '#/definitions/FederationMode'
+          - description: The authentication mode for the environment.
+      federationParameters:
+        allOf:
+          - $ref: '#/definitions/FederationParameters'
+          - description: Configuration information when authentication mode is FEDERATED.
+      kmsKeyId:
+        allOf:
+          - $ref: '#/definitions/KmsKeyId'
+          - description: The KMS key id used to encrypt in the FinSpace environment.
+      name:
+        allOf:
+          - $ref: '#/definitions/EnvironmentName'
+          - description: The name of the FinSpace environment.
+      sageMakerStudioDomainUrl:
+        allOf:
+          - $ref: '#/definitions/SmsDomainUrl'
+          - description: >-
+              The url of the integrated FinSpace notebook environment in your
+              web application.
+      status:
+        allOf:
+          - $ref: '#/definitions/EnvironmentStatus'
+          - description: The current status of creation of the FinSpace environment.
+    type: object
+  EnvironmentArn:
+    maxLength: 2048
+    minLength: 20
+    pattern: >-
+      ^arn:aws:finspace:[A-Za-z0-9_/.-]{0,63}:\d+:environment/[0-9A-Za-z_-]{1,128}$
+    type: string
+  EnvironmentList:
+    items:
+      $ref: '#/definitions/Environment'
+    type: array
+  EnvironmentName:
+    maxLength: 255
+    minLength: 1
+    pattern: '^[a-zA-Z0-9]+[a-zA-Z0-9-]*[a-zA-Z0-9]$'
+    type: string
+  EnvironmentStatus:
+    enum:
+      - CREATE_REQUESTED
+      - CREATING
+      - CREATED
+      - DELETE_REQUESTED
+      - DELETING
+      - DELETED
+      - FAILED_CREATION
+      - RETRY_DELETION
+      - FAILED_DELETION
+      - SUSPENDED
+    type: string
+  FederationAttributeKey:
+    maxLength: 32
+    minLength: 1
+    pattern: .*
+    type: string
+  FederationMode:
+    enum:
+      - FEDERATED
+      - LOCAL
+    type: string
+  FederationParameters:
+    description: Configuration information when authentication mode is FEDERATED.
+    properties:
+      applicationCallBackURL:
+        allOf:
+          - $ref: '#/definitions/url'
+          - description: >-
+              The redirect or sign-in URL that should be entered into the SAML
+              2.0 compliant identity provider configuration (IdP).
+      attributeMap:
+        allOf:
+          - $ref: '#/definitions/AttributeMap'
+          - description: >-
+              SAML attribute name and value. The name must always be
+              <code>Email</code> and the value should be set to the attribute
+              definition in which user email is set. For example, name would be
+              <code>Email</code> and value
+              <code>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress</code>.
+              Please check your SAML 2.0 compliant identity provider (IdP)
+              documentation for details.
+      federationProviderName:
+        allOf:
+          - $ref: '#/definitions/FederationProviderName'
+          - description: Name of the identity provider (IdP).
+      federationURN:
+        allOf:
+          - $ref: '#/definitions/urn'
+          - description: >-
+              The Uniform Resource Name (URN). Also referred as Service Provider
+              URN or Audience URI or Service Provider Entity ID.
+      samlMetadataDocument:
+        allOf:
+          - $ref: '#/definitions/SamlMetadataDocument'
+          - description: SAML 2.0 Metadata document from identity provider (IdP).
+      samlMetadataURL:
+        allOf:
+          - $ref: '#/definitions/url'
+          - description: >-
+              Provide the metadata URL from your SAML 2.0 compliant identity
+              provider (IdP).
+    type: object
+  FederationProviderName:
+    maxLength: 32
+    minLength: 1
+    pattern: '[^_\p{Z}][\p{L}\p{M}\p{S}\p{N}\p{P}][^_\p{Z}]+'
+    type: string
+  GetEnvironmentRequest:
+    properties: {}
+    title: GetEnvironmentRequest
+    type: object
+  GetEnvironmentResponse:
+    properties:
+      environment:
+        allOf:
+          - $ref: '#/definitions/Environment'
+          - description: The name of the FinSpace environment.
+    type: object
+  IdType:
+    maxLength: 26
+    minLength: 1
+    pattern: '^[a-zA-Z0-9]{1,26}$'
+    type: string
+  InternalServerException: {}
+  InvalidRequestException: {}
+  KmsKeyId:
+    maxLength: 1000
+    minLength: 1
+    pattern: '^[a-zA-Z-0-9-:\/]*$'
+    type: string
+  LimitExceededException: {}
+  ListEnvironmentsRequest:
+    properties: {}
+    title: ListEnvironmentsRequest
+    type: object
+  ListEnvironmentsResponse:
+    properties:
+      environments:
+        allOf:
+          - $ref: '#/definitions/EnvironmentList'
+          - description: A list of all of your FinSpace environments.
+      nextToken:
+        allOf:
+          - $ref: '#/definitions/PaginationToken'
+          - description: >-
+              A token that you can use in a subsequent call to retrieve the next
+              set of results.
+    type: object
+  ListTagsForResourceRequest:
+    properties: {}
+    title: ListTagsForResourceRequest
+    type: object
+  ListTagsForResourceResponse:
+    properties:
+      tags:
+        allOf:
+          - $ref: '#/definitions/TagMap'
+          - description: A list of all tags for a resource.
+    type: object
+  PaginationToken:
+    maxLength: 1000
+    minLength: 1
+    pattern: .*
+    type: string
+  ResourceNotFoundException: {}
+  ResultLimit:
+    maximum: 100
+    minimum: 0
+    type: integer
+  SamlMetadataDocument:
+    maxLength: 10000000
+    minLength: 1000
+    pattern: .*
+    type: string
+  ServiceQuotaExceededException: {}
+  SmsDomainUrl:
+    maxLength: 1000
+    minLength: 1
+    pattern: '^[a-zA-Z-0-9-:\/.]*$'
+    type: string
+  TagKey:
+    maxLength: 128
+    minLength: 1
+    pattern: '^(?!aws:)[a-zA-Z+-=._:/]+$'
+    type: string
+  TagKeyList:
+    items:
+      $ref: '#/definitions/TagKey'
+    maxItems: 50
+    minItems: 1
+    type: array
+  TagMap:
+    additionalProperties:
+      $ref: '#/definitions/TagValue'
+    maxProperties: 50
+    minProperties: 1
+    type: object
+  TagResourceRequest:
+    properties:
+      tags:
+        allOf:
+          - $ref: '#/definitions/TagMap'
+          - description: One or more tags to be assigned to the resource.
+    required:
+      - tags
+    title: TagResourceRequest
+    type: object
+  TagResourceResponse:
+    properties: {}
+    type: object
+  TagValue:
+    maxLength: 256
+    minLength: 1
+    pattern: '^[a-zA-Z0-9+-=._:@ ]+$'
+    type: string
+  ThrottlingException: {}
+  UntagResourceRequest:
+    properties: {}
+    title: UntagResourceRequest
+    type: object
+  UntagResourceResponse:
+    properties: {}
+    type: object
+  UpdateEnvironmentRequest:
+    properties:
+      description:
+        allOf:
+          - $ref: '#/definitions/Description'
+          - description: The description of the environment.
+      federationMode:
+        allOf:
+          - $ref: '#/definitions/FederationMode'
+          - description: >-
+              <p>Authentication mode for the environment.</p> <ul> <li> <p>
+              <code>FEDERATED</code> - Users access FinSpace through Single Sign
+              On (SSO) via your Identity provider.</p> </li> <li> <p>
+              <code>LOCAL</code> - Users access FinSpace via email and password
+              managed within the FinSpace environment.</p> </li> </ul>
+      federationParameters:
+        $ref: '#/definitions/FederationParameters'
+      name:
+        allOf:
+          - $ref: '#/definitions/EnvironmentName'
+          - description: The name of the environment.
+    title: UpdateEnvironmentRequest
+    type: object
+  UpdateEnvironmentResponse:
+    properties:
+      environment:
+        allOf:
+          - $ref: '#/definitions/Environment'
+          - description: Returns the FinSpace environment object.
+    type: object
+  ValidationException: {}
+  url:
+    maxLength: 1000
+    minLength: 1
+    pattern: '^https?://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]'
+    type: string
+  urn:
+    maxLength: 255
+    minLength: 1
+    pattern: '^[A-Za-z0-9._\-:\/#\+]+$'
+    type: string
 externalDocs:
   description: Amazon Web Services documentation
   url: 'https://docs.aws.amazon.com/finspace/'
-servers:
-  - url: 'http://finspace.{region}.amazonaws.com'
-    variables:
-      region:
-        description: The AWS region
-        enum:
-          - us-east-1
-          - us-east-2
-          - us-west-1
-          - us-west-2
-          - us-gov-west-1
-          - us-gov-east-1
-          - ca-central-1
-          - eu-north-1
-          - eu-west-1
-          - eu-west-2
-          - eu-west-3
-          - eu-central-1
-          - eu-south-1
-          - af-south-1
-          - ap-northeast-1
-          - ap-northeast-2
-          - ap-northeast-3
-          - ap-southeast-1
-          - ap-southeast-2
-          - ap-east-1
-          - ap-south-1
-          - sa-east-1
-          - me-south-1
-        default: us-east-1
-    description: The finspace multi-region endpoint
-  - url: 'https://finspace.{region}.amazonaws.com'
-    variables:
-      region:
-        description: The AWS region
-        enum:
-          - us-east-1
-          - us-east-2
-          - us-west-1
-          - us-west-2
-          - us-gov-west-1
-          - us-gov-east-1
-          - ca-central-1
-          - eu-north-1
-          - eu-west-1
-          - eu-west-2
-          - eu-west-3
-          - eu-central-1
-          - eu-south-1
-          - af-south-1
-          - ap-northeast-1
-          - ap-northeast-2
-          - ap-northeast-3
-          - ap-southeast-1
-          - ap-southeast-2
-          - ap-east-1
-          - ap-south-1
-          - sa-east-1
-          - me-south-1
-        default: us-east-1
-    description: The finspace multi-region endpoint
-  - url: 'http://finspace.{region}.amazonaws.com.cn'
-    variables:
-      region:
-        description: The AWS region
-        enum:
-          - cn-north-1
-          - cn-northwest-1
-        default: cn-north-1
-    description: The finspace endpoint for China (Beijing) and China (Ningxia)
-  - url: 'https://finspace.{region}.amazonaws.com.cn'
-    variables:
-      region:
-        description: The AWS region
-        enum:
-          - cn-north-1
-          - cn-northwest-1
-        default: cn-north-1
-    description: The finspace endpoint for China (Beijing) and China (Ningxia)
-x-hasEquivalentPaths: true
+host: finspace.us-east-1.amazonaws.com
+info:
+  contact:
+    email: mike.ralphson@gmail.com
+    name: Mike Ralphson
+    url: 'https://github.com/mermade/aws2openapi'
+    x-twitter: PermittedSoc
+  description: >-
+    The FinSpace management service provides the APIs for managing the FinSpace
+    environments. 
+  license:
+    name: Apache 2.0 License
+    url: 'http://www.apache.org/licenses/'
+  termsOfService: 'https://aws.amazon.com/service-terms/'
+  title: FinSpace User Environment Management service
+  version: '2021-03-12'
+  x-apiClientRegistration:
+    url: >-
+      https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-aws-signingName: finspace
+  x-logo:
+    backgroundColor: '#FFFFFF'
+    url: 'https://twitter.com/awscloud/profile_image?size=original'
+  x-origin:
+    - contentType: application/json
+      converter:
+        url: 'https://github.com/mermade/aws2openapi'
+        version: 1.0.0
+      url: >-
+        https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/finspace-2021-03-12.normal.json
+      x-apisguru-driver: external
+  x-preferred: true
+  x-providerName: amazonaws.com
+  x-release: v4
+  x-serviceName: finspace
 paths:
   /environment:
-    post:
-      operationId: CreateEnvironment
-      description: Create a new FinSpace environment.
+    get:
+      description: A list of all of your FinSpace environments.
+      operationId: ListEnvironments
+      parameters:
+        - description: >-
+            A token generated by FinSpace that specifies where to continue
+            pagination if a previous request was truncated. To get the next set
+            of pages, pass in the nextToken value from the response object of
+            the previous page call.
+          in: query
+          maxLength: 1000
+          minLength: 1
+          name: nextToken
+          pattern: .*
+          required: false
+          type: string
+        - description: The maximum number of results to return in this request.
+          in: query
+          maximum: 100
+          minimum: 0
+          name: maxResults
+          required: false
+          type: integer
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateEnvironmentResponse'
+          schema:
+            $ref: '#/definitions/ListEnvironmentsResponse'
         '480':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
+          schema:
+            $ref: '#/definitions/InternalServerException'
         '481':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
+          schema:
+            $ref: '#/definitions/ValidationException'
+    parameters:
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
+    post:
+      consumes:
+        - application/json
+      description: Create a new FinSpace environment.
+      operationId: CreateEnvironment
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              description:
+                description: The description of the FinSpace environment to be created.
+                maxLength: 1000
+                minLength: 1
+                pattern: '^[a-zA-Z0-9. ]{1,1000}$'
+                type: string
+              federationMode:
+                description: >-
+                  <p>Authentication mode for the environment.</p> <ul> <li> <p>
+                  <code>FEDERATED</code> - Users access FinSpace through Single
+                  Sign On (SSO) via your Identity provider.</p> </li> <li> <p>
+                  <code>LOCAL</code> - Users access FinSpace via email and
+                  password managed within the FinSpace environment.</p> </li>
+                  </ul>
+                enum:
+                  - FEDERATED
+                  - LOCAL
+                type: string
+              federationParameters:
+                description: >-
+                  Configuration information when authentication mode is
+                  FEDERATED.
+                properties:
+                  applicationCallBackURL:
+                    allOf:
+                      - $ref: '#/definitions/url'
+                      - description: >-
+                          The redirect or sign-in URL that should be entered
+                          into the SAML 2.0 compliant identity provider
+                          configuration (IdP).
+                  attributeMap:
+                    allOf:
+                      - $ref: '#/definitions/AttributeMap'
+                      - description: >-
+                          SAML attribute name and value. The name must always be
+                          <code>Email</code> and the value should be set to the
+                          attribute definition in which user email is set. For
+                          example, name would be <code>Email</code> and value
+                          <code>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress</code>.
+                          Please check your SAML 2.0 compliant identity provider
+                          (IdP) documentation for details.
+                  federationProviderName:
+                    allOf:
+                      - $ref: '#/definitions/FederationProviderName'
+                      - description: Name of the identity provider (IdP).
+                  federationURN:
+                    allOf:
+                      - $ref: '#/definitions/urn'
+                      - description: >-
+                          The Uniform Resource Name (URN). Also referred as
+                          Service Provider URN or Audience URI or Service
+                          Provider Entity ID.
+                  samlMetadataDocument:
+                    allOf:
+                      - $ref: '#/definitions/SamlMetadataDocument'
+                      - description: >-
+                          SAML 2.0 Metadata document from identity provider
+                          (IdP).
+                  samlMetadataURL:
+                    allOf:
+                      - $ref: '#/definitions/url'
+                      - description: >-
+                          Provide the metadata URL from your SAML 2.0 compliant
+                          identity provider (IdP).
+                type: object
+              kmsKeyId:
+                description: >-
+                  The KMS key id to encrypt your data in the FinSpace
+                  environment.
+                maxLength: 1000
+                minLength: 1
+                pattern: '^[a-zA-Z-0-9-:\/]*$'
+                type: string
+              name:
+                description: The name of the FinSpace environment to be created.
+                maxLength: 255
+                minLength: 1
+                pattern: '^[a-zA-Z0-9]+[a-zA-Z0-9-]*[a-zA-Z0-9]$'
+                type: string
+              tags:
+                additionalProperties:
+                  $ref: '#/definitions/TagValue'
+                description: Add tags to your FinSpace environment.
+                maxProperties: 50
+                minProperties: 1
+                type: object
+            required:
+              - name
+            type: object
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/CreateEnvironmentResponse'
+        '480':
+          description: InternalServerException
+          schema:
+            $ref: '#/definitions/InternalServerException'
+        '481':
+          description: ValidationException
+          schema:
+            $ref: '#/definitions/ValidationException'
         '482':
           description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
+          schema:
+            $ref: '#/definitions/AccessDeniedException'
         '483':
           description: ThrottlingException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ThrottlingException'
+          schema:
+            $ref: '#/definitions/ThrottlingException'
         '484':
           description: ServiceQuotaExceededException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServiceQuotaExceededException'
+          schema:
+            $ref: '#/definitions/ServiceQuotaExceededException'
         '485':
           description: LimitExceededException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LimitExceededException'
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - name
-              properties:
-                name:
-                  description: The name of the FinSpace environment to be created.
-                  type: string
-                  pattern: '^[a-zA-Z0-9]+[a-zA-Z0-9-]*[a-zA-Z0-9]$'
-                  minLength: 1
-                  maxLength: 255
-                description:
-                  description: The description of the FinSpace environment to be created.
-                  type: string
-                  pattern: '^[a-zA-Z0-9. ]{1,1000}$'
-                  minLength: 1
-                  maxLength: 1000
-                kmsKeyId:
-                  description: The KMS key id to encrypt your data in the FinSpace environment.
-                  type: string
-                  pattern: '^[a-zA-Z-0-9-:\/]*$'
-                  minLength: 1
-                  maxLength: 1000
-                tags:
-                  description: Add tags to your FinSpace environment.
-                  type: object
-                  minProperties: 1
-                  maxProperties: 50
-                  additionalProperties:
-                    $ref: '#/components/schemas/TagValue'
-                federationMode:
-                  description: <p>Authentication mode for the environment.</p> <ul> <li> <p> <code>FEDERATED</code> - Users access FinSpace through Single Sign On (SSO) via your Identity provider.</p> </li> <li> <p> <code>LOCAL</code> - Users access FinSpace via email and password managed within the FinSpace environment.</p> </li> </ul>
-                  type: string
-                  enum:
-                    - FEDERATED
-                    - LOCAL
-                federationParameters:
-                  description: Configuration information when authentication mode is FEDERATED.
-                  type: object
-                  properties:
-                    samlMetadataDocument:
-                      allOf:
-                        - $ref: '#/components/schemas/SamlMetadataDocument'
-                        - description: SAML 2.0 Metadata document from identity provider (IdP).
-                    samlMetadataURL:
-                      allOf:
-                        - $ref: '#/components/schemas/url'
-                        - description: Provide the metadata URL from your SAML 2.0 compliant identity provider (IdP).
-                    applicationCallBackURL:
-                      allOf:
-                        - $ref: '#/components/schemas/url'
-                        - description: The redirect or sign-in URL that should be entered into the SAML 2.0 compliant identity provider configuration (IdP).
-                    federationURN:
-                      allOf:
-                        - $ref: '#/components/schemas/urn'
-                        - description: The Uniform Resource Name (URN). Also referred as Service Provider URN or Audience URI or Service Provider Entity ID.
-                    federationProviderName:
-                      allOf:
-                        - $ref: '#/components/schemas/FederationProviderName'
-                        - description: Name of the identity provider (IdP).
-                    attributeMap:
-                      allOf:
-                        - $ref: '#/components/schemas/AttributeMap'
-                        - description: 'SAML attribute name and value. The name must always be <code>Email</code> and the value should be set to the attribute definition in which user email is set. For example, name would be <code>Email</code> and value <code>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress</code>. Please check your SAML 2.0 compliant identity provider (IdP) documentation for details.'
-    parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
-    get:
-      operationId: ListEnvironments
-      description: A list of all of your FinSpace environments.
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListEnvironmentsResponse'
-        '480':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-        '481':
-          description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-      parameters:
-        - name: nextToken
-          in: query
-          required: false
-          description: 'A token generated by FinSpace that specifies where to continue pagination if a previous request was truncated. To get the next set of pages, pass in the nextToken value from the response object of the previous page call.'
           schema:
-            type: string
-            pattern: .*
-            minLength: 1
-            maxLength: 1000
-        - name: maxResults
-          in: query
-          required: false
-          description: The maximum number of results to return in this request.
-          schema:
-            type: integer
-            minimum: 0
-            maximum: 100
+            $ref: '#/definitions/LimitExceededException'
   '/environment/{environmentId}':
     delete:
-      operationId: DeleteEnvironment
       description: Delete an FinSpace environment.
+      operationId: DeleteEnvironment
+      parameters:
+        - description: The identifier for the FinSpace environment.
+          in: path
+          maxLength: 26
+          minLength: 1
+          name: environmentId
+          pattern: '^[a-zA-Z0-9]{1,26}$'
+          required: true
+          type: string
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DeleteEnvironmentResponse'
+          schema:
+            $ref: '#/definitions/DeleteEnvironmentResponse'
         '480':
           description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
         '481':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
+          schema:
+            $ref: '#/definitions/InternalServerException'
         '482':
           description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
+          schema:
+            $ref: '#/definitions/AccessDeniedException'
         '483':
           description: ThrottlingException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ThrottlingException'
+          schema:
+            $ref: '#/definitions/ThrottlingException'
         '484':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-      parameters:
-        - name: environmentId
-          in: path
-          required: true
-          description: The identifier for the FinSpace environment.
           schema:
-            type: string
-            pattern: '^[a-zA-Z0-9]{1,26}$'
-            minLength: 1
-            maxLength: 26
-    parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
+            $ref: '#/definitions/ValidationException'
     get:
-      operationId: GetEnvironment
       description: Returns the FinSpace environment object.
+      operationId: GetEnvironment
+      parameters:
+        - description: The identifier of the FinSpace environment.
+          in: path
+          maxLength: 26
+          minLength: 1
+          name: environmentId
+          pattern: '^[a-zA-Z0-9]{1,26}$'
+          required: true
+          type: string
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetEnvironmentResponse'
+          schema:
+            $ref: '#/definitions/GetEnvironmentResponse'
         '480':
           description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
         '481':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
+          schema:
+            $ref: '#/definitions/InternalServerException'
         '482':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
+          schema:
+            $ref: '#/definitions/ValidationException'
         '483':
           description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
-      parameters:
-        - name: environmentId
-          in: path
-          required: true
-          description: The identifier of the FinSpace environment.
           schema:
-            type: string
-            pattern: '^[a-zA-Z0-9]{1,26}$'
-            minLength: 1
-            maxLength: 26
+            $ref: '#/definitions/AccessDeniedException'
+    parameters:
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
     put:
-      operationId: UpdateEnvironment
+      consumes:
+        - application/json
       description: Update your FinSpace environment.
+      operationId: UpdateEnvironment
+      parameters:
+        - description: The identifier of the FinSpace environment.
+          in: path
+          maxLength: 26
+          minLength: 1
+          name: environmentId
+          pattern: '^[a-zA-Z0-9]{1,26}$'
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              description:
+                description: The description of the environment.
+                maxLength: 1000
+                minLength: 1
+                pattern: '^[a-zA-Z0-9. ]{1,1000}$'
+                type: string
+              federationMode:
+                description: >-
+                  <p>Authentication mode for the environment.</p> <ul> <li> <p>
+                  <code>FEDERATED</code> - Users access FinSpace through Single
+                  Sign On (SSO) via your Identity provider.</p> </li> <li> <p>
+                  <code>LOCAL</code> - Users access FinSpace via email and
+                  password managed within the FinSpace environment.</p> </li>
+                  </ul>
+                enum:
+                  - FEDERATED
+                  - LOCAL
+                type: string
+              federationParameters:
+                description: >-
+                  Configuration information when authentication mode is
+                  FEDERATED.
+                properties:
+                  applicationCallBackURL:
+                    allOf:
+                      - $ref: '#/definitions/url'
+                      - description: >-
+                          The redirect or sign-in URL that should be entered
+                          into the SAML 2.0 compliant identity provider
+                          configuration (IdP).
+                  attributeMap:
+                    allOf:
+                      - $ref: '#/definitions/AttributeMap'
+                      - description: >-
+                          SAML attribute name and value. The name must always be
+                          <code>Email</code> and the value should be set to the
+                          attribute definition in which user email is set. For
+                          example, name would be <code>Email</code> and value
+                          <code>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress</code>.
+                          Please check your SAML 2.0 compliant identity provider
+                          (IdP) documentation for details.
+                  federationProviderName:
+                    allOf:
+                      - $ref: '#/definitions/FederationProviderName'
+                      - description: Name of the identity provider (IdP).
+                  federationURN:
+                    allOf:
+                      - $ref: '#/definitions/urn'
+                      - description: >-
+                          The Uniform Resource Name (URN). Also referred as
+                          Service Provider URN or Audience URI or Service
+                          Provider Entity ID.
+                  samlMetadataDocument:
+                    allOf:
+                      - $ref: '#/definitions/SamlMetadataDocument'
+                      - description: >-
+                          SAML 2.0 Metadata document from identity provider
+                          (IdP).
+                  samlMetadataURL:
+                    allOf:
+                      - $ref: '#/definitions/url'
+                      - description: >-
+                          Provide the metadata URL from your SAML 2.0 compliant
+                          identity provider (IdP).
+                type: object
+              name:
+                description: The name of the environment.
+                maxLength: 255
+                minLength: 1
+                pattern: '^[a-zA-Z0-9]+[a-zA-Z0-9-]*[a-zA-Z0-9]$'
+                type: string
+            type: object
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UpdateEnvironmentResponse'
+          schema:
+            $ref: '#/definitions/UpdateEnvironmentResponse'
         '480':
           description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
         '481':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
+          schema:
+            $ref: '#/definitions/InternalServerException'
         '482':
           description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
+          schema:
+            $ref: '#/definitions/AccessDeniedException'
         '483':
           description: ThrottlingException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ThrottlingException'
+          schema:
+            $ref: '#/definitions/ThrottlingException'
         '484':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-      parameters:
-        - name: environmentId
-          in: path
-          required: true
-          description: The identifier of the FinSpace environment.
           schema:
-            type: string
-            pattern: '^[a-zA-Z0-9]{1,26}$'
-            minLength: 1
-            maxLength: 26
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  description: The name of the environment.
-                  type: string
-                  pattern: '^[a-zA-Z0-9]+[a-zA-Z0-9-]*[a-zA-Z0-9]$'
-                  minLength: 1
-                  maxLength: 255
-                description:
-                  description: The description of the environment.
-                  type: string
-                  pattern: '^[a-zA-Z0-9. ]{1,1000}$'
-                  minLength: 1
-                  maxLength: 1000
-                federationMode:
-                  description: <p>Authentication mode for the environment.</p> <ul> <li> <p> <code>FEDERATED</code> - Users access FinSpace through Single Sign On (SSO) via your Identity provider.</p> </li> <li> <p> <code>LOCAL</code> - Users access FinSpace via email and password managed within the FinSpace environment.</p> </li> </ul>
-                  type: string
-                  enum:
-                    - FEDERATED
-                    - LOCAL
-                federationParameters:
-                  description: Configuration information when authentication mode is FEDERATED.
-                  type: object
-                  properties:
-                    samlMetadataDocument:
-                      allOf:
-                        - $ref: '#/components/schemas/SamlMetadataDocument'
-                        - description: SAML 2.0 Metadata document from identity provider (IdP).
-                    samlMetadataURL:
-                      allOf:
-                        - $ref: '#/components/schemas/url'
-                        - description: Provide the metadata URL from your SAML 2.0 compliant identity provider (IdP).
-                    applicationCallBackURL:
-                      allOf:
-                        - $ref: '#/components/schemas/url'
-                        - description: The redirect or sign-in URL that should be entered into the SAML 2.0 compliant identity provider configuration (IdP).
-                    federationURN:
-                      allOf:
-                        - $ref: '#/components/schemas/urn'
-                        - description: The Uniform Resource Name (URN). Also referred as Service Provider URN or Audience URI or Service Provider Entity ID.
-                    federationProviderName:
-                      allOf:
-                        - $ref: '#/components/schemas/FederationProviderName'
-                        - description: Name of the identity provider (IdP).
-                    attributeMap:
-                      allOf:
-                        - $ref: '#/components/schemas/AttributeMap'
-                        - description: 'SAML attribute name and value. The name must always be <code>Email</code> and the value should be set to the attribute definition in which user email is set. For example, name would be <code>Email</code> and value <code>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress</code>. Please check your SAML 2.0 compliant identity provider (IdP) documentation for details.'
+            $ref: '#/definitions/ValidationException'
   '/tags/{resourceArn}':
     get:
-      operationId: ListTagsForResource
       description: A list of all tags for a resource.
+      operationId: ListTagsForResource
+      parameters:
+        - description: The Amazon Resource Name of the resource.
+          in: path
+          maxLength: 2048
+          minLength: 20
+          name: resourceArn
+          pattern: >-
+            ^arn:aws:finspace:[A-Za-z0-9_/.-]{0,63}:\d+:environment/[0-9A-Za-z_-]{1,128}$
+          required: true
+          type: string
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListTagsForResourceResponse'
+          schema:
+            $ref: '#/definitions/ListTagsForResourceResponse'
         '480':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
+          schema:
+            $ref: '#/definitions/InternalServerException'
         '481':
           description: InvalidRequestException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InvalidRequestException'
+          schema:
+            $ref: '#/definitions/InvalidRequestException'
         '482':
           description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
-      parameters:
-        - name: resourceArn
-          in: path
-          required: true
-          description: The Amazon Resource Name of the resource.
           schema:
-            type: string
-            pattern: '^arn:aws:finspace:[A-Za-z0-9_/.-]{0,63}:\d+:environment/[0-9A-Za-z_-]{1,128}$'
-            minLength: 20
-            maxLength: 2048
+            $ref: '#/definitions/ResourceNotFoundException'
     parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
     post:
-      operationId: TagResource
+      consumes:
+        - application/json
       description: Adds metadata tags to a FinSpace resource.
+      operationId: TagResource
+      parameters:
+        - description: The Amazon Resource Name (ARN) for the resource.
+          in: path
+          maxLength: 2048
+          minLength: 20
+          name: resourceArn
+          pattern: >-
+            ^arn:aws:finspace:[A-Za-z0-9_/.-]{0,63}:\d+:environment/[0-9A-Za-z_-]{1,128}$
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              tags:
+                additionalProperties:
+                  $ref: '#/definitions/TagValue'
+                description: One or more tags to be assigned to the resource.
+                maxProperties: 50
+                minProperties: 1
+                type: object
+            required:
+              - tags
+            type: object
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TagResourceResponse'
+          schema:
+            $ref: '#/definitions/TagResourceResponse'
         '480':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
+          schema:
+            $ref: '#/definitions/InternalServerException'
         '481':
           description: InvalidRequestException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InvalidRequestException'
+          schema:
+            $ref: '#/definitions/InvalidRequestException'
         '482':
           description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
-      parameters:
-        - name: resourceArn
-          in: path
-          required: true
-          description: The Amazon Resource Name (ARN) for the resource.
           schema:
-            type: string
-            pattern: '^arn:aws:finspace:[A-Za-z0-9_/.-]{0,63}:\d+:environment/[0-9A-Za-z_-]{1,128}$'
-            minLength: 20
-            maxLength: 2048
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - tags
-              properties:
-                tags:
-                  description: One or more tags to be assigned to the resource.
-                  type: object
-                  minProperties: 1
-                  maxProperties: 50
-                  additionalProperties:
-                    $ref: '#/components/schemas/TagValue'
+            $ref: '#/definitions/ResourceNotFoundException'
   '/tags/{resourceArn}#tagKeys':
     delete:
-      operationId: UntagResource
       description: Removes metadata tags from a FinSpace resource.
+      operationId: UntagResource
+      parameters:
+        - description: >-
+            A FinSpace resource from which you want to remove a tag or tags. The
+            value for this parameter is an Amazon Resource Name (ARN).
+          in: path
+          maxLength: 2048
+          minLength: 20
+          name: resourceArn
+          pattern: >-
+            ^arn:aws:finspace:[A-Za-z0-9_/.-]{0,63}:\d+:environment/[0-9A-Za-z_-]{1,128}$
+          required: true
+          type: string
+        - collectionFormat: multi
+          description: The tag keys (names) of one or more tags to be removed.
+          in: query
+          items:
+            $ref: '#/definitions/TagKey'
+          maxItems: 50
+          minItems: 1
+          name: tagKeys
+          required: true
+          type: array
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UntagResourceResponse'
+          schema:
+            $ref: '#/definitions/UntagResourceResponse'
         '480':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
+          schema:
+            $ref: '#/definitions/InternalServerException'
         '481':
           description: InvalidRequestException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InvalidRequestException'
+          schema:
+            $ref: '#/definitions/InvalidRequestException'
         '482':
           description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
-      parameters:
-        - name: resourceArn
-          in: path
-          required: true
-          description: A FinSpace resource from which you want to remove a tag or tags. The value for this parameter is an Amazon Resource Name (ARN).
           schema:
-            type: string
-            pattern: '^arn:aws:finspace:[A-Za-z0-9_/.-]{0,63}:\d+:environment/[0-9A-Za-z_-]{1,128}$'
-            minLength: 20
-            maxLength: 2048
-        - name: tagKeys
-          in: query
-          required: true
-          description: The tag keys (names) of one or more tags to be removed.
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/TagKey'
-            minItems: 1
-            maxItems: 50
+            $ref: '#/definitions/ResourceNotFoundException'
     parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
-components:
-  parameters:
-    X-Amz-Content-Sha256:
-      name: X-Amz-Content-Sha256
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
         type: string
-      required: false
-    X-Amz-Date:
-      name: X-Amz-Date
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Date
+        required: false
         type: string
-      required: false
-    X-Amz-Algorithm:
-      name: X-Amz-Algorithm
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
         type: string
-      required: false
-    X-Amz-Credential:
-      name: X-Amz-Credential
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Credential
+        required: false
         type: string
-      required: false
-    X-Amz-Security-Token:
-      name: X-Amz-Security-Token
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
         type: string
-      required: false
-    X-Amz-Signature:
-      name: X-Amz-Signature
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Signature
+        required: false
         type: string
-      required: false
-    X-Amz-SignedHeaders:
-      name: X-Amz-SignedHeaders
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
         type: string
-      required: false
-  securitySchemes:
-    hmac:
-      type: apiKey
-      name: Authorization
-      in: header
-      description: Amazon Signature authorization v4
-      x-amazon-apigateway-authtype: awsSigv4
-  schemas:
-    CreateEnvironmentResponse:
-      type: object
-      properties:
-        environmentId:
-          allOf:
-            - $ref: '#/components/schemas/IdType'
-            - description: The unique identifier for FinSpace environment that you created.
-        environmentArn:
-          allOf:
-            - $ref: '#/components/schemas/EnvironmentArn'
-            - description: The Amazon Resource Name (ARN) of the FinSpace environment that you created.
-        environmentUrl:
-          allOf:
-            - $ref: '#/components/schemas/url'
-            - description: The sign-in url for the web application of the FinSpace environment you created.
-    TagValue:
-      type: string
-      pattern: '^[a-zA-Z0-9+-=._:@ ]+$'
-      minLength: 1
-      maxLength: 256
-    SamlMetadataDocument:
-      type: string
-      pattern: .*
-      minLength: 1000
-      maxLength: 10000000
-    url:
-      type: string
-      pattern: '^https?://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]'
-      minLength: 1
-      maxLength: 1000
-    urn:
-      type: string
-      pattern: '^[A-Za-z0-9._\-:\/#\+]+$'
-      minLength: 1
-      maxLength: 255
-    FederationProviderName:
-      type: string
-      pattern: '[^_\p{Z}][\p{L}\p{M}\p{S}\p{N}\p{P}][^_\p{Z}]+'
-      minLength: 1
-      maxLength: 32
-    AttributeMap:
-      type: object
-      additionalProperties:
-        $ref: '#/components/schemas/url'
-    InternalServerException: {}
-    ValidationException: {}
-    AccessDeniedException: {}
-    ThrottlingException: {}
-    ServiceQuotaExceededException: {}
-    LimitExceededException: {}
-    DeleteEnvironmentResponse:
-      type: object
-      properties: {}
-    ResourceNotFoundException: {}
-    GetEnvironmentResponse:
-      type: object
-      properties:
-        environment:
-          allOf:
-            - $ref: '#/components/schemas/Environment'
-            - description: The name of the FinSpace environment.
-    ListEnvironmentsResponse:
-      type: object
-      properties:
-        environments:
-          allOf:
-            - $ref: '#/components/schemas/EnvironmentList'
-            - description: A list of all of your FinSpace environments.
-        nextToken:
-          allOf:
-            - $ref: '#/components/schemas/PaginationToken'
-            - description: A token that you can use in a subsequent call to retrieve the next set of results.
-    ListTagsForResourceResponse:
-      type: object
-      properties:
-        tags:
-          allOf:
-            - $ref: '#/components/schemas/TagMap'
-            - description: A list of all tags for a resource.
-    InvalidRequestException: {}
-    TagResourceResponse:
-      type: object
-      properties: {}
-    UntagResourceResponse:
-      type: object
-      properties: {}
-    TagKey:
-      type: string
-      pattern: '^(?!aws:)[a-zA-Z+-=._:/]+$'
-      minLength: 1
-      maxLength: 128
-    UpdateEnvironmentResponse:
-      type: object
-      properties:
-        environment:
-          allOf:
-            - $ref: '#/components/schemas/Environment'
-            - description: Returns the FinSpace environment object.
-    EnvironmentName:
-      type: string
-      pattern: '^[a-zA-Z0-9]+[a-zA-Z0-9-]*[a-zA-Z0-9]$'
-      minLength: 1
-      maxLength: 255
-    Description:
-      type: string
-      pattern: '^[a-zA-Z0-9. ]{1,1000}$'
-      minLength: 1
-      maxLength: 1000
-    KmsKeyId:
-      type: string
-      pattern: '^[a-zA-Z-0-9-:\/]*$'
-      minLength: 1
-      maxLength: 1000
-    TagMap:
-      type: object
-      minProperties: 1
-      maxProperties: 50
-      additionalProperties:
-        $ref: '#/components/schemas/TagValue'
-    FederationMode:
-      type: string
-      enum:
-        - FEDERATED
-        - LOCAL
-    FederationParameters:
-      type: object
-      properties:
-        samlMetadataDocument:
-          allOf:
-            - $ref: '#/components/schemas/SamlMetadataDocument'
-            - description: SAML 2.0 Metadata document from identity provider (IdP).
-        samlMetadataURL:
-          allOf:
-            - $ref: '#/components/schemas/url'
-            - description: Provide the metadata URL from your SAML 2.0 compliant identity provider (IdP).
-        applicationCallBackURL:
-          allOf:
-            - $ref: '#/components/schemas/url'
-            - description: The redirect or sign-in URL that should be entered into the SAML 2.0 compliant identity provider configuration (IdP).
-        federationURN:
-          allOf:
-            - $ref: '#/components/schemas/urn'
-            - description: The Uniform Resource Name (URN). Also referred as Service Provider URN or Audience URI or Service Provider Entity ID.
-        federationProviderName:
-          allOf:
-            - $ref: '#/components/schemas/FederationProviderName'
-            - description: Name of the identity provider (IdP).
-        attributeMap:
-          allOf:
-            - $ref: '#/components/schemas/AttributeMap'
-            - description: 'SAML attribute name and value. The name must always be <code>Email</code> and the value should be set to the attribute definition in which user email is set. For example, name would be <code>Email</code> and value <code>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress</code>. Please check your SAML 2.0 compliant identity provider (IdP) documentation for details.'
-      description: Configuration information when authentication mode is FEDERATED.
-    CreateEnvironmentRequest:
-      type: object
-      required:
-        - name
-      title: CreateEnvironmentRequest
-      properties:
-        name:
-          allOf:
-            - $ref: '#/components/schemas/EnvironmentName'
-            - description: The name of the FinSpace environment to be created.
-        description:
-          allOf:
-            - $ref: '#/components/schemas/Description'
-            - description: The description of the FinSpace environment to be created.
-        kmsKeyId:
-          allOf:
-            - $ref: '#/components/schemas/KmsKeyId'
-            - description: The KMS key id to encrypt your data in the FinSpace environment.
-        tags:
-          allOf:
-            - $ref: '#/components/schemas/TagMap'
-            - description: Add tags to your FinSpace environment.
-        federationMode:
-          allOf:
-            - $ref: '#/components/schemas/FederationMode'
-            - description: <p>Authentication mode for the environment.</p> <ul> <li> <p> <code>FEDERATED</code> - Users access FinSpace through Single Sign On (SSO) via your Identity provider.</p> </li> <li> <p> <code>LOCAL</code> - Users access FinSpace via email and password managed within the FinSpace environment.</p> </li> </ul>
-        federationParameters:
-          allOf:
-            - $ref: '#/components/schemas/FederationParameters'
-            - description: Configuration information when authentication mode is FEDERATED.
-    IdType:
-      type: string
-      pattern: '^[a-zA-Z0-9]{1,26}$'
-      minLength: 1
-      maxLength: 26
-    EnvironmentArn:
-      type: string
-      pattern: '^arn:aws:finspace:[A-Za-z0-9_/.-]{0,63}:\d+:environment/[0-9A-Za-z_-]{1,128}$'
-      minLength: 20
-      maxLength: 2048
-    DeleteEnvironmentRequest:
-      type: object
-      title: DeleteEnvironmentRequest
-      properties: {}
-    EnvironmentStatus:
-      type: string
-      enum:
-        - CREATE_REQUESTED
-        - CREATING
-        - CREATED
-        - DELETE_REQUESTED
-        - DELETING
-        - DELETED
-        - FAILED_CREATION
-        - RETRY_DELETION
-        - FAILED_DELETION
-        - SUSPENDED
-    SmsDomainUrl:
-      type: string
-      pattern: '^[a-zA-Z-0-9-:\/.]*$'
-      minLength: 1
-      maxLength: 1000
-    Environment:
-      type: object
-      properties:
-        name:
-          allOf:
-            - $ref: '#/components/schemas/EnvironmentName'
-            - description: The name of the FinSpace environment.
-        environmentId:
-          allOf:
-            - $ref: '#/components/schemas/IdType'
-            - description: The identifier of the FinSpace environment.
-        awsAccountId:
-          allOf:
-            - $ref: '#/components/schemas/IdType'
-            - description: The ID of the AWS account in which the FinSpace environment is created.
-        status:
-          allOf:
-            - $ref: '#/components/schemas/EnvironmentStatus'
-            - description: The current status of creation of the FinSpace environment.
-        environmentUrl:
-          allOf:
-            - $ref: '#/components/schemas/url'
-            - description: The sign-in url for the web application of your FinSpace environment.
-        description:
-          allOf:
-            - $ref: '#/components/schemas/Description'
-            - description: The description of the FinSpace environment.
-        environmentArn:
-          allOf:
-            - $ref: '#/components/schemas/EnvironmentArn'
-            - description: The Amazon Resource Name (ARN) of your FinSpace environment.
-        sageMakerStudioDomainUrl:
-          allOf:
-            - $ref: '#/components/schemas/SmsDomainUrl'
-            - description: The url of the integrated FinSpace notebook environment in your web application.
-        kmsKeyId:
-          allOf:
-            - $ref: '#/components/schemas/KmsKeyId'
-            - description: The KMS key id used to encrypt in the FinSpace environment.
-        dedicatedServiceAccountId:
-          allOf:
-            - $ref: '#/components/schemas/IdType'
-            - description: The AWS account ID of the dedicated service account associated with your FinSpace environment.
-        federationMode:
-          allOf:
-            - $ref: '#/components/schemas/FederationMode'
-            - description: The authentication mode for the environment.
-        federationParameters:
-          allOf:
-            - $ref: '#/components/schemas/FederationParameters'
-            - description: Configuration information when authentication mode is FEDERATED.
-      description: Represents an FinSpace environment.
-    EnvironmentList:
-      type: array
-      items:
-        $ref: '#/components/schemas/Environment'
-    FederationAttributeKey:
-      type: string
-      pattern: .*
-      minLength: 1
-      maxLength: 32
-    GetEnvironmentRequest:
-      type: object
-      title: GetEnvironmentRequest
-      properties: {}
-    PaginationToken:
-      type: string
-      pattern: .*
-      minLength: 1
-      maxLength: 1000
-    ResultLimit:
-      type: integer
-      minimum: 0
-      maximum: 100
-    ListEnvironmentsRequest:
-      type: object
-      title: ListEnvironmentsRequest
-      properties: {}
-    ListTagsForResourceRequest:
-      type: object
-      title: ListTagsForResourceRequest
-      properties: {}
-    TagKeyList:
-      type: array
-      items:
-        $ref: '#/components/schemas/TagKey'
-      minItems: 1
-      maxItems: 50
-    TagResourceRequest:
-      type: object
-      required:
-        - tags
-      title: TagResourceRequest
-      properties:
-        tags:
-          allOf:
-            - $ref: '#/components/schemas/TagMap'
-            - description: One or more tags to be assigned to the resource.
-    UntagResourceRequest:
-      type: object
-      title: UntagResourceRequest
-      properties: {}
-    UpdateEnvironmentRequest:
-      type: object
-      title: UpdateEnvironmentRequest
-      properties:
-        name:
-          allOf:
-            - $ref: '#/components/schemas/EnvironmentName'
-            - description: The name of the environment.
-        description:
-          allOf:
-            - $ref: '#/components/schemas/Description'
-            - description: The description of the environment.
-        federationMode:
-          allOf:
-            - $ref: '#/components/schemas/FederationMode'
-            - description: <p>Authentication mode for the environment.</p> <ul> <li> <p> <code>FEDERATED</code> - Users access FinSpace through Single Sign On (SSO) via your Identity provider.</p> </li> <li> <p> <code>LOCAL</code> - Users access FinSpace via email and password managed within the FinSpace environment.</p> </li> </ul>
-        federationParameters:
-          $ref: '#/components/schemas/FederationParameters'
+schemes:
+  - http
 security:
   - hmac: []
+securityDefinitions:
+  hmac:
+    description: Amazon Signature authorization v4
+    in: header
+    name: Authorization
+    type: apiKey
+    x-amazon-apigateway-authtype: awsSigv4
+swagger: '2.0'
+x-components:
+  parameters:
+    X-Amz-Algorithm:
+      in: header
+      name: X-Amz-Algorithm
+      required: false
+      type: string
+    X-Amz-Content-Sha256:
+      in: header
+      name: X-Amz-Content-Sha256
+      required: false
+      type: string
+    X-Amz-Credential:
+      in: header
+      name: X-Amz-Credential
+      required: false
+      type: string
+    X-Amz-Date:
+      in: header
+      name: X-Amz-Date
+      required: false
+      type: string
+    X-Amz-Security-Token:
+      in: header
+      name: X-Amz-Security-Token
+      required: false
+      type: string
+    X-Amz-Signature:
+      in: header
+      name: X-Amz-Signature
+      required: false
+      type: string
+    X-Amz-SignedHeaders:
+      in: header
+      name: X-Amz-SignedHeaders
+      required: false
+      type: string
+x-hasEquivalentPaths: true
+

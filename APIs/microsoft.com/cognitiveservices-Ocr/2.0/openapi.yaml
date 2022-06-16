@@ -1,139 +1,361 @@
-openapi: 3.0.0
-servers:
-  - url: https://westcentralus.api.cognitive.microsoft.com/vision/v2.0
-  - url: "{Endpoint}/vision/v2.0"
-    variables:
-      Endpoint:
-        default: ""
-        description: Supported Cognitive Services endpoints.
-        x-ms-parameter-location: client
-        x-ms-skip-url-encoding: true
+basePath: /vision/v2.0
+definitions:
+  BoundingBox:
+    description: >-
+      Quadrangle bounding box, with coordinates in original image. The eight
+      numbers represent the four points (x-coordinate, y-coordinate from the
+      left-top corner of the image) of the detected rectangle from the left-top
+      corner in the clockwise direction. For images, coordinates are in pixels.
+      For PDF, coordinates are in inches.
+    items:
+      nullable: false
+      type: number
+    type: array
+  ComputerVisionError:
+    description: Details about the API request error.
+    properties:
+      code:
+        description: The error code.
+        enum:
+          - InvalidImageFormat
+          - UnsupportedMediaType
+          - InvalidImageUrl
+          - NotSupportedFeature
+          - NotSupportedImage
+          - Timeout
+          - InternalServerError
+          - InvalidImageSize
+          - BadArgument
+          - DetectFaceError
+          - NotSupportedLanguage
+          - InvalidThumbnailSize
+          - InvalidDetails
+          - InvalidModel
+          - CancelledRequest
+          - NotSupportedVisualFeature
+          - FailedToProcess
+          - Unspecified
+          - StorageException
+        x-ms-enum:
+          modelAsString: true
+          name: ComputerVisionErrorCodes
+      message:
+        description: A message explaining the error reported by the service.
+        type: string
+      requestId:
+        description: A unique request identifier.
+        type: string
+    required:
+      - code
+      - message
+    type: object
+  ImageUrl:
+    properties:
+      url:
+        description: Publicly reachable URL of an image.
+        type: string
+    required:
+      - url
+    type: object
+  Line:
+    description: An object representing a recognized text line.
+    properties:
+      boundingBox:
+        $ref: '#/definitions/BoundingBox'
+      text:
+        description: The text content of the line.
+        type: string
+      words:
+        description: List of words in the text line.
+        items:
+          $ref: '#/definitions/Word'
+        type: array
+    type: object
+  OperationStatus:
+    description: Status code of the text operation.
+    enum:
+      - NotStarted
+      - Running
+      - Failed
+      - Succeeded
+    nullable: false
+    type: string
+    x-ms-enum:
+      modelAsString: false
+      name: TextOperationStatusCodes
+  ReadOperationResult:
+    description: OCR result of the read operation.
+    properties:
+      recognitionResults:
+        description: An array of text recognition result of the read operation.
+        items:
+          $ref: '#/definitions/TextRecognitionResult'
+        type: array
+      status:
+        $ref: '#/definitions/OperationStatus'
+    type: object
+  TextOperationResult:
+    description: Result of recognition text operation.
+    properties:
+      recognitionResult:
+        $ref: '#/definitions/TextRecognitionResult'
+      status:
+        $ref: '#/definitions/OperationStatus'
+    type: object
+  TextRecognitionResult:
+    description: An object representing a recognized text region
+    properties:
+      clockwiseOrientation:
+        description: >-
+          The orientation of the image in degrees in the clockwise direction.
+          Range between [0, 360).
+        type: number
+      height:
+        description: The height of the image in pixels or the PDF in inches.
+        type: number
+      lines:
+        description: A list of recognized text lines.
+        items:
+          $ref: '#/definitions/Line'
+        type: array
+      page:
+        description: The 1-based page number of the recognition result.
+        type: integer
+      unit:
+        description: >-
+          The unit used in the Width, Height and BoundingBox. For images, the
+          unit is 'pixel'. For PDF, the unit is 'inch'.
+        enum:
+          - pixel
+          - inch
+        type: string
+        x-ms-enum:
+          modelAsString: false
+          name: TextRecognitionResultDimensionUnit
+        x-nullable: true
+      width:
+        description: The width of the image in pixels or the PDF in inches.
+        type: number
+    required:
+      - lines
+    type: object
+  Word:
+    description: An object representing a recognized word.
+    properties:
+      boundingBox:
+        $ref: '#/definitions/BoundingBox'
+      confidence:
+        description: Qualitative confidence measure.
+        enum:
+          - High
+          - Low
+        type: string
+        x-ms-enum:
+          modelAsString: false
+          name: TextRecognitionResultConfidenceClass
+        x-nullable: true
+      text:
+        description: The text content of the word.
+        type: string
+    required:
+      - boundingBox
+      - text
+    type: object
+host: westcentralus.api.cognitive.microsoft.com
 info:
   contact:
     x-twitter: microsoft
-  description: The Computer Vision API provides state-of-the-art algorithms to process images and return information. For example, it can be used to determine if an image contains mature content, or it can be used to find all the faces in an image.  It also has other features like estimating dominant and accent colors, categorizing the content of images, and describing an image with complete English sentences.  Additionally, it can also intelligently generate images thumbnails for displaying large images effectively.
+  description: >-
+    The Computer Vision API provides state-of-the-art algorithms to process
+    images and return information. For example, it can be used to determine if
+    an image contains mature content, or it can be used to find all the faces in
+    an image.  It also has other features like estimating dominant and accent
+    colors, categorizing the content of images, and describing an image with
+    complete English sentences.  Additionally, it can also intelligently
+    generate images thumbnails for displaying large images effectively.
   title: Computer Vision Client
-  version: "2.0"
+  version: '2.0'
   x-apisguru-categories:
     - developer_tools
     - cloud
   x-logo:
-    url: https://twitter.com/microsoft/profile_image?size=original
+    url: 'https://twitter.com/microsoft/profile_image?size=original'
   x-origin:
     - format: openapi
-      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/cognitiveservices/data-plane/ComputerVision/stable/v2.0/Ocr.json
-      version: "3.0"
+      url: >-
+        https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/cognitiveservices/data-plane/ComputerVision/stable/v2.0/Ocr.json
+      version: '3.0'
   x-preferred: false
   x-providerName: microsoft.com
   x-serviceName: cognitiveservices-Ocr
   x-tags:
     - Microsoft
-security:
-  - apim_key: []
 paths:
   /read/core/asyncBatchAnalyze:
     post:
-      description: Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'GetReadOperationResult' operation to access OCR results.​
+      consumes:
+        - application/json
+      description: >-
+        Use this interface to get the result of a Read operation, employing the
+        state-of-the-art Optical Character Recognition (OCR) algorithms
+        optimized for text-heavy documents. When you use the Read File
+        interface, the response contains a field called 'Operation-Location'.
+        The 'Operation-Location' field contains the URL that you must use for
+        your 'GetReadOperationResult' operation to access OCR results.​
       operationId: BatchReadFile
-      requestBody:
-        $ref: "#/components/requestBodies/ImageUrl"
+      parameters:
+        - description: >-
+            A JSON document with a URL pointing to the image that is to be
+            analyzed.
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/ImageUrl'
+          x-ms-client-flatten: true
+          x-ms-parameter-location: method
+      produces:
+        - application/json
       responses:
-        "202":
-          description: The service has accepted the request and will start processing later.
+        '202':
+          description: >-
+            The service has accepted the request and will start processing
+            later.
           headers:
             Operation-Location:
-              description: "URL to query for status of the operation. The operation ID will expire in 48 hours. "
-              schema:
-                type: string
+              description: >-
+                URL to query for status of the operation. The operation ID will
+                expire in 48 hours. 
+              type: string
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ComputerVisionError"
           description: Error response.
-  "/read/operations/{operationId}":
+          schema:
+            $ref: '#/definitions/ComputerVisionError'
+  '/read/operations/{operationId}':
     get:
-      description: This interface is used for getting OCR results of Read operation. The URL to this interface should be retrieved from 'Operation-Location' field returned from Batch Read File interface.
+      description: >-
+        This interface is used for getting OCR results of Read operation. The
+        URL to this interface should be retrieved from 'Operation-Location'
+        field returned from Batch Read File interface.
       operationId: GetReadOperationResult
       parameters:
-        - description: Id of read operation returned in the response of the 'Batch Read File' interface.
+        - description: >-
+            Id of read operation returned in the response of the 'Batch Read
+            File' interface.
           examples:
             Successful Get Read Operation Result request:
               value: e56ffa6e-1ee4-4042-bc07-993db706c95f
           in: path
           name: operationId
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              examples:
-                Successful Get Read Operation Result request:
-                  $ref: "#/components/examples/Successful_Get_Read_Operation_Result_request"
-              schema:
-                $ref: "#/components/schemas/ReadOperationResult"
+        '200':
           description: Returns the read operation status.
+          schema:
+            $ref: '#/definitions/ReadOperationResult'
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ComputerVisionError"
           description: Error response.
+          schema:
+            $ref: '#/definitions/ComputerVisionError'
   /recognizeText:
     post:
-      description: Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
+      consumes:
+        - application/json
+      description: >-
+        Recognize Text operation. When you use the Recognize Text interface, the
+        response contains a field called 'Operation-Location'. The
+        'Operation-Location' field contains the URL that you must use for your
+        Get Recognize Text Operation Result operation.
       operationId: RecognizeText
       parameters:
-        - $ref: "#/components/parameters/TextRecognitionMode"
-      requestBody:
-        $ref: "#/components/requestBodies/ImageUrl"
+        - description: Type of text to recognize.
+          enum:
+            - Handwritten
+            - Printed
+          examples:
+            Successful Recognize Text request:
+              value: Handwritten
+          in: query
+          name: mode
+          required: true
+          type: string
+          x-ms-enum:
+            modelAsString: false
+            name: TextRecognitionMode
+          x-ms-parameter-location: method
+        - description: >-
+            A JSON document with a URL pointing to the image that is to be
+            analyzed.
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/ImageUrl'
+          x-ms-client-flatten: true
+          x-ms-parameter-location: method
+      produces:
+        - application/json
       responses:
-        "202":
-          description: The service has accepted the request and will start processing later. It will return Accepted immediately and include an 'Operation-Location' header. Client side should further query the operation status using the URL specified in this header. The operation ID will expire in 48 hours.
+        '202':
+          description: >-
+            The service has accepted the request and will start processing
+            later. It will return Accepted immediately and include an
+            'Operation-Location' header. Client side should further query the
+            operation status using the URL specified in this header. The
+            operation ID will expire in 48 hours.
           headers:
             Operation-Location:
-              description: "URL to query for status of the operation. The operation ID will expire in 48 hours. "
-              schema:
-                type: string
+              description: >-
+                URL to query for status of the operation. The operation ID will
+                expire in 48 hours. 
+              type: string
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ComputerVisionError"
           description: Error response.
-  "/textOperations/{operationId}":
+          schema:
+            $ref: '#/definitions/ComputerVisionError'
+  '/textOperations/{operationId}':
     get:
-      description: This interface is used for getting text operation result. The URL to this interface should be retrieved from 'Operation-Location' field returned from Recognize Text interface.
+      description: >-
+        This interface is used for getting text operation result. The URL to
+        this interface should be retrieved from 'Operation-Location' field
+        returned from Recognize Text interface.
       operationId: GetTextOperationResult
       parameters:
-        - description: Id of the text operation returned in the response of the 'Recognize Text'
+        - description: >-
+            Id of the text operation returned in the response of the 'Recognize
+            Text'
           examples:
             Successful Get Text Operation Result request:
               value: 49a36324-fc4b-4387-aa06-090cfbf0064f
           in: path
           name: operationId
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              examples:
-                Successful Get Text Operation Result request:
-                  $ref: "#/components/examples/Successful_Get_Text_Operation_Result_request"
-              schema:
-                $ref: "#/components/schemas/TextOperationResult"
+        '200':
           description: Returns the operation status.
+          schema:
+            $ref: '#/definitions/TextOperationResult'
         default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ComputerVisionError"
           description: Error response.
-components:
+          schema:
+            $ref: '#/definitions/ComputerVisionError'
+schemes:
+  - https
+security:
+  - apim_key: []
+securityDefinitions:
+  apim_key:
+    in: header
+    name: Ocp-Apim-Subscription-Key
+    type: apiKey
+swagger: '2.0'
+x-components:
   examples:
     Successful_Get_Read_Operation_Result_request:
       value:
@@ -298,7 +520,7 @@ components:
                   - 1139
                   - 1607
                   - 1107
-                text: in never failing ,
+                text: 'in never failing ,'
                 words:
                   - boundingBox:
                       - 1611
@@ -340,7 +562,7 @@ components:
                       - 2705
                       - 1140
                     confidence: Low
-                    text: ","
+                    text: ','
             page: 2
             unit: pixel
             width: 600
@@ -500,7 +722,7 @@ components:
                 - 1139
                 - 1607
                 - 1107
-              text: in never failing ,
+              text: 'in never failing ,'
               words:
                 - boundingBox:
                     - 1611
@@ -541,7 +763,7 @@ components:
                     - 1139
                     - 2705
                     - 1140
-                  text: ","
+                  text: ','
         status: Succeeded
   parameters:
     Endpoint:
@@ -555,17 +777,16 @@ components:
       x-ms-skip-url-encoding: true
     TextRecognitionMode:
       description: Type of text to recognize.
+      enum:
+        - Handwritten
+        - Printed
       examples:
         Successful Recognize Text request:
           value: Handwritten
       in: query
       name: mode
       required: true
-      schema:
-        enum:
-          - Handwritten
-          - Printed
-        type: string
+      type: string
       x-ms-enum:
         modelAsString: false
         name: TextRecognitionMode
@@ -575,7 +796,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ImageUrl"
+            $ref: '#/definitions/ImageUrl'
       description: A JSON document with a URL pointing to the image that is to be analyzed.
       required: true
       x-ms-client-flatten: true
@@ -589,204 +810,66 @@ components:
       description: An image stream.
       required: true
       x-ms-parameter-location: method
-  schemas:
-    BoundingBox:
-      description: Quadrangle bounding box, with coordinates in original image. The eight numbers represent the four points (x-coordinate, y-coordinate from the left-top corner of the image) of the detected rectangle from the left-top corner in the clockwise direction. For images, coordinates are in pixels. For PDF, coordinates are in inches.
-      items:
-        nullable: false
-        type: number
-      type: array
-    ComputerVisionError:
-      description: Details about the API request error.
-      properties:
-        code:
-          description: The error code.
-          enum:
-            - InvalidImageFormat
-            - UnsupportedMediaType
-            - InvalidImageUrl
-            - NotSupportedFeature
-            - NotSupportedImage
-            - Timeout
-            - InternalServerError
-            - InvalidImageSize
-            - BadArgument
-            - DetectFaceError
-            - NotSupportedLanguage
-            - InvalidThumbnailSize
-            - InvalidDetails
-            - InvalidModel
-            - CancelledRequest
-            - NotSupportedVisualFeature
-            - FailedToProcess
-            - Unspecified
-            - StorageException
-          x-ms-enum:
-            modelAsString: true
-            name: ComputerVisionErrorCodes
-        message:
-          description: A message explaining the error reported by the service.
-          type: string
-        requestId:
-          description: A unique request identifier.
-          type: string
-      required:
-        - code
-        - message
-      type: object
-    ImageUrl:
-      properties:
-        url:
-          description: Publicly reachable URL of an image.
-          type: string
-      required:
-        - url
-      type: object
-    Line:
-      description: An object representing a recognized text line.
-      properties:
-        boundingBox:
-          $ref: "#/components/schemas/BoundingBox"
-        text:
-          description: The text content of the line.
-          type: string
-        words:
-          description: List of words in the text line.
-          items:
-            $ref: "#/components/schemas/Word"
-          type: array
-      type: object
-    OperationStatus:
-      description: Status code of the text operation.
-      enum:
-        - NotStarted
-        - Running
-        - Failed
-        - Succeeded
-      nullable: false
-      type: string
-      x-ms-enum:
-        modelAsString: false
-        name: TextOperationStatusCodes
-    ReadOperationResult:
-      description: OCR result of the read operation.
-      properties:
-        recognitionResults:
-          description: An array of text recognition result of the read operation.
-          items:
-            $ref: "#/components/schemas/TextRecognitionResult"
-          type: array
-        status:
-          $ref: "#/components/schemas/OperationStatus"
-      type: object
-    TextOperationResult:
-      description: Result of recognition text operation.
-      properties:
-        recognitionResult:
-          $ref: "#/components/schemas/TextRecognitionResult"
-        status:
-          $ref: "#/components/schemas/OperationStatus"
-      type: object
-    TextRecognitionResult:
-      description: An object representing a recognized text region
-      properties:
-        clockwiseOrientation:
-          description: The orientation of the image in degrees in the clockwise direction. Range between [0, 360).
-          type: number
-        height:
-          description: The height of the image in pixels or the PDF in inches.
-          type: number
-        lines:
-          description: A list of recognized text lines.
-          items:
-            $ref: "#/components/schemas/Line"
-          type: array
-        page:
-          description: The 1-based page number of the recognition result.
-          type: integer
-        unit:
-          description: The unit used in the Width, Height and BoundingBox. For images, the unit is 'pixel'. For PDF, the unit is 'inch'.
-          enum:
-            - pixel
-            - inch
-          nullable: true
-          type: string
-          x-ms-enum:
-            modelAsString: false
-            name: TextRecognitionResultDimensionUnit
-        width:
-          description: The width of the image in pixels or the PDF in inches.
-          type: number
-      required:
-        - lines
-      type: object
-    Word:
-      description: An object representing a recognized word.
-      properties:
-        boundingBox:
-          $ref: "#/components/schemas/BoundingBox"
-        confidence:
-          description: Qualitative confidence measure.
-          enum:
-            - High
-            - Low
-          nullable: true
-          type: string
-          x-ms-enum:
-            modelAsString: false
-            name: TextRecognitionResultConfidenceClass
-        text:
-          description: The text content of the word.
-          type: string
-      required:
-        - boundingBox
-        - text
-      type: object
-  securitySchemes:
-    apim_key:
-      in: header
-      name: Ocp-Apim-Subscription-Key
-      type: apiKey
 x-ms-paths:
   /read/core/asyncBatchAnalyze?overload=stream:
     post:
-      description: Use this interface to get the result of a Read Document operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation' to access OCR results.​
+      description: >-
+        Use this interface to get the result of a Read Document operation,
+        employing the state-of-the-art Optical Character Recognition (OCR)
+        algorithms optimized for text-heavy documents. When you use the Read
+        Document interface, the response contains a field called
+        'Operation-Location'. The 'Operation-Location' field contains the URL
+        that you must use for your 'Get Read Result operation' to access OCR
+        results.​
       operationId: BatchReadFileInStream
       requestBody:
-        $ref: "#/components/requestBodies/RecognizeTextInStreamImage"
+        $ref: '#/x-components/requestBodies/RecognizeTextInStreamImage'
       responses:
-        "202":
-          description: The service has accepted the request and will start processing later.
+        '202':
+          description: >-
+            The service has accepted the request and will start processing
+            later.
           headers:
             Operation-Location:
-              description: "URL to query for status of the operation. The operation ID will expire in 48 hours. "
+              description: >-
+                URL to query for status of the operation. The operation ID will
+                expire in 48 hours. 
               schema:
                 type: string
         default:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ComputerVisionError"
+                $ref: '#/definitions/ComputerVisionError'
           description: Error response.
   /recognizeText?overload=stream:
     post:
-      description: Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
+      description: >-
+        Recognize Text operation. When you use the Recognize Text interface, the
+        response contains a field called 'Operation-Location'. The
+        'Operation-Location' field contains the URL that you must use for your
+        Get Recognize Text Operation Result operation.
       operationId: RecognizeTextInStream
       parameters:
-        - $ref: "#/components/parameters/TextRecognitionMode"
+        - $ref: '#/x-components/parameters/TextRecognitionMode'
       requestBody:
-        $ref: "#/components/requestBodies/RecognizeTextInStreamImage"
+        $ref: '#/x-components/requestBodies/RecognizeTextInStreamImage'
       responses:
-        "202":
-          description: The service has accepted the request and will start processing later.
+        '202':
+          description: >-
+            The service has accepted the request and will start processing
+            later.
           headers:
             Operation-Location:
-              description: "URL to query for status of the operation. The operation ID will expire in 48 hours. "
+              description: >-
+                URL to query for status of the operation. The operation ID will
+                expire in 48 hours. 
               schema:
                 type: string
         default:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ComputerVisionError"
+                $ref: '#/definitions/ComputerVisionError'
           description: Error response.
+

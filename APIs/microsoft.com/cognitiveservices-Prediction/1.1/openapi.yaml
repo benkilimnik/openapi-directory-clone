@@ -1,307 +1,349 @@
-openapi: 3.0.0
-servers:
-  - url: https://southcentralus.api.cognitive.microsoft.com/customvision/v1.1/Prediction
+basePath: /customvision/v1.1/Prediction
+definitions:
+  ImagePredictionResultModel:
+    description: result of an image prediction request
+    properties:
+      Created:
+        format: date-time
+        nullable: false
+        readOnly: true
+        type: string
+      Id:
+        format: uuid
+        nullable: false
+        readOnly: true
+        type: string
+      Iteration:
+        format: uuid
+        nullable: false
+        readOnly: true
+        type: string
+      Predictions:
+        items:
+          $ref: '#/definitions/ImageTagPredictionModel'
+        readOnly: true
+        type: array
+        x-nullable: true
+      Project:
+        format: uuid
+        nullable: false
+        readOnly: true
+        type: string
+    type: object
+    x-nullable: true
+  ImageTagPredictionModel:
+    properties:
+      Probability:
+        format: float
+        nullable: false
+        readOnly: true
+        type: number
+      Tag:
+        readOnly: true
+        type: string
+        x-nullable: true
+      TagId:
+        format: uuid
+        nullable: false
+        readOnly: true
+        type: string
+    type: object
+    x-nullable: true
+  ImageUrl:
+    properties:
+      Url:
+        type: string
+        x-nullable: true
+    type: object
+    x-nullable: true
+host: southcentralus.api.cognitive.microsoft.com
 info:
   contact:
     x-twitter: microsoft
   title: PredictionEndpoint
-  version: "1.1"
+  version: '1.1'
   x-apisguru-categories:
     - developer_tools
     - cloud
   x-logo:
-    url: https://twitter.com/microsoft/profile_image?size=original
+    url: 'https://twitter.com/microsoft/profile_image?size=original'
   x-origin:
     - format: openapi
-      url: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/cognitiveservices/data-plane/CustomVision/Prediction/stable/v1.1/Prediction.json
-      version: "3.0"
+      url: >-
+        https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/cognitiveservices/data-plane/CustomVision/Prediction/stable/v1.1/Prediction.json
+      version: '3.0'
   x-preferred: false
   x-providerName: microsoft.com
   x-serviceName: cognitiveservices-Prediction
   x-tags:
     - Microsoft
 paths:
-  "/{projectId}/image":
+  '/{projectId}/image':
     post:
+      consumes:
+        - multipart/form-data
       operationId: PredictImage
       parameters:
         - description: The project id
           examples:
             Successful Prediction with Image request:
               value: 64b822c5-8082-4b36-a426-27225f4aa18c
+          format: uuid
           in: path
           name: projectId
           required: true
-          schema:
-            format: uuid
-            type: string
+          type: string
           x-nullable: false
-        - description: "Optional. Specifies the id of a particular iteration to evaluate against.\r
-
-            \            The default iteration for the project will be used when not specified"
+        - description: "Optional. Specifies the id of a particular iteration to evaluate against.\r\n            The default iteration for the project will be used when not specified"
           examples:
             Successful Prediction with Image request:
               value: fe1e83c4-6f50-4899-9544-6bb08cf0e15a
+          format: uuid
           in: query
           name: iterationId
           required: false
-          schema:
-            format: uuid
-            type: string
+          type: string
           x-nullable: true
         - description: Optional. Specifies the name of application using the endpoint
           in: query
           name: application
           required: false
-          schema:
-            type: string
+          type: string
           x-nullable: true
-        - $ref: "#/components/parameters/ApiKey"
-      requestBody:
-        $ref: "#/components/requestBodies/PredictImage"
+        - examples:
+            Successful Prediction with Image request:
+              value: '{API Key}'
+            Successful Prediction with Url request:
+              value: '{API Key}'
+          in: header
+          name: Prediction-Key
+          required: true
+          type: string
+          x-ms-client-name: ApiKey
+          x-ms-parameter-location: client
+        - format: binary
+          in: formData
+          name: imageData
+          required: true
+          type: string
+      produces:
+        - application/json
+        - application/xml
+        - text/json
+        - text/xml
       responses:
-        "200":
-          content:
-            application/json:
-              examples:
-                Successful Prediction with Image request:
-                  $ref: "#/components/examples/Successful_Prediction_with_Image_request"
-              schema:
-                $ref: "#/components/schemas/ImagePredictionResultModel"
-            application/xml:
-              examples:
-                Successful Prediction with Image request:
-                  $ref: "#/components/examples/Successful_Prediction_with_Image_request"
-              schema:
-                $ref: "#/components/schemas/ImagePredictionResultModel"
-            text/json:
-              examples:
-                Successful Prediction with Image request:
-                  $ref: "#/components/examples/Successful_Prediction_with_Image_request"
-              schema:
-                $ref: "#/components/schemas/ImagePredictionResultModel"
-            text/xml:
-              examples:
-                Successful Prediction with Image request:
-                  $ref: "#/components/examples/Successful_Prediction_with_Image_request"
-              schema:
-                $ref: "#/components/schemas/ImagePredictionResultModel"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/ImagePredictionResultModel'
       summary: Predict an image and saves the result
       tags:
         - ImagePredictionApi
-  "/{projectId}/image/nostore":
+  '/{projectId}/image/nostore':
     post:
+      consumes:
+        - multipart/form-data
       operationId: PredictImageWithNoStore
       parameters:
         - description: The project id
           examples:
             Successful Prediction with Image request:
               value: 64b822c5-8082-4b36-a426-27225f4aa18c
+          format: uuid
           in: path
           name: projectId
           required: true
-          schema:
-            format: uuid
-            type: string
+          type: string
           x-nullable: false
-        - description: "Optional. Specifies the id of a particular iteration to evaluate against.\r
-
-            \            The default iteration for the project will be used when not specified"
+        - description: "Optional. Specifies the id of a particular iteration to evaluate against.\r\n            The default iteration for the project will be used when not specified"
           examples:
             Successful Prediction with Image request:
               value: fe1e83c4-6f50-4899-9544-6bb08cf0e15a
+          format: uuid
           in: query
           name: iterationId
           required: false
-          schema:
-            format: uuid
-            type: string
+          type: string
           x-nullable: true
         - description: Optional. Specifies the name of application using the endpoint
           in: query
           name: application
           required: false
-          schema:
-            type: string
+          type: string
           x-nullable: true
-        - $ref: "#/components/parameters/ApiKey"
-      requestBody:
-        $ref: "#/components/requestBodies/PredictImage"
+        - examples:
+            Successful Prediction with Image request:
+              value: '{API Key}'
+            Successful Prediction with Url request:
+              value: '{API Key}'
+          in: header
+          name: Prediction-Key
+          required: true
+          type: string
+          x-ms-client-name: ApiKey
+          x-ms-parameter-location: client
+        - format: binary
+          in: formData
+          name: imageData
+          required: true
+          type: string
+      produces:
+        - application/json
+        - application/xml
+        - text/json
+        - text/xml
       responses:
-        "200":
-          content:
-            application/json:
-              examples:
-                Successful Prediction with Image request:
-                  $ref: "#/components/examples/Successful_Prediction_with_Image_request"
-              schema:
-                $ref: "#/components/schemas/ImagePredictionResultModel"
-            application/xml:
-              examples:
-                Successful Prediction with Image request:
-                  $ref: "#/components/examples/Successful_Prediction_with_Image_request"
-              schema:
-                $ref: "#/components/schemas/ImagePredictionResultModel"
-            text/json:
-              examples:
-                Successful Prediction with Image request:
-                  $ref: "#/components/examples/Successful_Prediction_with_Image_request"
-              schema:
-                $ref: "#/components/schemas/ImagePredictionResultModel"
-            text/xml:
-              examples:
-                Successful Prediction with Image request:
-                  $ref: "#/components/examples/Successful_Prediction_with_Image_request"
-              schema:
-                $ref: "#/components/schemas/ImagePredictionResultModel"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/ImagePredictionResultModel'
       summary: Predict an image without saving the result
       tags:
         - ImagePredictionApi
-  "/{projectId}/url":
+  '/{projectId}/url':
     post:
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+        - application/xml
+        - text/json
+        - text/xml
       operationId: PredictImageUrl
       parameters:
         - description: The project id
           examples:
             Successful Prediction with Url request:
               value: 64b822c5-8082-4b36-a426-27225f4aa18c
+          format: uuid
           in: path
           name: projectId
           required: true
-          schema:
-            format: uuid
-            type: string
+          type: string
           x-nullable: false
-        - description: "Optional. Specifies the id of a particular iteration to evaluate against.\r
-
-            \            The default iteration for the project will be used when not specified"
+        - description: "Optional. Specifies the id of a particular iteration to evaluate against.\r\n            The default iteration for the project will be used when not specified"
           examples:
             Successful Prediction with Url request:
               value: fe1e83c4-6f50-4899-9544-6bb08cf0e15a
+          format: uuid
           in: query
           name: iterationId
           required: false
-          schema:
-            format: uuid
-            type: string
+          type: string
           x-nullable: true
         - description: Optional. Specifies the name of application using the endpoint
           in: query
           name: application
           required: false
-          schema:
-            type: string
+          type: string
           x-nullable: true
-        - $ref: "#/components/parameters/ApiKey"
-      requestBody:
-        $ref: "#/components/requestBodies/ImageUrl"
+        - examples:
+            Successful Prediction with Image request:
+              value: '{API Key}'
+            Successful Prediction with Url request:
+              value: '{API Key}'
+          in: header
+          name: Prediction-Key
+          required: true
+          type: string
+          x-ms-client-name: ApiKey
+          x-ms-parameter-location: client
+        - description: >-
+            An {Iris.Web.Api.Models.ImageUrl} that contains the url of the image
+            to be evaluated
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/ImageUrl'
+      produces:
+        - application/json
+        - application/xml
+        - text/json
+        - text/xml
       responses:
-        "200":
-          content:
-            application/json:
-              examples:
-                Successful Prediction with Url request:
-                  $ref: "#/components/examples/Successful_Prediction_with_Url_request"
-              schema:
-                $ref: "#/components/schemas/ImagePredictionResultModel"
-            application/xml:
-              examples:
-                Successful Prediction with Url request:
-                  $ref: "#/components/examples/Successful_Prediction_with_Url_request"
-              schema:
-                $ref: "#/components/schemas/ImagePredictionResultModel"
-            text/json:
-              examples:
-                Successful Prediction with Url request:
-                  $ref: "#/components/examples/Successful_Prediction_with_Url_request"
-              schema:
-                $ref: "#/components/schemas/ImagePredictionResultModel"
-            text/xml:
-              examples:
-                Successful Prediction with Url request:
-                  $ref: "#/components/examples/Successful_Prediction_with_Url_request"
-              schema:
-                $ref: "#/components/schemas/ImagePredictionResultModel"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/ImagePredictionResultModel'
       summary: Predict an image url and saves the result
       tags:
         - ImagePredictionApi
-  "/{projectId}/url/nostore":
+  '/{projectId}/url/nostore':
     post:
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+        - application/xml
+        - text/json
+        - text/xml
       operationId: PredictImageUrlWithNoStore
       parameters:
         - description: The project id
           examples:
             Successful Prediction with Url request:
               value: 64b822c5-8082-4b36-a426-27225f4aa18c
+          format: uuid
           in: path
           name: projectId
           required: true
-          schema:
-            format: uuid
-            type: string
+          type: string
           x-nullable: false
-        - description: "Optional. Specifies the id of a particular iteration to evaluate against.\r
-
-            \            The default iteration for the project will be used when not specified"
+        - description: "Optional. Specifies the id of a particular iteration to evaluate against.\r\n            The default iteration for the project will be used when not specified"
           examples:
             Successful Prediction with Url request:
               value: fe1e83c4-6f50-4899-9544-6bb08cf0e15a
+          format: uuid
           in: query
           name: iterationId
           required: false
-          schema:
-            format: uuid
-            type: string
+          type: string
           x-nullable: true
         - description: Optional. Specifies the name of application using the endpoint
           in: query
           name: application
           required: false
-          schema:
-            type: string
+          type: string
           x-nullable: true
-        - $ref: "#/components/parameters/ApiKey"
-      requestBody:
-        $ref: "#/components/requestBodies/ImageUrl"
+        - examples:
+            Successful Prediction with Image request:
+              value: '{API Key}'
+            Successful Prediction with Url request:
+              value: '{API Key}'
+          in: header
+          name: Prediction-Key
+          required: true
+          type: string
+          x-ms-client-name: ApiKey
+          x-ms-parameter-location: client
+        - description: >-
+            An {Iris.Web.Api.Models.ImageUrl} that contains the url of the image
+            to be evaluated
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/ImageUrl'
+      produces:
+        - application/json
+        - application/xml
+        - text/json
+        - text/xml
       responses:
-        "200":
-          content:
-            application/json:
-              examples:
-                Successful Prediction with Url request:
-                  $ref: "#/components/examples/Successful_Prediction_with_Url_request"
-              schema:
-                $ref: "#/components/schemas/ImagePredictionResultModel"
-            application/xml:
-              examples:
-                Successful Prediction with Url request:
-                  $ref: "#/components/examples/Successful_Prediction_with_Url_request"
-              schema:
-                $ref: "#/components/schemas/ImagePredictionResultModel"
-            text/json:
-              examples:
-                Successful Prediction with Url request:
-                  $ref: "#/components/examples/Successful_Prediction_with_Url_request"
-              schema:
-                $ref: "#/components/schemas/ImagePredictionResultModel"
-            text/xml:
-              examples:
-                Successful Prediction with Url request:
-                  $ref: "#/components/examples/Successful_Prediction_with_Url_request"
-              schema:
-                $ref: "#/components/schemas/ImagePredictionResultModel"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/ImagePredictionResultModel'
       summary: Predict an image url without saving the result
       tags:
         - ImagePredictionApi
-components:
+schemes:
+  - https
+swagger: '2.0'
+x-components:
   examples:
     Successful_Prediction_with_Image_request:
       value:
-        Created: 2017-12-19T14:21:41.6789561Z
+        Created: '2017-12-19T14:21:41.678Z'
         Id: 951098b2-9b69-427b-bddb-d5cb618874e3
         Iteration: fe1e83c4-6f50-4899-9544-6bb08cf0e15a
         Predictions:
@@ -314,7 +356,7 @@ components:
         Project: 64b822c5-8082-4b36-a426-27225f4aa18c
     Successful_Prediction_with_Url_request:
       value:
-        Created: 2017-12-19T14:21:41.6789561Z
+        Created: '2017-12-19T14:21:41.678Z'
         Id: 951098b2-9b69-427b-bddb-d5cb618874e3
         Iteration: fe1e83c4-6f50-4899-9544-6bb08cf0e15a
         Predictions:
@@ -329,14 +371,13 @@ components:
     ApiKey:
       examples:
         Successful Prediction with Image request:
-          value: "{API Key}"
+          value: '{API Key}'
         Successful Prediction with Url request:
-          value: "{API Key}"
+          value: '{API Key}'
       in: header
       name: Prediction-Key
       required: true
-      schema:
-        type: string
+      type: string
       x-ms-client-name: ApiKey
       x-ms-parameter-location: client
   requestBodies:
@@ -344,20 +385,22 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ImageUrl"
+            $ref: '#/definitions/ImageUrl'
         application/x-www-form-urlencoded:
           schema:
-            $ref: "#/components/schemas/ImageUrl"
+            $ref: '#/definitions/ImageUrl'
         application/xml:
           schema:
-            $ref: "#/components/schemas/ImageUrl"
+            $ref: '#/definitions/ImageUrl'
         text/json:
           schema:
-            $ref: "#/components/schemas/ImageUrl"
+            $ref: '#/definitions/ImageUrl'
         text/xml:
           schema:
-            $ref: "#/components/schemas/ImageUrl"
-      description: An {Iris.Web.Api.Models.ImageUrl} that contains the url of the image to be evaluated
+            $ref: '#/definitions/ImageUrl'
+      description: >-
+        An {Iris.Web.Api.Models.ImageUrl} that contains the url of the image to
+        be evaluated
       required: true
     PredictImage:
       content:
@@ -371,60 +414,4 @@ components:
               - imageData
             type: object
       required: true
-  schemas:
-    ImagePredictionResultModel:
-      description: result of an image prediction request
-      nullable: true
-      properties:
-        Created:
-          format: date-time
-          nullable: false
-          readOnly: true
-          type: string
-        Id:
-          format: uuid
-          nullable: false
-          readOnly: true
-          type: string
-        Iteration:
-          format: uuid
-          nullable: false
-          readOnly: true
-          type: string
-        Predictions:
-          items:
-            $ref: "#/components/schemas/ImageTagPredictionModel"
-          nullable: true
-          readOnly: true
-          type: array
-        Project:
-          format: uuid
-          nullable: false
-          readOnly: true
-          type: string
-      type: object
-    ImageTagPredictionModel:
-      nullable: true
-      properties:
-        Probability:
-          format: float
-          nullable: false
-          readOnly: true
-          type: number
-        Tag:
-          nullable: true
-          readOnly: true
-          type: string
-        TagId:
-          format: uuid
-          nullable: false
-          readOnly: true
-          type: string
-      type: object
-    ImageUrl:
-      nullable: true
-      properties:
-        Url:
-          nullable: true
-          type: string
-      type: object
+

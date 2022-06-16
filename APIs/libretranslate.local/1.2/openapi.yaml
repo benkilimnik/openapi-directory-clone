@@ -1,146 +1,214 @@
-openapi: 3.0.0
-servers:
-  - url: http://libretranslate.local
+basePath: /
+definitions:
+  detections:
+    items:
+      properties:
+        confidence:
+          description: Confidence value
+          example: 0.6
+          format: float
+          maximum: 1
+          minimum: 0
+          type: number
+        language:
+          description: Language code
+          example: en
+          type: string
+      type: object
+    type: array
+  error-response:
+    properties:
+      error:
+        description: Error message
+        type: string
+    type: object
+  error-slow-down:
+    properties:
+      error:
+        description: Reason for slow down
+        type: string
+    type: object
+  frontend-settings:
+    properties:
+      charLimit:
+        description: Character input limit for this language (-1 indicates no limit)
+        type: integer
+      frontendTimeout:
+        description: Frontend translation timeout
+        type: integer
+      language:
+        properties:
+          source:
+            properties:
+              code:
+                description: Language code
+                type: string
+              name:
+                description: Human-readable language name (in English)
+                type: string
+            type: object
+          target:
+            properties:
+              code:
+                description: Language code
+                type: string
+              name:
+                description: Human-readable language name (in English)
+                type: string
+            type: object
+        type: object
+    type: object
+  languages:
+    items:
+      properties:
+        code:
+          description: Language code
+          type: string
+        name:
+          description: Human-readable language name (in English)
+          type: string
+      type: object
+    type: array
+  translate:
+    properties:
+      translatedText:
+        description: Translated text(s)
+    type: object
+host: libretranslate.local
 info:
   title: LibreTranslate
-  version: "1.2"
+  version: '1.2'
   x-apisguru-categories:
     - text
   x-origin:
     - format: openapi
-      url: https://libretranslate.com/spec
-      version: "3.0"
+      url: 'https://libretranslate.com/spec'
+      version: '3.0'
   x-providerName: libretranslate.local
 paths:
   /detect:
     post:
-      description: ""
-      requestBody:
-        $ref: "#/components/requestBodies/postDetect"
+      consumes:
+        - application/x-www-form-urlencoded
+      description: ''
+      parameters:
+        - in: formData
+          name: body
+          type: string
+      produces:
+        - application/octet-stream
       responses:
-        "200":
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/detections"
+        '200':
           description: Detections
-        "400":
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/error-response"
+          schema:
+            $ref: '#/definitions/detections'
+        '400':
           description: Invalid request
-        "403":
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/error-response"
+          schema:
+            $ref: '#/definitions/error-response'
+        '403':
           description: Banned
-        "429":
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/error-slow-down"
+          schema:
+            $ref: '#/definitions/error-response'
+        '429':
           description: Slow down
-        "500":
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/error-response"
+          schema:
+            $ref: '#/definitions/error-slow-down'
+        '500':
           description: Detection error
+          schema:
+            $ref: '#/definitions/error-response'
       summary: Detect the language of a single text
       tags:
         - translate
   /frontend/settings:
     get:
-      description: ""
+      description: ''
+      parameters: []
+      produces:
+        - application/octet-stream
       responses:
-        "200":
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/frontend-settings"
+        '200':
           description: frontend settings
+          schema:
+            $ref: '#/definitions/frontend-settings'
       summary: Retrieve frontend specific settings
       tags:
         - frontend
   /languages:
     get:
-      description: ""
+      description: ''
+      parameters: []
+      produces:
+        - application/octet-stream
       responses:
-        "200":
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/languages"
+        '200':
           description: List of languages
-        "429":
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/error-slow-down"
+          schema:
+            $ref: '#/definitions/languages'
+        '429':
           description: Slow down
+          schema:
+            $ref: '#/definitions/error-slow-down'
       summary: Retrieve list of supported languages
       tags:
         - translate
     post:
-      description: ""
+      description: ''
+      parameters: []
+      produces:
+        - application/octet-stream
       responses:
-        "200":
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/languages"
+        '200':
           description: List of languages
-        "429":
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/error-slow-down"
+          schema:
+            $ref: '#/definitions/languages'
+        '429':
           description: Slow down
+          schema:
+            $ref: '#/definitions/error-slow-down'
       summary: Retrieve list of supported languages
       tags:
         - translate
   /translate:
     post:
-      description: ""
-      requestBody:
-        $ref: "#/components/requestBodies/postDetect"
+      consumes:
+        - application/x-www-form-urlencoded
+      description: ''
+      parameters:
+        - in: formData
+          name: body
+          type: string
+      produces:
+        - application/octet-stream
       responses:
-        "200":
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/translate"
+        '200':
           description: Translated text
-        "400":
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/error-response"
+          schema:
+            $ref: '#/definitions/translate'
+        '400':
           description: Invalid request
-        "403":
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/error-response"
+          schema:
+            $ref: '#/definitions/error-response'
+        '403':
           description: Banned
-        "429":
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/error-slow-down"
+          schema:
+            $ref: '#/definitions/error-response'
+        '429':
           description: Slow down
-        "500":
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/error-response"
+          schema:
+            $ref: '#/definitions/error-slow-down'
+        '500':
           description: Translation error
+          schema:
+            $ref: '#/definitions/error-response'
       summary: Translate text from a language to another
       tags:
         - translate
-components:
+schemes:
+  - http
+swagger: '2.0'
+x-components:
   requestBodies:
     postDetect:
       content:
@@ -148,82 +216,4 @@ components:
           schema:
             example: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
             type: string
-  schemas:
-    detections:
-      items:
-        properties:
-          confidence:
-            description: Confidence value
-            example: 0.6
-            format: float
-            maximum: 1
-            minimum: 0
-            type: number
-          language:
-            description: Language code
-            example: en
-            type: string
-        type: object
-      type: array
-    error-response:
-      properties:
-        error:
-          description: Error message
-          type: string
-      type: object
-    error-slow-down:
-      properties:
-        error:
-          description: Reason for slow down
-          type: string
-      type: object
-    frontend-settings:
-      properties:
-        charLimit:
-          description: Character input limit for this language (-1 indicates no limit)
-          type: integer
-        frontendTimeout:
-          description: Frontend translation timeout
-          type: integer
-        language:
-          properties:
-            source:
-              properties:
-                code:
-                  description: Language code
-                  type: string
-                name:
-                  description: Human-readable language name (in English)
-                  type: string
-              type: object
-            target:
-              properties:
-                code:
-                  description: Language code
-                  type: string
-                name:
-                  description: Human-readable language name (in English)
-                  type: string
-              type: object
-          type: object
-      type: object
-    languages:
-      items:
-        properties:
-          code:
-            description: Language code
-            type: string
-          name:
-            description: Human-readable language name (in English)
-            type: string
-        type: object
-      type: array
-    translate:
-      properties:
-        translatedText:
-          description: Translated text(s)
-          oneOf:
-            - type: string
-            - items: {}
-              type: array
-      type: object
+

@@ -1,400 +1,309 @@
-openapi: 3.0.3
-servers:
-  - description: Production
-    url: https://api.journy.io
+basePath: /
+externalDocs:
+  description: API Documentation
+  url: 'https://developers.journy.io'
+host: api.journy.io
 info:
   contact:
     email: hi@journy.io
     name: Support
-    url: https://help.journy.io
-  description: |-
-    # Introduction
-
-    The journy.io API is organized around REST. Our API has predictable resource-oriented URLs, returns JSON-encoded responses, and uses standard HTTP response codes, authentication, and verbs.
-
-    The API is hosted on api.journy.io.
-
-    # Official SDKs
-
-    Our SDKs are designed to help you interact with our APIs with less friction. They are written in several different languages and help bridge the gap between your application and journy.io APIs. They take away the need to know the exact URL and HTTP method to use for each API call among other things leaving you more time to focus on making your application.
-
-    | Language   | Package                                                                        | Source code                                                                |
-    |------------|--------------------------------------------------------------------------------|----------------------------------------------------------------------------|
-    | 💚 Node.js | [npm install @journyio/sdk ](https://www.npmjs.com/package/@journyio/sdk)      | [github.com/journy-io/js-sdk](https://github.com/journy-io/js-sdk)         |
-    | 🐘 PHP     | [composer require journy-io/sdk](https://packagist.org/packages/journy-io/sdk) | [github.com/journy-io/php-sdk](https://github.com/journy-io/php-sdk)       |
-    | 🐍 Python  | [pip install journyio-sdk](https://pypi.org/project/journyio-sdk/)             | [github.com/journy-io/python-sdk](https://github.com/journy-io/python-sdk) |
-    | 💎 Ruby    | Coming soon                                                                    | Coming soon                                                                |
-
-    Your favourite programming language not included? [Let us know!](mailto:hi@journy.io)
-
-    In the meanwhile, you can use [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator) to generate a client for your programming language.
-
-    # Authentication
-
-    The journy.io API uses API keys to authenticate requests. You can view and manage your API keys in the [connections screen](https://system.journy.io).
-
-    Your API keys carry many privileges, so be sure to keep them secure! Do not share your secret API keys in publicly accessible areas such as GitHub, client-side code, and so forth.
-
-    All API requests must be made over HTTPS. Calls made over plain HTTP will fail. API requests without authentication will also fail.
-
-    For every request send to the API we expect a header `X-Api-Key` to be set with the API Key.
-
-    ## Permissions
-
-    When creating an API Key in [the application](https://system.journy.io) you will have the choice to give permissions to an API Key (which you can change later on). These permissions restrict the API Key from different actions. When an API Key tries to perform a certain action it doesn't have the permissions for, you will receive a `401: Unauthorized` response.
-
-    # Rate limiting
-
-    To prevent abuse of the API there is a maximum throughput of 100 requests per minute. If you need a higher throughput, please contact us.
-
-    To keep our platform healthy and stable, we'll block API keys that consistently hit our rate limits. Therefore, please consider taking this throughput into account.
-
-    In every response the headers `X-RateLimit-Limit` and `X-RateLimit-Remaining` will be set. The `X-RateLimit-Limit`-header will always contain the current limit of requests per minute. The `X-RateLimit-Remaining`-header will always contain the amount of requests you have left in the current sliding window.
-
-    # Errors
-
-    journy.io uses conventional HTTP response codes to indicate the success or failure of an API request. In general: Codes in the 2xx range indicate success. Codes in the 4xx range indicate an error that failed given the information provided (e.g. a required parameter was omitted). Codes in the 5xx range indicate an error with journy.io's servers (these are rare).
-
-    When performing a `POST`- or `PUT`-request with a requestBody, or when including parameters, these parameters and fields will automatically be checked and validated against the API Spec. When any error occurs, you will get a response with an `errors`-field, structured as follows:
-
-    ```json
-    {
-      "errors": {
-        "parameters": {
-          "header": {
-            "headerParameterName": "Describe what's wrong with the header parameter.",
-            ...
-          },
-          "query": {
-            "queryParameterName": "Describe what's wrong with the query parameter.",
-            ...
-          },
-          "path": {
-            "pathParameterName": "Describe what's wrong with the path parameter.",
-            ...
-          },
-        },
-        "fields": {
-          "fieldName": "Describe what's wrong with the fieldName.",
-          "object.fieldName": "Describe what's wrong with the fieldName of the included object.",
-           ...
-        }
-      }
-    }
-    ```
-
-    # Support
-
-    Looking for a specific endpoint? Documentation not clear? [We would love to help!](mailto:hi@journy.io)
-  termsOfService: https://www.journy.io/terms-of-use/
+    url: 'https://help.journy.io'
+  description: "# Introduction\n\nThe journy.io API is organized around REST. Our API has predictable resource-oriented URLs, returns JSON-encoded responses, and uses standard HTTP response codes, authentication, and verbs.\n\nThe API is hosted on api.journy.io.\n\n# Official SDKs\n\nOur SDKs are designed to help you interact with our APIs with less friction. They are written in several different languages and help bridge the gap between your application and journy.io APIs. They take away the need to know the exact URL and HTTP method to use for each API call among other things leaving you more time to focus on making your application.\n\n| Language   | Package                                                                        | Source code                                                                |\n|------------|--------------------------------------------------------------------------------|----------------------------------------------------------------------------|\n| \U0001F49A Node.js | [npm install @journyio/sdk ](https://www.npmjs.com/package/@journyio/sdk)      | [github.com/journy-io/js-sdk](https://github.com/journy-io/js-sdk)         |\n| \U0001F418 PHP     | [composer require journy-io/sdk](https://packagist.org/packages/journy-io/sdk) | [github.com/journy-io/php-sdk](https://github.com/journy-io/php-sdk)       |\n| \U0001F40D Python  | [pip install journyio-sdk](https://pypi.org/project/journyio-sdk/)             | [github.com/journy-io/python-sdk](https://github.com/journy-io/python-sdk) |\n| \U0001F48E Ruby    | Coming soon                                                                    | Coming soon                                                                |\n\nYour favourite programming language not included? [Let us know!](mailto:hi@journy.io)\n\nIn the meanwhile, you can use [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator) to generate a client for your programming language.\n\n# Authentication\n\nThe journy.io API uses API keys to authenticate requests. You can view and manage your API keys in the [connections screen](https://system.journy.io).\n\nYour API keys carry many privileges, so be sure to keep them secure! Do not share your secret API keys in publicly accessible areas such as GitHub, client-side code, and so forth.\n\nAll API requests must be made over HTTPS. Calls made over plain HTTP will fail. API requests without authentication will also fail.\n\nFor every request send to the API we expect a header `X-Api-Key` to be set with the API Key.\n\n## Permissions\n\nWhen creating an API Key in [the application](https://system.journy.io) you will have the choice to give permissions to an API Key (which you can change later on). These permissions restrict the API Key from different actions. When an API Key tries to perform a certain action it doesn't have the permissions for, you will receive a `401: Unauthorized` response.\n\n# Rate limiting\n\nTo prevent abuse of the API there is a maximum throughput of 100 requests per minute. If you need a higher throughput, please contact us.\n\nTo keep our platform healthy and stable, we'll block API keys that consistently hit our rate limits. Therefore, please consider taking this throughput into account.\n\nIn every response the headers `X-RateLimit-Limit` and `X-RateLimit-Remaining` will be set. The `X-RateLimit-Limit`-header will always contain the current limit of requests per minute. The `X-RateLimit-Remaining`-header will always contain the amount of requests you have left in the current sliding window.\n\n# Errors\n\njourny.io uses conventional HTTP response codes to indicate the success or failure of an API request. In general: Codes in the 2xx range indicate success. Codes in the 4xx range indicate an error that failed given the information provided (e.g. a required parameter was omitted). Codes in the 5xx range indicate an error with journy.io's servers (these are rare).\n\nWhen performing a `POST`- or `PUT`-request with a requestBody, or when including parameters, these parameters and fields will automatically be checked and validated against the API Spec. When any error occurs, you will get a response with an `errors`-field, structured as follows:\n\n```json\n{\n  \"errors\": {\n    \"parameters\": {\n      \"header\": {\n        \"headerParameterName\": \"Describe what's wrong with the header parameter.\",\n        ...\n      },\n      \"query\": {\n        \"queryParameterName\": \"Describe what's wrong with the query parameter.\",\n        ...\n      },\n      \"path\": {\n        \"pathParameterName\": \"Describe what's wrong with the path parameter.\",\n        ...\n      },\n    },\n    \"fields\": {\n      \"fieldName\": \"Describe what's wrong with the fieldName.\",\n      \"object.fieldName\": \"Describe what's wrong with the fieldName of the included object.\",\n       ...\n    }\n  }\n}\n```\n\n# Support\n\nLooking for a specific endpoint? Documentation not clear? [We would love to help!](mailto:hi@journy.io)"
+  termsOfService: 'https://www.journy.io/terms-of-use/'
   title: journy.io API docs
   version: 1.0.0
   x-apisguru-categories:
     - customer_relation
   x-logo:
     altText: Journy.io
-    url: https://developers.journy.io/developers.png
+    url: 'https://developers.journy.io/developers.png'
   x-origin:
     - format: openapi
-      url: https://api.journy.io/spec.json
-      version: "3.0"
+      url: 'https://api.journy.io/spec.json'
+      version: '3.0'
   x-providerName: journy.io
-externalDocs:
-  description: API Documentation
-  url: https://developers.journy.io
-tags:
-  - description: Endpoints for creating or updating users
-    name: Users
-  - description: Endpoints for creating or updating accounts
-    name: Accounts
-  - description: Endpoints for adding events
-    name: Events
-  - description: Endpoints for managing websites
-    name: Websites
-  - description: Endpoints for validating API keys
-    name: Validation
 paths:
   /accounts/upsert:
     post:
+      consumes:
+        - application/json
       description: Endpoint used to create or update an account.
       operationId: upsertAccount
-      requestBody:
-        content:
-          application/json:
-            schema:
-              description: Update properties and/or members of an account
-              properties:
-                identification:
-                  description: Account identification requires an accountId, domain or both
-                  minProperties: 1
-                  properties:
-                    accountId:
-                      description: Unique identifier for the account in your database
-                      format: account-id
-                      type: string
-                    domain:
-                      description: The domain associated with the account (e.g. acme-inc.com)
-                      format: top-level-domain
-                      type: string
-                  type: object
-                members:
-                  description: The users that are member of this account
-                  items:
-                    description: Identification requires an accountId, domain or both
-                    properties:
-                      identification:
-                        description: User identification requires a userId, email or both
-                        minProperties: 1
-                        properties:
-                          email:
-                            description: Email address of the user
-                            format: email
-                            type: string
-                          userId:
-                            description: Unique identifier for the user in your database
-                            format: user-id
-                            type: string
-                        type: object
-                    required:
-                      - identification
-                    type: object
-                  type: array
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            description: Update properties and/or members of an account
+            properties:
+              identification:
+                description: 'Account identification requires an accountId, domain or both'
+                minProperties: 1
                 properties:
-                  additionalProperties:
-                    oneOf:
-                      - nullable: true
-                        type: string
-                      - type: boolean
-                      - type: number
-                      - format: datetime
-                        type: string
-                      - items:
-                          format: non-empty-string
+                  accountId:
+                    description: Unique identifier for the account in your database
+                    format: account-id
+                    type: string
+                  domain:
+                    description: The domain associated with the account (e.g. acme-inc.com)
+                    format: top-level-domain
+                    type: string
+                type: object
+              members:
+                description: The users that are member of this account
+                items:
+                  description: 'Identification requires an accountId, domain or both'
+                  properties:
+                    identification:
+                      description: 'User identification requires a userId, email or both'
+                      minProperties: 1
+                      properties:
+                        email:
+                          description: Email address of the user
+                          format: email
                           type: string
-                        type: array
-                  description: The properties being set, possible values are strings, booleans, numbers and datetimes (ISO 8601)
+                        userId:
+                          description: Unique identifier for the user in your database
+                          format: user-id
+                          type: string
+                      type: object
+                  required:
+                    - identification
                   type: object
-              required:
-                - identification
-              type: object
-        required: true
-      responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
-                    properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The object was created
-                    properties:
-                      message:
+                type: array
+              properties:
+                additionalProperties:
+                  oneOf:
+                    - nullable: true
+                      type: string
+                    - type: boolean
+                    - type: number
+                    - format: datetime
+                      type: string
+                    - items:
+                        format: non-empty-string
                         type: string
-                    required:
-                      - message
-                    type: object
+                      type: array
+                description: >-
+                  The properties being set, possible values are strings,
+                  booleans, numbers and datetimes (ISO 8601)
+                type: object
+            required:
+              - identification
+            type: object
+      produces:
+        - application/json
+      responses:
+        '201':
           description: Object was created
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "400":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - allOf:
-                      - description: The basic response containing the unique ID of the request and the response status
-                        properties:
-                          meta:
-                            properties:
-                              requestId:
-                                type: string
-                              status:
-                                type: number
-                            required:
-                              - requestId
-                              - status
-                            type: object
-                        required:
-                          - meta
-                        type: object
-                      - description: The error message should specify what cause the error
-                        properties:
-                          message:
-                            type: string
-                        required:
-                          - message
-                        type: object
-                  - description: Specify the fields and/ or parameters that had errors
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      errors:
-                        description: Map that sums up all received values that seemed incorrect
+                      requestId:
+                        type: string
+                      status:
+                        type: number
+                    required:
+                      - requestId
+                      - status
+                    type: object
+                required:
+                  - meta
+                type: object
+              - description: The object was created
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '400':
+          description: 'Bad request, some fields or parameters are incorrect'
+          headers:
+            X-RateLimit-Limit:
+              description: Request limit per minute.
+              type: integer
+            X-RateLimit-Remaining:
+              description: The number of requests left for the time window.
+              type: integer
+          schema:
+            allOf:
+              - allOf:
+                  - description: >-
+                      The basic response containing the unique ID of the request
+                      and the response status
+                    properties:
+                      meta:
                         properties:
-                          fields:
+                          requestId:
+                            type: string
+                          status:
+                            type: number
+                        required:
+                          - requestId
+                          - status
+                        type: object
+                    required:
+                      - meta
+                    type: object
+                  - description: The error message should specify what cause the error
+                    properties:
+                      message:
+                        type: string
+                    required:
+                      - message
+                    type: object
+              - description: Specify the fields and/ or parameters that had errors
+                properties:
+                  errors:
+                    description: Map that sums up all received values that seemed incorrect
+                    properties:
+                      fields:
+                        additionalProperties:
+                          type: string
+                        description: All input fields that seemed incorrect
+                        type: object
+                      parameters:
+                        description: >-
+                          All query-, header- and path- parameters that seemed
+                          incorrect
+                        properties:
+                          header:
                             additionalProperties:
                               type: string
-                            description: All input fields that seemed incorrect
                             type: object
-                          parameters:
-                            description: All query-, header- and path- parameters that seemed incorrect
-                            properties:
-                              header:
-                                additionalProperties:
-                                  type: string
-                                type: object
-                              path:
-                                additionalProperties:
-                                  type: string
-                                type: object
-                              query:
-                                additionalProperties:
-                                  type: string
-                                type: object
+                          path:
+                            additionalProperties:
+                              type: string
+                            type: object
+                          query:
+                            additionalProperties:
+                              type: string
                             type: object
                         type: object
-                    required:
-                      - errors
                     type: object
-          description: Bad request, some fields or parameters are incorrect
+                required:
+                  - errors
+                type: object
+        '401':
+          description: >-
+            No API Key was provided or the key is not authorised to perform the
+            action
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "401":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
-          description: No API Key was provided or the key is not authorised to perform the action
-          headers:
-            X-RateLimit-Limit:
-              description: Request limit per minute.
-              schema:
-                type: integer
-            X-RateLimit-Remaining:
-              description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "429":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
-                    properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
-                        type: string
-                    required:
-                      - message
-                    type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '429':
           description: Too many API requests were send
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "500":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '500':
           description: An unexpected error occurred
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
+                    properties:
+                      requestId:
+                        type: string
+                      status:
+                        type: number
+                    required:
+                      - requestId
+                      - status
+                    type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
       summary: Create or update account
       tags:
         - Accounts
@@ -498,8 +407,10 @@ paths:
             client.upsert_account(account, properties, [member1, member2])
       x-key-permissions:
         - TrackData
-  "/accounts/{accountId}/users":
+  '/accounts/{accountId}/users':
     delete:
+      consumes:
+        - application/json
       description: Endpoint used to remove a user from an account.
       operationId: removeUserFromAccount
       parameters:
@@ -507,276 +418,268 @@ paths:
           in: path
           name: accountId
           required: true
+          type: string
+        - in: body
+          name: body
+          required: true
           schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              description: The user being added/removed from the account
-              properties:
-                userId:
-                  description: Unique identifier for the user in your database
-                  format: user-id
-                  type: string
-              required:
-                - userId
-              type: object
-        required: true
+            description: The user being added/removed from the account
+            properties:
+              userId:
+                description: Unique identifier for the user in your database
+                format: user-id
+                type: string
+            required:
+              - userId
+            type: object
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
-                    properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The object was created
-                    properties:
-                      message:
-                        type: string
-                    required:
-                      - message
-                    type: object
+        '201':
           description: Object was created
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "400":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - allOf:
-                      - description: The basic response containing the unique ID of the request and the response status
-                        properties:
-                          meta:
-                            properties:
-                              requestId:
-                                type: string
-                              status:
-                                type: number
-                            required:
-                              - requestId
-                              - status
-                            type: object
-                        required:
-                          - meta
-                        type: object
-                      - description: The error message should specify what cause the error
-                        properties:
-                          message:
-                            type: string
-                        required:
-                          - message
-                        type: object
-                  - description: Specify the fields and/ or parameters that had errors
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      errors:
-                        description: Map that sums up all received values that seemed incorrect
+                      requestId:
+                        type: string
+                      status:
+                        type: number
+                    required:
+                      - requestId
+                      - status
+                    type: object
+                required:
+                  - meta
+                type: object
+              - description: The object was created
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '400':
+          description: 'Bad request, some fields or parameters are incorrect'
+          headers:
+            X-RateLimit-Limit:
+              description: Request limit per minute.
+              type: integer
+            X-RateLimit-Remaining:
+              description: The number of requests left for the time window.
+              type: integer
+          schema:
+            allOf:
+              - allOf:
+                  - description: >-
+                      The basic response containing the unique ID of the request
+                      and the response status
+                    properties:
+                      meta:
                         properties:
-                          fields:
+                          requestId:
+                            type: string
+                          status:
+                            type: number
+                        required:
+                          - requestId
+                          - status
+                        type: object
+                    required:
+                      - meta
+                    type: object
+                  - description: The error message should specify what cause the error
+                    properties:
+                      message:
+                        type: string
+                    required:
+                      - message
+                    type: object
+              - description: Specify the fields and/ or parameters that had errors
+                properties:
+                  errors:
+                    description: Map that sums up all received values that seemed incorrect
+                    properties:
+                      fields:
+                        additionalProperties:
+                          type: string
+                        description: All input fields that seemed incorrect
+                        type: object
+                      parameters:
+                        description: >-
+                          All query-, header- and path- parameters that seemed
+                          incorrect
+                        properties:
+                          header:
                             additionalProperties:
                               type: string
-                            description: All input fields that seemed incorrect
                             type: object
-                          parameters:
-                            description: All query-, header- and path- parameters that seemed incorrect
-                            properties:
-                              header:
-                                additionalProperties:
-                                  type: string
-                                type: object
-                              path:
-                                additionalProperties:
-                                  type: string
-                                type: object
-                              query:
-                                additionalProperties:
-                                  type: string
-                                type: object
+                          path:
+                            additionalProperties:
+                              type: string
+                            type: object
+                          query:
+                            additionalProperties:
+                              type: string
                             type: object
                         type: object
-                    required:
-                      - errors
                     type: object
-          description: Bad request, some fields or parameters are incorrect
+                required:
+                  - errors
+                type: object
+        '401':
+          description: >-
+            No API Key was provided or the key is not authorised to perform the
+            action
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "401":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
-          description: No API Key was provided or the key is not authorised to perform the action
-          headers:
-            X-RateLimit-Limit:
-              description: Request limit per minute.
-              schema:
-                type: integer
-            X-RateLimit-Remaining:
-              description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "403":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
-                    properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
-                        type: string
-                    required:
-                      - message
-                    type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '403':
           description: The API Key provided is currently not enabled
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "429":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '429':
           description: Too many API requests were send
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "500":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '500':
           description: An unexpected error occurred
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
+                    properties:
+                      requestId:
+                        type: string
+                      status:
+                        type: number
+                    required:
+                      - requestId
+                      - status
+                    type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
       summary: Remove user from account
       tags:
         - Accounts
@@ -818,6 +721,8 @@ paths:
       x-key-permissions:
         - TrackData
     post:
+      consumes:
+        - application/json
       description: Endpoint used to add a user to an account.
       operationId: addUserToAccount
       parameters:
@@ -825,239 +730,233 @@ paths:
           in: path
           name: accountId
           required: true
+          type: string
+        - in: body
+          name: body
+          required: true
           schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              description: The user being added/removed from the account
-              properties:
-                userId:
-                  description: Unique identifier for the user in your database
-                  format: user-id
-                  type: string
-              required:
-                - userId
-              type: object
-        required: true
+            description: The user being added/removed from the account
+            properties:
+              userId:
+                description: Unique identifier for the user in your database
+                format: user-id
+                type: string
+            required:
+              - userId
+            type: object
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
-                    properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The object was created
-                    properties:
-                      message:
-                        type: string
-                    required:
-                      - message
-                    type: object
+        '201':
           description: Object was created
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "400":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - allOf:
-                      - description: The basic response containing the unique ID of the request and the response status
-                        properties:
-                          meta:
-                            properties:
-                              requestId:
-                                type: string
-                              status:
-                                type: number
-                            required:
-                              - requestId
-                              - status
-                            type: object
-                        required:
-                          - meta
-                        type: object
-                      - description: The error message should specify what cause the error
-                        properties:
-                          message:
-                            type: string
-                        required:
-                          - message
-                        type: object
-                  - description: Specify the fields and/ or parameters that had errors
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      errors:
-                        description: Map that sums up all received values that seemed incorrect
+                      requestId:
+                        type: string
+                      status:
+                        type: number
+                    required:
+                      - requestId
+                      - status
+                    type: object
+                required:
+                  - meta
+                type: object
+              - description: The object was created
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '400':
+          description: 'Bad request, some fields or parameters are incorrect'
+          headers:
+            X-RateLimit-Limit:
+              description: Request limit per minute.
+              type: integer
+            X-RateLimit-Remaining:
+              description: The number of requests left for the time window.
+              type: integer
+          schema:
+            allOf:
+              - allOf:
+                  - description: >-
+                      The basic response containing the unique ID of the request
+                      and the response status
+                    properties:
+                      meta:
                         properties:
-                          fields:
+                          requestId:
+                            type: string
+                          status:
+                            type: number
+                        required:
+                          - requestId
+                          - status
+                        type: object
+                    required:
+                      - meta
+                    type: object
+                  - description: The error message should specify what cause the error
+                    properties:
+                      message:
+                        type: string
+                    required:
+                      - message
+                    type: object
+              - description: Specify the fields and/ or parameters that had errors
+                properties:
+                  errors:
+                    description: Map that sums up all received values that seemed incorrect
+                    properties:
+                      fields:
+                        additionalProperties:
+                          type: string
+                        description: All input fields that seemed incorrect
+                        type: object
+                      parameters:
+                        description: >-
+                          All query-, header- and path- parameters that seemed
+                          incorrect
+                        properties:
+                          header:
                             additionalProperties:
                               type: string
-                            description: All input fields that seemed incorrect
                             type: object
-                          parameters:
-                            description: All query-, header- and path- parameters that seemed incorrect
-                            properties:
-                              header:
-                                additionalProperties:
-                                  type: string
-                                type: object
-                              path:
-                                additionalProperties:
-                                  type: string
-                                type: object
-                              query:
-                                additionalProperties:
-                                  type: string
-                                type: object
+                          path:
+                            additionalProperties:
+                              type: string
+                            type: object
+                          query:
+                            additionalProperties:
+                              type: string
                             type: object
                         type: object
-                    required:
-                      - errors
                     type: object
-          description: Bad request, some fields or parameters are incorrect
+                required:
+                  - errors
+                type: object
+        '401':
+          description: >-
+            No API Key was provided or the key is not authorised to perform the
+            action
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "401":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
-          description: No API Key was provided or the key is not authorised to perform the action
-          headers:
-            X-RateLimit-Limit:
-              description: Request limit per minute.
-              schema:
-                type: integer
-            X-RateLimit-Remaining:
-              description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "429":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
-                    properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
-                        type: string
-                    required:
-                      - message
-                    type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '429':
           description: Too many API requests were send
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "500":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '500':
           description: An unexpected error occurred
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
+                    properties:
+                      requestId:
+                        type: string
+                      status:
+                        type: number
+                    required:
+                      - requestId
+                      - status
+                    type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
       summary: Add user to account
       tags:
         - Accounts
@@ -1100,340 +999,350 @@ paths:
         - TrackData
   /events:
     post:
+      consumes:
+        - application/json
       description: Endpoint used to push an event for a user or an account.
       operationId: trackJourneyEvent
-      requestBody:
-        content:
-          application/json:
-            schema:
-              description: Event for a user or an account
-              properties:
-                identification:
-                  description: Event identification requires a user, account or both
-                  minProperties: 1
-                  properties:
-                    account:
-                      description: Account identification requires an accountId, domain or both
-                      minProperties: 1
-                      properties:
-                        accountId:
-                          description: Unique identifier for the account in your database
-                          format: account-id
-                          type: string
-                        domain:
-                          description: The domain associated with the account (e.g. acme-inc.com)
-                          format: top-level-domain
-                          type: string
-                      type: object
-                    user:
-                      description: User identification requires a userId, email or both
-                      minProperties: 1
-                      properties:
-                        email:
-                          description: Email address of the user
-                          format: email
-                          type: string
-                        userId:
-                          description: Unique identifier for the user in your database
-                          format: user-id
-                          type: string
-                      type: object
-                  type: object
-                metadata:
-                  additionalProperties:
-                    oneOf:
-                      - type: string
-                      - type: boolean
-                      - type: number
-                      - format: datetime
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            description: Event for a user or an account
+            properties:
+              identification:
+                description: 'Event identification requires a user, account or both'
+                minProperties: 1
+                properties:
+                  account:
+                    description: >-
+                      Account identification requires an accountId, domain or
+                      both
+                    minProperties: 1
+                    properties:
+                      accountId:
+                        description: Unique identifier for the account in your database
+                        format: account-id
                         type: string
-                  description: Event metadata, possible values are strings, booleans, numbers and datetimes (ISO 8601)
-                  type: object
-                name:
-                  format: event-name
-                  type: string
-                triggeredAt:
-                  description: If left blank this defaults to the current datetime
-                  format: datetime
-                  type: string
-              required:
-                - identification
-                - name
-              type: object
-        required: true
+                      domain:
+                        description: >-
+                          The domain associated with the account (e.g.
+                          acme-inc.com)
+                        format: top-level-domain
+                        type: string
+                    type: object
+                  user:
+                    description: 'User identification requires a userId, email or both'
+                    minProperties: 1
+                    properties:
+                      email:
+                        description: Email address of the user
+                        format: email
+                        type: string
+                      userId:
+                        description: Unique identifier for the user in your database
+                        format: user-id
+                        type: string
+                    type: object
+                type: object
+              metadata:
+                additionalProperties:
+                  oneOf:
+                    - type: string
+                    - type: boolean
+                    - type: number
+                    - format: datetime
+                      type: string
+                description: >-
+                  Event metadata, possible values are strings, booleans, numbers
+                  and datetimes (ISO 8601)
+                type: object
+              name:
+                format: event-name
+                type: string
+              triggeredAt:
+                description: If left blank this defaults to the current datetime
+                format: datetime
+                type: string
+            required:
+              - identification
+              - name
+            type: object
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
-                    properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The object was created
-                    properties:
-                      message:
-                        type: string
-                    required:
-                      - message
-                    type: object
+        '201':
           description: Object was created
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "400":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - allOf:
-                      - description: The basic response containing the unique ID of the request and the response status
-                        properties:
-                          meta:
-                            properties:
-                              requestId:
-                                type: string
-                              status:
-                                type: number
-                            required:
-                              - requestId
-                              - status
-                            type: object
-                        required:
-                          - meta
-                        type: object
-                      - description: The error message should specify what cause the error
-                        properties:
-                          message:
-                            type: string
-                        required:
-                          - message
-                        type: object
-                  - description: Specify the fields and/ or parameters that had errors
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      errors:
-                        description: Map that sums up all received values that seemed incorrect
+                      requestId:
+                        type: string
+                      status:
+                        type: number
+                    required:
+                      - requestId
+                      - status
+                    type: object
+                required:
+                  - meta
+                type: object
+              - description: The object was created
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '400':
+          description: 'Bad request, some fields or parameters are incorrect'
+          headers:
+            X-RateLimit-Limit:
+              description: Request limit per minute.
+              type: integer
+            X-RateLimit-Remaining:
+              description: The number of requests left for the time window.
+              type: integer
+          schema:
+            allOf:
+              - allOf:
+                  - description: >-
+                      The basic response containing the unique ID of the request
+                      and the response status
+                    properties:
+                      meta:
                         properties:
-                          fields:
+                          requestId:
+                            type: string
+                          status:
+                            type: number
+                        required:
+                          - requestId
+                          - status
+                        type: object
+                    required:
+                      - meta
+                    type: object
+                  - description: The error message should specify what cause the error
+                    properties:
+                      message:
+                        type: string
+                    required:
+                      - message
+                    type: object
+              - description: Specify the fields and/ or parameters that had errors
+                properties:
+                  errors:
+                    description: Map that sums up all received values that seemed incorrect
+                    properties:
+                      fields:
+                        additionalProperties:
+                          type: string
+                        description: All input fields that seemed incorrect
+                        type: object
+                      parameters:
+                        description: >-
+                          All query-, header- and path- parameters that seemed
+                          incorrect
+                        properties:
+                          header:
                             additionalProperties:
                               type: string
-                            description: All input fields that seemed incorrect
                             type: object
-                          parameters:
-                            description: All query-, header- and path- parameters that seemed incorrect
-                            properties:
-                              header:
-                                additionalProperties:
-                                  type: string
-                                type: object
-                              path:
-                                additionalProperties:
-                                  type: string
-                                type: object
-                              query:
-                                additionalProperties:
-                                  type: string
-                                type: object
+                          path:
+                            additionalProperties:
+                              type: string
+                            type: object
+                          query:
+                            additionalProperties:
+                              type: string
                             type: object
                         type: object
-                    required:
-                      - errors
                     type: object
-          description: Bad request, some fields or parameters are incorrect
+                required:
+                  - errors
+                type: object
+        '401':
+          description: >-
+            No API Key was provided or the key is not authorised to perform the
+            action
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "401":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
-          description: No API Key was provided or the key is not authorised to perform the action
-          headers:
-            X-RateLimit-Limit:
-              description: Request limit per minute.
-              schema:
-                type: integer
-            X-RateLimit-Remaining:
-              description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "403":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
-                    properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
-                        type: string
-                    required:
-                      - message
-                    type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '403':
           description: The API Key provided is currently not enabled
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "429":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '429':
           description: Too many API requests were send
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "500":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '500':
           description: An unexpected error occurred
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
+                    properties:
+                      requestId:
+                        type: string
+                      status:
+                        type: number
+                    required:
+                      - requestId
+                      - status
+                    type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
       summary: Push event
       tags:
         - Events
       x-codeSamples:
         - lang: JavaScript
-          source: |-
+          source: >-
             // https://github.com/journy-io/js-sdk
 
-            import { Client, Event, UserIdentified, AccountIdentified } from "@journyio/sdk";
+
+            import { Client, Event, UserIdentified, AccountIdentified } from
+            "@journyio/sdk";
+
 
             const client = Client.withDefaults('your-api-key');
 
+
             event = Event.forUser("login", UserIdentified.byUserId("userId"));
 
-            event = Event.forUser("some_historic_event", UserIdentified.byUserId("userId"))
+
+            event = Event.forUser("some_historic_event",
+            UserIdentified.byUserId("userId"))
               .happenedAt(new Date(...))
             ;
 
-            event = Event.forAccount("reached_monthly_volume", AccountIdentified.byAccountId("accountId"))
+
+            event = Event.forAccount("reached_monthly_volume",
+            AccountIdentified.byAccountId("accountId"))
               .withMetadata({
                 "number": 1313,
                 "string": "string",
@@ -1441,33 +1350,47 @@ paths:
               })
             ;
 
+
             event = Event.forUserInAccount(
               "updated_settings",
               UserIdentified.byUserId("userId"),
               AccountIdentified.byAccountId("accountId")
             );
 
+
             await client.addEvent(event);
         - lang: PHP
-          source: |-
+          source: >-
             <?php
+
 
             // https://github.com/journy-io/php-sdk
 
+
             use JournyIO\SDK\Client;
+
             use JournyIO\SDK\Event;
+
             use JournyIO\SDK\UserIdentified;
+
             use JournyIO\SDK\AccountIdentified;
+
 
             $client = Client::withDefaults("your-api-key");
 
-            $event = Event::forUser("login", UserIdentified::byUserId("userId"));
 
-            $event = Event::forUser("some_historic_event", UserIdentified::byUserId("userId"))
+            $event = Event::forUser("login",
+            UserIdentified::byUserId("userId"));
+
+
+            $event = Event::forUser("some_historic_event",
+            UserIdentified::byUserId("userId"))
                 ->happenedAt(new \DateTimeImmutable("now"))
             ;
 
-            $event = Event::forAccount("reached_monthly_volume", AccountIdentified::byAccountId("accountId"))
+
+            $event = Event::forAccount("reached_monthly_volume",
+            AccountIdentified::byAccountId("accountId"))
                 ->withMetadata([
                     "number" => 13313,
                     "string" => "string",
@@ -1475,11 +1398,13 @@ paths:
                 ])
             ;
 
+
             $event = Event::forUserInAccount(
                 "updated_settings",
                 UserIdentified::byUserId("userId"),
                 AccountIdentified::byAccountId("accountId")
             );
+
 
             $client->addEvent($event);
         - lang: Python
@@ -1514,289 +1439,285 @@ paths:
         - TrackData
   /link:
     post:
+      consumes:
+        - application/json
       description: Endpoint used to link web activity to a user.
       operationId: link
-      requestBody:
-        content:
-          application/json:
-            schema:
-              description: Link web activity to user
-              properties:
-                deviceId:
-                  format: non-empty-string
-                  type: string
-                identification:
-                  description: User identification requires a userId, email or both
-                  minProperties: 1
-                  properties:
-                    email:
-                      description: Email address of the user
-                      format: email
-                      type: string
-                    userId:
-                      description: Unique identifier for the user in your database
-                      format: user-id
-                      type: string
-                  type: object
-              required:
-                - deviceId
-                - identification
-              type: object
-        required: true
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            description: Link web activity to user
+            properties:
+              deviceId:
+                format: non-empty-string
+                type: string
+              identification:
+                description: 'User identification requires a userId, email or both'
+                minProperties: 1
+                properties:
+                  email:
+                    description: Email address of the user
+                    format: email
+                    type: string
+                  userId:
+                    description: Unique identifier for the user in your database
+                    format: user-id
+                    type: string
+                type: object
+            required:
+              - deviceId
+              - identification
+            type: object
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
-                    properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The object was created
-                    properties:
-                      message:
-                        type: string
-                    required:
-                      - message
-                    type: object
+        '201':
           description: Object was created
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "400":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - allOf:
-                      - description: The basic response containing the unique ID of the request and the response status
-                        properties:
-                          meta:
-                            properties:
-                              requestId:
-                                type: string
-                              status:
-                                type: number
-                            required:
-                              - requestId
-                              - status
-                            type: object
-                        required:
-                          - meta
-                        type: object
-                      - description: The error message should specify what cause the error
-                        properties:
-                          message:
-                            type: string
-                        required:
-                          - message
-                        type: object
-                  - description: Specify the fields and/ or parameters that had errors
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      errors:
-                        description: Map that sums up all received values that seemed incorrect
+                      requestId:
+                        type: string
+                      status:
+                        type: number
+                    required:
+                      - requestId
+                      - status
+                    type: object
+                required:
+                  - meta
+                type: object
+              - description: The object was created
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '400':
+          description: 'Bad request, some fields or parameters are incorrect'
+          headers:
+            X-RateLimit-Limit:
+              description: Request limit per minute.
+              type: integer
+            X-RateLimit-Remaining:
+              description: The number of requests left for the time window.
+              type: integer
+          schema:
+            allOf:
+              - allOf:
+                  - description: >-
+                      The basic response containing the unique ID of the request
+                      and the response status
+                    properties:
+                      meta:
                         properties:
-                          fields:
+                          requestId:
+                            type: string
+                          status:
+                            type: number
+                        required:
+                          - requestId
+                          - status
+                        type: object
+                    required:
+                      - meta
+                    type: object
+                  - description: The error message should specify what cause the error
+                    properties:
+                      message:
+                        type: string
+                    required:
+                      - message
+                    type: object
+              - description: Specify the fields and/ or parameters that had errors
+                properties:
+                  errors:
+                    description: Map that sums up all received values that seemed incorrect
+                    properties:
+                      fields:
+                        additionalProperties:
+                          type: string
+                        description: All input fields that seemed incorrect
+                        type: object
+                      parameters:
+                        description: >-
+                          All query-, header- and path- parameters that seemed
+                          incorrect
+                        properties:
+                          header:
                             additionalProperties:
                               type: string
-                            description: All input fields that seemed incorrect
                             type: object
-                          parameters:
-                            description: All query-, header- and path- parameters that seemed incorrect
-                            properties:
-                              header:
-                                additionalProperties:
-                                  type: string
-                                type: object
-                              path:
-                                additionalProperties:
-                                  type: string
-                                type: object
-                              query:
-                                additionalProperties:
-                                  type: string
-                                type: object
+                          path:
+                            additionalProperties:
+                              type: string
+                            type: object
+                          query:
+                            additionalProperties:
+                              type: string
                             type: object
                         type: object
-                    required:
-                      - errors
                     type: object
-          description: Bad request, some fields or parameters are incorrect
+                required:
+                  - errors
+                type: object
+        '401':
+          description: >-
+            No API Key was provided or the key is not authorised to perform the
+            action
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "401":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
-          description: No API Key was provided or the key is not authorised to perform the action
-          headers:
-            X-RateLimit-Limit:
-              description: Request limit per minute.
-              schema:
-                type: integer
-            X-RateLimit-Remaining:
-              description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "403":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
-                    properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
-                        type: string
-                    required:
-                      - message
-                    type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '403':
           description: The API Key provided is currently not enabled
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "429":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '429':
           description: Too many API requests were send
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "500":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '500':
           description: An unexpected error occurred
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
+                    properties:
+                      requestId:
+                        type: string
+                      status:
+                        type: number
+                    required:
+                      - requestId
+                      - status
+                    type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
       summary: Link web activity to user
       tags:
         - Users
@@ -1859,312 +1780,303 @@ paths:
       operationId: getTrackingSnippet
       parameters:
         - description: The domain you want to receive a snippet for
+          format: domain
           in: query
           name: domain
           required: true
-          schema:
-            format: domain
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
-                    properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - properties:
-                      data:
-                        description: A snippet
-                        properties:
-                          domain:
-                            format: domain
-                            type: string
-                          snippet:
-                            type: string
-                        required:
-                          - domain
-                          - snippet
-                        type: object
-                    required:
-                      - data
-                    type: object
+        '200':
           description: Snippet
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "400":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - allOf:
-                      - description: The basic response containing the unique ID of the request and the response status
-                        properties:
-                          meta:
-                            properties:
-                              requestId:
-                                type: string
-                              status:
-                                type: number
-                            required:
-                              - requestId
-                              - status
-                            type: object
-                        required:
-                          - meta
-                        type: object
-                      - description: The error message should specify what cause the error
-                        properties:
-                          message:
-                            type: string
-                        required:
-                          - message
-                        type: object
-                  - description: Specify the fields and/ or parameters that had errors
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      errors:
-                        description: Map that sums up all received values that seemed incorrect
+                      requestId:
+                        type: string
+                      status:
+                        type: number
+                    required:
+                      - requestId
+                      - status
+                    type: object
+                required:
+                  - meta
+                type: object
+              - properties:
+                  data:
+                    description: A snippet
+                    properties:
+                      domain:
+                        format: domain
+                        type: string
+                      snippet:
+                        type: string
+                    required:
+                      - domain
+                      - snippet
+                    type: object
+                required:
+                  - data
+                type: object
+        '400':
+          description: 'Bad request, some fields or parameters are incorrect'
+          headers:
+            X-RateLimit-Limit:
+              description: Request limit per minute.
+              type: integer
+            X-RateLimit-Remaining:
+              description: The number of requests left for the time window.
+              type: integer
+          schema:
+            allOf:
+              - allOf:
+                  - description: >-
+                      The basic response containing the unique ID of the request
+                      and the response status
+                    properties:
+                      meta:
                         properties:
-                          fields:
+                          requestId:
+                            type: string
+                          status:
+                            type: number
+                        required:
+                          - requestId
+                          - status
+                        type: object
+                    required:
+                      - meta
+                    type: object
+                  - description: The error message should specify what cause the error
+                    properties:
+                      message:
+                        type: string
+                    required:
+                      - message
+                    type: object
+              - description: Specify the fields and/ or parameters that had errors
+                properties:
+                  errors:
+                    description: Map that sums up all received values that seemed incorrect
+                    properties:
+                      fields:
+                        additionalProperties:
+                          type: string
+                        description: All input fields that seemed incorrect
+                        type: object
+                      parameters:
+                        description: >-
+                          All query-, header- and path- parameters that seemed
+                          incorrect
+                        properties:
+                          header:
                             additionalProperties:
                               type: string
-                            description: All input fields that seemed incorrect
                             type: object
-                          parameters:
-                            description: All query-, header- and path- parameters that seemed incorrect
-                            properties:
-                              header:
-                                additionalProperties:
-                                  type: string
-                                type: object
-                              path:
-                                additionalProperties:
-                                  type: string
-                                type: object
-                              query:
-                                additionalProperties:
-                                  type: string
-                                type: object
+                          path:
+                            additionalProperties:
+                              type: string
+                            type: object
+                          query:
+                            additionalProperties:
+                              type: string
                             type: object
                         type: object
-                    required:
-                      - errors
                     type: object
-          description: Bad request, some fields or parameters are incorrect
+                required:
+                  - errors
+                type: object
+        '401':
+          description: >-
+            No API Key was provided or the key is not authorised to perform the
+            action
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "401":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
-          description: No API Key was provided or the key is not authorised to perform the action
-          headers:
-            X-RateLimit-Limit:
-              description: Request limit per minute.
-              schema:
-                type: integer
-            X-RateLimit-Remaining:
-              description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "403":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
-                    properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
-                        type: string
-                    required:
-                      - message
-                    type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '403':
           description: The API Key provided is currently not enabled
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "404":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '404':
           description: Not found
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "429":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '429':
           description: Too many API requests were send
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "500":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '500':
           description: An unexpected error occurred
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
+                    properties:
+                      requestId:
+                        type: string
+                      status:
+                        type: number
+                    required:
+                      - requestId
+                      - status
+                    type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
       summary: Get snippet for a website
       tags:
         - Websites
@@ -2230,300 +2142,298 @@ paths:
         - GetTrackingSnippet
   /users/upsert:
     post:
+      consumes:
+        - application/json
       description: Endpoint to create or update a user.
       operationId: upsertUser
-      requestBody:
-        content:
-          application/json:
-            schema:
-              description: Update properties of a user
-              properties:
-                identification:
-                  description: User identification requires a userId, email or both
-                  minProperties: 1
-                  properties:
-                    email:
-                      description: Email address of the user
-                      format: email
-                      type: string
-                    userId:
-                      description: Unique identifier for the user in your database
-                      format: user-id
-                      type: string
-                  type: object
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            description: Update properties of a user
+            properties:
+              identification:
+                description: 'User identification requires a userId, email or both'
+                minProperties: 1
                 properties:
-                  additionalProperties:
-                    oneOf:
-                      - nullable: true
+                  email:
+                    description: Email address of the user
+                    format: email
+                    type: string
+                  userId:
+                    description: Unique identifier for the user in your database
+                    format: user-id
+                    type: string
+                type: object
+              properties:
+                additionalProperties:
+                  oneOf:
+                    - nullable: true
+                      type: string
+                    - type: boolean
+                    - type: number
+                    - format: datetime
+                      type: string
+                    - items:
+                        format: non-empty-string
                         type: string
-                      - type: boolean
-                      - type: number
-                      - format: datetime
-                        type: string
-                      - items:
-                          format: non-empty-string
-                          type: string
-                        type: array
-                  description: The properties being set, possible values are strings, booleans, numbers and datetimes (ISO 8601)
-                  type: object
-              required:
-                - identification
-              type: object
-        required: true
+                      type: array
+                description: >-
+                  The properties being set, possible values are strings,
+                  booleans, numbers and datetimes (ISO 8601)
+                type: object
+            required:
+              - identification
+            type: object
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
-                    properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The object was created
-                    properties:
-                      message:
-                        type: string
-                    required:
-                      - message
-                    type: object
+        '201':
           description: Object was created
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "400":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - allOf:
-                      - description: The basic response containing the unique ID of the request and the response status
-                        properties:
-                          meta:
-                            properties:
-                              requestId:
-                                type: string
-                              status:
-                                type: number
-                            required:
-                              - requestId
-                              - status
-                            type: object
-                        required:
-                          - meta
-                        type: object
-                      - description: The error message should specify what cause the error
-                        properties:
-                          message:
-                            type: string
-                        required:
-                          - message
-                        type: object
-                  - description: Specify the fields and/ or parameters that had errors
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      errors:
-                        description: Map that sums up all received values that seemed incorrect
+                      requestId:
+                        type: string
+                      status:
+                        type: number
+                    required:
+                      - requestId
+                      - status
+                    type: object
+                required:
+                  - meta
+                type: object
+              - description: The object was created
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '400':
+          description: 'Bad request, some fields or parameters are incorrect'
+          headers:
+            X-RateLimit-Limit:
+              description: Request limit per minute.
+              type: integer
+            X-RateLimit-Remaining:
+              description: The number of requests left for the time window.
+              type: integer
+          schema:
+            allOf:
+              - allOf:
+                  - description: >-
+                      The basic response containing the unique ID of the request
+                      and the response status
+                    properties:
+                      meta:
                         properties:
-                          fields:
+                          requestId:
+                            type: string
+                          status:
+                            type: number
+                        required:
+                          - requestId
+                          - status
+                        type: object
+                    required:
+                      - meta
+                    type: object
+                  - description: The error message should specify what cause the error
+                    properties:
+                      message:
+                        type: string
+                    required:
+                      - message
+                    type: object
+              - description: Specify the fields and/ or parameters that had errors
+                properties:
+                  errors:
+                    description: Map that sums up all received values that seemed incorrect
+                    properties:
+                      fields:
+                        additionalProperties:
+                          type: string
+                        description: All input fields that seemed incorrect
+                        type: object
+                      parameters:
+                        description: >-
+                          All query-, header- and path- parameters that seemed
+                          incorrect
+                        properties:
+                          header:
                             additionalProperties:
                               type: string
-                            description: All input fields that seemed incorrect
                             type: object
-                          parameters:
-                            description: All query-, header- and path- parameters that seemed incorrect
-                            properties:
-                              header:
-                                additionalProperties:
-                                  type: string
-                                type: object
-                              path:
-                                additionalProperties:
-                                  type: string
-                                type: object
-                              query:
-                                additionalProperties:
-                                  type: string
-                                type: object
+                          path:
+                            additionalProperties:
+                              type: string
+                            type: object
+                          query:
+                            additionalProperties:
+                              type: string
                             type: object
                         type: object
-                    required:
-                      - errors
                     type: object
-          description: Bad request, some fields or parameters are incorrect
+                required:
+                  - errors
+                type: object
+        '401':
+          description: >-
+            No API Key was provided or the key is not authorised to perform the
+            action
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "401":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
-          description: No API Key was provided or the key is not authorised to perform the action
-          headers:
-            X-RateLimit-Limit:
-              description: Request limit per minute.
-              schema:
-                type: integer
-            X-RateLimit-Remaining:
-              description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "403":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
-                    properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
-                        type: string
-                    required:
-                      - message
-                    type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '403':
           description: The API Key provided is currently not enabled
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "429":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '429':
           description: Too many API requests were send
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "500":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '500':
           description: An unexpected error occurred
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
+                    properties:
+                      requestId:
+                        type: string
+                      status:
+                        type: number
+                    required:
+                      - requestId
+                      - status
+                    type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
       summary: Create or update user
       tags:
         - Users
@@ -2620,201 +2530,198 @@ paths:
         - TrackData
   /validate:
     get:
-      description: Endpoint used to test the validity and some basic information about a specific API Key.
+      description: >-
+        Endpoint used to test the validity and some basic information about a
+        specific API Key.
       operationId: getValidity
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
-                    properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - properties:
-                      data:
-                        description: Validation of API Key
-                        properties:
-                          permissions:
-                            items:
-                              type: string
-                            type: array
-                        required:
-                          - permissions
-                        type: object
-                    required:
-                      - data
-                    type: object
+        '200':
           description: Key validation
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "401":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
-          description: No API Key was provided or the key is not authorised to perform the action
+                required:
+                  - meta
+                type: object
+              - properties:
+                  data:
+                    description: Validation of API Key
+                    properties:
+                      permissions:
+                        items:
+                          type: string
+                        type: array
+                    required:
+                      - permissions
+                    type: object
+                required:
+                  - data
+                type: object
+        '401':
+          description: >-
+            No API Key was provided or the key is not authorised to perform the
+            action
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "403":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '403':
           description: The API Key provided is currently not enabled
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "429":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '429':
           description: Too many API requests were send
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
-        "500":
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - description: The basic response containing the unique ID of the request and the response status
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
                     properties:
-                      meta:
-                        properties:
-                          requestId:
-                            type: string
-                          status:
-                            type: number
-                        required:
-                          - requestId
-                          - status
-                        type: object
-                    required:
-                      - meta
-                    type: object
-                  - description: The error message should specify what cause the error
-                    properties:
-                      message:
+                      requestId:
                         type: string
+                      status:
+                        type: number
                     required:
-                      - message
+                      - requestId
+                      - status
                     type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
+        '500':
           description: An unexpected error occurred
           headers:
             X-RateLimit-Limit:
               description: Request limit per minute.
-              schema:
-                type: integer
+              type: integer
             X-RateLimit-Remaining:
               description: The number of requests left for the time window.
-              schema:
-                type: integer
+              type: integer
+          schema:
+            allOf:
+              - description: >-
+                  The basic response containing the unique ID of the request and
+                  the response status
+                properties:
+                  meta:
+                    properties:
+                      requestId:
+                        type: string
+                      status:
+                        type: number
+                    required:
+                      - requestId
+                      - status
+                    type: object
+                required:
+                  - meta
+                type: object
+              - description: The error message should specify what cause the error
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                type: object
       summary: Validate API key
       tags:
         - Validation
@@ -2871,3 +2778,18 @@ paths:
                 print(result.calls_remaining)  # int
                 print(result.data)  # ApiKeyDetails
                 print(result.permissions)  # list of strings denoting the permissions
+schemes:
+  - https
+swagger: '2.0'
+tags:
+  - description: Endpoints for creating or updating users
+    name: Users
+  - description: Endpoints for creating or updating accounts
+    name: Accounts
+  - description: Endpoints for adding events
+    name: Events
+  - description: Endpoints for managing websites
+    name: Websites
+  - description: Endpoints for validating API keys
+    name: Validation
+

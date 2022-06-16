@@ -1,7 +1,842 @@
-openapi: 3.0.0
-servers:
-  - description: API server
-    url: https://api.mailscript.com/v2
+basePath: /v2
+definitions:
+  ActionCombine:
+    properties:
+      createdAt:
+        format: date-time
+        type: string
+      createdBy:
+        type: string
+      id:
+        type: string
+      list:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+      owner:
+        type: string
+    required:
+      - id
+      - name
+      - owner
+      - createdAt
+      - createdBy
+      - output
+      - config
+  ActionSend:
+    properties:
+      config:
+        properties:
+          html:
+            type: string
+          subject:
+            type: string
+          text:
+            type: string
+          type:
+            type: string
+        required:
+          - type
+          - subject
+        type: object
+      createdAt:
+        format: date-time
+        type: string
+      createdBy:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      output:
+        type: string
+      owner:
+        type: string
+    required:
+      - id
+      - name
+      - owner
+      - createdAt
+      - createdBy
+      - output
+      - config
+  AddActionAliasRequest:
+    properties:
+      config:
+        properties:
+          alias:
+            type: string
+          type:
+            enum:
+              - alias
+            type: string
+        type: object
+      name:
+        type: string
+      type:
+        enum:
+          - mailscript-email
+        type: string
+    required:
+      - name
+      - type
+      - config
+  AddActionCombineRequest:
+    properties:
+      list:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+    required:
+      - name
+      - list
+  AddActionDaemonRequest:
+    properties:
+      config:
+        properties:
+          body:
+            type: string
+          daemon:
+            type: string
+        required:
+          - body
+        type: object
+      name:
+        type: string
+      type:
+        enum:
+          - daemon
+        type: string
+    required:
+      - name
+      - type
+      - config
+  AddActionForwardRequest:
+    properties:
+      config:
+        properties:
+          forward:
+            type: string
+          from:
+            type: string
+          key:
+            type: string
+          type:
+            enum:
+              - forward
+            type: string
+        required:
+          - type
+          - forward
+          - from
+          - key
+        type: object
+      name:
+        type: string
+      type:
+        enum:
+          - mailscript-email
+        type: string
+    required:
+      - name
+      - type
+      - config
+  AddActionReplyAllRequest:
+    properties:
+      config:
+        properties:
+          from:
+            type: string
+          html:
+            type: string
+          key:
+            type: string
+          text:
+            type: string
+          type:
+            enum:
+              - replyAll
+            type: string
+        required:
+          - type
+          - from
+          - key
+        type: object
+      name:
+        type: string
+      type:
+        enum:
+          - mailscript-email
+        type: string
+    required:
+      - name
+      - type
+      - config
+  AddActionReplyRequest:
+    properties:
+      config:
+        properties:
+          from:
+            type: string
+          html:
+            type: string
+          key:
+            type: string
+          text:
+            type: string
+          type:
+            enum:
+              - reply
+            type: string
+        required:
+          - type
+          - from
+          - key
+        type: object
+      name:
+        type: string
+      type:
+        enum:
+          - mailscript-email
+        type: string
+    required:
+      - name
+      - type
+      - config
+  AddActionResponse:
+    properties:
+      id:
+        type: string
+    required:
+      - id
+  AddActionSendRequest:
+    properties:
+      config:
+        properties:
+          from:
+            type: string
+          html:
+            type: string
+          key:
+            type: string
+          subject:
+            type: string
+          text:
+            type: string
+          to:
+            type: string
+          type:
+            enum:
+              - send
+            type: string
+        required:
+          - send
+          - subject
+          - from
+          - key
+        type: object
+      name:
+        type: string
+      type:
+        enum:
+          - mailscript-email
+        type: string
+    required:
+      - name
+      - type
+      - config
+  AddActionSmsRequest:
+    properties:
+      config:
+        properties:
+          number:
+            type: string
+          text:
+            type: string
+        required:
+          - number
+          - text
+        type: object
+      name:
+        type: string
+      type:
+        enum:
+          - sms
+        type: string
+    required:
+      - name
+      - type
+      - config
+  AddActionWebhookRequest:
+    properties:
+      config:
+        properties:
+          body:
+            type: string
+          opts:
+            properties:
+              headers:
+                type: object
+              method:
+                enum:
+                  - POST
+                  - GET
+                  - DELETE
+                type: string
+            required:
+              - headers
+              - method
+            type: object
+          url:
+            type: string
+        required:
+          - url
+          - opts
+          - body
+        type: object
+      name:
+        type: string
+      type:
+        enum:
+          - webhook
+        type: string
+    required:
+      - name
+      - type
+      - config
+  AddAddressRequest:
+    properties:
+      address:
+        type: string
+    required:
+      - address
+  AddDomainRequest:
+    properties:
+      domain:
+        type: string
+    required:
+      - domain
+  AddEmailVerificationRequest:
+    properties:
+      email:
+        type: string
+      type:
+        enum:
+          - email
+        type: string
+    required:
+      - type
+      - email
+  AddKeyRequest:
+    properties:
+      name:
+        type: string
+      read:
+        type: boolean
+      write:
+        type: boolean
+    required:
+      - name
+      - read
+      - write
+  AddKeyResponse:
+    properties:
+      id:
+        type: string
+  AddSmsVerificationRequest:
+    properties:
+      sms:
+        type: string
+      type:
+        enum:
+          - sms
+        type: string
+    required:
+      - type
+      - sms
+  AddTriggerRequest:
+    properties:
+      criteria:
+        oneOf:
+          - $ref: '#/definitions/Criteria'
+          - $ref: '#/definitions/CriteriaOperand'
+      name:
+        type: string
+    required:
+      - name
+      - criteria
+  AddTriggerResponse:
+    properties:
+      id:
+        type: string
+    required:
+      - id
+  AddVerificationResponse:
+    properties:
+      id:
+        type: string
+    required:
+      - id
+  AddWorkflowRequest:
+    properties:
+      action:
+        type: string
+      active:
+        type: boolean
+      input:
+        type: string
+      name:
+        type: string
+      trigger:
+        type: string
+    required:
+      - name
+      - input
+      - action
+  AddWorkspaceRequest:
+    properties:
+      workspace:
+        type: string
+    required:
+      - workspace
+  Address:
+    properties:
+      createdAt:
+        format: date-time
+        type: string
+      createdBy:
+        type: string
+      displayName:
+        type: string
+      id:
+        type: string
+      owner:
+        type: string
+    required:
+      - id
+      - owner
+      - createdAt
+      - createdBy
+  CheckDomainVerify:
+    properties:
+      domain:
+        type: string
+      success:
+        type: boolean
+    required:
+      - domain
+      - success
+  Criteria:
+    minProperties: 1
+    properties:
+      domain:
+        type: string
+      from:
+        type: string
+      hasAttachments:
+        type: boolean
+      hasTheWords:
+        type: string
+      sentTo:
+        type: string
+      subjectContains:
+        type: string
+  CriteriaOperand:
+    minProperties: 1
+    properties:
+      and:
+        items:
+          type: string
+        type: array
+      or:
+        items:
+          type: string
+        type: array
+  DomainResponse:
+    properties:
+      domain:
+        type: string
+      records:
+        items:
+          properties:
+            name:
+              type: string
+            type:
+              type: string
+            value:
+              type: string
+          required:
+            - type
+            - name
+            - value
+          type: object
+        type: array
+    required:
+      - domain
+      - records
+  ErrorResponse:
+    properties:
+      error:
+        type: string
+    required:
+      - error
+  GetAllActionsResponse:
+    properties:
+      list:
+        items:
+          oneOf:
+            - $ref: '#/definitions/ActionSend'
+            - $ref: '#/definitions/ActionCombine'
+        type: array
+    required:
+      - list
+  GetAllAddressesResponse:
+    properties:
+      list:
+        items:
+          oneOf:
+            - $ref: '#/definitions/Address'
+          type: object
+        type: array
+    required:
+      - list
+  GetAllDomainsResponse:
+    properties:
+      id:
+        items:
+          type: string
+        type: array
+    required:
+      - list
+  GetAllInputsResponse:
+    properties:
+      list:
+        items:
+          oneOf:
+            - $ref: '#/definitions/MailscriptEmailInput'
+        type: array
+    required:
+      - list
+  GetAllIntegrationsResponse:
+    properties:
+      list:
+        items:
+          oneOf:
+            - $ref: '#/definitions/Integration'
+        type: array
+    required:
+      - list
+  GetAllKeysResponse:
+    properties:
+      list:
+        items:
+          oneOf:
+            - $ref: '#/definitions/Key'
+          type: object
+        type: array
+    required:
+      - list
+  GetAllTriggersResponse:
+    properties:
+      list:
+        items:
+          oneOf:
+            - $ref: '#/definitions/Trigger'
+        type: array
+    required:
+      - list
+  GetAllVerificationsResponse:
+    properties:
+      list:
+        items:
+          oneOf:
+            - $ref: '#/definitions/VerificationEmail'
+            - $ref: '#/definitions/VerificationSms'
+        type: array
+    required:
+      - list
+  GetAllWorkflowsResponse:
+    properties:
+      list:
+        items:
+          oneOf:
+            - $ref: '#/definitions/Workflow'
+          type: object
+        type: array
+    required:
+      - list
+  GetAllWorkspacesResponse:
+    properties:
+      list:
+        items:
+          oneOf:
+            - $ref: '#/definitions/Workspace'
+          type: object
+        type: array
+    required:
+      - list
+  Integration:
+    properties:
+      createdAt:
+        format: date-time
+        type: string
+      id:
+        type: string
+      type:
+        enum:
+          - google
+        type: string
+    required:
+      - id
+      - type
+      - createdAt
+  Key:
+    properties:
+      createdAt:
+        format: date-time
+        type: string
+      createdBy:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      read:
+        type: boolean
+      write:
+        type: boolean
+    required:
+      - id
+      - name
+      - read
+      - write
+      - createdBy
+      - createdAt
+  KeyValuePair:
+    properties:
+      key:
+        type: string
+      value:
+        type: string
+    required:
+      - key
+      - value
+  MailscriptEmailInput:
+    properties:
+      address:
+        type: string
+      createdAt:
+        format: date-time
+        type: string
+      createdBy:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      owner:
+        type: string
+      type:
+        enum:
+          - mailescript-email
+        type: string
+    required:
+      - id
+      - name
+      - type
+      - owner
+      - createdAt
+      - createdBy
+      - address
+  SendRequest:
+    properties:
+      from:
+        type: string
+      html:
+        type: string
+      subject:
+        type: string
+      text:
+        type: string
+      to:
+        type: string
+    required:
+      - to
+      - from
+      - subject
+  SetWorkflowRequest:
+    properties:
+      id:
+        type: string
+      pairs:
+        items:
+          oneOf:
+            - $ref: '#/definitions/KeyValuePair'
+          type: object
+        type: array
+  Trigger:
+    properties:
+      createdAt:
+        format: date-time
+        type: string
+      createdBy:
+        type: string
+      criteria:
+        $ref: '#/definitions/Criteria'
+      displayName:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      owner:
+        type: string
+    required:
+      - id
+      - owner
+      - createdAt
+      - createdBy
+      - name
+      - criteria
+  UpdateKeyRequest:
+    properties:
+      name:
+        type: string
+      read:
+        type: boolean
+      write:
+        type: boolean
+    required:
+      - name
+      - read
+      - write
+  UpdateUserRequest:
+    properties:
+      displayName:
+        type: string
+    required:
+      - displayName
+  User:
+    properties:
+      createdAt:
+        format: date-time
+        type: string
+      displayName:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      photoURL:
+        type: string
+    required:
+      - id
+      - displayName
+      - email
+      - createdAt
+  VerificationEmail:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      type:
+        enum:
+          - email
+        type: string
+      verified:
+        type: boolean
+      verifiedAt:
+        format: date-time
+        type: string
+      verifiedBy:
+        type: string
+  VerificationSms:
+    properties:
+      id:
+        type: string
+      sms:
+        type: string
+      type:
+        enum:
+          - sms
+        type: string
+      verified:
+        type: boolean
+      verifiedAt:
+        format: date-time
+        type: string
+      verifiedBy:
+        type: string
+  VerifyEmailRequest:
+    properties:
+      code:
+        type: string
+      email:
+        type: string
+    required:
+      - email
+      - code
+  VerifySmsRequest:
+    properties:
+      code:
+        type: string
+      sms:
+        type: string
+    required:
+      - sms
+      - code
+  Workflow:
+    properties:
+      action:
+        type: string
+      active:
+        type: boolean
+      createdAt:
+        format: date-time
+        type: string
+      createdBy:
+        type: string
+      id:
+        type: string
+      input:
+        type: string
+      name:
+        type: string
+      owner:
+        type: string
+      trigger:
+        type: string
+    required:
+      - id
+      - name
+      - owner
+      - createdAt
+      - createdBy
+      - input
+      - trigger
+      - action
+  Workspace:
+    properties:
+      createdAt:
+        format: date-time
+        type: string
+      createdBy:
+        type: string
+      id:
+        type: string
+      owner:
+        type: string
+    required:
+      - id
+      - owner
+      - createdAt
+      - createdBy
+host: api.mailscript.com
 info:
   license:
     name: MIT
@@ -10,82 +845,60 @@ info:
   x-apisguru-categories:
     - email
   x-logo:
-    url: https://mailscript.com/images/favicon.png
+    url: 'https://mailscript.com/images/favicon.png'
   x-origin:
     - format: openapi
-      url: http://api.mailscript.com/v2/swagger
-      version: "3.0"
+      url: 'http://api.mailscript.com/v2/swagger'
+      version: '3.0'
   x-providerName: mailscript.com
-security:
-  - bearerAuth: []
 paths:
   /actions:
     get:
       operationId: getAllActions
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetAllActionsResponse"
+        '200':
           description: Successful operation
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/GetAllActionsResponse'
+        '403':
           description: Bad credentials
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Get all actions for the user
       tags:
         - actions
     post:
+      consumes:
+        - application/json
       operationId: addAction
-      requestBody:
-        content:
-          application/json:
-            schema:
-              oneOf:
-                - $ref: "#/components/schemas/AddActionCombineRequest"
-                - $ref: "#/components/schemas/AddActionSmsRequest"
-                - $ref: "#/components/schemas/AddActionWebhookRequest"
-                - $ref: "#/components/schemas/AddActionDaemonRequest"
-                - $ref: "#/components/schemas/AddActionSendRequest"
-                - $ref: "#/components/schemas/AddActionForwardRequest"
-                - $ref: "#/components/schemas/AddActionForwardRequest"
-                - $ref: "#/components/schemas/AddActionReplyRequest"
-                - $ref: "#/components/schemas/AddActionReplyAllRequest"
-                - $ref: "#/components/schemas/AddActionAliasRequest"
-        description: Add action body
-        required: true
+      parameters:
+        - description: Add action body
+          in: body
+          name: body
+          required: true
+          schema: {}
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              examples:
-                list:
-                  value: |-
-                    [
-                    "hielle.com"
-                    ]
-              schema:
-                $ref: "#/components/schemas/AddActionResponse"
+        '201':
           description: Successful operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/AddActionResponse'
+        '400':
           description: Failure
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Not authorized or bad code
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Add an action
       tags:
         - actions
-  "/actions/{action}":
+  '/actions/{action}':
     delete:
       operationId: deleteAction
       parameters:
@@ -93,176 +906,146 @@ paths:
           in: path
           name: action
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "204":
+        '204':
           description: Successful delete operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+        '400':
           description: Failure
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
           description: Key not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Delete an action
       tags:
         - actions
     put:
+      consumes:
+        - application/json
       operationId: updateAction
       parameters:
         - description: ID of action
           in: path
           name: action
           required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              oneOf:
-                - $ref: "#/components/schemas/AddActionCombineRequest"
-                - $ref: "#/components/schemas/AddActionSmsRequest"
-                - $ref: "#/components/schemas/AddActionWebhookRequest"
-                - $ref: "#/components/schemas/AddActionDaemonRequest"
-                - $ref: "#/components/schemas/AddActionSendRequest"
-                - $ref: "#/components/schemas/AddActionForwardRequest"
-                - $ref: "#/components/schemas/AddActionForwardRequest"
-                - $ref: "#/components/schemas/AddActionReplyRequest"
-                - $ref: "#/components/schemas/AddActionReplyAllRequest"
-                - $ref: "#/components/schemas/AddActionAliasRequest"
-        description: Action body
-        required: true
+          type: string
+        - description: Action body
+          in: body
+          name: body
+          required: true
+          schema: {}
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Key"
+        '200':
           description: Successful update operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/Key'
+        '400':
           description: Failure
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
           description: Key not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Update an action key
       tags:
         - actions
   /addresses:
     get:
-      description: ""
+      description: ''
       operationId: getAllAddresses
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetAllAddressesResponse"
+        '200':
           description: successful operation
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/GetAllAddressesResponse'
+        '403':
           description: Bad credentials
-        "405":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '405':
           description: Invalid input
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Get all addresses you have access to
       tags:
         - addresses
     post:
-      description: ""
+      consumes:
+        - application/json
+      description: ''
       operationId: addAddress
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/AddAddressRequest"
-        description: Address body
-        required: true
+      parameters:
+        - description: Address body
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/AddAddressRequest'
+      produces:
+        - application/json
       responses:
-        "200":
+        '200':
           description: successful operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+        '400':
           description: Internal error
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
-        "405":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '405':
           description: Invalid input
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Claim a new Mailscript address
       tags:
         - addresses
-  "/addresses/{address}":
+  '/addresses/{address}':
     delete:
-      description: ""
+      description: ''
       operationId: deleteAddress
       parameters:
         - description: ID of address
           in: path
           name: address
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "204":
+        '204':
           description: successful delete operation
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+        '403':
           description: Bad credentials
-        "405":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '405':
           description: Invalid input
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Delete a mailscript address
       tags:
         - addresses
-  "/addresses/{address}/keys":
+  '/addresses/{address}/keys':
     get:
       operationId: getAllKeys
       parameters:
@@ -270,69 +1053,60 @@ paths:
           in: path
           name: address
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetAllKeysResponse"
+        '200':
           description: successful operation
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/GetAllKeysResponse'
+        '403':
           description: Bad credentials
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
           description: Address not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: List address keys
       tags:
         - keys
     post:
+      consumes:
+        - application/json
       operationId: addKey
       parameters:
         - description: ID of address
           in: path
           name: address
           required: true
+          type: string
+        - description: Key body
+          in: body
+          name: body
+          required: true
           schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/AddKeyRequest"
-        description: Key body
-        required: true
+            $ref: '#/definitions/AddKeyRequest'
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AddKeyResponse"
+        '201':
           description: successful operation
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/AddKeyResponse'
+        '403':
           description: Bad credentials
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
           description: Address not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Add address key
       tags:
         - keys
-  "/addresses/{address}/keys/{key}":
+  '/addresses/{address}/keys/{key}':
     delete:
       operationId: deleteKey
       parameters:
@@ -340,35 +1114,29 @@ paths:
           in: path
           name: address
           required: true
-          schema:
-            type: string
+          type: string
         - description: ID of key
           in: path
           name: key
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "204":
+        '204':
           description: Successful delete operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+        '400':
           description: Failure
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
           description: Key not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Delete address key
       tags:
         - keys
@@ -379,87 +1147,74 @@ paths:
           in: path
           name: address
           required: true
-          schema:
-            type: string
+          type: string
         - description: ID of key
           in: path
           name: key
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Key"
+        '200':
           description: successful operation
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/Key'
+        '403':
           description: Bad credentials
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
           description: Key not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Get address key
       tags:
         - keys
     put:
+      consumes:
+        - application/json
       operationId: updateKey
       parameters:
         - description: ID of address
           in: path
           name: address
           required: true
-          schema:
-            type: string
+          type: string
         - description: ID of key
           in: path
           name: key
           required: true
+          type: string
+        - description: Key body
+          in: body
+          name: body
+          required: true
           schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UpdateKeyRequest"
-        description: Key body
-        required: true
+            $ref: '#/definitions/UpdateKeyRequest'
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Key"
+        '200':
           description: Successful operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/Key'
+        '400':
           description: Failure
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
           description: Key not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Update an address key
       tags:
         - keys
-  "/daemons/{daemon}/token":
+  '/daemons/{daemon}/token':
     get:
       operationId: getDaemonToken
       parameters:
@@ -467,313 +1222,233 @@ paths:
           in: path
           name: daemon
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  token:
-                    type: string
-                required:
-                  - token
+        '200':
           description: Successful get operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            properties:
+              token:
+                type: string
+            required:
+              - token
+        '400':
           description: Failure
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Get a token for opening a daemon connection
       tags:
         - daemon
   /domains:
     get:
-      description: ""
+      description: ''
       operationId: getAllDomains
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              examples:
-                list:
-                  value: |-
-                    {
-                    "list": ["hielle.com"]
-                    }
-              schema:
-                $ref: "#/components/schemas/GetAllDomainsResponse"
+        '200':
           description: successful operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/GetAllDomainsResponse'
+        '400':
           description: Internal error
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
-        "405":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '405':
           description: Invalid input
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Get all domains you have access to
       tags:
         - domains
     post:
-      description: ""
+      consumes:
+        - application/json
+      description: ''
       operationId: addDomain
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/AddDomainRequest"
-        description: Domain body
-        required: true
+      parameters:
+        - description: Domain body
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/AddDomainRequest'
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              examples:
-                Add:
-                  value: |-
-                    {
-                      "id": "hielle.com",
-                      "records": [
-                        {
-                          "type:" "TXT",
-                          "name": "@",
-                          "value": "ms_verify=eecbb911-d940-41ea-8fc2-2c83295f418b"
-                        }
-                      ]
-                    }
-              schema:
-                $ref: "#/components/schemas/DomainResponse"
+        '200':
           description: successful operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/DomainResponse'
+        '400':
           description: Internal error
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
-        "405":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '405':
           description: Invalid input
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Claim a new Domain
       tags:
         - domains
-  "/domains/verify/{domain}":
+  '/domains/verify/{domain}':
     get:
-      description: ""
+      description: ''
       operationId: getDomainVerify
       parameters:
         - description: Full Top-level domain name
           in: path
           name: domain
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              examples:
-                Domain verification record:
-                  value: |-
-                    {
-                      "id": "hielle.com",
-                      "records": [
-                        {
-                          "type:" "TXT",
-                          "name": "@",
-                          "value": "ms_verify=eecbb911-d940-41ea-8fc2-2c83295f418b"
-                        }
-                      ]
-                    }
-              schema:
-                $ref: "#/components/schemas/DomainResponse"
+        '200':
           description: successful operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/DomainResponse'
+        '400':
           description: Internal error
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
-        "405":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '405':
           description: Invalid input
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Get domain verification
       tags:
         - domains
     post:
-      description: ""
+      description: ''
       operationId: CheckDomainVerify
       parameters:
         - description: Full Top-level domain name
           in: path
           name: domain
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              examples:
-                checkDomainVerify:
-                  value: |-
-                    {
-                    "id":"hielle.com",
-                    "success": true
-                    }
-              schema:
-                $ref: "#/components/schemas/CheckDomainVerify"
+        '200':
           description: successful operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/CheckDomainVerify'
+        '400':
           description: Internal error
-        "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
           description: Authorization failed
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
-        "405":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '405':
           description: Invalid input
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Check a new Domain
       tags:
         - domains
-  "/domains/{domain}":
+  '/domains/{domain}':
     delete:
-      description: ""
+      description: ''
       operationId: removeDomainVerify
       parameters:
         - description: Full Top-level domain name
           in: path
           name: domain
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
+        '200':
           description: successful operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+        '400':
           description: Internal error
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
-        "405":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '405':
           description: Invalid input
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Remove a domain
       tags:
         - domains
   /inputs:
     get:
-      description: ""
+      description: ''
       operationId: getAllInputs
       parameters:
         - in: query
           name: name
           required: false
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetAllInputsResponse"
+        '200':
           description: successful operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/GetAllInputsResponse'
+        '400':
           description: Invalid input
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Get all inputs you have access to
       tags:
         - inputs
   /integrations:
     get:
       operationId: getAllIntegrations
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetAllIntegrationsResponse"
+        '200':
           description: Successful operation
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/GetAllIntegrationsResponse'
+        '403':
           description: Bad credentials
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Get all integrations for the user
       tags:
         - integrations
-  "/integrations/{integration}":
+  '/integrations/{integration}':
     delete:
       operationId: deleteIntegration
       parameters:
@@ -781,119 +1456,109 @@ paths:
           in: path
           name: integration
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "204":
+        '204':
           description: Successful delete operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+        '400':
           description: Failure
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
           description: Key not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Delete an integration
       tags:
         - integrations
   /send:
     post:
+      consumes:
+        - application/json
       operationId: send
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SendRequest"
-        description: request body
-        required: true
+      parameters:
+        - description: request body
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/SendRequest'
+      produces:
+        - application/json
       responses:
-        "200":
+        '200':
           description: successful operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+        '400':
           description: Invalid input
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Send an email
       tags:
         - send
   /triggers:
     get:
-      description: ""
+      description: ''
       operationId: getAllTriggers
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetAllTriggersResponse"
+        '200':
           description: successful operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/GetAllTriggersResponse'
+        '400':
           description: Invalid input
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Get all triggers you have access to
       tags:
         - triggers
     post:
-      description: ""
+      consumes:
+        - application/json
+      description: ''
       operationId: addTrigger
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/AddTriggerRequest"
-        description: Trigger body
-        required: true
+      parameters:
+        - description: Trigger body
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/AddTriggerRequest'
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AddTriggerResponse"
+        '201':
           description: successful add operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/AddTriggerResponse'
+        '400':
           description: Invalid input
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Setup a trigger
       tags:
         - triggers
-  "/triggers/{trigger}":
+  '/triggers/{trigger}':
     delete:
       operationId: deleteTrigger
       parameters:
@@ -901,308 +1566,278 @@ paths:
           in: path
           name: trigger
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "204":
+        '204':
           description: Successful delete operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+        '400':
           description: Failure
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
           description: Key not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Delete a trigger
       tags:
         - triggers
     put:
+      consumes:
+        - application/json
       operationId: updateTrigger
       parameters:
         - description: ID of the trigger
           in: path
           name: trigger
           required: true
+          type: string
+        - description: Trigger body
+          in: body
+          name: body
+          required: true
           schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/AddTriggerRequest"
-        description: Trigger body
-        required: true
+            $ref: '#/definitions/AddTriggerRequest'
+      produces:
+        - application/json
       responses:
-        "200":
+        '200':
           description: Successful update operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+        '400':
           description: Failure
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
           description: Key not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Update a trigger
       tags:
         - triggers
   /user:
     get:
       operationId: getAuthenticatedUser
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/User"
+        '200':
           description: successful operation
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/User'
+        '403':
           description: Bad credentials
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Get the authenticated user
       tags:
         - user
     put:
+      consumes:
+        - application/json
       operationId: updateUser
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UpdateUserRequest"
-        description: User body
-        required: true
+      parameters:
+        - description: User body
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/UpdateUserRequest'
+      produces:
+        - application/json
       responses:
-        "200":
+        '200':
           description: Successful update operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+        '400':
           description: Failure
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Update a user
       tags:
         - user
   /verifications:
     get:
       operationId: getAllVerifications
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetAllVerificationsResponse"
+        '200':
           description: Successful operation
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/GetAllVerificationsResponse'
+        '403':
           description: Bad credentials
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Get all verificats for the user
       tags:
         - verifications
     post:
+      consumes:
+        - application/json
       operationId: addVerification
-      requestBody:
-        content:
-          application/json:
-            schema:
-              oneOf:
-                - $ref: "#/components/schemas/AddEmailVerificationRequest"
-                - $ref: "#/components/schemas/AddSmsVerificationRequest"
-        description: Key body
-        required: true
+      parameters:
+        - description: Key body
+          in: body
+          name: body
+          required: true
+          schema: {}
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AddVerificationResponse"
+        '201':
           description: Successful operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/AddVerificationResponse'
+        '400':
           description: Failure
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Start verification process for external email address or sms number
       tags:
         - verifications
-  "/verifications/{verification}/verify":
+  '/verifications/{verification}/verify':
     post:
+      consumes:
+        - application/json
       operationId: verify
       parameters:
         - description: ID of the verification entry
           in: path
           name: verification
           required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              oneOf:
-                - $ref: "#/components/schemas/VerifyEmailRequest"
-                - $ref: "#/components/schemas/VerifySmsRequest"
-        description: Verify action body
-        required: true
+          type: string
+        - description: Verify action body
+          in: body
+          name: body
+          required: true
+          schema: {}
+      produces:
+        - application/json
       responses:
-        "200":
+        '200':
           description: Successful operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+        '400':
           description: Failure
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Not authorized or bad code
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
           description: Not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Verify an email address or sms number with a code
       tags:
         - verifications
   /workflows:
     get:
-      description: ""
+      description: ''
       operationId: getAllWorkflows
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetAllWorkflowsResponse"
+        '200':
           description: successful operation
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/GetAllWorkflowsResponse'
+        '403':
           description: Bad credentials
-        "405":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '405':
           description: Invalid input
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Get all workflows you have access to
       tags:
         - workflows
     post:
-      description: ""
+      consumes:
+        - application/json
+      description: ''
       operationId: addWorkflow
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/AddWorkflowRequest"
-        description: Workflow body
-        required: true
+      parameters:
+        - description: Workflow body
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/AddWorkflowRequest'
+      produces:
+        - application/json
       responses:
-        "201":
+        '201':
           description: successful operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+        '400':
           description: Internal error
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
-        "405":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '405':
           description: Invalid input
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Setup workflow
       tags:
         - workflows
   /workflows/set:
     post:
+      consumes:
+        - application/json
       operationId: setWorkflow
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SetWorkflowRequest"
-        description: Set Workflow body
-        required: true
+      parameters:
+        - description: Set Workflow body
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/SetWorkflowRequest'
+      produces:
+        - application/json
       responses:
-        "204":
+        '204':
           description: Successful update operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+        '400':
           description: Failure
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
           description: Key not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Set a property on a workflow
       tags:
         - workflows
-  "/workflows/{workflow}":
+  '/workflows/{workflow}':
     delete:
       operationId: deleteWorkflow
       parameters:
@@ -1210,972 +1845,127 @@ paths:
           in: path
           name: workflow
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "204":
+        '204':
           description: Successful delete operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+        '400':
           description: Failure
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
           description: Key not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Delete a workflow
       tags:
         - workflows
     put:
+      consumes:
+        - application/json
       operationId: updateWorkflow
       parameters:
         - description: ID of the workflow
           in: path
           name: workflow
           required: true
+          type: string
+        - description: Workflow body
+          in: body
+          name: body
+          required: true
           schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/AddWorkflowRequest"
-        description: Workflow body
-        required: true
+            $ref: '#/definitions/AddWorkflowRequest'
+      produces:
+        - application/json
       responses:
-        "200":
+        '200':
           description: Successful update operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+        '400':
           description: Failure
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
           description: Key not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Update an workflow
       tags:
         - workflows
   /workspaces:
     get:
-      description: ""
+      description: ''
       operationId: getAllWorkspaces
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetAllWorkspacesResponse"
+        '200':
           description: successful operation
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/GetAllWorkspacesResponse'
+        '403':
           description: Bad credentials
-        "405":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '405':
           description: Invalid input
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Get all workspaces you have access to
       tags:
         - workspaces
     post:
+      consumes:
+        - application/json
       description: An attendant address will be created as well
       operationId: addWorkspace
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/AddWorkspaceRequest"
-        description: request body
-        required: true
+      parameters:
+        - description: request body
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/AddWorkspaceRequest'
+      produces:
+        - application/json
       responses:
-        "201":
+        '201':
           description: successful operation
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+        '400':
           description: Bad request
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '403':
           description: Bad credentials
-        "405":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '405':
           description: Invalid input
+          schema:
+            $ref: '#/definitions/ErrorResponse'
       summary: Claim a Mailscript workspace
       tags:
         - workspaces
-components:
-  schemas:
-    ActionCombine:
-      properties:
-        createdAt:
-          format: date-time
-          type: string
-        createdBy:
-          type: string
-        id:
-          type: string
-        list:
-          items:
-            type: string
-          type: array
-        name:
-          type: string
-        owner:
-          type: string
-      required:
-        - id
-        - name
-        - owner
-        - createdAt
-        - createdBy
-        - output
-        - config
-    ActionSend:
-      properties:
-        config:
-          properties:
-            html:
-              type: string
-            subject:
-              type: string
-            text:
-              type: string
-            type:
-              type: string
-          required:
-            - type
-            - subject
-          type: object
-        createdAt:
-          format: date-time
-          type: string
-        createdBy:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        output:
-          type: string
-        owner:
-          type: string
-      required:
-        - id
-        - name
-        - owner
-        - createdAt
-        - createdBy
-        - output
-        - config
-    AddActionAliasRequest:
-      properties:
-        config:
-          properties:
-            alias:
-              type: string
-            type:
-              enum:
-                - alias
-              type: string
-          type: object
-        name:
-          type: string
-        type:
-          enum:
-            - mailscript-email
-          type: string
-      required:
-        - name
-        - type
-        - config
-    AddActionCombineRequest:
-      properties:
-        list:
-          items:
-            type: string
-          type: array
-        name:
-          type: string
-      required:
-        - name
-        - list
-    AddActionDaemonRequest:
-      properties:
-        config:
-          properties:
-            body:
-              type: string
-            daemon:
-              type: string
-          required:
-            - body
-          type: object
-        name:
-          type: string
-        type:
-          enum:
-            - daemon
-          type: string
-      required:
-        - name
-        - type
-        - config
-    AddActionForwardRequest:
-      properties:
-        config:
-          properties:
-            forward:
-              type: string
-            from:
-              type: string
-            key:
-              type: string
-            type:
-              enum:
-                - forward
-              type: string
-          required:
-            - type
-            - forward
-            - from
-            - key
-          type: object
-        name:
-          type: string
-        type:
-          enum:
-            - mailscript-email
-          type: string
-      required:
-        - name
-        - type
-        - config
-    AddActionReplyAllRequest:
-      properties:
-        config:
-          properties:
-            from:
-              type: string
-            html:
-              type: string
-            key:
-              type: string
-            text:
-              type: string
-            type:
-              enum:
-                - replyAll
-              type: string
-          required:
-            - type
-            - from
-            - key
-          type: object
-        name:
-          type: string
-        type:
-          enum:
-            - mailscript-email
-          type: string
-      required:
-        - name
-        - type
-        - config
-    AddActionReplyRequest:
-      properties:
-        config:
-          properties:
-            from:
-              type: string
-            html:
-              type: string
-            key:
-              type: string
-            text:
-              type: string
-            type:
-              enum:
-                - reply
-              type: string
-          required:
-            - type
-            - from
-            - key
-          type: object
-        name:
-          type: string
-        type:
-          enum:
-            - mailscript-email
-          type: string
-      required:
-        - name
-        - type
-        - config
-    AddActionResponse:
-      properties:
-        id:
-          type: string
-      required:
-        - id
-    AddActionSendRequest:
-      properties:
-        config:
-          properties:
-            from:
-              type: string
-            html:
-              type: string
-            key:
-              type: string
-            subject:
-              type: string
-            text:
-              type: string
-            to:
-              type: string
-            type:
-              enum:
-                - send
-              type: string
-          required:
-            - send
-            - subject
-            - from
-            - key
-          type: object
-        name:
-          type: string
-        type:
-          enum:
-            - mailscript-email
-          type: string
-      required:
-        - name
-        - type
-        - config
-    AddActionSmsRequest:
-      properties:
-        config:
-          properties:
-            number:
-              type: string
-            text:
-              type: string
-          required:
-            - number
-            - text
-          type: object
-        name:
-          type: string
-        type:
-          enum:
-            - sms
-          type: string
-      required:
-        - name
-        - type
-        - config
-    AddActionWebhookRequest:
-      properties:
-        config:
-          properties:
-            body:
-              type: string
-            opts:
-              properties:
-                headers:
-                  type: object
-                method:
-                  enum:
-                    - POST
-                    - GET
-                    - DELETE
-                  type: string
-              required:
-                - headers
-                - method
-              type: object
-            url:
-              type: string
-          required:
-            - url
-            - opts
-            - body
-          type: object
-        name:
-          type: string
-        type:
-          enum:
-            - webhook
-          type: string
-      required:
-        - name
-        - type
-        - config
-    AddAddressRequest:
-      properties:
-        address:
-          type: string
-      required:
-        - address
-    AddDomainRequest:
-      properties:
-        domain:
-          type: string
-      required:
-        - domain
-    AddEmailVerificationRequest:
-      properties:
-        email:
-          type: string
-        type:
-          enum:
-            - email
-          type: string
-      required:
-        - type
-        - email
-    AddKeyRequest:
-      properties:
-        name:
-          type: string
-        read:
-          type: boolean
-        write:
-          type: boolean
-      required:
-        - name
-        - read
-        - write
-    AddKeyResponse:
-      properties:
-        id:
-          type: string
-    AddSmsVerificationRequest:
-      properties:
-        sms:
-          type: string
-        type:
-          enum:
-            - sms
-          type: string
-      required:
-        - type
-        - sms
-    AddTriggerRequest:
-      properties:
-        criteria:
-          oneOf:
-            - $ref: "#/components/schemas/Criteria"
-            - $ref: "#/components/schemas/CriteriaOperand"
-        name:
-          type: string
-      required:
-        - name
-        - criteria
-    AddTriggerResponse:
-      properties:
-        id:
-          type: string
-      required:
-        - id
-    AddVerificationResponse:
-      properties:
-        id:
-          type: string
-      required:
-        - id
-    AddWorkflowRequest:
-      properties:
-        action:
-          type: string
-        active:
-          type: boolean
-        input:
-          type: string
-        name:
-          type: string
-        trigger:
-          type: string
-      required:
-        - name
-        - input
-        - action
-    AddWorkspaceRequest:
-      properties:
-        workspace:
-          type: string
-      required:
-        - workspace
-    Address:
-      properties:
-        createdAt:
-          format: date-time
-          type: string
-        createdBy:
-          type: string
-        displayName:
-          type: string
-        id:
-          type: string
-        owner:
-          type: string
-      required:
-        - id
-        - owner
-        - createdAt
-        - createdBy
-    CheckDomainVerify:
-      properties:
-        domain:
-          type: string
-        success:
-          type: boolean
-      required:
-        - domain
-        - success
-    Criteria:
-      minProperties: 1
-      properties:
-        domain:
-          type: string
-        from:
-          type: string
-        hasAttachments:
-          type: boolean
-        hasTheWords:
-          type: string
-        sentTo:
-          type: string
-        subjectContains:
-          type: string
-    CriteriaOperand:
-      minProperties: 1
-      properties:
-        and:
-          items:
-            type: string
-          type: array
-        or:
-          items:
-            type: string
-          type: array
-    DomainResponse:
-      properties:
-        domain:
-          type: string
-        records:
-          items:
-            properties:
-              name:
-                type: string
-              type:
-                type: string
-              value:
-                type: string
-            required:
-              - type
-              - name
-              - value
-            type: object
-          type: array
-      required:
-        - domain
-        - records
-    ErrorResponse:
-      properties:
-        error:
-          type: string
-      required:
-        - error
-    GetAllActionsResponse:
-      properties:
-        list:
-          items:
-            oneOf:
-              - $ref: "#/components/schemas/ActionSend"
-              - $ref: "#/components/schemas/ActionCombine"
-          type: array
-      required:
-        - list
-    GetAllAddressesResponse:
-      properties:
-        list:
-          items:
-            oneOf:
-              - $ref: "#/components/schemas/Address"
-            type: object
-          type: array
-      required:
-        - list
-    GetAllDomainsResponse:
-      properties:
-        id:
-          items:
-            type: string
-          type: array
-      required:
-        - list
-    GetAllInputsResponse:
-      properties:
-        list:
-          items:
-            oneOf:
-              - $ref: "#/components/schemas/MailscriptEmailInput"
-          type: array
-      required:
-        - list
-    GetAllIntegrationsResponse:
-      properties:
-        list:
-          items:
-            oneOf:
-              - $ref: "#/components/schemas/Integration"
-          type: array
-      required:
-        - list
-    GetAllKeysResponse:
-      properties:
-        list:
-          items:
-            oneOf:
-              - $ref: "#/components/schemas/Key"
-            type: object
-          type: array
-      required:
-        - list
-    GetAllTriggersResponse:
-      properties:
-        list:
-          items:
-            oneOf:
-              - $ref: "#/components/schemas/Trigger"
-          type: array
-      required:
-        - list
-    GetAllVerificationsResponse:
-      properties:
-        list:
-          items:
-            oneOf:
-              - $ref: "#/components/schemas/VerificationEmail"
-              - $ref: "#/components/schemas/VerificationSms"
-          type: array
-      required:
-        - list
-    GetAllWorkflowsResponse:
-      properties:
-        list:
-          items:
-            oneOf:
-              - $ref: "#/components/schemas/Workflow"
-            type: object
-          type: array
-      required:
-        - list
-    GetAllWorkspacesResponse:
-      properties:
-        list:
-          items:
-            oneOf:
-              - $ref: "#/components/schemas/Workspace"
-            type: object
-          type: array
-      required:
-        - list
-    Integration:
-      properties:
-        createdAt:
-          format: date-time
-          type: string
-        id:
-          type: string
-        type:
-          enum:
-            - google
-          type: string
-      required:
-        - id
-        - type
-        - createdAt
-    Key:
-      properties:
-        createdAt:
-          format: date-time
-          type: string
-        createdBy:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        read:
-          type: boolean
-        write:
-          type: boolean
-      required:
-        - id
-        - name
-        - read
-        - write
-        - createdBy
-        - createdAt
-    KeyValuePair:
-      properties:
-        key:
-          type: string
-        value:
-          type: string
-      required:
-        - key
-        - value
-    MailscriptEmailInput:
-      properties:
-        address:
-          type: string
-        createdAt:
-          format: date-time
-          type: string
-        createdBy:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        owner:
-          type: string
-        type:
-          enum:
-            - mailescript-email
-          type: string
-      required:
-        - id
-        - name
-        - type
-        - owner
-        - createdAt
-        - createdBy
-        - address
-    SendRequest:
-      properties:
-        from:
-          type: string
-        html:
-          type: string
-        subject:
-          type: string
-        text:
-          type: string
-        to:
-          type: string
-      required:
-        - to
-        - from
-        - subject
-    SetWorkflowRequest:
-      properties:
-        id:
-          type: string
-        pairs:
-          items:
-            oneOf:
-              - $ref: "#/components/schemas/KeyValuePair"
-            type: object
-          type: array
-    Trigger:
-      properties:
-        createdAt:
-          format: date-time
-          type: string
-        createdBy:
-          type: string
-        criteria:
-          $ref: "#/components/schemas/Criteria"
-        displayName:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        owner:
-          type: string
-      required:
-        - id
-        - owner
-        - createdAt
-        - createdBy
-        - name
-        - criteria
-    UpdateKeyRequest:
-      properties:
-        name:
-          type: string
-        read:
-          type: boolean
-        write:
-          type: boolean
-      required:
-        - name
-        - read
-        - write
-    UpdateUserRequest:
-      properties:
-        displayName:
-          type: string
-      required:
-        - displayName
-    User:
-      properties:
-        createdAt:
-          format: date-time
-          type: string
-        displayName:
-          type: string
-        email:
-          type: string
-        id:
-          type: string
-        photoURL:
-          type: string
-      required:
-        - id
-        - displayName
-        - email
-        - createdAt
-    VerificationEmail:
-      properties:
-        email:
-          type: string
-        id:
-          type: string
-        type:
-          enum:
-            - email
-          type: string
-        verified:
-          type: boolean
-        verifiedAt:
-          format: date-time
-          type: string
-        verifiedBy:
-          type: string
-    VerificationSms:
-      properties:
-        id:
-          type: string
-        sms:
-          type: string
-        type:
-          enum:
-            - sms
-          type: string
-        verified:
-          type: boolean
-        verifiedAt:
-          format: date-time
-          type: string
-        verifiedBy:
-          type: string
-    VerifyEmailRequest:
-      properties:
-        code:
-          type: string
-        email:
-          type: string
-      required:
-        - email
-        - code
-    VerifySmsRequest:
-      properties:
-        code:
-          type: string
-        sms:
-          type: string
-      required:
-        - sms
-        - code
-    Workflow:
-      properties:
-        action:
-          type: string
-        active:
-          type: boolean
-        createdAt:
-          format: date-time
-          type: string
-        createdBy:
-          type: string
-        id:
-          type: string
-        input:
-          type: string
-        name:
-          type: string
-        owner:
-          type: string
-        trigger:
-          type: string
-      required:
-        - id
-        - name
-        - owner
-        - createdAt
-        - createdBy
-        - input
-        - trigger
-        - action
-    Workspace:
-      properties:
-        createdAt:
-          format: date-time
-          type: string
-        createdBy:
-          type: string
-        id:
-          type: string
-        owner:
-          type: string
-      required:
-        - id
-        - owner
-        - createdAt
-        - createdBy
-  securitySchemes:
-    bearerAuth:
-      bearerFormat: JWT
-      scheme: bearer
-      type: http
+schemes:
+  - https
+security:
+  - bearerAuth: []
+securityDefinitions:
+  bearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: '2.0'
+x-components: {}
+

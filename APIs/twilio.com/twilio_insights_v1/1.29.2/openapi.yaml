@@ -1,32 +1,1003 @@
-openapi: 3.0.1
-servers:
-  - url: https://insights.twilio.com
+basePath: /
+definitions:
+  insights.v1.account_settings:
+    properties:
+      account_sid:
+        maxLength: 34
+        minLength: 34
+        pattern: '^AC[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      advanced_features:
+        type: boolean
+        x-nullable: true
+      url:
+        format: uri
+        type: string
+        x-nullable: true
+      voice_trace:
+        type: boolean
+        x-nullable: true
+    type: object
+  insights.v1.annotation:
+    properties:
+      account_sid:
+        maxLength: 34
+        minLength: 34
+        pattern: '^AC[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      answered_by:
+        enum:
+          - unknown_answered_by
+          - human
+          - machine
+        type: string
+        x-nullable: true
+      call_score:
+        type: integer
+        x-nullable: true
+      call_sid:
+        maxLength: 34
+        minLength: 34
+        pattern: '^CA[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      comment:
+        type: string
+        x-nullable: true
+      connectivity_issue:
+        enum:
+          - unknown_connectivity_issue
+          - no_connectivity_issue
+          - invalid_number
+          - caller_id
+          - dropped_call
+          - number_reachability
+        type: string
+        x-nullable: true
+      incident:
+        type: string
+        x-nullable: true
+      quality_issues:
+        items:
+          type: string
+        type: array
+        x-nullable: true
+      spam:
+        type: boolean
+        x-nullable: true
+      url:
+        format: uri
+        type: string
+        x-nullable: true
+    type: object
+  insights.v1.call:
+    properties:
+      links:
+        format: uri-map
+        type: object
+        x-nullable: true
+      sid:
+        maxLength: 34
+        minLength: 34
+        pattern: '^CA[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      url:
+        format: uri
+        type: string
+        x-nullable: true
+    type: object
+  insights.v1.call.event:
+    properties:
+      account_sid:
+        maxLength: 34
+        minLength: 34
+        pattern: '^AC[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      call_sid:
+        maxLength: 34
+        minLength: 34
+        pattern: '^CA[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      carrier_edge:
+        x-nullable: true
+      client_edge:
+        x-nullable: true
+      edge:
+        enum:
+          - unknown_edge
+          - carrier_edge
+          - sip_edge
+          - sdk_edge
+          - client_edge
+        type: string
+        x-nullable: true
+      group:
+        type: string
+        x-nullable: true
+      level:
+        enum:
+          - UNKNOWN
+          - DEBUG
+          - INFO
+          - WARNING
+          - ERROR
+        type: string
+        x-nullable: true
+      name:
+        type: string
+        x-nullable: true
+      sdk_edge:
+        x-nullable: true
+      sip_edge:
+        x-nullable: true
+      timestamp:
+        type: string
+        x-nullable: true
+    type: object
+  insights.v1.call.metric:
+    properties:
+      account_sid:
+        maxLength: 34
+        minLength: 34
+        pattern: '^AC[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      call_sid:
+        maxLength: 34
+        minLength: 34
+        pattern: '^CA[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      carrier_edge:
+        x-nullable: true
+      client_edge:
+        x-nullable: true
+      direction:
+        enum:
+          - unknown
+          - inbound
+          - outbound
+          - both
+        type: string
+        x-nullable: true
+      edge:
+        enum:
+          - unknown_edge
+          - carrier_edge
+          - sip_edge
+          - sdk_edge
+          - client_edge
+        type: string
+        x-nullable: true
+      sdk_edge:
+        x-nullable: true
+      sip_edge:
+        x-nullable: true
+      timestamp:
+        type: string
+        x-nullable: true
+    type: object
+  insights.v1.call.summary:
+    properties:
+      account_sid:
+        maxLength: 34
+        minLength: 34
+        pattern: '^AC[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      attributes:
+        x-nullable: true
+      call_sid:
+        maxLength: 34
+        minLength: 34
+        pattern: '^CA[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      call_state:
+        enum:
+          - ringing
+          - completed
+          - busy
+          - fail
+          - noanswer
+          - canceled
+          - answered
+          - undialed
+        type: string
+        x-nullable: true
+      call_type:
+        enum:
+          - carrier
+          - sip
+          - trunking
+          - client
+        type: string
+        x-nullable: true
+      carrier_edge:
+        x-nullable: true
+      client_edge:
+        x-nullable: true
+      connect_duration:
+        type: integer
+        x-nullable: true
+      created_time:
+        format: date-time
+        type: string
+        x-nullable: true
+      duration:
+        type: integer
+        x-nullable: true
+      end_time:
+        format: date-time
+        type: string
+        x-nullable: true
+      from:
+        x-nullable: true
+      processing_state:
+        enum:
+          - complete
+          - partial
+        type: string
+        x-nullable: true
+      properties:
+        x-nullable: true
+      sdk_edge:
+        x-nullable: true
+      sip_edge:
+        x-nullable: true
+      start_time:
+        format: date-time
+        type: string
+        x-nullable: true
+      tags:
+        items:
+          type: string
+        type: array
+        x-nullable: true
+      to:
+        x-nullable: true
+      trust:
+        x-nullable: true
+      url:
+        format: uri
+        type: string
+        x-nullable: true
+    type: object
+  insights.v1.call_summaries:
+    properties:
+      account_sid:
+        maxLength: 34
+        minLength: 34
+        pattern: '^AC[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      attributes:
+        x-nullable: true
+      call_sid:
+        maxLength: 34
+        minLength: 34
+        pattern: '^CA[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      call_state:
+        enum:
+          - ringing
+          - completed
+          - busy
+          - fail
+          - noanswer
+          - canceled
+          - answered
+          - undialed
+        type: string
+        x-nullable: true
+      call_type:
+        enum:
+          - carrier
+          - sip
+          - trunking
+          - client
+        type: string
+        x-nullable: true
+      carrier_edge:
+        x-nullable: true
+      client_edge:
+        x-nullable: true
+      connect_duration:
+        type: integer
+        x-nullable: true
+      created_time:
+        format: date-time
+        type: string
+        x-nullable: true
+      duration:
+        type: integer
+        x-nullable: true
+      end_time:
+        format: date-time
+        type: string
+        x-nullable: true
+      from:
+        x-nullable: true
+      processing_state:
+        enum:
+          - complete
+          - partial
+        type: string
+        x-nullable: true
+      properties:
+        x-nullable: true
+      sdk_edge:
+        x-nullable: true
+      sip_edge:
+        x-nullable: true
+      start_time:
+        format: date-time
+        type: string
+        x-nullable: true
+      tags:
+        items:
+          type: string
+        type: array
+        x-nullable: true
+      to:
+        x-nullable: true
+      trust:
+        x-nullable: true
+      url:
+        format: uri
+        type: string
+        x-nullable: true
+    type: object
+  insights.v1.conference:
+    properties:
+      account_sid:
+        description: Account SID.
+        maxLength: 34
+        minLength: 34
+        pattern: '^AC[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      conference_sid:
+        description: Conference SID.
+        maxLength: 34
+        minLength: 34
+        pattern: '^CF[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      connect_duration_seconds:
+        description: Duration of the conference in seconds.
+        type: integer
+        x-nullable: true
+      create_time:
+        description: Conference creation date/time.
+        format: date-time
+        type: string
+        x-nullable: true
+      detected_issues:
+        description: Potential issues detected during the conference.
+        x-nullable: true
+      duration_seconds:
+        description: Conference duration in seconds.
+        type: integer
+        x-nullable: true
+      end_reason:
+        description: Conference end reason.
+        enum:
+          - last_participant_left
+          - conference_ended_via_api
+          - participant_with_end_conference_on_exit_left
+          - last_participant_kicked
+          - participant_with_end_conference_on_exit_kicked
+        type: string
+        x-nullable: true
+      end_time:
+        description: Conference end date/time.
+        format: date-time
+        type: string
+        x-nullable: true
+      ended_by:
+        description: Call SID that ended the conference.
+        maxLength: 34
+        minLength: 34
+        pattern: '^CA[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      friendly_name:
+        description: Custom label for the conference.
+        type: string
+        x-nullable: true
+      links:
+        description: Nested resource URLs.
+        format: uri-map
+        type: object
+        x-nullable: true
+      max_concurrent_participants:
+        description: Actual maximum concurrent participants.
+        type: integer
+        x-nullable: true
+      max_participants:
+        description: Max participants specified in config.
+        type: integer
+        x-nullable: true
+      mixer_region:
+        description: Region where the conference was mixed.
+        enum:
+          - us1
+          - au1
+          - br1
+          - ie1
+          - jp1
+          - sg1
+          - de1
+        type: string
+        x-nullable: true
+      mixer_region_requested:
+        description: Configuration-requested conference mixer region.
+        enum:
+          - us1
+          - au1
+          - br1
+          - ie1
+          - jp1
+          - sg1
+          - de1
+        type: string
+        x-nullable: true
+      processing_state:
+        description: Processing state for the Conference Summary resource.
+        enum:
+          - complete
+          - in_progress
+          - timeout
+        type: string
+        x-nullable: true
+      recording_enabled:
+        description: Boolean. Indicates whether recording was enabled.
+        type: boolean
+        x-nullable: true
+      start_time:
+        description: Timestamp in ISO 8601 format when the conference started.
+        format: date-time
+        type: string
+        x-nullable: true
+      status:
+        description: Status of conference
+        enum:
+          - in_progress
+          - not_started
+          - completed
+          - summary_timeout
+        type: string
+        x-nullable: true
+      tag_info:
+        description: Object. Contains details about conference tags.
+        x-nullable: true
+      tags:
+        description: Tags for detected conference conditions and participant behaviors.
+        items:
+          enum:
+            - invalid_requested_region
+            - duplicate_identity
+            - start_failure
+            - region_configuration_issues
+            - quality_warnings
+            - participant_behavior_issues
+            - high_packet_loss
+            - high_jitter
+            - high_latency
+            - low_mos
+            - detected_silence
+          type: string
+        type: array
+        x-nullable: true
+      unique_participants:
+        description: Unique conference participants.
+        type: integer
+        x-nullable: true
+      url:
+        description: The URL of this resource.
+        format: uri
+        type: string
+        x-nullable: true
+    type: object
+  insights.v1.conference.conference_participant:
+    properties:
+      account_sid:
+        description: Account SID.
+        maxLength: 34
+        minLength: 34
+        pattern: '^AC[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      call_direction:
+        description: Call direction of the participant.
+        enum:
+          - inbound
+          - outbound
+        type: string
+        x-nullable: true
+      call_sid:
+        description: Unique SID identifier of the call.
+        maxLength: 34
+        minLength: 34
+        pattern: '^CA[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      call_status:
+        description: Call status of the call that generated the participant.
+        enum:
+          - answered
+          - completed
+          - busy
+          - fail
+          - noanswer
+          - ringing
+          - canceled
+        type: string
+        x-nullable: true
+      call_type:
+        description: The Call Type of this Conference Participant.
+        enum:
+          - carrier
+          - client
+          - sip
+        type: string
+        x-nullable: true
+      coached_participants:
+        description: Call SIDs coached by this participant.
+        items:
+          type: string
+        type: array
+        x-nullable: true
+      conference_region:
+        description: The Conference Region of this Conference Participant.
+        enum:
+          - us1
+          - us2
+          - au1
+          - br1
+          - ie1
+          - jp1
+          - sg1
+          - de1
+        type: string
+        x-nullable: true
+      conference_sid:
+        description: Conference SID.
+        maxLength: 34
+        minLength: 34
+        pattern: '^CF[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      country_code:
+        description: ISO alpha-2 country code of the participant.
+        type: string
+        x-nullable: true
+      duration_seconds:
+        description: Participant durations in seconds.
+        type: integer
+        x-nullable: true
+      events:
+        description: >-
+          Object containing information of actions taken by participants. Nested
+          resource URLs.
+        x-nullable: true
+      from:
+        description: Caller ID of the calling party.
+        type: string
+        x-nullable: true
+      is_coach:
+        description: Boolean. Indicated whether participant was a coach.
+        type: boolean
+        x-nullable: true
+      is_moderator:
+        description: >-
+          Boolean. Indicates whether participant had startConferenceOnEnter=true
+          or endConferenceOnExit=true.
+        type: boolean
+        x-nullable: true
+      jitter_buffer_size:
+        description: The Jitter Buffer Size of this Conference Participant.
+        enum:
+          - large
+          - small
+          - medium
+          - 'off'
+        type: string
+        x-nullable: true
+      join_time:
+        description: ISO 8601 timestamp of participant join event.
+        format: date-time
+        type: string
+        x-nullable: true
+      label:
+        description: The user-specified label of this participant.
+        type: string
+        x-nullable: true
+      leave_time:
+        description: ISO 8601 timestamp of participant leave event.
+        format: date-time
+        type: string
+        x-nullable: true
+      metrics:
+        description: Object. Contains participant quality metrics.
+        x-nullable: true
+      outbound_queue_length:
+        description: Estimated time in queue at call creation.
+        type: integer
+        x-nullable: true
+      outbound_time_in_queue:
+        description: Actual time in queue (seconds).
+        type: integer
+        x-nullable: true
+      participant_region:
+        description: Twilio region where the participant media originates.
+        enum:
+          - us1
+          - us2
+          - au1
+          - br1
+          - ie1
+          - jp1
+          - sg1
+          - de1
+        type: string
+        x-nullable: true
+      participant_sid:
+        description: SID for this participant.
+        maxLength: 34
+        minLength: 34
+        pattern: '^CP[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      processing_state:
+        description: Processing state of the Participant Summary.
+        enum:
+          - complete
+          - in_progress
+          - timeout
+        type: string
+        x-nullable: true
+      properties:
+        description: Participant properties and metadata.
+        x-nullable: true
+      to:
+        description: Called party.
+        type: string
+        x-nullable: true
+      url:
+        description: The URL of this resource.
+        format: uri
+        type: string
+        x-nullable: true
+    type: object
+  insights.v1.video_room_summary:
+    properties:
+      account_sid:
+        description: Account SID associated with this room.
+        maxLength: 34
+        minLength: 34
+        pattern: '^AC[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      codecs:
+        description: Codecs used by participants in the room.
+        items:
+          enum:
+            - VP8
+            - H264
+            - VP9
+          type: string
+        type: array
+        x-nullable: true
+      concurrent_participants:
+        description: Actual number of concurrent participants.
+        type: integer
+        x-nullable: true
+      create_time:
+        description: Creation time of the room.
+        format: date-time
+        type: string
+        x-nullable: true
+      created_method:
+        description: How the room was created.
+        enum:
+          - sdk
+          - ad_hoc
+          - api
+        type: string
+        x-nullable: true
+      duration_sec:
+        description: Total room duration from create time to end time.
+        type: integer
+        x-nullable: true
+      edge_location:
+        description: Edge location of Twilio media servers for the room.
+        enum:
+          - ashburn
+          - dublin
+          - frankfurt
+          - singapore
+          - sydney
+          - sao_paulo
+          - roaming
+          - umatilla
+          - tokyo
+        type: string
+        x-nullable: true
+      end_reason:
+        description: Reason the room ended.
+        enum:
+          - room_ended_via_api
+          - timeout
+        type: string
+        x-nullable: true
+      end_time:
+        description: End time for the room.
+        format: date-time
+        type: string
+        x-nullable: true
+      links:
+        description: Room subresources.
+        format: uri-map
+        type: object
+        x-nullable: true
+      max_concurrent_participants:
+        description: >-
+          Maximum number of participants allowed in the room at the same time
+          allowed by the application settings.
+        type: integer
+        x-nullable: true
+      max_participants:
+        description: Max number of total participants allowed by the application settings.
+        type: integer
+        x-nullable: true
+      media_region:
+        description: Region of Twilio media servers for the room.
+        enum:
+          - us1
+          - us2
+          - au1
+          - br1
+          - ie1
+          - jp1
+          - sg1
+          - in1
+          - de1
+          - gll
+        type: string
+        x-nullable: true
+      processing_state:
+        description: >-
+          Video Log Analyzer resource state. Will be either `in-progress` or
+          `complete`.
+        enum:
+          - complete
+          - in_progress
+        type: string
+        x-nullable: true
+      recording_enabled:
+        description: Boolean indicating if recording is enabled for the room.
+        type: boolean
+        x-nullable: true
+      room_name:
+        description: room friendly name.
+        type: string
+        x-nullable: true
+      room_sid:
+        description: Unique identifier for the room.
+        maxLength: 34
+        minLength: 34
+        pattern: '^RM[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      room_status:
+        description: Status of the room.
+        enum:
+          - in_progress
+          - completed
+        type: string
+        x-nullable: true
+      room_type:
+        description: Type of room.
+        enum:
+          - go
+          - peer_to_peer
+          - group
+          - group_small
+        type: string
+        x-nullable: true
+      status_callback:
+        description: Webhook provided for status callbacks.
+        format: uri
+        type: string
+        x-nullable: true
+      status_callback_method:
+        description: HTTP method provided for status callback URL.
+        enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+        format: http-method
+        type: string
+        x-nullable: true
+      total_participant_duration_sec:
+        description: Combined amount of participant time in the room.
+        type: integer
+        x-nullable: true
+      total_recording_duration_sec:
+        description: Combined amount of recorded seconds for participants in the room.
+        type: integer
+        x-nullable: true
+      unique_participant_identities:
+        description: Unique number of participant identities.
+        type: integer
+        x-nullable: true
+      unique_participants:
+        description: >-
+          Number of participants. May include duplicate identities for
+          participants who left and rejoined.
+        type: integer
+        x-nullable: true
+      url:
+        description: URL for the room resource.
+        format: uri
+        type: string
+        x-nullable: true
+    type: object
+  insights.v1.video_room_summary.video_participant_summary:
+    properties:
+      account_sid:
+        description: Account SID associated with the room.
+        maxLength: 34
+        minLength: 34
+        pattern: '^AC[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      codecs:
+        description: Codecs detected from the participant.
+        items:
+          enum:
+            - VP8
+            - H264
+            - VP9
+          type: string
+        type: array
+        x-nullable: true
+      duration_sec:
+        description: Amount of time in seconds the participant was in the room.
+        type: integer
+        x-nullable: true
+      edge_location:
+        description: Name of the edge location the participant connected to.
+        enum:
+          - ashburn
+          - dublin
+          - frankfurt
+          - singapore
+          - sydney
+          - sao_paulo
+          - roaming
+          - umatilla
+          - tokyo
+        type: string
+        x-nullable: true
+      end_reason:
+        description: Reason the participant left the room.
+        type: string
+        x-nullable: true
+      error_code:
+        description: Errors encountered by the participant.
+        type: integer
+        x-nullable: true
+      error_code_url:
+        description: Twilio error code dictionary link.
+        type: string
+        x-nullable: true
+      join_time:
+        description: When the participant joined the room.
+        format: date-time
+        type: string
+        x-nullable: true
+      leave_time:
+        description: When the participant left the room
+        format: date-time
+        type: string
+        x-nullable: true
+      media_region:
+        description: Twilio media region the participant connected to.
+        enum:
+          - us1
+          - us2
+          - au1
+          - br1
+          - ie1
+          - jp1
+          - sg1
+          - in1
+          - de1
+          - gll
+        type: string
+        x-nullable: true
+      participant_identity:
+        description: >-
+          The application-defined string that uniquely identifies the
+          participant within a Room.
+        type: string
+        x-nullable: true
+      participant_sid:
+        description: Unique identifier for the participant.
+        maxLength: 34
+        minLength: 34
+        pattern: '^PA[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      properties:
+        description: >-
+          Object containing information about the participant's data from the
+          room.
+        x-nullable: true
+      publisher_info:
+        description: Object containing information about the SDK name and version.
+        x-nullable: true
+      room_sid:
+        description: Unique identifier for the room.
+        maxLength: 34
+        minLength: 34
+        pattern: '^RM[0-9a-fA-F]{32}$'
+        type: string
+        x-nullable: true
+      status:
+        description: Status of the room.
+        enum:
+          - in_progress
+          - completed
+        type: string
+        x-nullable: true
+      url:
+        description: URL of the participant resource.
+        format: uri
+        type: string
+        x-nullable: true
+    type: object
+host: insights.twilio.com
 info:
   contact:
     email: support@twilio.com
     name: Twilio Support
-    url: https://support.twilio.com
+    url: 'https://support.twilio.com'
   description: This is the public Twilio REST API.
   license:
     name: Apache 2.0
-    url: https://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: https://www.twilio.com/legal/tos
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+  termsOfService: 'https://www.twilio.com/legal/tos'
   title: Twilio - Insights
   version: 1.29.2
   x-apisguru-categories:
     - telecom
     - messaging
   x-logo:
-    url: https://static1.twilio.com/marketing/bundles/marketing/img/logos/wordmark-red.svg
+    url: >-
+      https://static1.twilio.com/marketing/bundles/marketing/img/logos/wordmark-red.svg
   x-origin:
     - format: openapi
-      url: https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_insights_v1.json
-      version: "3.0"
+      url: >-
+        https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_insights_v1.json
+      version: '3.0'
   x-providerName: twilio.com
   x-serviceName: twilio_insights_v1
 paths:
   /v1/Conferences:
-    description: "TODO: Resource-level docs"
+    description: 'TODO: Resource-level docs'
     get:
       description: Retrieve a list of Conferences.
       operationId: ListConference
@@ -34,218 +1005,217 @@ paths:
         - description: The SID of the conference.
           in: query
           name: ConferenceSid
-          schema:
-            type: string
-        - description: Custom label for the conference resource, up to 64 characters.
+          type: string
+        - description: 'Custom label for the conference resource, up to 64 characters.'
           in: query
           name: FriendlyName
-          schema:
-            type: string
+          type: string
         - description: Conference status.
           in: query
           name: Status
-          schema:
-            type: string
-        - description: Conferences created after the provided timestamp specified in ISO 8601 format
+          type: string
+        - description: >-
+            Conferences created after the provided timestamp specified in ISO
+            8601 format
           in: query
           name: CreatedAfter
-          schema:
-            type: string
-        - description: Conferences created before the provided timestamp specified in ISO 8601 format.
+          type: string
+        - description: >-
+            Conferences created before the provided timestamp specified in ISO
+            8601 format.
           in: query
           name: CreatedBefore
-          schema:
-            type: string
+          type: string
         - description: Twilio region where the conference media was mixed.
           in: query
           name: MixerRegion
-          schema:
-            type: string
-        - description: Tags applied by Twilio for common potential configuration, quality, or performance issues.
+          type: string
+        - description: >-
+            Tags applied by Twilio for common potential configuration, quality,
+            or performance issues.
           in: query
           name: Tags
-          schema:
-            type: string
+          type: string
         - description: Account SID for the subaccount whose resources you wish to retrieve.
           in: query
+          maxLength: 34
+          minLength: 34
           name: Subaccount
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^AC[0-9a-fA-F]{32}$
-            type: string
-        - description: Potential configuration, behavior, or performance issues detected during the conference.
+          pattern: '^AC[0-9a-fA-F]{32}$'
+          type: string
+        - description: >-
+            Potential configuration, behavior, or performance issues detected
+            during the conference.
           in: query
           name: DetectedIssues
-          schema:
-            type: string
-        - description: Conference end reason; e.g. last participant left, modified by API, etc.
+          type: string
+        - description: >-
+            Conference end reason; e.g. last participant left, modified by API,
+            etc.
           in: query
           name: EndReason
-          schema:
-            type: string
-        - description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+          type: string
+        - description: >-
+            How many resources to return in each list page. The default is 50,
+            and the maximum is 1000.
           in: query
+          maximum: 1000
+          minimum: 1
           name: PageSize
-          schema:
-            maximum: 1000
-            minimum: 1
-            type: integer
+          type: integer
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  conferences:
-                    items:
-                      $ref: "#/components/schemas/insights.v1.conference"
-                    type: array
-                  meta:
-                    properties:
-                      first_page_url:
-                        format: uri
-                        type: string
-                      key:
-                        type: string
-                      next_page_url:
-                        format: uri
-                        type: string
-                      page:
-                        type: integer
-                      page_size:
-                        type: integer
-                      previous_page_url:
-                        format: uri
-                        type: string
-                      url:
-                        format: uri
-                        type: string
-                    type: object
-                title: ListConferenceResponse
-                type: object
+        '200':
           description: OK
+          schema:
+            properties:
+              conferences:
+                items:
+                  $ref: '#/definitions/insights.v1.conference'
+                type: array
+              meta:
+                properties:
+                  first_page_url:
+                    format: uri
+                    type: string
+                  key:
+                    type: string
+                  next_page_url:
+                    format: uri
+                    type: string
+                  page:
+                    type: integer
+                  page_size:
+                    type: integer
+                  previous_page_url:
+                    format: uri
+                    type: string
+                  url:
+                    format: uri
+                    type: string
+                type: object
+            title: ListConferenceResponse
+            type: object
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://insights.twilio.com
+      - url: 'https://insights.twilio.com'
     x-twilio:
       defaultOutputProperties:
         - conference_sid
         - account_sid
       pathType: list
-  "/v1/Conferences/{ConferenceSid}":
-    description: "TODO: Resource-level docs"
+  '/v1/Conferences/{ConferenceSid}':
+    description: 'TODO: Resource-level docs'
     get:
       description: Fetch a specific Conference.
       operationId: FetchConference
       parameters:
         - description: The unique SID identifier of the Conference.
           in: path
+          maxLength: 34
+          minLength: 34
           name: ConferenceSid
+          pattern: '^CF[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^CF[0-9a-fA-F]{32}$
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/insights.v1.conference"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/insights.v1.conference'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://insights.twilio.com
+      - url: 'https://insights.twilio.com'
     x-twilio:
       defaultOutputProperties:
         - conference_sid
         - account_sid
       pathType: instance
-  "/v1/Conferences/{ConferenceSid}/Participants":
-    description: "TODO: Resource-level docs"
+  '/v1/Conferences/{ConferenceSid}/Participants':
+    description: 'TODO: Resource-level docs'
     get:
       description: List Conference Participants.
       operationId: ListConferenceParticipant
       parameters:
         - description: The unique SID identifier of the Conference.
           in: path
+          maxLength: 34
+          minLength: 34
           name: ConferenceSid
+          pattern: '^CF[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^CF[0-9a-fA-F]{32}$
-            type: string
+          type: string
         - description: The unique SID identifier of the Participant.
           in: query
           name: ParticipantSid
-          schema:
-            type: string
+          type: string
         - description: User-specified label for a participant.
           in: query
           name: Label
-          schema:
-            type: string
-        - description: Conference events generated by application or participant activity; e.g. `hold`, `mute`, etc.
+          type: string
+        - description: >-
+            Conference events generated by application or participant activity;
+            e.g. `hold`, `mute`, etc.
           in: query
           name: Events
-          schema:
-            type: string
-        - description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+          type: string
+        - description: >-
+            How many resources to return in each list page. The default is 50,
+            and the maximum is 1000.
           in: query
+          maximum: 1000
+          minimum: 1
           name: PageSize
-          schema:
-            maximum: 1000
-            minimum: 1
-            type: integer
+          type: integer
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  meta:
-                    properties:
-                      first_page_url:
-                        format: uri
-                        type: string
-                      key:
-                        type: string
-                      next_page_url:
-                        format: uri
-                        type: string
-                      page:
-                        type: integer
-                      page_size:
-                        type: integer
-                      previous_page_url:
-                        format: uri
-                        type: string
-                      url:
-                        format: uri
-                        type: string
-                    type: object
-                  participants:
-                    items:
-                      $ref: "#/components/schemas/insights.v1.conference.conference_participant"
-                    type: array
-                title: ListConferenceParticipantResponse
-                type: object
+        '200':
           description: OK
+          schema:
+            properties:
+              meta:
+                properties:
+                  first_page_url:
+                    format: uri
+                    type: string
+                  key:
+                    type: string
+                  next_page_url:
+                    format: uri
+                    type: string
+                  page:
+                    type: integer
+                  page_size:
+                    type: integer
+                  previous_page_url:
+                    format: uri
+                    type: string
+                  url:
+                    format: uri
+                    type: string
+                type: object
+              participants:
+                items:
+                  $ref: '#/definitions/insights.v1.conference.conference_participant'
+                type: array
+            title: ListConferenceParticipantResponse
+            type: object
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://insights.twilio.com
+      - url: 'https://insights.twilio.com'
     x-twilio:
       className: conference_participant
       defaultOutputProperties:
@@ -255,53 +1225,51 @@ paths:
         - account_sid
       parent: /Conferences
       pathType: list
-  "/v1/Conferences/{ConferenceSid}/Participants/{ParticipantSid}":
-    description: "TODO: Resource-level docs"
+  '/v1/Conferences/{ConferenceSid}/Participants/{ParticipantSid}':
+    description: 'TODO: Resource-level docs'
     get:
       description: Fetch a specific Conference Participant Summary.
       operationId: FetchConferenceParticipant
       parameters:
         - description: The unique SID identifier of the Conference.
           in: path
+          maxLength: 34
+          minLength: 34
           name: ConferenceSid
+          pattern: '^CF[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^CF[0-9a-fA-F]{32}$
-            type: string
+          type: string
         - description: The unique SID identifier of the Participant.
           in: path
+          maxLength: 34
+          minLength: 34
           name: ParticipantSid
+          pattern: '^CP[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^CP[0-9a-fA-F]{32}$
-            type: string
-        - description: Conference events generated by application or participant activity; e.g. `hold`, `mute`, etc.
+          type: string
+        - description: >-
+            Conference events generated by application or participant activity;
+            e.g. `hold`, `mute`, etc.
           in: query
           name: Events
-          schema:
-            type: string
+          type: string
         - description: Object. Contains participant call quality metrics.
           in: query
           name: Metrics
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/insights.v1.conference.conference_participant"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/insights.v1.conference.conference_participant'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://insights.twilio.com
+      - url: 'https://insights.twilio.com'
     x-twilio:
       className: conference_participant
       defaultOutputProperties:
@@ -312,105 +1280,107 @@ paths:
       parent: /Conferences
       pathType: instance
   /v1/Video/Rooms:
-    description: "TODO: Resource-level docs"
+    description: 'TODO: Resource-level docs'
     get:
       description: Get a list of Programmable Video Rooms.
       operationId: ListVideoRoomSummary
       parameters:
-        - description: Type of room. Can be `go`, `peer_to_peer`, `group`, or `group_small`.
+        - collectionFormat: multi
+          description: >-
+            Type of room. Can be `go`, `peer_to_peer`, `group`, or
+            `group_small`.
           in: query
+          items:
+            enum:
+              - go
+              - peer_to_peer
+              - group
+              - group_small
+            type: string
           name: RoomType
-          schema:
-            items:
-              enum:
-                - go
-                - peer_to_peer
-                - group
-                - group_small
-              type: string
-            type: array
-        - description: Codecs used by participants in the room. Can be `VP8`, `H264`, or `VP9`.
+          type: array
+        - collectionFormat: multi
+          description: >-
+            Codecs used by participants in the room. Can be `VP8`, `H264`, or
+            `VP9`.
           in: query
+          items:
+            enum:
+              - VP8
+              - H264
+              - VP9
+            type: string
           name: Codec
-          schema:
-            items:
-              enum:
-                - VP8
-                - H264
-                - VP9
-              type: string
-            type: array
+          type: array
         - description: Room friendly name.
           in: query
           name: RoomName
-          schema:
-            type: string
+          type: string
         - description: Only read rooms that started on or after this ISO 8601 timestamp.
+          format: date-time
           in: query
           name: CreatedAfter
-          schema:
-            format: date-time
-            type: string
+          type: string
         - description: Only read rooms that started before this ISO 8601 timestamp.
+          format: date-time
           in: query
           name: CreatedBefore
-          schema:
-            format: date-time
-            type: string
-        - description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+          type: string
+        - description: >-
+            How many resources to return in each list page. The default is 50,
+            and the maximum is 1000.
           in: query
+          maximum: 1000
+          minimum: 1
           name: PageSize
-          schema:
-            maximum: 1000
-            minimum: 1
-            type: integer
+          type: integer
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  meta:
-                    properties:
-                      first_page_url:
-                        format: uri
-                        type: string
-                      key:
-                        type: string
-                      next_page_url:
-                        format: uri
-                        type: string
-                      page:
-                        type: integer
-                      page_size:
-                        type: integer
-                      previous_page_url:
-                        format: uri
-                        type: string
-                      url:
-                        format: uri
-                        type: string
-                    type: object
-                  rooms:
-                    items:
-                      $ref: "#/components/schemas/insights.v1.video_room_summary"
-                    type: array
-                title: ListVideoRoomSummaryResponse
-                type: object
+        '200':
           description: OK
+          schema:
+            properties:
+              meta:
+                properties:
+                  first_page_url:
+                    format: uri
+                    type: string
+                  key:
+                    type: string
+                  next_page_url:
+                    format: uri
+                    type: string
+                  page:
+                    type: integer
+                  page_size:
+                    type: integer
+                  previous_page_url:
+                    format: uri
+                    type: string
+                  url:
+                    format: uri
+                    type: string
+                type: object
+              rooms:
+                items:
+                  $ref: '#/definitions/insights.v1.video_room_summary'
+                type: array
+            title: ListVideoRoomSummaryResponse
+            type: object
       security:
         - accountSid_authToken: []
       x-maturity:
         - Beta
     servers:
-      - url: https://insights.twilio.com
+      - url: 'https://insights.twilio.com'
     x-twilio:
       defaultOutputProperties:
         - room_sid
         - create_time
       pathType: list
-  "/v1/Video/Rooms/{RoomSid}":
-    description: "TODO: Resource-level docs"
+  '/v1/Video/Rooms/{RoomSid}':
+    description: 'TODO: Resource-level docs'
     get:
       description: Get Video Log Analyzer data for a Room.
       operationId: FetchVideoRoomSummary
@@ -419,28 +1389,27 @@ paths:
           in: path
           name: RoomSid
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/insights.v1.video_room_summary"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/insights.v1.video_room_summary'
       security:
         - accountSid_authToken: []
       x-maturity:
         - Beta
     servers:
-      - url: https://insights.twilio.com
+      - url: 'https://insights.twilio.com'
     x-twilio:
       defaultOutputProperties:
         - room_sid
         - create_time
       pathType: instance
-  "/v1/Video/Rooms/{RoomSid}/Participants":
-    description: "TODO: Resource-level docs"
+  '/v1/Video/Rooms/{RoomSid}/Participants':
+    description: 'TODO: Resource-level docs'
     get:
       description: Get a list of room participants.
       operationId: ListVideoParticipantSummary
@@ -449,62 +1418,63 @@ paths:
           in: path
           name: RoomSid
           required: true
-          schema:
-            type: string
-        - description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+          type: string
+        - description: >-
+            How many resources to return in each list page. The default is 50,
+            and the maximum is 1000.
           in: query
+          maximum: 1000
+          minimum: 1
           name: PageSize
-          schema:
-            maximum: 1000
-            minimum: 1
-            type: integer
+          type: integer
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  meta:
-                    properties:
-                      first_page_url:
-                        format: uri
-                        type: string
-                      key:
-                        type: string
-                      next_page_url:
-                        format: uri
-                        type: string
-                      page:
-                        type: integer
-                      page_size:
-                        type: integer
-                      previous_page_url:
-                        format: uri
-                        type: string
-                      url:
-                        format: uri
-                        type: string
-                    type: object
-                  participants:
-                    items:
-                      $ref: "#/components/schemas/insights.v1.video_room_summary.video_participant_summary"
-                    type: array
-                title: ListVideoParticipantSummaryResponse
-                type: object
+        '200':
           description: OK
+          schema:
+            properties:
+              meta:
+                properties:
+                  first_page_url:
+                    format: uri
+                    type: string
+                  key:
+                    type: string
+                  next_page_url:
+                    format: uri
+                    type: string
+                  page:
+                    type: integer
+                  page_size:
+                    type: integer
+                  previous_page_url:
+                    format: uri
+                    type: string
+                  url:
+                    format: uri
+                    type: string
+                type: object
+              participants:
+                items:
+                  $ref: >-
+                    #/definitions/insights.v1.video_room_summary.video_participant_summary
+                type: array
+            title: ListVideoParticipantSummaryResponse
+            type: object
       security:
         - accountSid_authToken: []
       x-maturity:
         - Beta
     servers:
-      - url: https://insights.twilio.com
+      - url: 'https://insights.twilio.com'
     x-twilio:
       defaultOutputProperties:
         - participant_sid
       parent: /Video/Rooms
       pathType: list
-  "/v1/Video/Rooms/{RoomSid}/Participants/{ParticipantSid}":
-    description: "TODO: Resource-level docs"
+  '/v1/Video/Rooms/{RoomSid}/Participants/{ParticipantSid}':
+    description: 'TODO: Resource-level docs'
     get:
       description: Get Video Log Analyzer data for a Room Participant.
       operationId: FetchVideoParticipantSummary
@@ -513,251 +1483,228 @@ paths:
           in: path
           name: RoomSid
           required: true
-          schema:
-            type: string
+          type: string
         - description: The SID of the Participant resource.
           in: path
           name: ParticipantSid
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/insights.v1.video_room_summary.video_participant_summary"
+        '200':
           description: OK
+          schema:
+            $ref: >-
+              #/definitions/insights.v1.video_room_summary.video_participant_summary
       security:
         - accountSid_authToken: []
       x-maturity:
         - Beta
     servers:
-      - url: https://insights.twilio.com
+      - url: 'https://insights.twilio.com'
     x-twilio:
       defaultOutputProperties:
         - participant_sid
       parent: /Video/Rooms
       pathType: instance
   /v1/Voice/Settings:
-    description: "TODO: Resource-level docs"
+    description: 'TODO: Resource-level docs'
     get:
-      description: ""
+      description: ''
       operationId: FetchAccountSettings
       parameters:
-        - description: ""
+        - description: ''
           in: query
+          maxLength: 34
+          minLength: 34
           name: SubaccountSid
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^AC[0-9a-fA-F]{32}$
-            type: string
+          pattern: '^AC[0-9a-fA-F]{32}$'
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/insights.v1.account_settings"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/insights.v1.account_settings'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     post:
-      description: ""
+      consumes:
+        - application/x-www-form-urlencoded
+      description: ''
       operationId: UpdateAccountSettings
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              properties:
-                AdvancedFeatures:
-                  description: ""
-                  type: boolean
-                SubaccountSid:
-                  description: ""
-                  maxLength: 34
-                  minLength: 34
-                  pattern: ^AC[0-9a-fA-F]{32}$
-                  type: string
-                VoiceTrace:
-                  description: ""
-                  type: boolean
-              title: UpdateAccountSettingsRequest
-              type: object
+      parameters:
+        - in: formData
+          name: AdvancedFeatures
+          type: boolean
+        - in: formData
+          maxLength: 34
+          minLength: 34
+          name: SubaccountSid
+          pattern: '^AC[0-9a-fA-F]{32}$'
+          type: string
+        - in: formData
+          name: VoiceTrace
+          type: boolean
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/insights.v1.account_settings"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/insights.v1.account_settings'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://insights.twilio.com
+      - url: 'https://insights.twilio.com'
     x-twilio:
       defaultOutputProperties:
         - advanced_features
         - voice_trace
       pathType: instance
   /v1/Voice/Summaries:
-    description: "TODO: Resource-level docs"
+    description: 'TODO: Resource-level docs'
     get:
-      description: ""
+      description: ''
       operationId: ListCallSummaries
       parameters:
-        - description: ""
+        - description: ''
           in: query
           name: From
-          schema:
-            type: string
-        - description: ""
+          type: string
+        - description: ''
           in: query
           name: To
-          schema:
-            type: string
-        - description: ""
+          type: string
+        - description: ''
           in: query
           name: FromCarrier
-          schema:
-            type: string
-        - description: ""
+          type: string
+        - description: ''
           in: query
           name: ToCarrier
-          schema:
-            type: string
-        - description: ""
+          type: string
+        - description: ''
           in: query
           name: FromCountryCode
-          schema:
-            type: string
-        - description: ""
+          type: string
+        - description: ''
           in: query
           name: ToCountryCode
-          schema:
-            type: string
-        - description: ""
+          type: string
+        - description: ''
           in: query
           name: Branded
-          schema:
-            type: boolean
-        - description: ""
+          type: boolean
+        - description: ''
           in: query
           name: VerifiedCaller
-          schema:
-            type: boolean
-        - description: ""
+          type: boolean
+        - description: ''
           in: query
           name: HasTag
-          schema:
-            type: boolean
-        - description: ""
+          type: boolean
+        - description: ''
           in: query
           name: StartTime
-          schema:
-            type: string
-        - description: ""
+          type: string
+        - description: ''
           in: query
           name: EndTime
-          schema:
-            type: string
-        - description: ""
+          type: string
+        - description: ''
           in: query
           name: CallType
-          schema:
-            type: string
-        - description: ""
+          type: string
+        - description: ''
           in: query
           name: CallState
-          schema:
-            type: string
-        - description: ""
+          type: string
+        - description: ''
           in: query
           name: Direction
-          schema:
-            type: string
-        - description: ""
+          type: string
+        - description: ''
+          enum:
+            - completed
+            - started
+            - partial
+            - all
           in: query
           name: ProcessingState
-          schema:
-            enum:
-              - completed
-              - started
-              - partial
-              - all
-            type: string
-        - description: ""
+          type: string
+        - description: ''
+          enum:
+            - start_time
+            - end_time
           in: query
           name: SortBy
-          schema:
-            enum:
-              - start_time
-              - end_time
-            type: string
-        - description: ""
+          type: string
+        - description: ''
           in: query
+          maxLength: 34
+          minLength: 34
           name: Subaccount
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^AC[0-9a-fA-F]{32}$
-            type: string
-        - description: ""
+          pattern: '^AC[0-9a-fA-F]{32}$'
+          type: string
+        - description: ''
           in: query
           name: AbnormalSession
-          schema:
-            type: boolean
-        - description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+          type: boolean
+        - description: >-
+            How many resources to return in each list page. The default is 50,
+            and the maximum is 1000.
           in: query
+          maximum: 1000
+          minimum: 1
           name: PageSize
-          schema:
-            maximum: 1000
-            minimum: 1
-            type: integer
+          type: integer
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  call_summaries:
-                    items:
-                      $ref: "#/components/schemas/insights.v1.call_summaries"
-                    type: array
-                  meta:
-                    properties:
-                      first_page_url:
-                        format: uri
-                        type: string
-                      key:
-                        type: string
-                      next_page_url:
-                        format: uri
-                        type: string
-                      page:
-                        type: integer
-                      page_size:
-                        type: integer
-                      previous_page_url:
-                        format: uri
-                        type: string
-                      url:
-                        format: uri
-                        type: string
-                    type: object
-                title: ListCallSummariesResponse
-                type: object
+        '200':
           description: OK
+          schema:
+            properties:
+              call_summaries:
+                items:
+                  $ref: '#/definitions/insights.v1.call_summaries'
+                type: array
+              meta:
+                properties:
+                  first_page_url:
+                    format: uri
+                    type: string
+                  key:
+                    type: string
+                  next_page_url:
+                    format: uri
+                    type: string
+                  page:
+                    type: integer
+                  page_size:
+                    type: integer
+                  previous_page_url:
+                    format: uri
+                    type: string
+                  url:
+                    format: uri
+                    type: string
+                type: object
+            title: ListCallSummariesResponse
+            type: object
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://insights.twilio.com
+      - url: 'https://insights.twilio.com'
     x-twilio:
       className: call_summaries
       defaultOutputProperties:
@@ -771,176 +1718,168 @@ paths:
         - call_type
         - call_state
       pathType: list
-  "/v1/Voice/{CallSid}/Annotation":
-    description: "TODO: Resource-level docs"
+  '/v1/Voice/{CallSid}/Annotation':
+    description: 'TODO: Resource-level docs'
     get:
-      description: ""
+      description: ''
       operationId: FetchAnnotation
       parameters:
-        - description: ""
+        - description: ''
           in: path
+          maxLength: 34
+          minLength: 34
           name: CallSid
+          pattern: '^CA[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^CA[0-9a-fA-F]{32}$
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/insights.v1.annotation"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/insights.v1.annotation'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     post:
-      description: ""
+      consumes:
+        - application/x-www-form-urlencoded
+      description: ''
       operationId: UpdateAnnotation
       parameters:
-        - description: ""
+        - description: ''
           in: path
+          maxLength: 34
+          minLength: 34
           name: CallSid
+          pattern: '^CA[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^CA[0-9a-fA-F]{32}$
-            type: string
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              properties:
-                AnsweredBy:
-                  description: ""
-                  enum:
-                    - unknown_answered_by
-                    - human
-                    - machine
-                  type: string
-                CallScore:
-                  description: ""
-                  nullable: true
-                  type: integer
-                Comment:
-                  description: ""
-                  type: string
-                ConnectivityIssue:
-                  description: ""
-                  enum:
-                    - unknown_connectivity_issue
-                    - no_connectivity_issue
-                    - invalid_number
-                    - caller_id
-                    - dropped_call
-                    - number_reachability
-                  type: string
-                Incident:
-                  description: ""
-                  type: string
-                QualityIssues:
-                  description: ""
-                  type: string
-                Spam:
-                  description: ""
-                  type: boolean
-              title: UpdateAnnotationRequest
-              type: object
+          type: string
+        - enum:
+            - unknown_answered_by
+            - human
+            - machine
+          in: formData
+          name: AnsweredBy
+          type: string
+        - in: formData
+          name: CallScore
+          type: integer
+          x-nullable: true
+        - in: formData
+          name: Comment
+          type: string
+        - enum:
+            - unknown_connectivity_issue
+            - no_connectivity_issue
+            - invalid_number
+            - caller_id
+            - dropped_call
+            - number_reachability
+          in: formData
+          name: ConnectivityIssue
+          type: string
+        - in: formData
+          name: Incident
+          type: string
+        - in: formData
+          name: QualityIssues
+          type: string
+        - in: formData
+          name: Spam
+          type: boolean
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/insights.v1.annotation"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/insights.v1.annotation'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://insights.twilio.com
+      - url: 'https://insights.twilio.com'
     x-twilio:
       defaultOutputProperties:
         - call_sid
         - account_sid
       pathType: instance
-  "/v1/Voice/{CallSid}/Events":
-    description: "TODO: Resource-level docs"
+  '/v1/Voice/{CallSid}/Events':
+    description: 'TODO: Resource-level docs'
     get:
-      description: ""
+      description: ''
       operationId: ListEvent
       parameters:
-        - description: ""
+        - description: ''
           in: path
+          maxLength: 34
+          minLength: 34
           name: CallSid
+          pattern: '^CA[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^CA[0-9a-fA-F]{32}$
-            type: string
-        - description: ""
+          type: string
+        - description: ''
+          enum:
+            - unknown_edge
+            - carrier_edge
+            - sip_edge
+            - sdk_edge
+            - client_edge
           in: query
           name: Edge
-          schema:
-            enum:
-              - unknown_edge
-              - carrier_edge
-              - sip_edge
-              - sdk_edge
-              - client_edge
-            type: string
-        - description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+          type: string
+        - description: >-
+            How many resources to return in each list page. The default is 50,
+            and the maximum is 1000.
           in: query
+          maximum: 1000
+          minimum: 1
           name: PageSize
-          schema:
-            maximum: 1000
-            minimum: 1
-            type: integer
+          type: integer
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  events:
-                    items:
-                      $ref: "#/components/schemas/insights.v1.call.event"
-                    type: array
-                  meta:
-                    properties:
-                      first_page_url:
-                        format: uri
-                        type: string
-                      key:
-                        type: string
-                      next_page_url:
-                        format: uri
-                        type: string
-                      page:
-                        type: integer
-                      page_size:
-                        type: integer
-                      previous_page_url:
-                        format: uri
-                        type: string
-                      url:
-                        format: uri
-                        type: string
-                    type: object
-                title: ListEventResponse
-                type: object
+        '200':
           description: OK
+          schema:
+            properties:
+              events:
+                items:
+                  $ref: '#/definitions/insights.v1.call.event'
+                type: array
+              meta:
+                properties:
+                  first_page_url:
+                    format: uri
+                    type: string
+                  key:
+                    type: string
+                  next_page_url:
+                    format: uri
+                    type: string
+                  page:
+                    type: integer
+                  page_size:
+                    type: integer
+                  previous_page_url:
+                    format: uri
+                    type: string
+                  url:
+                    format: uri
+                    type: string
+                type: object
+            title: ListEventResponse
+            type: object
       security:
         - accountSid_authToken: []
       x-maturity:
         - Preview
     servers:
-      - url: https://insights.twilio.com
+      - url: 'https://insights.twilio.com'
     x-twilio:
       defaultOutputProperties:
         - timestamp
@@ -948,91 +1887,89 @@ paths:
         - account_sid
         - edge
         - name
-      parent: /Voice/{Sid}
+      parent: '/Voice/{Sid}'
       pathType: list
-  "/v1/Voice/{CallSid}/Metrics":
-    description: "TODO: Resource-level docs"
+  '/v1/Voice/{CallSid}/Metrics':
+    description: 'TODO: Resource-level docs'
     get:
-      description: ""
+      description: ''
       operationId: ListMetric
       parameters:
-        - description: ""
+        - description: ''
           in: path
+          maxLength: 34
+          minLength: 34
           name: CallSid
+          pattern: '^CA[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^CA[0-9a-fA-F]{32}$
-            type: string
-        - description: ""
+          type: string
+        - description: ''
+          enum:
+            - unknown_edge
+            - carrier_edge
+            - sip_edge
+            - sdk_edge
+            - client_edge
           in: query
           name: Edge
-          schema:
-            enum:
-              - unknown_edge
-              - carrier_edge
-              - sip_edge
-              - sdk_edge
-              - client_edge
-            type: string
-        - description: ""
+          type: string
+        - description: ''
+          enum:
+            - unknown
+            - inbound
+            - outbound
+            - both
           in: query
           name: Direction
-          schema:
-            enum:
-              - unknown
-              - inbound
-              - outbound
-              - both
-            type: string
-        - description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+          type: string
+        - description: >-
+            How many resources to return in each list page. The default is 50,
+            and the maximum is 1000.
           in: query
+          maximum: 1000
+          minimum: 1
           name: PageSize
-          schema:
-            maximum: 1000
-            minimum: 1
-            type: integer
+          type: integer
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  meta:
-                    properties:
-                      first_page_url:
-                        format: uri
-                        type: string
-                      key:
-                        type: string
-                      next_page_url:
-                        format: uri
-                        type: string
-                      page:
-                        type: integer
-                      page_size:
-                        type: integer
-                      previous_page_url:
-                        format: uri
-                        type: string
-                      url:
-                        format: uri
-                        type: string
-                    type: object
-                  metrics:
-                    items:
-                      $ref: "#/components/schemas/insights.v1.call.metric"
-                    type: array
-                title: ListMetricResponse
-                type: object
+        '200':
           description: OK
+          schema:
+            properties:
+              meta:
+                properties:
+                  first_page_url:
+                    format: uri
+                    type: string
+                  key:
+                    type: string
+                  next_page_url:
+                    format: uri
+                    type: string
+                  page:
+                    type: integer
+                  page_size:
+                    type: integer
+                  previous_page_url:
+                    format: uri
+                    type: string
+                  url:
+                    format: uri
+                    type: string
+                type: object
+              metrics:
+                items:
+                  $ref: '#/definitions/insights.v1.call.metric'
+                type: array
+            title: ListMetricResponse
+            type: object
       security:
         - accountSid_authToken: []
       x-maturity:
         - Preview
     servers:
-      - url: https://insights.twilio.com
+      - url: 'https://insights.twilio.com'
     x-twilio:
       defaultOutputProperties:
         - timestamp
@@ -1040,44 +1977,42 @@ paths:
         - account_sid
         - edge
         - direction
-      parent: /Voice/{Sid}
+      parent: '/Voice/{Sid}'
       pathType: list
-  "/v1/Voice/{CallSid}/Summary":
-    description: "TODO: Resource-level docs"
+  '/v1/Voice/{CallSid}/Summary':
+    description: 'TODO: Resource-level docs'
     get:
-      description: ""
+      description: ''
       operationId: FetchSummary
       parameters:
-        - description: ""
+        - description: ''
           in: path
+          maxLength: 34
+          minLength: 34
           name: CallSid
+          pattern: '^CA[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^CA[0-9a-fA-F]{32}$
-            type: string
-        - description: ""
+          type: string
+        - description: ''
+          enum:
+            - complete
+            - partial
           in: query
           name: ProcessingState
-          schema:
-            enum:
-              - complete
-              - partial
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/insights.v1.call.summary"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/insights.v1.call.summary'
       security:
         - accountSid_authToken: []
       x-maturity:
         - GA
     servers:
-      - url: https://insights.twilio.com
+      - url: 'https://insights.twilio.com'
     x-twilio:
       className: call_summary
       defaultOutputProperties:
@@ -1085,1005 +2020,56 @@ paths:
         - call_state
         - processing_state
         - duration
-      parent: /Voice/{Sid}
+      parent: '/Voice/{Sid}'
       pathType: instance
-  "/v1/Voice/{Sid}":
-    description: "TODO: Resource-level docs"
+  '/v1/Voice/{Sid}':
+    description: 'TODO: Resource-level docs'
     get:
-      description: ""
+      description: ''
       operationId: FetchCall
       parameters:
-        - description: ""
+        - description: ''
           in: path
+          maxLength: 34
+          minLength: 34
           name: Sid
+          pattern: '^CA[0-9a-fA-F]{32}$'
           required: true
-          schema:
-            maxLength: 34
-            minLength: 34
-            pattern: ^CA[0-9a-fA-F]{32}$
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/insights.v1.call"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/insights.v1.call'
       security:
         - accountSid_authToken: []
       x-maturity:
         - Preview
     servers:
-      - url: https://insights.twilio.com
+      - url: 'https://insights.twilio.com'
     x-twilio:
       className: call
       defaultOutputProperties: []
       pathType: instance
-components:
-  schemas:
-    insights.v1.account_settings:
-      properties:
-        account_sid:
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^AC[0-9a-fA-F]{32}$
-          type: string
-        advanced_features:
-          nullable: true
-          type: boolean
-        url:
-          format: uri
-          nullable: true
-          type: string
-        voice_trace:
-          nullable: true
-          type: boolean
-      type: object
-    insights.v1.annotation:
-      properties:
-        account_sid:
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^AC[0-9a-fA-F]{32}$
-          type: string
-        answered_by:
-          enum:
-            - unknown_answered_by
-            - human
-            - machine
-          nullable: true
-          type: string
-        call_score:
-          nullable: true
-          type: integer
-        call_sid:
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^CA[0-9a-fA-F]{32}$
-          type: string
-        comment:
-          nullable: true
-          type: string
-        connectivity_issue:
-          enum:
-            - unknown_connectivity_issue
-            - no_connectivity_issue
-            - invalid_number
-            - caller_id
-            - dropped_call
-            - number_reachability
-          nullable: true
-          type: string
-        incident:
-          nullable: true
-          type: string
-        quality_issues:
-          items:
-            type: string
-          nullable: true
-          type: array
-        spam:
-          nullable: true
-          type: boolean
-        url:
-          format: uri
-          nullable: true
-          type: string
-      type: object
-    insights.v1.call:
-      properties:
-        links:
-          format: uri-map
-          nullable: true
-          type: object
-        sid:
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^CA[0-9a-fA-F]{32}$
-          type: string
-        url:
-          format: uri
-          nullable: true
-          type: string
-      type: object
-    insights.v1.call.event:
-      properties:
-        account_sid:
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^AC[0-9a-fA-F]{32}$
-          type: string
-        call_sid:
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^CA[0-9a-fA-F]{32}$
-          type: string
-        carrier_edge:
-          nullable: true
-        client_edge:
-          nullable: true
-        edge:
-          enum:
-            - unknown_edge
-            - carrier_edge
-            - sip_edge
-            - sdk_edge
-            - client_edge
-          nullable: true
-          type: string
-        group:
-          nullable: true
-          type: string
-        level:
-          enum:
-            - UNKNOWN
-            - DEBUG
-            - INFO
-            - WARNING
-            - ERROR
-          nullable: true
-          type: string
-        name:
-          nullable: true
-          type: string
-        sdk_edge:
-          nullable: true
-        sip_edge:
-          nullable: true
-        timestamp:
-          nullable: true
-          type: string
-      type: object
-    insights.v1.call.metric:
-      properties:
-        account_sid:
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^AC[0-9a-fA-F]{32}$
-          type: string
-        call_sid:
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^CA[0-9a-fA-F]{32}$
-          type: string
-        carrier_edge:
-          nullable: true
-        client_edge:
-          nullable: true
-        direction:
-          enum:
-            - unknown
-            - inbound
-            - outbound
-            - both
-          nullable: true
-          type: string
-        edge:
-          enum:
-            - unknown_edge
-            - carrier_edge
-            - sip_edge
-            - sdk_edge
-            - client_edge
-          nullable: true
-          type: string
-        sdk_edge:
-          nullable: true
-        sip_edge:
-          nullable: true
-        timestamp:
-          nullable: true
-          type: string
-      type: object
-    insights.v1.call.summary:
-      properties:
-        account_sid:
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^AC[0-9a-fA-F]{32}$
-          type: string
-        attributes:
-          nullable: true
-        call_sid:
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^CA[0-9a-fA-F]{32}$
-          type: string
-        call_state:
-          enum:
-            - ringing
-            - completed
-            - busy
-            - fail
-            - noanswer
-            - canceled
-            - answered
-            - undialed
-          nullable: true
-          type: string
-        call_type:
-          enum:
-            - carrier
-            - sip
-            - trunking
-            - client
-          nullable: true
-          type: string
-        carrier_edge:
-          nullable: true
-        client_edge:
-          nullable: true
-        connect_duration:
-          nullable: true
-          type: integer
-        created_time:
-          format: date-time
-          nullable: true
-          type: string
-        duration:
-          nullable: true
-          type: integer
-        end_time:
-          format: date-time
-          nullable: true
-          type: string
-        from:
-          nullable: true
-        processing_state:
-          enum:
-            - complete
-            - partial
-          nullable: true
-          type: string
-        properties:
-          nullable: true
-        sdk_edge:
-          nullable: true
-        sip_edge:
-          nullable: true
-        start_time:
-          format: date-time
-          nullable: true
-          type: string
-        tags:
-          items:
-            type: string
-          nullable: true
-          type: array
-        to:
-          nullable: true
-        trust:
-          nullable: true
-        url:
-          format: uri
-          nullable: true
-          type: string
-      type: object
-    insights.v1.call_summaries:
-      properties:
-        account_sid:
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^AC[0-9a-fA-F]{32}$
-          type: string
-        attributes:
-          nullable: true
-        call_sid:
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^CA[0-9a-fA-F]{32}$
-          type: string
-        call_state:
-          enum:
-            - ringing
-            - completed
-            - busy
-            - fail
-            - noanswer
-            - canceled
-            - answered
-            - undialed
-          nullable: true
-          type: string
-        call_type:
-          enum:
-            - carrier
-            - sip
-            - trunking
-            - client
-          nullable: true
-          type: string
-        carrier_edge:
-          nullable: true
-        client_edge:
-          nullable: true
-        connect_duration:
-          nullable: true
-          type: integer
-        created_time:
-          format: date-time
-          nullable: true
-          type: string
-        duration:
-          nullable: true
-          type: integer
-        end_time:
-          format: date-time
-          nullable: true
-          type: string
-        from:
-          nullable: true
-        processing_state:
-          enum:
-            - complete
-            - partial
-          nullable: true
-          type: string
-        properties:
-          nullable: true
-        sdk_edge:
-          nullable: true
-        sip_edge:
-          nullable: true
-        start_time:
-          format: date-time
-          nullable: true
-          type: string
-        tags:
-          items:
-            type: string
-          nullable: true
-          type: array
-        to:
-          nullable: true
-        trust:
-          nullable: true
-        url:
-          format: uri
-          nullable: true
-          type: string
-      type: object
-    insights.v1.conference:
-      properties:
-        account_sid:
-          description: Account SID.
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^AC[0-9a-fA-F]{32}$
-          type: string
-        conference_sid:
-          description: Conference SID.
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^CF[0-9a-fA-F]{32}$
-          type: string
-        connect_duration_seconds:
-          description: Duration of the conference in seconds.
-          nullable: true
-          type: integer
-        create_time:
-          description: Conference creation date/time.
-          format: date-time
-          nullable: true
-          type: string
-        detected_issues:
-          description: Potential issues detected during the conference.
-          nullable: true
-        duration_seconds:
-          description: Conference duration in seconds.
-          nullable: true
-          type: integer
-        end_reason:
-          description: Conference end reason.
-          enum:
-            - last_participant_left
-            - conference_ended_via_api
-            - participant_with_end_conference_on_exit_left
-            - last_participant_kicked
-            - participant_with_end_conference_on_exit_kicked
-          nullable: true
-          type: string
-        end_time:
-          description: Conference end date/time.
-          format: date-time
-          nullable: true
-          type: string
-        ended_by:
-          description: Call SID that ended the conference.
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^CA[0-9a-fA-F]{32}$
-          type: string
-        friendly_name:
-          description: Custom label for the conference.
-          nullable: true
-          type: string
-        links:
-          description: Nested resource URLs.
-          format: uri-map
-          nullable: true
-          type: object
-        max_concurrent_participants:
-          description: Actual maximum concurrent participants.
-          nullable: true
-          type: integer
-        max_participants:
-          description: Max participants specified in config.
-          nullable: true
-          type: integer
-        mixer_region:
-          description: Region where the conference was mixed.
-          enum:
-            - us1
-            - au1
-            - br1
-            - ie1
-            - jp1
-            - sg1
-            - de1
-          nullable: true
-          type: string
-        mixer_region_requested:
-          description: Configuration-requested conference mixer region.
-          enum:
-            - us1
-            - au1
-            - br1
-            - ie1
-            - jp1
-            - sg1
-            - de1
-          nullable: true
-          type: string
-        processing_state:
-          description: Processing state for the Conference Summary resource.
-          enum:
-            - complete
-            - in_progress
-            - timeout
-          nullable: true
-          type: string
-        recording_enabled:
-          description: Boolean. Indicates whether recording was enabled.
-          nullable: true
-          type: boolean
-        start_time:
-          description: Timestamp in ISO 8601 format when the conference started.
-          format: date-time
-          nullable: true
-          type: string
-        status:
-          description: Status of conference
-          enum:
-            - in_progress
-            - not_started
-            - completed
-            - summary_timeout
-          nullable: true
-          type: string
-        tag_info:
-          description: Object. Contains details about conference tags.
-          nullable: true
-        tags:
-          description: Tags for detected conference conditions and participant behaviors.
-          items:
-            enum:
-              - invalid_requested_region
-              - duplicate_identity
-              - start_failure
-              - region_configuration_issues
-              - quality_warnings
-              - participant_behavior_issues
-              - high_packet_loss
-              - high_jitter
-              - high_latency
-              - low_mos
-              - detected_silence
-            type: string
-          nullable: true
-          type: array
-        unique_participants:
-          description: Unique conference participants.
-          nullable: true
-          type: integer
-        url:
-          description: The URL of this resource.
-          format: uri
-          nullable: true
-          type: string
-      type: object
-    insights.v1.conference.conference_participant:
-      properties:
-        account_sid:
-          description: Account SID.
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^AC[0-9a-fA-F]{32}$
-          type: string
-        call_direction:
-          description: Call direction of the participant.
-          enum:
-            - inbound
-            - outbound
-          nullable: true
-          type: string
-        call_sid:
-          description: Unique SID identifier of the call.
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^CA[0-9a-fA-F]{32}$
-          type: string
-        call_status:
-          description: Call status of the call that generated the participant.
-          enum:
-            - answered
-            - completed
-            - busy
-            - fail
-            - noanswer
-            - ringing
-            - canceled
-          nullable: true
-          type: string
-        call_type:
-          description: The Call Type of this Conference Participant.
-          enum:
-            - carrier
-            - client
-            - sip
-          nullable: true
-          type: string
-        coached_participants:
-          description: Call SIDs coached by this participant.
-          items:
-            type: string
-          nullable: true
-          type: array
-        conference_region:
-          description: The Conference Region of this Conference Participant.
-          enum:
-            - us1
-            - us2
-            - au1
-            - br1
-            - ie1
-            - jp1
-            - sg1
-            - de1
-          nullable: true
-          type: string
-        conference_sid:
-          description: Conference SID.
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^CF[0-9a-fA-F]{32}$
-          type: string
-        country_code:
-          description: ISO alpha-2 country code of the participant.
-          nullable: true
-          type: string
-        duration_seconds:
-          description: Participant durations in seconds.
-          nullable: true
-          type: integer
-        events:
-          description: Object containing information of actions taken by participants. Nested resource URLs.
-          nullable: true
-        from:
-          description: Caller ID of the calling party.
-          nullable: true
-          type: string
-        is_coach:
-          description: Boolean. Indicated whether participant was a coach.
-          nullable: true
-          type: boolean
-        is_moderator:
-          description: Boolean. Indicates whether participant had startConferenceOnEnter=true or endConferenceOnExit=true.
-          nullable: true
-          type: boolean
-        jitter_buffer_size:
-          description: The Jitter Buffer Size of this Conference Participant.
-          enum:
-            - large
-            - small
-            - medium
-            - off
-          nullable: true
-          type: string
-        join_time:
-          description: ISO 8601 timestamp of participant join event.
-          format: date-time
-          nullable: true
-          type: string
-        label:
-          description: The user-specified label of this participant.
-          nullable: true
-          type: string
-        leave_time:
-          description: ISO 8601 timestamp of participant leave event.
-          format: date-time
-          nullable: true
-          type: string
-        metrics:
-          description: Object. Contains participant quality metrics.
-          nullable: true
-        outbound_queue_length:
-          description: Estimated time in queue at call creation.
-          nullable: true
-          type: integer
-        outbound_time_in_queue:
-          description: Actual time in queue (seconds).
-          nullable: true
-          type: integer
-        participant_region:
-          description: Twilio region where the participant media originates.
-          enum:
-            - us1
-            - us2
-            - au1
-            - br1
-            - ie1
-            - jp1
-            - sg1
-            - de1
-          nullable: true
-          type: string
-        participant_sid:
-          description: SID for this participant.
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^CP[0-9a-fA-F]{32}$
-          type: string
-        processing_state:
-          description: Processing state of the Participant Summary.
-          enum:
-            - complete
-            - in_progress
-            - timeout
-          nullable: true
-          type: string
-        properties:
-          description: Participant properties and metadata.
-          nullable: true
-        to:
-          description: Called party.
-          nullable: true
-          type: string
-        url:
-          description: The URL of this resource.
-          format: uri
-          nullable: true
-          type: string
-      type: object
-    insights.v1.video_room_summary:
-      properties:
-        account_sid:
-          description: Account SID associated with this room.
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^AC[0-9a-fA-F]{32}$
-          type: string
-        codecs:
-          description: Codecs used by participants in the room.
-          items:
-            enum:
-              - VP8
-              - H264
-              - VP9
-            type: string
-          nullable: true
-          type: array
-        concurrent_participants:
-          description: Actual number of concurrent participants.
-          nullable: true
-          type: integer
-        create_time:
-          description: Creation time of the room.
-          format: date-time
-          nullable: true
-          type: string
-        created_method:
-          description: How the room was created.
-          enum:
-            - sdk
-            - ad_hoc
-            - api
-          nullable: true
-          type: string
-        duration_sec:
-          description: Total room duration from create time to end time.
-          nullable: true
-          type: integer
-        edge_location:
-          description: Edge location of Twilio media servers for the room.
-          enum:
-            - ashburn
-            - dublin
-            - frankfurt
-            - singapore
-            - sydney
-            - sao_paulo
-            - roaming
-            - umatilla
-            - tokyo
-          nullable: true
-          type: string
-        end_reason:
-          description: Reason the room ended.
-          enum:
-            - room_ended_via_api
-            - timeout
-          nullable: true
-          type: string
-        end_time:
-          description: End time for the room.
-          format: date-time
-          nullable: true
-          type: string
-        links:
-          description: Room subresources.
-          format: uri-map
-          nullable: true
-          type: object
-        max_concurrent_participants:
-          description: Maximum number of participants allowed in the room at the same time allowed by the application settings.
-          nullable: true
-          type: integer
-        max_participants:
-          description: Max number of total participants allowed by the application settings.
-          nullable: true
-          type: integer
-        media_region:
-          description: Region of Twilio media servers for the room.
-          enum:
-            - us1
-            - us2
-            - au1
-            - br1
-            - ie1
-            - jp1
-            - sg1
-            - in1
-            - de1
-            - gll
-          nullable: true
-          type: string
-        processing_state:
-          description: Video Log Analyzer resource state. Will be either `in-progress` or `complete`.
-          enum:
-            - complete
-            - in_progress
-          nullable: true
-          type: string
-        recording_enabled:
-          description: Boolean indicating if recording is enabled for the room.
-          nullable: true
-          type: boolean
-        room_name:
-          description: room friendly name.
-          nullable: true
-          type: string
-        room_sid:
-          description: Unique identifier for the room.
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^RM[0-9a-fA-F]{32}$
-          type: string
-        room_status:
-          description: Status of the room.
-          enum:
-            - in_progress
-            - completed
-          nullable: true
-          type: string
-        room_type:
-          description: Type of room.
-          enum:
-            - go
-            - peer_to_peer
-            - group
-            - group_small
-          nullable: true
-          type: string
-        status_callback:
-          description: Webhook provided for status callbacks.
-          format: uri
-          nullable: true
-          type: string
-        status_callback_method:
-          description: HTTP method provided for status callback URL.
-          enum:
-            - HEAD
-            - GET
-            - POST
-            - PATCH
-            - PUT
-            - DELETE
-          format: http-method
-          nullable: true
-          type: string
-        total_participant_duration_sec:
-          description: Combined amount of participant time in the room.
-          nullable: true
-          type: integer
-        total_recording_duration_sec:
-          description: Combined amount of recorded seconds for participants in the room.
-          nullable: true
-          type: integer
-        unique_participant_identities:
-          description: Unique number of participant identities.
-          nullable: true
-          type: integer
-        unique_participants:
-          description: Number of participants. May include duplicate identities for participants who left and rejoined.
-          nullable: true
-          type: integer
-        url:
-          description: URL for the room resource.
-          format: uri
-          nullable: true
-          type: string
-      type: object
-    insights.v1.video_room_summary.video_participant_summary:
-      properties:
-        account_sid:
-          description: Account SID associated with the room.
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^AC[0-9a-fA-F]{32}$
-          type: string
-        codecs:
-          description: Codecs detected from the participant.
-          items:
-            enum:
-              - VP8
-              - H264
-              - VP9
-            type: string
-          nullable: true
-          type: array
-        duration_sec:
-          description: Amount of time in seconds the participant was in the room.
-          nullable: true
-          type: integer
-        edge_location:
-          description: Name of the edge location the participant connected to.
-          enum:
-            - ashburn
-            - dublin
-            - frankfurt
-            - singapore
-            - sydney
-            - sao_paulo
-            - roaming
-            - umatilla
-            - tokyo
-          nullable: true
-          type: string
-        end_reason:
-          description: Reason the participant left the room.
-          nullable: true
-          type: string
-        error_code:
-          description: Errors encountered by the participant.
-          nullable: true
-          type: integer
-        error_code_url:
-          description: Twilio error code dictionary link.
-          nullable: true
-          type: string
-        join_time:
-          description: When the participant joined the room.
-          format: date-time
-          nullable: true
-          type: string
-        leave_time:
-          description: When the participant left the room
-          format: date-time
-          nullable: true
-          type: string
-        media_region:
-          description: Twilio media region the participant connected to.
-          enum:
-            - us1
-            - us2
-            - au1
-            - br1
-            - ie1
-            - jp1
-            - sg1
-            - in1
-            - de1
-            - gll
-          nullable: true
-          type: string
-        participant_identity:
-          description: The application-defined string that uniquely identifies the participant within a Room.
-          nullable: true
-          type: string
-        participant_sid:
-          description: Unique identifier for the participant.
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^PA[0-9a-fA-F]{32}$
-          type: string
-        properties:
-          description: Object containing information about the participant's data from the room.
-          nullable: true
-        publisher_info:
-          description: Object containing information about the SDK name and version.
-          nullable: true
-        room_sid:
-          description: Unique identifier for the room.
-          maxLength: 34
-          minLength: 34
-          nullable: true
-          pattern: ^RM[0-9a-fA-F]{32}$
-          type: string
-        status:
-          description: Status of the room.
-          enum:
-            - in_progress
-            - completed
-          nullable: true
-          type: string
-        url:
-          description: URL of the participant resource.
-          format: uri
-          nullable: true
-          type: string
-      type: object
-  securitySchemes:
-    accountSid_authToken:
-      scheme: basic
-      type: http
+schemes:
+  - https
+securityDefinitions:
+  accountSid_authToken:
+    type: basic
+swagger: '2.0'
+x-components: {}
 x-maturity:
   - description: This product is Generally Available.
     name: GA
-  - description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.
+  - description: >-
+      PLEASE NOTE that this is a Beta product that is subject to change. Use it
+      with caution.
     name: Beta
-  - description: PLEASE NOTE that this is a Preview product that is subject to change. Use it with caution. If you currently do not have developer preview access, please contact help@twilio.com.
+  - description: >-
+      PLEASE NOTE that this is a Preview product that is subject to change. Use
+      it with caution. If you currently do not have developer preview access,
+      please contact help@twilio.com.
     name: Preview
+

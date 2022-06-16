@@ -1,38 +1,65 @@
-openapi: 3.0.0
-servers:
-  - url: http://xkcd.com/
+basePath: /
+definitions:
+  comic:
+    properties:
+      alt:
+        type: string
+      day:
+        type: string
+      img:
+        type: string
+      link:
+        type: string
+      month:
+        type: string
+      news:
+        type: string
+      num:
+        type: number
+      safe_title:
+        type: string
+      title:
+        type: string
+      transcript:
+        type: string
+      year:
+        type: string
+    type: object
+externalDocs:
+  url: 'https://xkcd.com/json.html'
+host: xkcd.com
 info:
-  description: Webcomic of romance, sarcasm, math, and language.
+  description: 'Webcomic of romance, sarcasm, math, and language.'
   title: XKCD
   version: 1.0.0
   x-apisguru-categories:
     - media
   x-logo:
-    url: http://imgs.xkcd.com/static/terrible_small_logo.png
+    url: 'http://imgs.xkcd.com/static/terrible_small_logo.png'
   x-origin:
     - format: openapi
-      url: https://raw.githubusercontent.com/APIs-guru/unofficial_openapi_specs/master/xkcd.com/1.0.0/openapi.yaml
-      version: "3.0"
+      url: >-
+        https://raw.githubusercontent.com/APIs-guru/unofficial_openapi_specs/master/xkcd.com/1.0.0/openapi.yaml
+      version: '3.0'
   x-providerName: xkcd.com
   x-tags:
     - humor
     - comics
   x-unofficialSpec: true
-externalDocs:
-  url: https://xkcd.com/json.html
 paths:
   /info.0.json:
     get:
       description: |
         Fetch current comic and metadata.
+      parameters: []
+      produces:
+        - application/octet-stream
       responses:
-        "200":
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/comic"
+        '200':
           description: OK
-  "/{comicId}/info.0.json":
+          schema:
+            $ref: '#/definitions/comic'
+  '/{comicId}/info.0.json':
     get:
       description: |
         Fetch comics and metadata  by comic id.
@@ -40,39 +67,16 @@ paths:
         - in: path
           name: comicId
           required: true
-          schema:
-            type: number
-      responses:
-        "200":
-          content:
-            "*/*":
-              schema:
-                $ref: "#/components/schemas/comic"
-          description: OK
-components:
-  schemas:
-    comic:
-      properties:
-        alt:
-          type: string
-        day:
-          type: string
-        img:
-          type: string
-        link:
-          type: string
-        month:
-          type: string
-        news:
-          type: string
-        num:
           type: number
-        safe_title:
-          type: string
-        title:
-          type: string
-        transcript:
-          type: string
-        year:
-          type: string
-      type: object
+      produces:
+        - application/octet-stream
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/comic'
+schemes:
+  - http
+swagger: '2.0'
+x-components: {}
+

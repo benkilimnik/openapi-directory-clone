@@ -1,975 +1,931 @@
-openapi: 3.0.0
-info:
-  version: '2020-08-01'
-  x-release: v4
-  title: Amazon Prometheus Service
-  description: Amazon Managed Service for Prometheus
-  x-logo:
-    url: 'https://twitter.com/awscloud/profile_image?size=original'
-    backgroundColor: '#FFFFFF'
-  termsOfService: 'https://aws.amazon.com/service-terms/'
-  contact:
-    name: Mike Ralphson
-    email: mike.ralphson@gmail.com
-    url: 'https://github.com/mermade/aws2openapi'
-    x-twitter: PermittedSoc
-  license:
-    name: Apache 2.0 License
-    url: 'http://www.apache.org/licenses/'
-  x-providerName: amazonaws.com
-  x-serviceName: amp
-  x-aws-signingName: aps
-  x-origin:
-    - contentType: application/json
-      url: 'https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/amp-2020-08-01.normal.json'
-      converter:
-        url: 'https://github.com/mermade/aws2openapi'
-        version: 1.0.0
-      x-apisguru-driver: external
-  x-apiClientRegistration:
-    url: 'https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct'
-  x-apisguru-categories:
-    - cloud
-  x-preferred: true
+basePath: /
+definitions:
+  AccessDeniedException: {}
+  ConflictException: {}
+  CreateWorkspaceRequest:
+    description: Represents the input of a CreateWorkspace operation.
+    properties:
+      alias:
+        allOf:
+          - $ref: '#/definitions/WorkspaceAlias'
+          - description: >-
+              An optional user-assigned alias for this workspace. This alias is
+              for user reference and does not need to be unique.
+      clientToken:
+        allOf:
+          - $ref: '#/definitions/IdempotencyToken'
+          - description: >-
+              Optional, unique, case-sensitive, user-provided identifier to
+              ensure the idempotency of the request.
+      tags:
+        allOf:
+          - $ref: '#/definitions/TagMap'
+          - description: 'Optional, user-provided tags for this workspace.'
+    title: CreateWorkspaceRequest
+    type: object
+  CreateWorkspaceResponse:
+    description: Represents the output of a CreateWorkspace operation.
+    properties:
+      arn:
+        allOf:
+          - $ref: '#/definitions/WorkspaceArn'
+          - description: The ARN of the workspace that was just created.
+      status:
+        allOf:
+          - $ref: '#/definitions/WorkspaceStatus'
+          - description: >-
+              The status of the workspace that was just created (usually
+              CREATING).
+      tags:
+        allOf:
+          - $ref: '#/definitions/TagMap'
+          - description: The tags of this workspace.
+      workspaceId:
+        allOf:
+          - $ref: '#/definitions/WorkspaceId'
+          - description: The generated ID of the workspace that was just created.
+    required:
+      - arn
+      - status
+      - workspaceId
+    type: object
+  DeleteWorkspaceRequest:
+    description: Represents the input of a DeleteWorkspace operation.
+    properties: {}
+    title: DeleteWorkspaceRequest
+    type: object
+  DescribeWorkspaceRequest:
+    description: Represents the input of a DescribeWorkspace operation.
+    properties: {}
+    title: DescribeWorkspaceRequest
+    type: object
+  DescribeWorkspaceResponse:
+    description: Represents the output of a DescribeWorkspace operation.
+    properties:
+      workspace:
+        allOf:
+          - $ref: '#/definitions/WorkspaceDescription'
+          - description: The properties of the selected workspace.
+    required:
+      - workspace
+    type: object
+  IdempotencyToken:
+    description: An identifier used to ensure the idempotency of a write request.
+    maxLength: 64
+    minLength: 1
+    pattern: '[!-~]+'
+    type: string
+  InternalServerException: {}
+  ListTagsForResourceRequest:
+    properties: {}
+    title: ListTagsForResourceRequest
+    type: object
+  ListTagsForResourceResponse:
+    properties:
+      tags:
+        $ref: '#/definitions/TagMap'
+    type: object
+  ListWorkspacesRequest:
+    description: Represents the input of a ListWorkspaces operation.
+    properties: {}
+    title: ListWorkspacesRequest
+    type: object
+  ListWorkspacesRequestMaxResultsInteger:
+    maximum: 1000
+    minimum: 1
+    type: integer
+  ListWorkspacesResponse:
+    description: Represents the output of a ListWorkspaces operation.
+    properties:
+      nextToken:
+        allOf:
+          - $ref: '#/definitions/PaginationToken'
+          - description: >-
+              Pagination token to use when requesting the next page in this
+              list.
+      workspaces:
+        allOf:
+          - $ref: '#/definitions/WorkspaceSummaryList'
+          - description: >-
+              The list of existing workspaces, including those undergoing
+              creation or deletion.
+    required:
+      - workspaces
+    type: object
+  PaginationToken:
+    description: A token used to access the next page in a paginated result set.
+    type: string
+  ResourceNotFoundException: {}
+  ServiceQuotaExceededException: {}
+  String:
+    type: string
+  TagKey:
+    maxLength: 128
+    minLength: 1
+    pattern: '^([\p{L}\p{Z}\p{N}_.:/=+\-@]*)$'
+    type: string
+  TagKeys:
+    items:
+      $ref: '#/definitions/TagKey'
+    type: array
+  TagMap:
+    additionalProperties:
+      $ref: '#/definitions/TagValue'
+    description: The list of tags assigned to the resource.
+    maxProperties: 50
+    minProperties: 0
+    type: object
+  TagResourceRequest:
+    properties:
+      tags:
+        $ref: '#/definitions/TagMap'
+    required:
+      - tags
+    title: TagResourceRequest
+    type: object
+  TagResourceResponse:
+    properties: {}
+    type: object
+  TagValue:
+    maxLength: 256
+    minLength: 0
+    pattern: '^([\p{L}\p{Z}\p{N}_.:/=+\-@]*)$'
+    type: string
+  ThrottlingException: {}
+  Timestamp:
+    format: date-time
+    type: string
+  UntagResourceRequest:
+    properties: {}
+    title: UntagResourceRequest
+    type: object
+  UntagResourceResponse:
+    properties: {}
+    type: object
+  UpdateWorkspaceAliasRequest:
+    description: Represents the input of an UpdateWorkspaceAlias operation.
+    properties:
+      alias:
+        allOf:
+          - $ref: '#/definitions/WorkspaceAlias'
+          - description: The new alias of the workspace.
+      clientToken:
+        allOf:
+          - $ref: '#/definitions/IdempotencyToken'
+          - description: >-
+              Optional, unique, case-sensitive, user-provided identifier to
+              ensure the idempotency of the request.
+    title: UpdateWorkspaceAliasRequest
+    type: object
+  Uri:
+    maxLength: 1024
+    minLength: 1
+    type: string
+  ValidationException: {}
+  WorkspaceAlias:
+    description: A user-assigned workspace alias.
+    maxLength: 100
+    minLength: 1
+    type: string
+  WorkspaceArn:
+    description: An ARN identifying a Workspace.
+    type: string
+  WorkspaceDescription:
+    description: Represents the properties of a workspace.
+    properties:
+      alias:
+        allOf:
+          - $ref: '#/definitions/WorkspaceAlias'
+          - description: Alias of this workspace.
+      arn:
+        allOf:
+          - $ref: '#/definitions/WorkspaceArn'
+          - description: The Amazon Resource Name (ARN) of this workspace.
+      createdAt:
+        allOf:
+          - $ref: '#/definitions/Timestamp'
+          - description: The time when the workspace was created.
+      prometheusEndpoint:
+        allOf:
+          - $ref: '#/definitions/Uri'
+          - description: Prometheus endpoint URI.
+      status:
+        allOf:
+          - $ref: '#/definitions/WorkspaceStatus'
+          - description: The status of this workspace.
+      tags:
+        allOf:
+          - $ref: '#/definitions/TagMap'
+          - description: The tags of this workspace.
+      workspaceId:
+        allOf:
+          - $ref: '#/definitions/WorkspaceId'
+          - description: Unique string identifying this workspace.
+    required:
+      - arn
+      - createdAt
+      - status
+      - workspaceId
+    type: object
+  WorkspaceId:
+    description: A workspace ID.
+    maxLength: 64
+    minLength: 1
+    pattern: '[0-9A-Za-z][-.0-9A-Z_a-z]*'
+    type: string
+  WorkspaceStatus:
+    description: Represents the status of a workspace.
+    properties:
+      statusCode:
+        allOf:
+          - $ref: '#/definitions/WorkspaceStatusCode'
+          - description: Status code of this workspace.
+    required:
+      - statusCode
+    type: object
+  WorkspaceStatusCode:
+    description: State of a workspace.
+    enum:
+      - CREATING
+      - ACTIVE
+      - UPDATING
+      - DELETING
+      - CREATION_FAILED
+    type: string
+  WorkspaceSummary:
+    description: Represents a summary of the properties of a workspace.
+    properties:
+      alias:
+        allOf:
+          - $ref: '#/definitions/WorkspaceAlias'
+          - description: Alias of this workspace.
+      arn:
+        allOf:
+          - $ref: '#/definitions/WorkspaceArn'
+          - description: The AmazonResourceName of this workspace.
+      createdAt:
+        allOf:
+          - $ref: '#/definitions/Timestamp'
+          - description: The time when the workspace was created.
+      status:
+        allOf:
+          - $ref: '#/definitions/WorkspaceStatus'
+          - description: The status of this workspace.
+      tags:
+        allOf:
+          - $ref: '#/definitions/TagMap'
+          - description: The tags of this workspace.
+      workspaceId:
+        allOf:
+          - $ref: '#/definitions/WorkspaceId'
+          - description: Unique string identifying this workspace.
+    required:
+      - arn
+      - createdAt
+      - status
+      - workspaceId
+    type: object
+  WorkspaceSummaryList:
+    description: A list of workspace summaries.
+    items:
+      $ref: '#/definitions/WorkspaceSummary'
+    type: array
 externalDocs:
   description: Amazon Web Services documentation
   url: 'https://docs.aws.amazon.com/aps/'
-servers:
-  - url: 'http://aps.{region}.amazonaws.com'
-    variables:
-      region:
-        description: The AWS region
-        enum:
-          - us-east-1
-          - us-east-2
-          - us-west-1
-          - us-west-2
-          - us-gov-west-1
-          - us-gov-east-1
-          - ca-central-1
-          - eu-north-1
-          - eu-west-1
-          - eu-west-2
-          - eu-west-3
-          - eu-central-1
-          - eu-south-1
-          - af-south-1
-          - ap-northeast-1
-          - ap-northeast-2
-          - ap-northeast-3
-          - ap-southeast-1
-          - ap-southeast-2
-          - ap-east-1
-          - ap-south-1
-          - sa-east-1
-          - me-south-1
-        default: us-east-1
-    description: The Amazon Prometheus Service multi-region endpoint
-  - url: 'https://aps.{region}.amazonaws.com'
-    variables:
-      region:
-        description: The AWS region
-        enum:
-          - us-east-1
-          - us-east-2
-          - us-west-1
-          - us-west-2
-          - us-gov-west-1
-          - us-gov-east-1
-          - ca-central-1
-          - eu-north-1
-          - eu-west-1
-          - eu-west-2
-          - eu-west-3
-          - eu-central-1
-          - eu-south-1
-          - af-south-1
-          - ap-northeast-1
-          - ap-northeast-2
-          - ap-northeast-3
-          - ap-southeast-1
-          - ap-southeast-2
-          - ap-east-1
-          - ap-south-1
-          - sa-east-1
-          - me-south-1
-        default: us-east-1
-    description: The Amazon Prometheus Service multi-region endpoint
-  - url: 'http://aps.{region}.amazonaws.com.cn'
-    variables:
-      region:
-        description: The AWS region
-        enum:
-          - cn-north-1
-          - cn-northwest-1
-        default: cn-north-1
-    description: The Amazon Prometheus Service endpoint for China (Beijing) and China (Ningxia)
-  - url: 'https://aps.{region}.amazonaws.com.cn'
-    variables:
-      region:
-        description: The AWS region
-        enum:
-          - cn-north-1
-          - cn-northwest-1
-        default: cn-north-1
-    description: The Amazon Prometheus Service endpoint for China (Beijing) and China (Ningxia)
-x-hasEquivalentPaths: true
+host: aps.us-east-1.amazonaws.com
+info:
+  contact:
+    email: mike.ralphson@gmail.com
+    name: Mike Ralphson
+    url: 'https://github.com/mermade/aws2openapi'
+    x-twitter: PermittedSoc
+  description: Amazon Managed Service for Prometheus
+  license:
+    name: Apache 2.0 License
+    url: 'http://www.apache.org/licenses/'
+  termsOfService: 'https://aws.amazon.com/service-terms/'
+  title: Amazon Prometheus Service
+  version: '2020-08-01'
+  x-apiClientRegistration:
+    url: >-
+      https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-aws-signingName: aps
+  x-logo:
+    backgroundColor: '#FFFFFF'
+    url: 'https://twitter.com/awscloud/profile_image?size=original'
+  x-origin:
+    - contentType: application/json
+      converter:
+        url: 'https://github.com/mermade/aws2openapi'
+        version: 1.0.0
+      url: >-
+        https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/amp-2020-08-01.normal.json
+      x-apisguru-driver: external
+  x-preferred: true
+  x-providerName: amazonaws.com
+  x-release: v4
+  x-serviceName: amp
 paths:
-  /workspaces:
-    post:
-      operationId: CreateWorkspace
-      description: Creates a new AMP workspace.
-      responses:
-        '202':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateWorkspaceResponse'
-        '480':
-          description: ThrottlingException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ThrottlingException'
-        '481':
-          description: ConflictException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConflictException'
-        '482':
-          description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-        '483':
-          description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
-        '484':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-        '485':
-          description: ServiceQuotaExceededException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServiceQuotaExceededException'
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                alias:
-                  description: A user-assigned workspace alias.
-                  type: string
-                  minLength: 1
-                  maxLength: 100
-                clientToken:
-                  description: An identifier used to ensure the idempotency of a write request.
-                  type: string
-                  pattern: '[!-~]+'
-                  minLength: 1
-                  maxLength: 64
-                tags:
-                  description: The list of tags assigned to the resource.
-                  type: object
-                  minProperties: 0
-                  maxProperties: 50
-                  additionalProperties:
-                    $ref: '#/components/schemas/TagValue'
-    parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
-    get:
-      operationId: ListWorkspaces
-      description: 'Lists all AMP workspaces, including workspaces being created or deleted.'
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListWorkspacesResponse'
-        '480':
-          description: ThrottlingException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ThrottlingException'
-        '481':
-          description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-        '482':
-          description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
-        '483':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: alias
-          in: query
-          required: false
-          description: Optional filter for workspace alias. Only the workspaces with aliases that begin with this value will be returned.
-          schema:
-            type: string
-            description: A user-assigned workspace alias.
-            minLength: 1
-            maxLength: 100
-        - name: maxResults
-          in: query
-          required: false
-          description: 'Maximum results to return in response (default=100, maximum=1000).'
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 1000
-        - name: nextToken
-          in: query
-          required: false
-          description: Pagination token to request the next page in a paginated list. This token is obtained from the output of the previous ListWorkspaces request.
-          schema:
-            type: string
-            description: A token used to access the next page in a paginated result set.
-  '/workspaces/{workspaceId}':
-    delete:
-      operationId: DeleteWorkspace
-      description: Deletes an AMP workspace.
-      responses:
-        '202':
-          description: Success
-        '480':
-          description: ThrottlingException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ThrottlingException'
-        '481':
-          description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-        '482':
-          description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
-        '483':
-          description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
-        '484':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: clientToken
-          in: query
-          required: false
-          description: 'Optional, unique, case-sensitive, user-provided identifier to ensure the idempotency of the request.'
-          schema:
-            type: string
-            pattern: '[!-~]+'
-            description: An identifier used to ensure the idempotency of a write request.
-            minLength: 1
-            maxLength: 64
-        - name: workspaceId
-          in: path
-          required: true
-          description: The ID of the workspace to delete.
-          schema:
-            type: string
-            pattern: '[0-9A-Za-z][-.0-9A-Z_a-z]*'
-            description: A workspace ID.
-            minLength: 1
-            maxLength: 64
-    parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
-    get:
-      operationId: DescribeWorkspace
-      description: Describes an existing AMP workspace.
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DescribeWorkspaceResponse'
-        '480':
-          description: ThrottlingException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ThrottlingException'
-        '481':
-          description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-        '482':
-          description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
-        '483':
-          description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
-        '484':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: workspaceId
-          in: path
-          required: true
-          description: The ID of the workspace to describe.
-          schema:
-            type: string
-            pattern: '[0-9A-Za-z][-.0-9A-Z_a-z]*'
-            description: A workspace ID.
-            minLength: 1
-            maxLength: 64
   '/tags/{resourceArn}':
     get:
-      operationId: ListTagsForResource
       description: Lists the tags you have assigned to the resource.
+      operationId: ListTagsForResource
+      parameters:
+        - description: The ARN of the resource.
+          in: path
+          name: resourceArn
+          required: true
+          type: string
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListTagsForResourceResponse'
+          schema:
+            $ref: '#/definitions/ListTagsForResourceResponse'
         '480':
           description: ThrottlingException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ThrottlingException'
+          schema:
+            $ref: '#/definitions/ThrottlingException'
         '481':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
+          schema:
+            $ref: '#/definitions/ValidationException'
         '482':
           description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
         '483':
           description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
+          schema:
+            $ref: '#/definitions/AccessDeniedException'
         '484':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: resourceArn
-          in: path
-          required: true
-          description: The ARN of the resource.
           schema:
-            type: string
+            $ref: '#/definitions/InternalServerException'
     parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
     post:
-      operationId: TagResource
+      consumes:
+        - application/json
       description: Creates tags for the specified resource.
+      operationId: TagResource
+      parameters:
+        - description: The ARN of the resource.
+          in: path
+          name: resourceArn
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              tags:
+                additionalProperties:
+                  $ref: '#/definitions/TagValue'
+                description: The list of tags assigned to the resource.
+                maxProperties: 50
+                minProperties: 0
+                type: object
+            required:
+              - tags
+            type: object
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TagResourceResponse'
+          schema:
+            $ref: '#/definitions/TagResourceResponse'
         '480':
           description: ThrottlingException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ThrottlingException'
+          schema:
+            $ref: '#/definitions/ThrottlingException'
         '481':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
+          schema:
+            $ref: '#/definitions/ValidationException'
         '482':
           description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
         '483':
           description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
+          schema:
+            $ref: '#/definitions/AccessDeniedException'
         '484':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: resourceArn
-          in: path
-          required: true
-          description: The ARN of the resource.
           schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - tags
-              properties:
-                tags:
-                  description: The list of tags assigned to the resource.
-                  type: object
-                  minProperties: 0
-                  maxProperties: 50
-                  additionalProperties:
-                    $ref: '#/components/schemas/TagValue'
+            $ref: '#/definitions/InternalServerException'
   '/tags/{resourceArn}#tagKeys':
     delete:
-      operationId: UntagResource
       description: Deletes tags from the specified resource.
+      operationId: UntagResource
+      parameters:
+        - description: The ARN of the resource.
+          in: path
+          name: resourceArn
+          required: true
+          type: string
+        - collectionFormat: multi
+          description: One or more tag keys
+          in: query
+          items:
+            $ref: '#/definitions/TagKey'
+          name: tagKeys
+          required: true
+          type: array
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UntagResourceResponse'
+          schema:
+            $ref: '#/definitions/UntagResourceResponse'
         '480':
           description: ThrottlingException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ThrottlingException'
+          schema:
+            $ref: '#/definitions/ThrottlingException'
         '481':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
+          schema:
+            $ref: '#/definitions/ValidationException'
         '482':
           description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
         '483':
           description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
+          schema:
+            $ref: '#/definitions/AccessDeniedException'
         '484':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: resourceArn
-          in: path
-          required: true
-          description: The ARN of the resource.
           schema:
-            type: string
-        - name: tagKeys
-          in: query
-          required: true
-          description: One or more tag keys
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/TagKey'
+            $ref: '#/definitions/InternalServerException'
     parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
-  '/workspaces/{workspaceId}/alias':
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
+  /workspaces:
+    get:
+      description: 'Lists all AMP workspaces, including workspaces being created or deleted.'
+      operationId: ListWorkspaces
+      parameters:
+        - description: >-
+            Optional filter for workspace alias. Only the workspaces with
+            aliases that begin with this value will be returned.
+          in: query
+          maxLength: 100
+          minLength: 1
+          name: alias
+          required: false
+          type: string
+        - description: 'Maximum results to return in response (default=100, maximum=1000).'
+          in: query
+          maximum: 1000
+          minimum: 1
+          name: maxResults
+          required: false
+          type: integer
+        - description: >-
+            Pagination token to request the next page in a paginated list. This
+            token is obtained from the output of the previous ListWorkspaces
+            request.
+          in: query
+          name: nextToken
+          required: false
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/ListWorkspacesResponse'
+        '480':
+          description: ThrottlingException
+          schema:
+            $ref: '#/definitions/ThrottlingException'
+        '481':
+          description: ValidationException
+          schema:
+            $ref: '#/definitions/ValidationException'
+        '482':
+          description: AccessDeniedException
+          schema:
+            $ref: '#/definitions/AccessDeniedException'
+        '483':
+          description: InternalServerException
+          schema:
+            $ref: '#/definitions/InternalServerException'
+    parameters:
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
     post:
-      operationId: UpdateWorkspaceAlias
+      consumes:
+        - application/json
+      description: Creates a new AMP workspace.
+      operationId: CreateWorkspace
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              alias:
+                description: A user-assigned workspace alias.
+                maxLength: 100
+                minLength: 1
+                type: string
+              clientToken:
+                description: >-
+                  An identifier used to ensure the idempotency of a write
+                  request.
+                maxLength: 64
+                minLength: 1
+                pattern: '[!-~]+'
+                type: string
+              tags:
+                additionalProperties:
+                  $ref: '#/definitions/TagValue'
+                description: The list of tags assigned to the resource.
+                maxProperties: 50
+                minProperties: 0
+                type: object
+            type: object
+      produces:
+        - application/json
+      responses:
+        '202':
+          description: Success
+          schema:
+            $ref: '#/definitions/CreateWorkspaceResponse'
+        '480':
+          description: ThrottlingException
+          schema:
+            $ref: '#/definitions/ThrottlingException'
+        '481':
+          description: ConflictException
+          schema:
+            $ref: '#/definitions/ConflictException'
+        '482':
+          description: ValidationException
+          schema:
+            $ref: '#/definitions/ValidationException'
+        '483':
+          description: AccessDeniedException
+          schema:
+            $ref: '#/definitions/AccessDeniedException'
+        '484':
+          description: InternalServerException
+          schema:
+            $ref: '#/definitions/InternalServerException'
+        '485':
+          description: ServiceQuotaExceededException
+          schema:
+            $ref: '#/definitions/ServiceQuotaExceededException'
+  '/workspaces/{workspaceId}':
+    delete:
+      description: Deletes an AMP workspace.
+      operationId: DeleteWorkspace
+      parameters:
+        - description: >-
+            Optional, unique, case-sensitive, user-provided identifier to ensure
+            the idempotency of the request.
+          in: query
+          maxLength: 64
+          minLength: 1
+          name: clientToken
+          pattern: '[!-~]+'
+          required: false
+          type: string
+        - description: The ID of the workspace to delete.
+          in: path
+          maxLength: 64
+          minLength: 1
+          name: workspaceId
+          pattern: '[0-9A-Za-z][-.0-9A-Z_a-z]*'
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '202':
+          description: Success
+        '480':
+          description: ThrottlingException
+          schema:
+            $ref: '#/definitions/ThrottlingException'
+        '481':
+          description: ValidationException
+          schema:
+            $ref: '#/definitions/ValidationException'
+        '482':
+          description: ResourceNotFoundException
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
+        '483':
+          description: AccessDeniedException
+          schema:
+            $ref: '#/definitions/AccessDeniedException'
+        '484':
+          description: InternalServerException
+          schema:
+            $ref: '#/definitions/InternalServerException'
+    get:
+      description: Describes an existing AMP workspace.
+      operationId: DescribeWorkspace
+      parameters:
+        - description: The ID of the workspace to describe.
+          in: path
+          maxLength: 64
+          minLength: 1
+          name: workspaceId
+          pattern: '[0-9A-Za-z][-.0-9A-Z_a-z]*'
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/DescribeWorkspaceResponse'
+        '480':
+          description: ThrottlingException
+          schema:
+            $ref: '#/definitions/ThrottlingException'
+        '481':
+          description: ValidationException
+          schema:
+            $ref: '#/definitions/ValidationException'
+        '482':
+          description: ResourceNotFoundException
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
+        '483':
+          description: AccessDeniedException
+          schema:
+            $ref: '#/definitions/AccessDeniedException'
+        '484':
+          description: InternalServerException
+          schema:
+            $ref: '#/definitions/InternalServerException'
+    parameters:
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
+  '/workspaces/{workspaceId}/alias':
+    parameters:
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
+    post:
+      consumes:
+        - application/json
       description: Updates an AMP workspace alias.
+      operationId: UpdateWorkspaceAlias
+      parameters:
+        - description: The ID of the workspace being updated.
+          in: path
+          maxLength: 64
+          minLength: 1
+          name: workspaceId
+          pattern: '[0-9A-Za-z][-.0-9A-Z_a-z]*'
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              alias:
+                description: A user-assigned workspace alias.
+                maxLength: 100
+                minLength: 1
+                type: string
+              clientToken:
+                description: >-
+                  An identifier used to ensure the idempotency of a write
+                  request.
+                maxLength: 64
+                minLength: 1
+                pattern: '[!-~]+'
+                type: string
+            type: object
+      produces:
+        - application/json
       responses:
         '204':
           description: Success
         '480':
           description: ThrottlingException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ThrottlingException'
+          schema:
+            $ref: '#/definitions/ThrottlingException'
         '481':
           description: ConflictException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConflictException'
+          schema:
+            $ref: '#/definitions/ConflictException'
         '482':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
+          schema:
+            $ref: '#/definitions/ValidationException'
         '483':
           description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
         '484':
           description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
+          schema:
+            $ref: '#/definitions/AccessDeniedException'
         '485':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
+          schema:
+            $ref: '#/definitions/InternalServerException'
         '486':
           description: ServiceQuotaExceededException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServiceQuotaExceededException'
-      parameters:
-        - name: workspaceId
-          in: path
-          required: true
-          description: The ID of the workspace being updated.
           schema:
-            type: string
-            pattern: '[0-9A-Za-z][-.0-9A-Z_a-z]*'
-            description: A workspace ID.
-            minLength: 1
-            maxLength: 64
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                alias:
-                  description: A user-assigned workspace alias.
-                  type: string
-                  minLength: 1
-                  maxLength: 100
-                clientToken:
-                  description: An identifier used to ensure the idempotency of a write request.
-                  type: string
-                  pattern: '[!-~]+'
-                  minLength: 1
-                  maxLength: 64
-    parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
-components:
-  parameters:
-    X-Amz-Content-Sha256:
-      name: X-Amz-Content-Sha256
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Date:
-      name: X-Amz-Date
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Algorithm:
-      name: X-Amz-Algorithm
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Credential:
-      name: X-Amz-Credential
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Security-Token:
-      name: X-Amz-Security-Token
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Signature:
-      name: X-Amz-Signature
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-SignedHeaders:
-      name: X-Amz-SignedHeaders
-      in: header
-      schema:
-        type: string
-      required: false
-  securitySchemes:
-    hmac:
-      type: apiKey
-      name: Authorization
-      in: header
-      description: Amazon Signature authorization v4
-      x-amazon-apigateway-authtype: awsSigv4
-  schemas:
-    CreateWorkspaceResponse:
-      type: object
-      required:
-        - arn
-        - status
-        - workspaceId
-      properties:
-        arn:
-          allOf:
-            - $ref: '#/components/schemas/WorkspaceArn'
-            - description: The ARN of the workspace that was just created.
-        status:
-          allOf:
-            - $ref: '#/components/schemas/WorkspaceStatus'
-            - description: The status of the workspace that was just created (usually CREATING).
-        tags:
-          allOf:
-            - $ref: '#/components/schemas/TagMap'
-            - description: The tags of this workspace.
-        workspaceId:
-          allOf:
-            - $ref: '#/components/schemas/WorkspaceId'
-            - description: The generated ID of the workspace that was just created.
-      description: Represents the output of a CreateWorkspace operation.
-    TagValue:
-      type: string
-      pattern: '^([\p{L}\p{Z}\p{N}_.:/=+\-@]*)$'
-      minLength: 0
-      maxLength: 256
-    ThrottlingException: {}
-    ConflictException: {}
-    ValidationException: {}
-    AccessDeniedException: {}
-    InternalServerException: {}
-    ServiceQuotaExceededException: {}
-    ResourceNotFoundException: {}
-    DescribeWorkspaceResponse:
-      type: object
-      required:
-        - workspace
-      properties:
-        workspace:
-          allOf:
-            - $ref: '#/components/schemas/WorkspaceDescription'
-            - description: The properties of the selected workspace.
-      description: Represents the output of a DescribeWorkspace operation.
-    ListTagsForResourceResponse:
-      type: object
-      properties:
-        tags:
-          $ref: '#/components/schemas/TagMap'
-    ListWorkspacesResponse:
-      type: object
-      required:
-        - workspaces
-      properties:
-        nextToken:
-          allOf:
-            - $ref: '#/components/schemas/PaginationToken'
-            - description: Pagination token to use when requesting the next page in this list.
-        workspaces:
-          allOf:
-            - $ref: '#/components/schemas/WorkspaceSummaryList'
-            - description: 'The list of existing workspaces, including those undergoing creation or deletion.'
-      description: Represents the output of a ListWorkspaces operation.
-    TagResourceResponse:
-      type: object
-      properties: {}
-    UntagResourceResponse:
-      type: object
-      properties: {}
-    TagKey:
-      type: string
-      pattern: '^([\p{L}\p{Z}\p{N}_.:/=+\-@]*)$'
-      minLength: 1
-      maxLength: 128
-    WorkspaceAlias:
-      type: string
-      description: A user-assigned workspace alias.
-      minLength: 1
-      maxLength: 100
-    IdempotencyToken:
-      type: string
-      pattern: '[!-~]+'
-      description: An identifier used to ensure the idempotency of a write request.
-      minLength: 1
-      maxLength: 64
-    TagMap:
-      type: object
-      description: The list of tags assigned to the resource.
-      minProperties: 0
-      maxProperties: 50
-      additionalProperties:
-        $ref: '#/components/schemas/TagValue'
-    CreateWorkspaceRequest:
-      type: object
-      title: CreateWorkspaceRequest
-      properties:
-        alias:
-          allOf:
-            - $ref: '#/components/schemas/WorkspaceAlias'
-            - description: An optional user-assigned alias for this workspace. This alias is for user reference and does not need to be unique.
-        clientToken:
-          allOf:
-            - $ref: '#/components/schemas/IdempotencyToken'
-            - description: 'Optional, unique, case-sensitive, user-provided identifier to ensure the idempotency of the request.'
-        tags:
-          allOf:
-            - $ref: '#/components/schemas/TagMap'
-            - description: 'Optional, user-provided tags for this workspace.'
-      description: Represents the input of a CreateWorkspace operation.
-    WorkspaceArn:
-      type: string
-      description: An ARN identifying a Workspace.
-    WorkspaceStatus:
-      type: object
-      required:
-        - statusCode
-      properties:
-        statusCode:
-          allOf:
-            - $ref: '#/components/schemas/WorkspaceStatusCode'
-            - description: Status code of this workspace.
-      description: Represents the status of a workspace.
-    WorkspaceId:
-      type: string
-      pattern: '[0-9A-Za-z][-.0-9A-Z_a-z]*'
-      description: A workspace ID.
-      minLength: 1
-      maxLength: 64
-    DeleteWorkspaceRequest:
-      type: object
-      title: DeleteWorkspaceRequest
-      properties: {}
-      description: Represents the input of a DeleteWorkspace operation.
-    DescribeWorkspaceRequest:
-      type: object
-      title: DescribeWorkspaceRequest
-      properties: {}
-      description: Represents the input of a DescribeWorkspace operation.
-    WorkspaceDescription:
-      type: object
-      required:
-        - arn
-        - createdAt
-        - status
-        - workspaceId
-      properties:
-        alias:
-          allOf:
-            - $ref: '#/components/schemas/WorkspaceAlias'
-            - description: Alias of this workspace.
-        arn:
-          allOf:
-            - $ref: '#/components/schemas/WorkspaceArn'
-            - description: The Amazon Resource Name (ARN) of this workspace.
-        createdAt:
-          allOf:
-            - $ref: '#/components/schemas/Timestamp'
-            - description: The time when the workspace was created.
-        prometheusEndpoint:
-          allOf:
-            - $ref: '#/components/schemas/Uri'
-            - description: Prometheus endpoint URI.
-        status:
-          allOf:
-            - $ref: '#/components/schemas/WorkspaceStatus'
-            - description: The status of this workspace.
-        tags:
-          allOf:
-            - $ref: '#/components/schemas/TagMap'
-            - description: The tags of this workspace.
-        workspaceId:
-          allOf:
-            - $ref: '#/components/schemas/WorkspaceId'
-            - description: Unique string identifying this workspace.
-      description: Represents the properties of a workspace.
-    String:
-      type: string
-    ListTagsForResourceRequest:
-      type: object
-      title: ListTagsForResourceRequest
-      properties: {}
-    ListWorkspacesRequestMaxResultsInteger:
-      type: integer
-      minimum: 1
-      maximum: 1000
-    PaginationToken:
-      type: string
-      description: A token used to access the next page in a paginated result set.
-    ListWorkspacesRequest:
-      type: object
-      title: ListWorkspacesRequest
-      properties: {}
-      description: Represents the input of a ListWorkspaces operation.
-    WorkspaceSummaryList:
-      type: array
-      description: A list of workspace summaries.
-      items:
-        $ref: '#/components/schemas/WorkspaceSummary'
-    TagKeys:
-      type: array
-      items:
-        $ref: '#/components/schemas/TagKey'
-    TagResourceRequest:
-      type: object
-      required:
-        - tags
-      title: TagResourceRequest
-      properties:
-        tags:
-          $ref: '#/components/schemas/TagMap'
-    Timestamp:
-      type: string
-      format: date-time
-    UntagResourceRequest:
-      type: object
-      title: UntagResourceRequest
-      properties: {}
-    UpdateWorkspaceAliasRequest:
-      type: object
-      title: UpdateWorkspaceAliasRequest
-      properties:
-        alias:
-          allOf:
-            - $ref: '#/components/schemas/WorkspaceAlias'
-            - description: The new alias of the workspace.
-        clientToken:
-          allOf:
-            - $ref: '#/components/schemas/IdempotencyToken'
-            - description: 'Optional, unique, case-sensitive, user-provided identifier to ensure the idempotency of the request.'
-      description: Represents the input of an UpdateWorkspaceAlias operation.
-    Uri:
-      type: string
-      minLength: 1
-      maxLength: 1024
-    WorkspaceStatusCode:
-      type: string
-      enum:
-        - CREATING
-        - ACTIVE
-        - UPDATING
-        - DELETING
-        - CREATION_FAILED
-      description: State of a workspace.
-    WorkspaceSummary:
-      type: object
-      required:
-        - arn
-        - createdAt
-        - status
-        - workspaceId
-      properties:
-        alias:
-          allOf:
-            - $ref: '#/components/schemas/WorkspaceAlias'
-            - description: Alias of this workspace.
-        arn:
-          allOf:
-            - $ref: '#/components/schemas/WorkspaceArn'
-            - description: The AmazonResourceName of this workspace.
-        createdAt:
-          allOf:
-            - $ref: '#/components/schemas/Timestamp'
-            - description: The time when the workspace was created.
-        status:
-          allOf:
-            - $ref: '#/components/schemas/WorkspaceStatus'
-            - description: The status of this workspace.
-        tags:
-          allOf:
-            - $ref: '#/components/schemas/TagMap'
-            - description: The tags of this workspace.
-        workspaceId:
-          allOf:
-            - $ref: '#/components/schemas/WorkspaceId'
-            - description: Unique string identifying this workspace.
-      description: Represents a summary of the properties of a workspace.
+            $ref: '#/definitions/ServiceQuotaExceededException'
+schemes:
+  - http
 security:
   - hmac: []
+securityDefinitions:
+  hmac:
+    description: Amazon Signature authorization v4
+    in: header
+    name: Authorization
+    type: apiKey
+    x-amazon-apigateway-authtype: awsSigv4
+swagger: '2.0'
+x-components:
+  parameters:
+    X-Amz-Algorithm:
+      in: header
+      name: X-Amz-Algorithm
+      required: false
+      type: string
+    X-Amz-Content-Sha256:
+      in: header
+      name: X-Amz-Content-Sha256
+      required: false
+      type: string
+    X-Amz-Credential:
+      in: header
+      name: X-Amz-Credential
+      required: false
+      type: string
+    X-Amz-Date:
+      in: header
+      name: X-Amz-Date
+      required: false
+      type: string
+    X-Amz-Security-Token:
+      in: header
+      name: X-Amz-Security-Token
+      required: false
+      type: string
+    X-Amz-Signature:
+      in: header
+      name: X-Amz-Signature
+      required: false
+      type: string
+    X-Amz-SignedHeaders:
+      in: header
+      name: X-Amz-SignedHeaders
+      required: false
+      type: string
+x-hasEquivalentPaths: true
+

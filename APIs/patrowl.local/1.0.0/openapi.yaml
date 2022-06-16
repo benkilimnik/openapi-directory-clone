@@ -1,16 +1,140 @@
-openapi: 3.0.0
-servers:
-  - url: http://patrowl.local
-  - url: http://localhost:5001/engines/nmap/
-  - url: http://localhost:5004/engines/ssllabs/
-  - url: http://localhost:5005/engines/arachni/
-  - url: http://localhost:5006/engines/owl_dns/
-  - url: http://localhost:5007/engines/virustotal/
-  - url: http://localhost:5008/engines/urlvoid/
-  - url: http://localhost:5009/engines/cortex/
-  - url: http://localhost:5012/engines/owl_leaks/
-  - url: http://localhost:5013/engines/owl_code/
-  - url: http://localhost:5014/engines/sslscan/
+basePath: /
+definitions:
+  ApiResponse:
+    properties:
+      page:
+        type: string
+      status:
+        type: string
+  Findings:
+    items:
+      properties:
+        confidence:
+          type: string
+        description:
+          type: string
+        issue_id:
+          type: integer
+        meta_links:
+          items:
+            type: string
+          type: array
+        meta_risk:
+          properties:
+            cvss_base_score:
+              items:
+                type: string
+              type: array
+            cvss_vector:
+              items:
+                type: string
+              type: array
+            exploit_available:
+              items:
+                type: string
+              type: array
+            exploitability_ease:
+              items:
+                type: string
+              type: array
+            patch_publication_date:
+              items:
+                type: string
+              type: array
+          type: object
+        meta_tags:
+          items:
+            type: string
+          type: array
+        meta_vuln_refs:
+          properties:
+            bid:
+              items:
+                type: string
+              type: array
+            cpe:
+              items:
+                type: string
+              type: array
+            cve:
+              items:
+                type: string
+              type: array
+            cwe:
+              items:
+                type: string
+              type: array
+          type: object
+        raw:
+          type: string
+        severity:
+          enum:
+            - info
+            - low
+            - medium
+            - high
+          type: string
+        solution:
+          type: string
+        target_addrs:
+          items:
+            type: string
+          type: array
+        target_proto:
+          items:
+            type: string
+          type: array
+        timestamp:
+          format: date-time
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+      type: object
+    type: array
+  ScanDefinition:
+    properties:
+      assets:
+        items:
+          properties:
+            criticity:
+              enum:
+                - low
+                - medium
+                - high
+              type: string
+            datatype:
+              enum:
+                - ip
+                - ip-range
+                - ip-subnet
+                - fqdn
+                - domain
+                - url
+                - keyword
+                - person
+                - organisation
+                - path
+                - application
+              type: string
+            id:
+              example: '3'
+              type: string
+            value:
+              example: 8.8.8.8
+              type: string
+          type: object
+        type: array
+      options:
+        type: object
+      scan_id:
+        example: 1
+        type: integer
+externalDocs:
+  description: Find out more about Patrowl
+  url: 'https://github.com/Patrowl/PatrowlDocs'
+host: patrowl.local
 info:
   contact:
     email: getsupport@patrowl.io
@@ -18,42 +142,35 @@ info:
   description: This is the API documentation for Patrowl Engines usage.
   license:
     name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
   title: Swagger API-REST for Patrowl Engines
   version: 1.0.0
   x-apisguru-categories:
     - security
   x-logo:
-    url: https://twitter.com/patrowl_io/profile_image?size=original
+    url: 'https://twitter.com/patrowl_io/profile_image?size=original'
   x-origin:
     - converter:
-        url: https://github.com/mermade/oas-kit
+        url: 'https://github.com/mermade/oas-kit'
         version: 7.0.4
       format: openapi
-      url: https://raw.githubusercontent.com/Patrowl/PatrowlDocs/master/api/openapi-patrowl-engines.yaml
-      version: "3.0"
+      url: >-
+        https://raw.githubusercontent.com/Patrowl/PatrowlDocs/master/api/openapi-patrowl-engines.yaml
+      version: '3.0'
   x-providerName: patrowl.local
-externalDocs:
-  description: Find out more about Patrowl
-  url: https://github.com/Patrowl/PatrowlDocs
-tags:
-  - description: SSLScan API documentation
-    externalDocs:
-      description: Find out more
-      url: https://github.com/Patrowl/PatrowlDocs
-    name: patrowl-engine
 paths:
   /:
     get:
       description: Return index page
       operationId: getDefaultPage
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ApiResponse"
+        '200':
           description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
       summary: Index page
       tags:
         - patrowl-engine
@@ -61,17 +178,18 @@ paths:
     get:
       description: Clean all current scans.
       operationId: CleanScansPage
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ApiResponse"
+        '200':
           description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
       summary: Clean all scans
       tags:
         - patrowl-engine
-  "/clean/{scanId}":
+  '/clean/{scanId}':
     get:
       description: Clean scan identified by id.
       operationId: CleanScanPage
@@ -80,19 +198,18 @@ paths:
           in: path
           name: scanId
           required: true
-          schema:
-            type: integer
+          type: integer
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ApiResponse"
+        '200':
           description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
       summary: Clean scan
       tags:
         - patrowl-engine
-  "/getfindings/{scanId}":
+  '/getfindings/{scanId}':
     get:
       description: Get findings on finished scans.
       operationId: GetFindingPage
@@ -101,15 +218,14 @@ paths:
           in: path
           name: scanId
           required: true
-          schema:
-            type: integer
+          type: integer
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Findings"
+        '200':
           description: successful operation
+          schema:
+            $ref: '#/definitions/Findings'
       summary: Get findings on finished scans
       tags:
         - patrowl-engine
@@ -117,13 +233,14 @@ paths:
     get:
       description: Return information on engine.
       operationId: getInfoPage
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ApiResponse"
+        '200':
           description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
       summary: Engine info page
       tags:
         - patrowl-engine
@@ -131,8 +248,9 @@ paths:
     get:
       description: Return liveness page
       operationId: getLivenessPage
+      parameters: []
       responses:
-        "200":
+        '200':
           description: successful operation
       summary: Liveness page
       tags:
@@ -141,8 +259,9 @@ paths:
     get:
       description: Return liveness page
       operationId: getReadinessPage
+      parameters: []
       responses:
-        "200":
+        '200':
           description: successful operation
       summary: Readiness page
       tags:
@@ -151,33 +270,36 @@ paths:
     get:
       description: Reload the configuration file.
       operationId: reloadConfigurationPage
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ApiResponse"
+        '200':
           description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
       summary: Configuration reloading page
       tags:
         - patrowl-engine
   /startscan:
     post:
+      consumes:
+        - application/json
       description: Start a new scan.
       operationId: StartScanPage
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ScanDefinition"
-        required: true
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/ScanDefinition'
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ApiResponse"
+        '200':
           description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
       summary: Start a new scan
       tags:
         - patrowl-engine
@@ -185,17 +307,18 @@ paths:
     get:
       description: Status all current scans.
       operationId: StatusScansPage
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ApiResponse"
+        '200':
           description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
       summary: Status on all scans
       tags:
         - patrowl-engine
-  "/status/{scanId}":
+  '/status/{scanId}':
     get:
       description: Status of a scan identified by id.
       operationId: StatusScanPage
@@ -204,19 +327,18 @@ paths:
           in: path
           name: scanId
           required: true
-          schema:
-            type: integer
+          type: integer
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ApiResponse"
+        '200':
           description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
       summary: Status of a scan
       tags:
         - patrowl-engine
-  "/stop/{scanId}":
+  '/stop/{scanId}':
     get:
       description: Stop a scan identified by id.
       operationId: StopScanPage
@@ -225,15 +347,14 @@ paths:
           in: path
           name: scanId
           required: true
-          schema:
-            type: integer
+          type: integer
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ApiResponse"
+        '200':
           description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
       summary: Stop a scan
       tags:
         - patrowl-engine
@@ -241,13 +362,14 @@ paths:
     get:
       description: Stop all current scans.
       operationId: StopScansPage
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ApiResponse"
+        '200':
           description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
       summary: Stop all scans
       tags:
         - patrowl-engine
@@ -255,142 +377,21 @@ paths:
     get:
       description: Return test page
       operationId: getTestPage
+      parameters: []
       responses:
-        "200":
+        '200':
           description: successful operation
       summary: Test page
       tags:
         - patrowl-engine
-components:
-  schemas:
-    ApiResponse:
-      properties:
-        page:
-          type: string
-        status:
-          type: string
-    Findings:
-      items:
-        properties:
-          confidence:
-            type: string
-          description:
-            type: string
-          issue_id:
-            type: integer
-          meta_links:
-            items:
-              type: string
-            type: array
-          meta_risk:
-            properties:
-              cvss_base_score:
-                items:
-                  type: string
-                type: array
-              cvss_vector:
-                items:
-                  type: string
-                type: array
-              exploit_available:
-                items:
-                  type: string
-                type: array
-              exploitability_ease:
-                items:
-                  type: string
-                type: array
-              patch_publication_date:
-                items:
-                  type: string
-                type: array
-            type: object
-          meta_tags:
-            items:
-              type: string
-            type: array
-          meta_vuln_refs:
-            properties:
-              bid:
-                items:
-                  type: string
-                type: array
-              cpe:
-                items:
-                  type: string
-                type: array
-              cve:
-                items:
-                  type: string
-                type: array
-              cwe:
-                items:
-                  type: string
-                type: array
-            type: object
-          raw:
-            type: string
-          severity:
-            enum:
-              - info
-              - low
-              - medium
-              - high
-            type: string
-          solution:
-            type: string
-          target_addrs:
-            items:
-              type: string
-            type: array
-          target_proto:
-            items:
-              type: string
-            type: array
-          timestamp:
-            format: date-time
-            type: string
-          title:
-            type: string
-          type:
-            type: string
-        type: object
-      type: array
-    ScanDefinition:
-      properties:
-        assets:
-          items:
-            properties:
-              criticity:
-                enum:
-                  - low
-                  - medium
-                  - high
-                type: string
-              datatype:
-                enum:
-                  - ip
-                  - ip-range
-                  - ip-subnet
-                  - fqdn
-                  - domain
-                  - url
-                  - keyword
-                  - person
-                  - organisation
-                  - path
-                  - application
-                type: string
-              id:
-                example: "3"
-                type: string
-              value:
-                example: 8.8.8.8
-                type: string
-            type: object
-          type: array
-        options:
-          type: object
-        scan_id:
-          example: 1
-          type: integer
+schemes:
+  - http
+swagger: '2.0'
+tags:
+  - description: SSLScan API documentation
+    externalDocs:
+      description: Find out more
+      url: 'https://github.com/Patrowl/PatrowlDocs'
+    name: patrowl-engine
+x-components: {}
+

@@ -1,550 +1,569 @@
-openapi: 3.0.0
-info:
-  version: '2017-07-25'
-  x-release: v4
-  title: Amazon S3 on Outposts
-  description: Amazon S3 on Outposts provides access to S3 on Outposts operations.
-  x-logo:
-    url: 'https://twitter.com/awscloud/profile_image?size=original'
-    backgroundColor: '#FFFFFF'
-  termsOfService: 'https://aws.amazon.com/service-terms/'
-  contact:
-    name: Mike Ralphson
-    email: mike.ralphson@gmail.com
-    url: 'https://github.com/mermade/aws2openapi'
-    x-twitter: PermittedSoc
-  license:
-    name: Apache 2.0 License
-    url: 'http://www.apache.org/licenses/'
-  x-providerName: amazonaws.com
-  x-serviceName: s3outposts
-  x-aws-signingName: s3-outposts
-  x-origin:
-    - contentType: application/json
-      url: 'https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/s3outposts-2017-07-25.normal.json'
-      converter:
-        url: 'https://github.com/mermade/aws2openapi'
-        version: 1.0.0
-      x-apisguru-driver: external
-  x-apiClientRegistration:
-    url: 'https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct'
-  x-apisguru-categories:
-    - cloud
-  x-preferred: true
+basePath: /
+definitions:
+  AccessDeniedException: {}
+  CidrBlock:
+    type: string
+  ConflictException: {}
+  CreateEndpointRequest:
+    properties:
+      AccessType:
+        allOf:
+          - $ref: '#/definitions/EndpointAccessType'
+          - description: >-
+              The type of access for the on-premise network connectivity for the
+              Outpost endpoint. To access the endpoint from an on-premises
+              network, you must specify the access type and provide the customer
+              owned IPv4 pool.
+      CustomerOwnedIpv4Pool:
+        allOf:
+          - $ref: '#/definitions/CustomerOwnedIpv4Pool'
+          - description: >-
+              The ID of the customer-owned IPv4 pool for the endpoint. IP
+              addresses will be allocated from this pool for the endpoint.
+      OutpostId:
+        allOf:
+          - $ref: '#/definitions/OutpostId'
+          - description: 'The ID of the AWS Outposts. '
+      SecurityGroupId:
+        allOf:
+          - $ref: '#/definitions/SecurityGroupId'
+          - description: The ID of the security group to use with the endpoint.
+      SubnetId:
+        allOf:
+          - $ref: '#/definitions/SubnetId'
+          - description: >-
+              The ID of the subnet in the selected VPC. The endpoint subnet must
+              belong to the Outpost that has the Amazon S3 on Outposts
+              provisioned.
+    required:
+      - OutpostId
+      - SubnetId
+      - SecurityGroupId
+    title: CreateEndpointRequest
+    type: object
+  CreateEndpointResult:
+    properties:
+      EndpointArn:
+        allOf:
+          - $ref: '#/definitions/EndpointArn'
+          - description: The Amazon Resource Name (ARN) of the endpoint.
+    type: object
+  CreationTime:
+    format: date-time
+    type: string
+  CustomerOwnedIpv4Pool:
+    pattern: '^ipv4pool-coip-([0-9a-f]{17})$'
+    type: string
+  DeleteEndpointRequest:
+    properties: {}
+    title: DeleteEndpointRequest
+    type: object
+  Endpoint:
+    description: >-
+      Amazon S3 on Outposts Access Points simplify managing data access at scale
+      for shared datasets in S3 on Outposts. S3 on Outposts uses endpoints to
+      connect to Outposts buckets so that you can perform actions within your
+      virtual private cloud (VPC). For more information, see <a
+      href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/AccessingS3Outposts.html">
+      Accessing S3 on Outposts using VPC only access points</a>.
+    properties:
+      AccessType:
+        allOf:
+          - $ref: '#/definitions/EndpointAccessType'
+          - description: <p/>
+      CidrBlock:
+        allOf:
+          - $ref: '#/definitions/CidrBlock'
+          - description: The VPC CIDR committed by this endpoint.
+      CreationTime:
+        allOf:
+          - $ref: '#/definitions/CreationTime'
+          - description: The time the endpoint was created.
+      CustomerOwnedIpv4Pool:
+        allOf:
+          - $ref: '#/definitions/CustomerOwnedIpv4Pool'
+          - description: The ID of the customer-owned IPv4 pool used for the endpoint.
+      EndpointArn:
+        allOf:
+          - $ref: '#/definitions/EndpointArn'
+          - description: The Amazon Resource Name (ARN) of the endpoint.
+      NetworkInterfaces:
+        allOf:
+          - $ref: '#/definitions/NetworkInterfaces'
+          - description: The network interface of the endpoint.
+      OutpostsId:
+        allOf:
+          - $ref: '#/definitions/OutpostId'
+          - description: The ID of the AWS Outposts.
+      SecurityGroupId:
+        allOf:
+          - $ref: '#/definitions/SecurityGroupId'
+          - description: The ID of the security group used for the endpoint.
+      Status:
+        allOf:
+          - $ref: '#/definitions/EndpointStatus'
+          - description: The status of the endpoint.
+      SubnetId:
+        allOf:
+          - $ref: '#/definitions/SubnetId'
+          - description: The ID of the subnet used for the endpoint.
+      VpcId:
+        allOf:
+          - $ref: '#/definitions/VpcId'
+          - description: The ID of the VPC used for the endpoint.
+    type: object
+  EndpointAccessType:
+    enum:
+      - Private
+      - CustomerOwnedIp
+    type: string
+  EndpointArn:
+    pattern: >-
+      ^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):s3-outposts:[a-z\-0-9]*:[0-9]{12}:outpost/(op-[a-f0-9]{17}|ec2)/endpoint/[a-zA-Z0-9]{19}$
+    type: string
+  EndpointId:
+    pattern: '^[a-zA-Z0-9]{19}$'
+    type: string
+  EndpointStatus:
+    enum:
+      - Pending
+      - Available
+      - Deleting
+    type: string
+  Endpoints:
+    items:
+      $ref: '#/definitions/Endpoint'
+    type: array
+  InternalServerException: {}
+  ListEndpointsRequest:
+    properties: {}
+    title: ListEndpointsRequest
+    type: object
+  ListEndpointsResult:
+    properties:
+      Endpoints:
+        allOf:
+          - $ref: '#/definitions/Endpoints'
+          - description: Returns an array of endpoints associated with AWS Outposts.
+      NextToken:
+        allOf:
+          - $ref: '#/definitions/NextToken'
+          - description: The next endpoint returned in the list.
+    type: object
+  MaxResults:
+    maximum: 100
+    minimum: 0
+    type: integer
+  NetworkInterface:
+    description: The container for the network interface.
+    properties:
+      NetworkInterfaceId:
+        allOf:
+          - $ref: '#/definitions/NetworkInterfaceId'
+          - description: The ID for the network interface.
+    type: object
+  NetworkInterfaceId:
+    type: string
+  NetworkInterfaces:
+    items:
+      $ref: '#/definitions/NetworkInterface'
+    type: array
+  NextToken:
+    maxLength: 1024
+    minLength: 1
+    pattern: '^[A-Za-z0-9\+\:\/\=\?\#-_]+$'
+    type: string
+  OutpostId:
+    pattern: '^(op-[a-f0-9]{17}|\d{12}|ec2)$'
+    type: string
+  ResourceNotFoundException: {}
+  SecurityGroupId:
+    pattern: '^sg-([0-9a-f]{8}|[0-9a-f]{17})$'
+    type: string
+  SubnetId:
+    pattern: '^subnet-([0-9a-f]{8}|[0-9a-f]{17})$'
+    type: string
+  ValidationException: {}
+  VpcId:
+    type: string
 externalDocs:
   description: Amazon Web Services documentation
   url: 'https://docs.aws.amazon.com/s3-outposts/'
-servers:
-  - url: 'http://s3-outposts.{region}.amazonaws.com'
-    variables:
-      region:
-        description: The AWS region
-        enum:
-          - us-east-1
-          - us-east-2
-          - us-west-1
-          - us-west-2
-          - us-gov-west-1
-          - us-gov-east-1
-          - ca-central-1
-          - eu-north-1
-          - eu-west-1
-          - eu-west-2
-          - eu-west-3
-          - eu-central-1
-          - eu-south-1
-          - af-south-1
-          - ap-northeast-1
-          - ap-northeast-2
-          - ap-northeast-3
-          - ap-southeast-1
-          - ap-southeast-2
-          - ap-east-1
-          - ap-south-1
-          - sa-east-1
-          - me-south-1
-        default: us-east-1
-    description: The Amazon S3 Outposts multi-region endpoint
-  - url: 'https://s3-outposts.{region}.amazonaws.com'
-    variables:
-      region:
-        description: The AWS region
-        enum:
-          - us-east-1
-          - us-east-2
-          - us-west-1
-          - us-west-2
-          - us-gov-west-1
-          - us-gov-east-1
-          - ca-central-1
-          - eu-north-1
-          - eu-west-1
-          - eu-west-2
-          - eu-west-3
-          - eu-central-1
-          - eu-south-1
-          - af-south-1
-          - ap-northeast-1
-          - ap-northeast-2
-          - ap-northeast-3
-          - ap-southeast-1
-          - ap-southeast-2
-          - ap-east-1
-          - ap-south-1
-          - sa-east-1
-          - me-south-1
-        default: us-east-1
-    description: The Amazon S3 Outposts multi-region endpoint
-  - url: 'http://s3-outposts.{region}.amazonaws.com.cn'
-    variables:
-      region:
-        description: The AWS region
-        enum:
-          - cn-north-1
-          - cn-northwest-1
-        default: cn-north-1
-    description: The Amazon S3 Outposts endpoint for China (Beijing) and China (Ningxia)
-  - url: 'https://s3-outposts.{region}.amazonaws.com.cn'
-    variables:
-      region:
-        description: The AWS region
-        enum:
-          - cn-north-1
-          - cn-northwest-1
-        default: cn-north-1
-    description: The Amazon S3 Outposts endpoint for China (Beijing) and China (Ningxia)
+host: s3-outposts.us-east-1.amazonaws.com
+info:
+  contact:
+    email: mike.ralphson@gmail.com
+    name: Mike Ralphson
+    url: 'https://github.com/mermade/aws2openapi'
+    x-twitter: PermittedSoc
+  description: Amazon S3 on Outposts provides access to S3 on Outposts operations.
+  license:
+    name: Apache 2.0 License
+    url: 'http://www.apache.org/licenses/'
+  termsOfService: 'https://aws.amazon.com/service-terms/'
+  title: Amazon S3 on Outposts
+  version: '2017-07-25'
+  x-apiClientRegistration:
+    url: >-
+      https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-aws-signingName: s3-outposts
+  x-logo:
+    backgroundColor: '#FFFFFF'
+    url: 'https://twitter.com/awscloud/profile_image?size=original'
+  x-origin:
+    - contentType: application/json
+      converter:
+        url: 'https://github.com/mermade/aws2openapi'
+        version: 1.0.0
+      url: >-
+        https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/s3outposts-2017-07-25.normal.json
+      x-apisguru-driver: external
+  x-preferred: true
+  x-providerName: amazonaws.com
+  x-release: v4
+  x-serviceName: s3outposts
 paths:
   /S3Outposts/CreateEndpoint:
+    parameters:
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
     post:
+      consumes:
+        - application/json
+      description: >-
+        <p>Amazon S3 on Outposts Access Points simplify managing data access at
+        scale for shared datasets in S3 on Outposts. S3 on Outposts uses
+        endpoints to connect to Outposts buckets so that you can perform actions
+        within your virtual private cloud (VPC). For more information, see <a
+        href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/AccessingS3Outposts.html">
+        Accessing S3 on Outposts using VPC only access points</a>.</p> <p>This
+        action creates an endpoint and associates it with the specified
+        Outposts.</p> <note> <p>It can take up to 5 minutes for this action to
+        complete.</p> </note> <p/> <p>Related actions include:</p> <ul> <li> <p>
+        <a
+        href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_s3outposts_DeleteEndpoint.html">DeleteEndpoint</a>
+        </p> </li> <li> <p> <a
+        href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_s3outposts_ListEndpoints.html">ListEndpoints</a>
+        </p> </li> </ul>
       operationId: CreateEndpoint
-      description: '<p>Amazon S3 on Outposts Access Points simplify managing data access at scale for shared datasets in S3 on Outposts. S3 on Outposts uses endpoints to connect to Outposts buckets so that you can perform actions within your virtual private cloud (VPC). For more information, see <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/AccessingS3Outposts.html"> Accessing S3 on Outposts using VPC only access points</a>.</p> <p>This action creates an endpoint and associates it with the specified Outposts.</p> <note> <p>It can take up to 5 minutes for this action to complete.</p> </note> <p/> <p>Related actions include:</p> <ul> <li> <p> <a href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_s3outposts_DeleteEndpoint.html">DeleteEndpoint</a> </p> </li> <li> <p> <a href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_s3outposts_ListEndpoints.html">ListEndpoints</a> </p> </li> </ul>'
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              AccessType:
+                description: >-
+                  The type of access for the on-premise network connectivity for
+                  the Outpost endpoint. To access the endpoint from an
+                  on-premises network, you must specify the access type and
+                  provide the customer owned IPv4 pool.
+                enum:
+                  - Private
+                  - CustomerOwnedIp
+                type: string
+              CustomerOwnedIpv4Pool:
+                description: >-
+                  The ID of the customer-owned IPv4 pool for the endpoint. IP
+                  addresses will be allocated from this pool for the endpoint.
+                pattern: '^ipv4pool-coip-([0-9a-f]{17})$'
+                type: string
+              OutpostId:
+                description: 'The ID of the AWS Outposts. '
+                pattern: '^(op-[a-f0-9]{17}|\d{12}|ec2)$'
+                type: string
+              SecurityGroupId:
+                description: The ID of the security group to use with the endpoint.
+                pattern: '^sg-([0-9a-f]{8}|[0-9a-f]{17})$'
+                type: string
+              SubnetId:
+                description: >-
+                  The ID of the subnet in the selected VPC. The endpoint subnet
+                  must belong to the Outpost that has the Amazon S3 on Outposts
+                  provisioned.
+                pattern: '^subnet-([0-9a-f]{8}|[0-9a-f]{17})$'
+                type: string
+            required:
+              - OutpostId
+              - SubnetId
+              - SecurityGroupId
+            type: object
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateEndpointResult'
+          schema:
+            $ref: '#/definitions/CreateEndpointResult'
         '480':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
+          schema:
+            $ref: '#/definitions/InternalServerException'
         '481':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
+          schema:
+            $ref: '#/definitions/ValidationException'
         '482':
           description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
+          schema:
+            $ref: '#/definitions/AccessDeniedException'
         '483':
           description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
         '484':
           description: ConflictException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConflictException'
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - OutpostId
-                - SubnetId
-                - SecurityGroupId
-              properties:
-                OutpostId:
-                  description: 'The ID of the AWS Outposts. '
-                  type: string
-                  pattern: '^(op-[a-f0-9]{17}|\d{12}|ec2)$'
-                SubnetId:
-                  description: The ID of the subnet in the selected VPC. The endpoint subnet must belong to the Outpost that has the Amazon S3 on Outposts provisioned.
-                  type: string
-                  pattern: '^subnet-([0-9a-f]{8}|[0-9a-f]{17})$'
-                SecurityGroupId:
-                  description: The ID of the security group to use with the endpoint.
-                  type: string
-                  pattern: '^sg-([0-9a-f]{8}|[0-9a-f]{17})$'
-                AccessType:
-                  description: 'The type of access for the on-premise network connectivity for the Outpost endpoint. To access the endpoint from an on-premises network, you must specify the access type and provide the customer owned IPv4 pool.'
-                  type: string
-                  enum:
-                    - Private
-                    - CustomerOwnedIp
-                CustomerOwnedIpv4Pool:
-                  description: The ID of the customer-owned IPv4 pool for the endpoint. IP addresses will be allocated from this pool for the endpoint.
-                  type: string
-                  pattern: '^ipv4pool-coip-([0-9a-f]{17})$'
-    parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
+          schema:
+            $ref: '#/definitions/ConflictException'
   /S3Outposts/DeleteEndpoint#endpointId&outpostId:
     delete:
+      description: >-
+        <p>Amazon S3 on Outposts Access Points simplify managing data access at
+        scale for shared datasets in S3 on Outposts. S3 on Outposts uses
+        endpoints to connect to Outposts buckets so that you can perform actions
+        within your virtual private cloud (VPC). For more information, see <a
+        href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/AccessingS3Outposts.html">
+        Accessing S3 on Outposts using VPC only access points</a>.</p> <p>This
+        action deletes an endpoint.</p> <note> <p>It can take up to 5 minutes
+        for this action to complete.</p> </note> <p/> <p>Related actions
+        include:</p> <ul> <li> <p> <a
+        href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_s3outposts_CreateEndpoint.html">CreateEndpoint</a>
+        </p> </li> <li> <p> <a
+        href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_s3outposts_ListEndpoints.html">ListEndpoints</a>
+        </p> </li> </ul>
       operationId: DeleteEndpoint
-      description: '<p>Amazon S3 on Outposts Access Points simplify managing data access at scale for shared datasets in S3 on Outposts. S3 on Outposts uses endpoints to connect to Outposts buckets so that you can perform actions within your virtual private cloud (VPC). For more information, see <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/AccessingS3Outposts.html"> Accessing S3 on Outposts using VPC only access points</a>.</p> <p>This action deletes an endpoint.</p> <note> <p>It can take up to 5 minutes for this action to complete.</p> </note> <p/> <p>Related actions include:</p> <ul> <li> <p> <a href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_s3outposts_CreateEndpoint.html">CreateEndpoint</a> </p> </li> <li> <p> <a href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_s3outposts_ListEndpoints.html">ListEndpoints</a> </p> </li> </ul>'
+      parameters:
+        - description: The ID of the endpoint.
+          in: query
+          name: endpointId
+          pattern: '^[a-zA-Z0-9]{19}$'
+          required: true
+          type: string
+        - description: 'The ID of the AWS Outposts. '
+          in: query
+          name: outpostId
+          pattern: '^(op-[a-f0-9]{17}|\d{12}|ec2)$'
+          required: true
+          type: string
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
         '480':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
+          schema:
+            $ref: '#/definitions/InternalServerException'
         '481':
           description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
+          schema:
+            $ref: '#/definitions/AccessDeniedException'
         '482':
           description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
         '483':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-      parameters:
-        - name: endpointId
-          in: query
-          required: true
-          description: The ID of the endpoint.
           schema:
-            type: string
-            pattern: '^[a-zA-Z0-9]{19}$'
-        - name: outpostId
-          in: query
-          required: true
-          description: 'The ID of the AWS Outposts. '
-          schema:
-            type: string
-            pattern: '^(op-[a-f0-9]{17}|\d{12}|ec2)$'
+            $ref: '#/definitions/ValidationException'
     parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
   /S3Outposts/ListEndpoints:
     get:
+      description: >-
+        <p>Amazon S3 on Outposts Access Points simplify managing data access at
+        scale for shared datasets in S3 on Outposts. S3 on Outposts uses
+        endpoints to connect to Outposts buckets so that you can perform actions
+        within your virtual private cloud (VPC). For more information, see <a
+        href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/AccessingS3Outposts.html">
+        Accessing S3 on Outposts using VPC only access points</a>.</p> <p>This
+        action lists endpoints associated with the Outposts. </p> <p/>
+        <p>Related actions include:</p> <ul> <li> <p> <a
+        href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_s3outposts_CreateEndpoint.html">CreateEndpoint</a>
+        </p> </li> <li> <p> <a
+        href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_s3outposts_DeleteEndpoint.html">DeleteEndpoint</a>
+        </p> </li> </ul>
       operationId: ListEndpoints
-      description: '<p>Amazon S3 on Outposts Access Points simplify managing data access at scale for shared datasets in S3 on Outposts. S3 on Outposts uses endpoints to connect to Outposts buckets so that you can perform actions within your virtual private cloud (VPC). For more information, see <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/AccessingS3Outposts.html"> Accessing S3 on Outposts using VPC only access points</a>.</p> <p>This action lists endpoints associated with the Outposts. </p> <p/> <p>Related actions include:</p> <ul> <li> <p> <a href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_s3outposts_CreateEndpoint.html">CreateEndpoint</a> </p> </li> <li> <p> <a href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_s3outposts_DeleteEndpoint.html">DeleteEndpoint</a> </p> </li> </ul>'
+      parameters:
+        - description: The next endpoint requested in the list.
+          in: query
+          maxLength: 1024
+          minLength: 1
+          name: nextToken
+          pattern: '^[A-Za-z0-9\+\:\/\=\?\#-_]+$'
+          required: false
+          type: string
+        - description: The max number of endpoints that can be returned on the request.
+          in: query
+          maximum: 100
+          minimum: 0
+          name: maxResults
+          required: false
+          type: integer
+        - description: Pagination limit
+          in: query
+          name: MaxResults
+          required: false
+          type: string
+        - description: Pagination token
+          in: query
+          name: NextToken
+          required: false
+          type: string
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListEndpointsResult'
+          schema:
+            $ref: '#/definitions/ListEndpointsResult'
         '480':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
+          schema:
+            $ref: '#/definitions/InternalServerException'
         '481':
           description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
         '482':
           description: AccessDeniedException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AccessDeniedException'
+          schema:
+            $ref: '#/definitions/AccessDeniedException'
         '483':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-      parameters:
-        - name: nextToken
-          in: query
-          required: false
-          description: The next endpoint requested in the list.
           schema:
-            type: string
-            pattern: '^[A-Za-z0-9\+\:\/\=\?\#-_]+$'
-            minLength: 1
-            maxLength: 1024
-        - name: maxResults
-          in: query
-          required: false
-          description: The max number of endpoints that can be returned on the request.
-          schema:
-            type: integer
-            minimum: 0
-            maximum: 100
-        - name: MaxResults
-          in: query
-          schema:
-            type: string
-          description: Pagination limit
-          required: false
-        - name: NextToken
-          in: query
-          schema:
-            type: string
-          description: Pagination token
-          required: false
+            $ref: '#/definitions/ValidationException'
     parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
-components:
-  parameters:
-    X-Amz-Content-Sha256:
-      name: X-Amz-Content-Sha256
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
         type: string
-      required: false
-    X-Amz-Date:
-      name: X-Amz-Date
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Date
+        required: false
         type: string
-      required: false
-    X-Amz-Algorithm:
-      name: X-Amz-Algorithm
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
         type: string
-      required: false
-    X-Amz-Credential:
-      name: X-Amz-Credential
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Credential
+        required: false
         type: string
-      required: false
-    X-Amz-Security-Token:
-      name: X-Amz-Security-Token
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
         type: string
-      required: false
-    X-Amz-Signature:
-      name: X-Amz-Signature
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Signature
+        required: false
         type: string
-      required: false
-    X-Amz-SignedHeaders:
-      name: X-Amz-SignedHeaders
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
         type: string
-      required: false
-  securitySchemes:
-    hmac:
-      type: apiKey
-      name: Authorization
-      in: header
-      description: Amazon Signature authorization v4
-      x-amazon-apigateway-authtype: awsSigv4
-  schemas:
-    CreateEndpointResult:
-      type: object
-      properties:
-        EndpointArn:
-          allOf:
-            - $ref: '#/components/schemas/EndpointArn'
-            - description: The Amazon Resource Name (ARN) of the endpoint.
-    InternalServerException: {}
-    ValidationException: {}
-    AccessDeniedException: {}
-    ResourceNotFoundException: {}
-    ConflictException: {}
-    ListEndpointsResult:
-      type: object
-      properties:
-        Endpoints:
-          allOf:
-            - $ref: '#/components/schemas/Endpoints'
-            - description: Returns an array of endpoints associated with AWS Outposts.
-        NextToken:
-          allOf:
-            - $ref: '#/components/schemas/NextToken'
-            - description: The next endpoint returned in the list.
-    CidrBlock:
-      type: string
-    OutpostId:
-      type: string
-      pattern: '^(op-[a-f0-9]{17}|\d{12}|ec2)$'
-    SubnetId:
-      type: string
-      pattern: '^subnet-([0-9a-f]{8}|[0-9a-f]{17})$'
-    SecurityGroupId:
-      type: string
-      pattern: '^sg-([0-9a-f]{8}|[0-9a-f]{17})$'
-    EndpointAccessType:
-      type: string
-      enum:
-        - Private
-        - CustomerOwnedIp
-    CustomerOwnedIpv4Pool:
-      type: string
-      pattern: '^ipv4pool-coip-([0-9a-f]{17})$'
-    CreateEndpointRequest:
-      type: object
-      required:
-        - OutpostId
-        - SubnetId
-        - SecurityGroupId
-      title: CreateEndpointRequest
-      properties:
-        OutpostId:
-          allOf:
-            - $ref: '#/components/schemas/OutpostId'
-            - description: 'The ID of the AWS Outposts. '
-        SubnetId:
-          allOf:
-            - $ref: '#/components/schemas/SubnetId'
-            - description: The ID of the subnet in the selected VPC. The endpoint subnet must belong to the Outpost that has the Amazon S3 on Outposts provisioned.
-        SecurityGroupId:
-          allOf:
-            - $ref: '#/components/schemas/SecurityGroupId'
-            - description: The ID of the security group to use with the endpoint.
-        AccessType:
-          allOf:
-            - $ref: '#/components/schemas/EndpointAccessType'
-            - description: 'The type of access for the on-premise network connectivity for the Outpost endpoint. To access the endpoint from an on-premises network, you must specify the access type and provide the customer owned IPv4 pool.'
-        CustomerOwnedIpv4Pool:
-          allOf:
-            - $ref: '#/components/schemas/CustomerOwnedIpv4Pool'
-            - description: The ID of the customer-owned IPv4 pool for the endpoint. IP addresses will be allocated from this pool for the endpoint.
-    EndpointArn:
-      type: string
-      pattern: '^arn:(aws|aws-cn|aws-us-gov|aws-iso|aws-iso-b):s3-outposts:[a-z\-0-9]*:[0-9]{12}:outpost/(op-[a-f0-9]{17}|ec2)/endpoint/[a-zA-Z0-9]{19}$'
-    CreationTime:
-      type: string
-      format: date-time
-    EndpointId:
-      type: string
-      pattern: '^[a-zA-Z0-9]{19}$'
-    DeleteEndpointRequest:
-      type: object
-      title: DeleteEndpointRequest
-      properties: {}
-    EndpointStatus:
-      type: string
-      enum:
-        - Pending
-        - Available
-        - Deleting
-    NetworkInterfaces:
-      type: array
-      items:
-        $ref: '#/components/schemas/NetworkInterface'
-    VpcId:
-      type: string
-    Endpoint:
-      type: object
-      properties:
-        EndpointArn:
-          allOf:
-            - $ref: '#/components/schemas/EndpointArn'
-            - description: The Amazon Resource Name (ARN) of the endpoint.
-        OutpostsId:
-          allOf:
-            - $ref: '#/components/schemas/OutpostId'
-            - description: The ID of the AWS Outposts.
-        CidrBlock:
-          allOf:
-            - $ref: '#/components/schemas/CidrBlock'
-            - description: The VPC CIDR committed by this endpoint.
-        Status:
-          allOf:
-            - $ref: '#/components/schemas/EndpointStatus'
-            - description: The status of the endpoint.
-        CreationTime:
-          allOf:
-            - $ref: '#/components/schemas/CreationTime'
-            - description: The time the endpoint was created.
-        NetworkInterfaces:
-          allOf:
-            - $ref: '#/components/schemas/NetworkInterfaces'
-            - description: The network interface of the endpoint.
-        VpcId:
-          allOf:
-            - $ref: '#/components/schemas/VpcId'
-            - description: The ID of the VPC used for the endpoint.
-        SubnetId:
-          allOf:
-            - $ref: '#/components/schemas/SubnetId'
-            - description: The ID of the subnet used for the endpoint.
-        SecurityGroupId:
-          allOf:
-            - $ref: '#/components/schemas/SecurityGroupId'
-            - description: The ID of the security group used for the endpoint.
-        AccessType:
-          allOf:
-            - $ref: '#/components/schemas/EndpointAccessType'
-            - description: <p/>
-        CustomerOwnedIpv4Pool:
-          allOf:
-            - $ref: '#/components/schemas/CustomerOwnedIpv4Pool'
-            - description: The ID of the customer-owned IPv4 pool used for the endpoint.
-      description: 'Amazon S3 on Outposts Access Points simplify managing data access at scale for shared datasets in S3 on Outposts. S3 on Outposts uses endpoints to connect to Outposts buckets so that you can perform actions within your virtual private cloud (VPC). For more information, see <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/AccessingS3Outposts.html"> Accessing S3 on Outposts using VPC only access points</a>.'
-    Endpoints:
-      type: array
-      items:
-        $ref: '#/components/schemas/Endpoint'
-    NextToken:
-      type: string
-      pattern: '^[A-Za-z0-9\+\:\/\=\?\#-_]+$'
-      minLength: 1
-      maxLength: 1024
-    MaxResults:
-      type: integer
-      minimum: 0
-      maximum: 100
-    ListEndpointsRequest:
-      type: object
-      title: ListEndpointsRequest
-      properties: {}
-    NetworkInterfaceId:
-      type: string
-    NetworkInterface:
-      type: object
-      properties:
-        NetworkInterfaceId:
-          allOf:
-            - $ref: '#/components/schemas/NetworkInterfaceId'
-            - description: The ID for the network interface.
-      description: The container for the network interface.
+schemes:
+  - http
 security:
   - hmac: []
+securityDefinitions:
+  hmac:
+    description: Amazon Signature authorization v4
+    in: header
+    name: Authorization
+    type: apiKey
+    x-amazon-apigateway-authtype: awsSigv4
+swagger: '2.0'
+x-components:
+  parameters:
+    X-Amz-Algorithm:
+      in: header
+      name: X-Amz-Algorithm
+      required: false
+      type: string
+    X-Amz-Content-Sha256:
+      in: header
+      name: X-Amz-Content-Sha256
+      required: false
+      type: string
+    X-Amz-Credential:
+      in: header
+      name: X-Amz-Credential
+      required: false
+      type: string
+    X-Amz-Date:
+      in: header
+      name: X-Amz-Date
+      required: false
+      type: string
+    X-Amz-Security-Token:
+      in: header
+      name: X-Amz-Security-Token
+      required: false
+      type: string
+    X-Amz-Signature:
+      in: header
+      name: X-Amz-Signature
+      required: false
+      type: string
+    X-Amz-SignedHeaders:
+      in: header
+      name: X-Amz-SignedHeaders
+      required: false
+      type: string
+

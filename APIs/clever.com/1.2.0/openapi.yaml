@@ -1,6 +1,653 @@
-openapi: 3.0.0
-servers:
-  - url: https://api.clever.com/v1.2
+basePath: /v1.2
+definitions:
+  BadRequest:
+    properties:
+      message:
+        type: string
+    type: object
+  Credentials:
+    properties:
+      district_username:
+        type: string
+    type: object
+  District:
+    properties:
+      id:
+        type: string
+        x-validation: true
+      mdr_number:
+        type: string
+        x-nullable: true
+      name:
+        type: string
+    type: object
+  DistrictAdmin:
+    properties:
+      district:
+        type: string
+        x-validation: true
+      email:
+        type: string
+      id:
+        type: string
+        x-validation: true
+      name:
+        $ref: '#/definitions/Name'
+      title:
+        type: string
+        x-nullable: true
+    type: object
+  DistrictAdminResponse:
+    properties:
+      data:
+        $ref: '#/definitions/DistrictAdmin'
+    type: object
+  DistrictAdminsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/DistrictAdmin'
+        type: array
+    type: object
+  DistrictResponse:
+    properties:
+      data:
+        $ref: '#/definitions/District'
+    type: object
+  DistrictStatus:
+    properties:
+      error:
+        type: string
+      id:
+        type: string
+        x-validation: true
+      instant_login:
+        type: boolean
+      last_sync:
+        format: datetime
+        type: string
+        x-nullable: true
+        x-validation: true
+      launch_date:
+        format: datetime
+        type: string
+        x-validation: true
+      pause_end:
+        format: datetime
+        type: string
+        x-nullable: true
+        x-validation: true
+      pause_start:
+        format: datetime
+        type: string
+        x-nullable: true
+        x-validation: true
+      sis_type:
+        type: string
+        x-validation: true
+      state:
+        enum:
+          - running
+          - pending
+          - error
+          - paused
+        type: string
+        x-validation: true
+    type: object
+  DistrictStatusResponse:
+    properties:
+      data:
+        $ref: '#/definitions/DistrictStatus'
+    type: object
+  DistrictStatusResponses:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/DistrictStatusResponse'
+        type: array
+    type: object
+  DistrictsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/DistrictResponse'
+        type: array
+    type: object
+  GradeLevelsResponse:
+    properties:
+      data:
+        items:
+          type: string
+        type: array
+    type: object
+  InternalError:
+    properties:
+      message:
+        type: string
+    type: object
+  Location:
+    properties:
+      address:
+        type: string
+        x-nullable: true
+      city:
+        type: string
+        x-nullable: true
+      lat:
+        type: string
+        x-nullable: true
+      lon:
+        type: string
+        x-nullable: true
+      state:
+        type: string
+        x-nullable: true
+      zip:
+        type: string
+        x-nullable: true
+    type: object
+  Name:
+    properties:
+      first:
+        type: string
+        x-nullable: true
+      last:
+        type: string
+        x-nullable: true
+      middle:
+        type: string
+        x-nullable: true
+    type: object
+  NotFound:
+    properties:
+      message:
+        type: string
+    type: object
+  Principal:
+    properties:
+      email:
+        type: string
+        x-nullable: true
+      name:
+        type: string
+        x-nullable: true
+    type: object
+  School:
+    properties:
+      created:
+        format: datetime
+        type: string
+        x-validation: true
+      district:
+        type: string
+        x-validation: true
+      high_grade:
+        enum:
+          - '1'
+          - '2'
+          - '3'
+          - '4'
+          - '5'
+          - '6'
+          - '7'
+          - '8'
+          - '9'
+          - '10'
+          - '11'
+          - '12'
+          - PreKindergarten
+          - Kindergarten
+          - PostGraduate
+          - Other
+        type: string
+        x-nullable: true
+        x-validation: true
+      id:
+        type: string
+        x-validation: true
+      last_modified:
+        format: datetime
+        type: string
+        x-validation: true
+      location:
+        $ref: '#/definitions/Location'
+      low_grade:
+        enum:
+          - '1'
+          - '2'
+          - '3'
+          - '4'
+          - '5'
+          - '6'
+          - '7'
+          - '8'
+          - '9'
+          - '10'
+          - '11'
+          - '12'
+          - PreKindergarten
+          - Kindergarten
+          - PostGraduate
+          - Other
+        type: string
+        x-nullable: true
+        x-validation: true
+      mdr_number:
+        type: string
+        x-nullable: true
+      name:
+        type: string
+      nces_id:
+        type: string
+        x-nullable: true
+      phone:
+        type: string
+        x-nullable: true
+      principal:
+        $ref: '#/definitions/Principal'
+      school_number:
+        type: string
+      sis_id:
+        type: string
+      state_id:
+        type: string
+        x-nullable: true
+    type: object
+  SchoolAdmin:
+    properties:
+      credentials:
+        $ref: '#/definitions/Credentials'
+      district:
+        type: string
+        x-validation: true
+      email:
+        type: string
+      id:
+        type: string
+        x-validation: true
+      name:
+        $ref: '#/definitions/Name'
+      schools:
+        items:
+          type: string
+        type: array
+        x-validation: true
+      staff_id:
+        type: string
+      title:
+        type: string
+        x-nullable: true
+    type: object
+  SchoolAdminResponse:
+    properties:
+      data:
+        $ref: '#/definitions/SchoolAdmin'
+    type: object
+  SchoolAdminsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/SchoolAdminResponse'
+        type: array
+    type: object
+  SchoolResponse:
+    properties:
+      data:
+        $ref: '#/definitions/School'
+    type: object
+  SchoolsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/SchoolResponse'
+        type: array
+    type: object
+  Section:
+    properties:
+      course_description:
+        type: string
+        x-nullable: true
+      course_name:
+        type: string
+        x-nullable: true
+      course_number:
+        type: string
+        x-nullable: true
+      created:
+        format: datetime
+        type: string
+        x-validation: true
+      district:
+        type: string
+        x-validation: true
+      grade:
+        enum:
+          - '1'
+          - '2'
+          - '3'
+          - '4'
+          - '5'
+          - '6'
+          - '7'
+          - '8'
+          - '9'
+          - '10'
+          - '11'
+          - '12'
+          - PreKindergarten
+          - Kindergarten
+          - PostGraduate
+          - Other
+        type: string
+        x-nullable: true
+        x-validation: true
+      id:
+        type: string
+        x-validation: true
+      last_modified:
+        format: datetime
+        type: string
+        x-validation: true
+      name:
+        type: string
+      period:
+        type: string
+        x-nullable: true
+      school:
+        type: string
+        x-validation: true
+      section_number:
+        type: string
+        x-nullable: true
+      sis_id:
+        type: string
+      students:
+        items:
+          type: string
+        type: array
+        x-validation: true
+      subject:
+        enum:
+          - english/language arts
+          - math
+          - science
+          - social studies
+          - language
+          - homeroom/advisory
+          - interventions/online learning
+          - technology and engineering
+          - PE and health
+          - arts and music
+          - other
+        type: string
+        x-validation: true
+      teacher:
+        type: string
+        x-nullable: true
+        x-validation: true
+      teachers:
+        items:
+          type: string
+        type: array
+        x-validation: true
+      term:
+        $ref: '#/definitions/Term'
+    type: object
+  SectionResponse:
+    properties:
+      data:
+        $ref: '#/definitions/Section'
+    type: object
+  SectionsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/SectionResponse'
+        type: array
+    type: object
+  Student:
+    properties:
+      created:
+        format: datetime
+        type: string
+        x-validation: true
+      credentials:
+        $ref: '#/definitions/Credentials'
+      district:
+        type: string
+        x-validation: true
+      dob:
+        pattern: '(?:[0-9]{1,2})/([0-9]{1,2})/([0-9]{4})'
+        type: string
+        x-nullable: true
+        x-validation: true
+      ell_status:
+        enum:
+          - 'Y'
+          - 'N'
+          - ''
+        type: string
+        x-nullable: true
+        x-validation: true
+      email:
+        type: string
+        x-nullable: true
+      gender:
+        enum:
+          - M
+          - F
+          - ''
+        type: string
+        x-nullable: true
+        x-validation: true
+      grade:
+        enum:
+          - '1'
+          - '2'
+          - '3'
+          - '4'
+          - '5'
+          - '6'
+          - '7'
+          - '8'
+          - '9'
+          - '10'
+          - '11'
+          - '12'
+          - PreKindergarten
+          - Kindergarten
+          - PostGraduate
+          - Other
+        type: string
+        x-nullable: true
+        x-validation: true
+      graduation_year:
+        type: string
+        x-nullable: true
+        x-validation: true
+      hispanic_ethnicity:
+        enum:
+          - 'Y'
+          - 'N'
+          - ''
+        type: string
+        x-nullable: true
+        x-validation: true
+      id:
+        type: string
+        x-validation: true
+      last_modified:
+        format: datetime
+        type: string
+        x-validation: true
+      location:
+        $ref: '#/definitions/Location'
+      name:
+        $ref: '#/definitions/Name'
+      race:
+        enum:
+          - Caucasian
+          - Asian
+          - Black or African American
+          - American Indian
+          - Hawaiian or Other Pacific Islander
+          - Two or More Races
+          - Unknown
+          - ''
+        type: string
+        x-nullable: true
+        x-validation: true
+      school:
+        type: string
+        x-validation: true
+      schools:
+        items:
+          type: string
+        type: array
+        x-validation: true
+      sis_id:
+        type: string
+      state_id:
+        type: string
+        x-nullable: true
+      student_number:
+        type: string
+        x-nullable: true
+    type: object
+  StudentContact:
+    properties:
+      district:
+        type: string
+        x-validation: true
+      email:
+        type: string
+        x-nullable: true
+      id:
+        type: string
+        x-validation: true
+      name:
+        type: string
+      phone:
+        type: string
+        x-nullable: true
+      phone_type:
+        type: string
+        x-nullable: true
+      relationship:
+        type: string
+        x-nullable: true
+      sis_id:
+        type: string
+        x-nullable: true
+      student:
+        type: string
+        x-validation: true
+      type:
+        type: string
+    type: object
+  StudentContactResponse:
+    properties:
+      data:
+        $ref: '#/definitions/StudentContact'
+    type: object
+  StudentContactsForStudentResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/StudentContact'
+        type: array
+    type: object
+  StudentContactsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/StudentContactResponse'
+        type: array
+    type: object
+  StudentResponse:
+    properties:
+      data:
+        $ref: '#/definitions/Student'
+    type: object
+  StudentsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/StudentResponse'
+        type: array
+    type: object
+  Teacher:
+    properties:
+      created:
+        format: datetime
+        type: string
+        x-validation: true
+      credentials:
+        $ref: '#/definitions/Credentials'
+      district:
+        type: string
+        x-validation: true
+      email:
+        type: string
+        x-nullable: true
+      id:
+        type: string
+        x-validation: true
+      last_modified:
+        format: datetime
+        type: string
+        x-validation: true
+      name:
+        $ref: '#/definitions/Name'
+      school:
+        type: string
+        x-validation: true
+      schools:
+        items:
+          type: string
+        type: array
+        x-validation: true
+      sis_id:
+        type: string
+      state_id:
+        type: string
+        x-nullable: true
+      teacher_number:
+        type: string
+        x-nullable: true
+      title:
+        type: string
+        x-nullable: true
+    type: object
+  TeacherResponse:
+    properties:
+      data:
+        $ref: '#/definitions/Teacher'
+    type: object
+  TeachersResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/TeacherResponse'
+        type: array
+    type: object
+  Term:
+    properties:
+      end_date:
+        format: datetime
+        type: string
+        x-nullable: true
+        x-validation: true
+      name:
+        type: string
+        x-nullable: true
+      start_date:
+        format: datetime
+        type: string
+        x-nullable: true
+        x-validation: true
+    type: object
+host: api.clever.com
 info:
   contact:
     x-twitter: clever
@@ -10,14 +657,12 @@ info:
   x-apisguru-categories:
     - education
   x-logo:
-    url: https://twitter.com/clever/profile_image?size=original
+    url: 'https://twitter.com/clever/profile_image?size=original'
   x-origin:
     - format: openapi
-      url: https://raw.githubusercontent.com/Clever/swagger-api/master/v1.2.yml
-      version: "3.0"
+      url: 'https://raw.githubusercontent.com/Clever/swagger-api/master/v1.2.yml'
+      version: '3.0'
   x-providerName: clever.com
-security:
-  - oauth: []
 paths:
   /contacts:
     get:
@@ -26,26 +671,23 @@ paths:
       parameters:
         - in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - in: query
           name: starting_after
-          schema:
-            type: string
+          type: string
         - in: query
           name: ending_before
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StudentContactsResponse"
+        '200':
           description: OK Response
+          schema:
+            $ref: '#/definitions/StudentContactsResponse'
       tags:
         - Contacts
-  "/contacts/{id}":
+  '/contacts/{id}':
     get:
       description: Returns a specific student contact
       operationId: getContact
@@ -53,20 +695,21 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StudentContactResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/StudentContactResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Contacts
-  "/contacts/{id}/district":
+  '/contacts/{id}/district':
     get:
       description: Returns the district for a student contact
       operationId: getDistrictForStudentContact
@@ -74,20 +717,21 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DistrictResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/DistrictResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Contacts
-  "/contacts/{id}/student":
+  '/contacts/{id}/student':
     get:
       description: Returns the student for a student contact
       operationId: getStudentForContact
@@ -95,17 +739,18 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StudentResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/StudentResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Contacts
   /district_admins:
@@ -115,26 +760,23 @@ paths:
       parameters:
         - in: query
           name: starting_after
-          schema:
-            type: string
+          type: string
         - in: query
           name: ending_before
-          schema:
-            type: string
+          type: string
         - in: query
           name: show_links
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DistrictAdminsResponse"
+        '200':
           description: OK Response
+          schema:
+            $ref: '#/definitions/DistrictAdminsResponse'
       tags:
         - District Admins
-  "/district_admins/{id}":
+  '/district_admins/{id}':
     get:
       description: Returns a specific district admin
       operationId: getDistrictAdmin
@@ -142,33 +784,35 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DistrictAdminResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/DistrictAdminResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - District Admins
   /districts:
     get:
       description: Returns a list of districts
       operationId: getDistricts
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DistrictsResponse"
+        '200':
           description: OK Response
+          schema:
+            $ref: '#/definitions/DistrictsResponse'
       tags:
         - Districts
-  "/districts/{id}":
+  '/districts/{id}':
     get:
       description: Returns a specific district
       operationId: getDistrict
@@ -176,24 +820,24 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - in: query
           name: include
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DistrictResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/DistrictResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Districts
-  "/districts/{id}/admins":
+  '/districts/{id}/admins':
     get:
       description: Returns the admins for a district
       operationId: getAdminsForDistrict
@@ -201,20 +845,21 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DistrictAdminsResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/DistrictAdminsResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Districts
-  "/districts/{id}/schools":
+  '/districts/{id}/schools':
     get:
       description: Returns the schools for a district
       operationId: getSchoolsForDistrict
@@ -222,36 +867,33 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - in: query
           name: starting_after
-          schema:
-            type: string
+          type: string
         - in: query
           name: ending_before
-          schema:
-            type: string
+          type: string
         - in: query
           name: where
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SchoolsResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/SchoolsResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Districts
-  "/districts/{id}/sections":
+  '/districts/{id}/sections':
     get:
       description: Returns the sections for a district
       operationId: getSectionsForDistrict
@@ -259,36 +901,33 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - in: query
           name: starting_after
-          schema:
-            type: string
+          type: string
         - in: query
           name: ending_before
-          schema:
-            type: string
+          type: string
         - in: query
           name: where
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SectionsResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/SectionsResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Districts
-  "/districts/{id}/status":
+  '/districts/{id}/status':
     get:
       description: Returns the status of the district
       operationId: getDistrictStatus
@@ -296,20 +935,21 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DistrictStatusResponses"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/DistrictStatusResponses'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Districts
-  "/districts/{id}/students":
+  '/districts/{id}/students':
     get:
       description: Returns the students for a district
       operationId: getStudentsForDistrict
@@ -317,36 +957,33 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - in: query
           name: starting_after
-          schema:
-            type: string
+          type: string
         - in: query
           name: ending_before
-          schema:
-            type: string
+          type: string
         - in: query
           name: where
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StudentsResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/StudentsResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Districts
-  "/districts/{id}/teachers":
+  '/districts/{id}/teachers':
     get:
       description: Returns the teachers for a district
       operationId: getTeachersForDistrict
@@ -354,33 +991,30 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - in: query
           name: starting_after
-          schema:
-            type: string
+          type: string
         - in: query
           name: ending_before
-          schema:
-            type: string
+          type: string
         - in: query
           name: where
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TeachersResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/TeachersResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Districts
   /school_admins:
@@ -390,30 +1024,26 @@ paths:
       parameters:
         - in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - in: query
           name: starting_after
-          schema:
-            type: string
+          type: string
         - in: query
           name: ending_before
-          schema:
-            type: string
+          type: string
         - in: query
           name: where
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SchoolAdminsResponse"
+        '200':
           description: OK Response
+          schema:
+            $ref: '#/definitions/SchoolAdminsResponse'
       tags:
         - School Admins
-  "/school_admins/{id}":
+  '/school_admins/{id}':
     get:
       description: Returns a specific school admin
       operationId: getSchoolAdmin
@@ -421,24 +1051,24 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - in: query
           name: include
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SchoolAdminResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/SchoolAdminResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - School Admins
-  "/school_admins/{id}/schools":
+  '/school_admins/{id}/schools':
     get:
       description: Returns the schools for a school admin
       operationId: getSchoolsForSchoolAdmin
@@ -446,29 +1076,27 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - in: query
           name: starting_after
-          schema:
-            type: string
+          type: string
         - in: query
           name: ending_before
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SchoolsResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/SchoolsResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - School Admins
   /schools:
@@ -478,30 +1106,26 @@ paths:
       parameters:
         - in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - in: query
           name: starting_after
-          schema:
-            type: string
+          type: string
         - in: query
           name: ending_before
-          schema:
-            type: string
+          type: string
         - in: query
           name: where
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SchoolsResponse"
+        '200':
           description: OK Response
+          schema:
+            $ref: '#/definitions/SchoolsResponse'
       tags:
         - Schools
-  "/schools/{id}":
+  '/schools/{id}':
     get:
       description: Returns a specific school
       operationId: getSchool
@@ -509,20 +1133,21 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SchoolResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/SchoolResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Schools
-  "/schools/{id}/district":
+  '/schools/{id}/district':
     get:
       description: Returns the district for a school
       operationId: getDistrictForSchool
@@ -530,20 +1155,21 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DistrictResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/DistrictResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Schools
-  "/schools/{id}/sections":
+  '/schools/{id}/sections':
     get:
       description: Returns the sections for a school
       operationId: getSectionsForSchool
@@ -551,36 +1177,33 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - in: query
           name: starting_after
-          schema:
-            type: string
+          type: string
         - in: query
           name: ending_before
-          schema:
-            type: string
+          type: string
         - in: query
           name: where
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SectionsResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/SectionsResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Schools
-  "/schools/{id}/students":
+  '/schools/{id}/students':
     get:
       description: Returns the students for a school
       operationId: getStudentsForSchool
@@ -588,36 +1211,33 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - in: query
           name: starting_after
-          schema:
-            type: string
+          type: string
         - in: query
           name: ending_before
-          schema:
-            type: string
+          type: string
         - in: query
           name: where
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StudentsResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/StudentsResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Schools
-  "/schools/{id}/teachers":
+  '/schools/{id}/teachers':
     get:
       description: Returns the teachers for a school
       operationId: getTeachersForSchool
@@ -625,33 +1245,30 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - in: query
           name: starting_after
-          schema:
-            type: string
+          type: string
         - in: query
           name: ending_before
-          schema:
-            type: string
+          type: string
         - in: query
           name: where
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TeachersResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/TeachersResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Schools
   /sections:
@@ -661,30 +1278,26 @@ paths:
       parameters:
         - in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - in: query
           name: starting_after
-          schema:
-            type: string
+          type: string
         - in: query
           name: ending_before
-          schema:
-            type: string
+          type: string
         - in: query
           name: where
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SectionsResponse"
+        '200':
           description: OK Response
+          schema:
+            $ref: '#/definitions/SectionsResponse'
       tags:
         - Sections
-  "/sections/{id}":
+  '/sections/{id}':
     get:
       description: Returns a specific section
       operationId: getSection
@@ -692,20 +1305,21 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SectionResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/SectionResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Sections
-  "/sections/{id}/district":
+  '/sections/{id}/district':
     get:
       description: Returns the district for a section
       operationId: getDistrictForSection
@@ -713,20 +1327,21 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DistrictResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/DistrictResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Sections
-  "/sections/{id}/school":
+  '/sections/{id}/school':
     get:
       description: Returns the school for a section
       operationId: getSchoolForSection
@@ -734,20 +1349,21 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SchoolResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/SchoolResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Sections
-  "/sections/{id}/students":
+  '/sections/{id}/students':
     get:
       description: Returns the students for a section
       operationId: getStudentsForSection
@@ -755,32 +1371,30 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - in: query
           name: starting_after
-          schema:
-            type: string
+          type: string
         - in: query
           name: ending_before
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StudentsResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/StudentsResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Sections
-  "/sections/{id}/teacher":
+  '/sections/{id}/teacher':
     get:
       description: Returns the primary teacher for a section
       operationId: getTeacherForSection
@@ -788,20 +1402,21 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TeacherResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/TeacherResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Sections
-  "/sections/{id}/teachers":
+  '/sections/{id}/teachers':
     get:
       description: Returns the teachers for a section
       operationId: getTeachersForSection
@@ -809,29 +1424,27 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - in: query
           name: starting_after
-          schema:
-            type: string
+          type: string
         - in: query
           name: ending_before
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TeachersResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/TeachersResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Sections
   /students:
@@ -841,30 +1454,26 @@ paths:
       parameters:
         - in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - in: query
           name: starting_after
-          schema:
-            type: string
+          type: string
         - in: query
           name: ending_before
-          schema:
-            type: string
+          type: string
         - in: query
           name: where
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StudentsResponse"
+        '200':
           description: OK Response
+          schema:
+            $ref: '#/definitions/StudentsResponse'
       tags:
         - Students
-  "/students/{id}":
+  '/students/{id}':
     get:
       description: Returns a specific student
       operationId: getStudent
@@ -872,24 +1481,24 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - in: query
           name: include
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StudentResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/StudentResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Students
-  "/students/{id}/contacts":
+  '/students/{id}/contacts':
     get:
       description: Returns the contacts for a student
       operationId: getContactsForStudent
@@ -897,24 +1506,24 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StudentContactsForStudentResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/StudentContactsForStudentResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Students
-  "/students/{id}/district":
+  '/students/{id}/district':
     get:
       description: Returns the district for a student
       operationId: getDistrictForStudent
@@ -922,20 +1531,21 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DistrictResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/DistrictResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Students
-  "/students/{id}/school":
+  '/students/{id}/school':
     get:
       description: Returns the primary school for a student
       operationId: getSchoolForStudent
@@ -943,20 +1553,21 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SchoolResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/SchoolResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Students
-  "/students/{id}/sections":
+  '/students/{id}/sections':
     get:
       description: Returns the sections for a student
       operationId: getSectionsForStudent
@@ -964,32 +1575,30 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - in: query
           name: starting_after
-          schema:
-            type: string
+          type: string
         - in: query
           name: ending_before
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SectionsResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/SectionsResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Students
-  "/students/{id}/teachers":
+  '/students/{id}/teachers':
     get:
       description: Returns the teachers for a student
       operationId: getTeachersForStudent
@@ -997,29 +1606,27 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - in: query
           name: starting_after
-          schema:
-            type: string
+          type: string
         - in: query
           name: ending_before
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TeachersResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/TeachersResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Students
   /teachers:
@@ -1029,30 +1636,26 @@ paths:
       parameters:
         - in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - in: query
           name: starting_after
-          schema:
-            type: string
+          type: string
         - in: query
           name: ending_before
-          schema:
-            type: string
+          type: string
         - in: query
           name: where
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TeachersResponse"
+        '200':
           description: OK Response
+          schema:
+            $ref: '#/definitions/TeachersResponse'
       tags:
         - Teachers
-  "/teachers/{id}":
+  '/teachers/{id}':
     get:
       description: Returns a specific teacher
       operationId: getTeacher
@@ -1060,24 +1663,24 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - in: query
           name: include
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TeacherResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/TeacherResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Teachers
-  "/teachers/{id}/district":
+  '/teachers/{id}/district':
     get:
       description: Returns the district for a teacher
       operationId: getDistrictForTeacher
@@ -1085,20 +1688,21 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DistrictResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/DistrictResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Teachers
-  "/teachers/{id}/grade_levels":
+  '/teachers/{id}/grade_levels':
     get:
       description: Returns the grade levels for sections a teacher teaches
       operationId: getGradeLevelsForTeacher
@@ -1106,20 +1710,21 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GradeLevelsResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/GradeLevelsResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Teachers
-  "/teachers/{id}/school":
+  '/teachers/{id}/school':
     get:
       description: Retrieves school info for a teacher.
       operationId: getSchoolForTeacher
@@ -1127,20 +1732,21 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SchoolResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/SchoolResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Teachers
-  "/teachers/{id}/sections":
+  '/teachers/{id}/sections':
     get:
       description: Returns the sections for a teacher
       operationId: getSectionsForTeacher
@@ -1148,32 +1754,30 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - in: query
           name: starting_after
-          schema:
-            type: string
+          type: string
         - in: query
           name: ending_before
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SectionsResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/SectionsResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Teachers
-  "/teachers/{id}/students":
+  '/teachers/{id}/students':
     get:
       description: Returns the students for a teacher
       operationId: getStudentsForTeacher
@@ -1181,707 +1785,61 @@ paths:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - in: query
           name: starting_after
-          schema:
-            type: string
+          type: string
         - in: query
           name: ending_before
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StudentsResponse"
+        '200':
           description: OK Response
-        "404":
-          $ref: "#/components/responses/NotFound"
+          schema:
+            $ref: '#/definitions/StudentsResponse'
+        '404':
+          description: Entity Not Found
+          schema:
+            $ref: '#/definitions/NotFound'
       tags:
         - Teachers
-components:
+schemes:
+  - https
+security:
+  - oauth: []
+securityDefinitions:
+  oauth:
+    authorizationUrl: 'https://clever.com/oauth/authorize'
+    flow: accessCode
+    scopes: {}
+    tokenUrl: 'https://clever.com/oauth/tokens'
+    type: oauth2
+swagger: '2.0'
+x-components:
   responses:
     BadRequest:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/BadRequest"
+            $ref: '#/definitions/BadRequest'
       description: Bad Request
     InternalError:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/InternalError"
+            $ref: '#/definitions/InternalError'
       description: Internal Error
     NotFound:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/NotFound"
+            $ref: '#/definitions/NotFound'
       description: Entity Not Found
-  schemas:
-    BadRequest:
-      properties:
-        message:
-          type: string
-      type: object
-    Credentials:
-      properties:
-        district_username:
-          type: string
-      type: object
-    District:
-      properties:
-        id:
-          type: string
-          x-validation: true
-        mdr_number:
-          nullable: true
-          type: string
-        name:
-          type: string
-      type: object
-    DistrictAdmin:
-      properties:
-        district:
-          type: string
-          x-validation: true
-        email:
-          type: string
-        id:
-          type: string
-          x-validation: true
-        name:
-          $ref: "#/components/schemas/Name"
-        title:
-          nullable: true
-          type: string
-      type: object
-    DistrictAdminResponse:
-      properties:
-        data:
-          $ref: "#/components/schemas/DistrictAdmin"
-      type: object
-    DistrictAdminsResponse:
-      properties:
-        data:
-          items:
-            $ref: "#/components/schemas/DistrictAdmin"
-          type: array
-      type: object
-    DistrictResponse:
-      properties:
-        data:
-          $ref: "#/components/schemas/District"
-      type: object
-    DistrictStatus:
-      properties:
-        error:
-          type: string
-        id:
-          type: string
-          x-validation: true
-        instant_login:
-          type: boolean
-        last_sync:
-          format: datetime
-          nullable: true
-          type: string
-          x-validation: true
-        launch_date:
-          format: datetime
-          type: string
-          x-validation: true
-        pause_end:
-          format: datetime
-          nullable: true
-          type: string
-          x-validation: true
-        pause_start:
-          format: datetime
-          nullable: true
-          type: string
-          x-validation: true
-        sis_type:
-          type: string
-          x-validation: true
-        state:
-          enum:
-            - running
-            - pending
-            - error
-            - paused
-          type: string
-          x-validation: true
-      type: object
-    DistrictStatusResponse:
-      properties:
-        data:
-          $ref: "#/components/schemas/DistrictStatus"
-      type: object
-    DistrictStatusResponses:
-      properties:
-        data:
-          items:
-            $ref: "#/components/schemas/DistrictStatusResponse"
-          type: array
-      type: object
-    DistrictsResponse:
-      properties:
-        data:
-          items:
-            $ref: "#/components/schemas/DistrictResponse"
-          type: array
-      type: object
-    GradeLevelsResponse:
-      properties:
-        data:
-          items:
-            type: string
-          type: array
-      type: object
-    InternalError:
-      properties:
-        message:
-          type: string
-      type: object
-    Location:
-      properties:
-        address:
-          nullable: true
-          type: string
-        city:
-          nullable: true
-          type: string
-        lat:
-          nullable: true
-          type: string
-        lon:
-          nullable: true
-          type: string
-        state:
-          nullable: true
-          type: string
-        zip:
-          nullable: true
-          type: string
-      type: object
-    Name:
-      properties:
-        first:
-          nullable: true
-          type: string
-        last:
-          nullable: true
-          type: string
-        middle:
-          nullable: true
-          type: string
-      type: object
-    NotFound:
-      properties:
-        message:
-          type: string
-      type: object
-    Principal:
-      properties:
-        email:
-          nullable: true
-          type: string
-        name:
-          nullable: true
-          type: string
-      type: object
-    School:
-      properties:
-        created:
-          format: datetime
-          type: string
-          x-validation: true
-        district:
-          type: string
-          x-validation: true
-        high_grade:
-          enum:
-            - "1"
-            - "2"
-            - "3"
-            - "4"
-            - "5"
-            - "6"
-            - "7"
-            - "8"
-            - "9"
-            - "10"
-            - "11"
-            - "12"
-            - PreKindergarten
-            - Kindergarten
-            - PostGraduate
-            - Other
-          nullable: true
-          type: string
-          x-validation: true
-        id:
-          type: string
-          x-validation: true
-        last_modified:
-          format: datetime
-          type: string
-          x-validation: true
-        location:
-          $ref: "#/components/schemas/Location"
-        low_grade:
-          enum:
-            - "1"
-            - "2"
-            - "3"
-            - "4"
-            - "5"
-            - "6"
-            - "7"
-            - "8"
-            - "9"
-            - "10"
-            - "11"
-            - "12"
-            - PreKindergarten
-            - Kindergarten
-            - PostGraduate
-            - Other
-          nullable: true
-          type: string
-          x-validation: true
-        mdr_number:
-          nullable: true
-          type: string
-        name:
-          type: string
-        nces_id:
-          nullable: true
-          type: string
-        phone:
-          nullable: true
-          type: string
-        principal:
-          $ref: "#/components/schemas/Principal"
-        school_number:
-          type: string
-        sis_id:
-          type: string
-        state_id:
-          nullable: true
-          type: string
-      type: object
-    SchoolAdmin:
-      properties:
-        credentials:
-          $ref: "#/components/schemas/Credentials"
-        district:
-          type: string
-          x-validation: true
-        email:
-          type: string
-        id:
-          type: string
-          x-validation: true
-        name:
-          $ref: "#/components/schemas/Name"
-        schools:
-          items:
-            type: string
-          type: array
-          x-validation: true
-        staff_id:
-          type: string
-        title:
-          nullable: true
-          type: string
-      type: object
-    SchoolAdminResponse:
-      properties:
-        data:
-          $ref: "#/components/schemas/SchoolAdmin"
-      type: object
-    SchoolAdminsResponse:
-      properties:
-        data:
-          items:
-            $ref: "#/components/schemas/SchoolAdminResponse"
-          type: array
-      type: object
-    SchoolResponse:
-      properties:
-        data:
-          $ref: "#/components/schemas/School"
-      type: object
-    SchoolsResponse:
-      properties:
-        data:
-          items:
-            $ref: "#/components/schemas/SchoolResponse"
-          type: array
-      type: object
-    Section:
-      properties:
-        course_description:
-          nullable: true
-          type: string
-        course_name:
-          nullable: true
-          type: string
-        course_number:
-          nullable: true
-          type: string
-        created:
-          format: datetime
-          type: string
-          x-validation: true
-        district:
-          type: string
-          x-validation: true
-        grade:
-          enum:
-            - "1"
-            - "2"
-            - "3"
-            - "4"
-            - "5"
-            - "6"
-            - "7"
-            - "8"
-            - "9"
-            - "10"
-            - "11"
-            - "12"
-            - PreKindergarten
-            - Kindergarten
-            - PostGraduate
-            - Other
-          nullable: true
-          type: string
-          x-validation: true
-        id:
-          type: string
-          x-validation: true
-        last_modified:
-          format: datetime
-          type: string
-          x-validation: true
-        name:
-          type: string
-        period:
-          nullable: true
-          type: string
-        school:
-          type: string
-          x-validation: true
-        section_number:
-          nullable: true
-          type: string
-        sis_id:
-          type: string
-        students:
-          items:
-            type: string
-          type: array
-          x-validation: true
-        subject:
-          enum:
-            - english/language arts
-            - math
-            - science
-            - social studies
-            - language
-            - homeroom/advisory
-            - interventions/online learning
-            - technology and engineering
-            - PE and health
-            - arts and music
-            - other
-          type: string
-          x-validation: true
-        teacher:
-          nullable: true
-          type: string
-          x-validation: true
-        teachers:
-          items:
-            type: string
-          type: array
-          x-validation: true
-        term:
-          $ref: "#/components/schemas/Term"
-      type: object
-    SectionResponse:
-      properties:
-        data:
-          $ref: "#/components/schemas/Section"
-      type: object
-    SectionsResponse:
-      properties:
-        data:
-          items:
-            $ref: "#/components/schemas/SectionResponse"
-          type: array
-      type: object
-    Student:
-      properties:
-        created:
-          format: datetime
-          type: string
-          x-validation: true
-        credentials:
-          $ref: "#/components/schemas/Credentials"
-        district:
-          type: string
-          x-validation: true
-        dob:
-          nullable: true
-          pattern: (?:[0-9]{1,2})/([0-9]{1,2})/([0-9]{4})
-          type: string
-          x-validation: true
-        ell_status:
-          enum:
-            - Y
-            - N
-            - ""
-          nullable: true
-          type: string
-          x-validation: true
-        email:
-          nullable: true
-          type: string
-        gender:
-          enum:
-            - M
-            - F
-            - ""
-          nullable: true
-          type: string
-          x-validation: true
-        grade:
-          enum:
-            - "1"
-            - "2"
-            - "3"
-            - "4"
-            - "5"
-            - "6"
-            - "7"
-            - "8"
-            - "9"
-            - "10"
-            - "11"
-            - "12"
-            - PreKindergarten
-            - Kindergarten
-            - PostGraduate
-            - Other
-          nullable: true
-          type: string
-          x-validation: true
-        graduation_year:
-          nullable: true
-          type: string
-          x-validation: true
-        hispanic_ethnicity:
-          enum:
-            - Y
-            - N
-            - ""
-          nullable: true
-          type: string
-          x-validation: true
-        id:
-          type: string
-          x-validation: true
-        last_modified:
-          format: datetime
-          type: string
-          x-validation: true
-        location:
-          $ref: "#/components/schemas/Location"
-        name:
-          $ref: "#/components/schemas/Name"
-        race:
-          enum:
-            - Caucasian
-            - Asian
-            - Black or African American
-            - American Indian
-            - Hawaiian or Other Pacific Islander
-            - Two or More Races
-            - Unknown
-            - ""
-          nullable: true
-          type: string
-          x-validation: true
-        school:
-          type: string
-          x-validation: true
-        schools:
-          items:
-            type: string
-          type: array
-          x-validation: true
-        sis_id:
-          type: string
-        state_id:
-          nullable: true
-          type: string
-        student_number:
-          nullable: true
-          type: string
-      type: object
-    StudentContact:
-      properties:
-        district:
-          type: string
-          x-validation: true
-        email:
-          nullable: true
-          type: string
-        id:
-          type: string
-          x-validation: true
-        name:
-          type: string
-        phone:
-          nullable: true
-          type: string
-        phone_type:
-          nullable: true
-          type: string
-        relationship:
-          nullable: true
-          type: string
-        sis_id:
-          nullable: true
-          type: string
-        student:
-          type: string
-          x-validation: true
-        type:
-          type: string
-      type: object
-    StudentContactResponse:
-      properties:
-        data:
-          $ref: "#/components/schemas/StudentContact"
-      type: object
-    StudentContactsForStudentResponse:
-      properties:
-        data:
-          items:
-            $ref: "#/components/schemas/StudentContact"
-          type: array
-      type: object
-    StudentContactsResponse:
-      properties:
-        data:
-          items:
-            $ref: "#/components/schemas/StudentContactResponse"
-          type: array
-      type: object
-    StudentResponse:
-      properties:
-        data:
-          $ref: "#/components/schemas/Student"
-      type: object
-    StudentsResponse:
-      properties:
-        data:
-          items:
-            $ref: "#/components/schemas/StudentResponse"
-          type: array
-      type: object
-    Teacher:
-      properties:
-        created:
-          format: datetime
-          type: string
-          x-validation: true
-        credentials:
-          $ref: "#/components/schemas/Credentials"
-        district:
-          type: string
-          x-validation: true
-        email:
-          nullable: true
-          type: string
-        id:
-          type: string
-          x-validation: true
-        last_modified:
-          format: datetime
-          type: string
-          x-validation: true
-        name:
-          $ref: "#/components/schemas/Name"
-        school:
-          type: string
-          x-validation: true
-        schools:
-          items:
-            type: string
-          type: array
-          x-validation: true
-        sis_id:
-          type: string
-        state_id:
-          nullable: true
-          type: string
-        teacher_number:
-          nullable: true
-          type: string
-        title:
-          nullable: true
-          type: string
-      type: object
-    TeacherResponse:
-      properties:
-        data:
-          $ref: "#/components/schemas/Teacher"
-      type: object
-    TeachersResponse:
-      properties:
-        data:
-          items:
-            $ref: "#/components/schemas/TeacherResponse"
-          type: array
-      type: object
-    Term:
-      properties:
-        end_date:
-          format: datetime
-          nullable: true
-          type: string
-          x-validation: true
-        name:
-          nullable: true
-          type: string
-        start_date:
-          format: datetime
-          nullable: true
-          type: string
-          x-validation: true
-      type: object
-  securitySchemes:
-    oauth:
-      flows:
-        authorizationCode:
-          authorizationUrl: https://clever.com/oauth/authorize
-          scopes: {}
-          tokenUrl: https://clever.com/oauth/tokens
-      type: oauth2
 x-samples-languages:
   - curl
   - node
@@ -1890,3 +1848,4 @@ x-samples-languages:
   - php
   - java
   - go
+

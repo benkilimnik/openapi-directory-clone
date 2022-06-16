@@ -1,6 +1,7 @@
-openapi: 3.0.0
-servers:
-  - url: https://polls.apiblueprint.org
+basePath: /
+definitions:
+  Questions_Collection: {}
+host: polls.apiblueprint.org
 info:
   contact:
     x-twitter: Reloadly
@@ -10,93 +11,69 @@ info:
   x-apisguru-categories:
     - telecom
   x-logo:
-    url: https://twitter.com/Reloadly/profile_image?size=original
+    url: 'https://twitter.com/Reloadly/profile_image?size=original'
   x-origin:
     - converter:
-        url: https://github.com/mermade/oas-kit
+        url: 'https://github.com/mermade/oas-kit'
         version: 7.0.4
       format: openapi
-      url: https://topupsapi.docs.apiary.io/api-description-document
-      version: "3.0"
+      url: 'https://topupsapi.docs.apiary.io/api-description-document'
+      version: '3.0'
   x-providerName: reloadly.com
-tags: []
 paths:
   /questions:
     get:
-      description: ""
+      description: ''
       operationId: List All Questions
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              examples:
-                response:
-                  value:
-                    - choices:
-                        - choice: Swift
-                          votes: 2048
-                        - choice: Python
-                          votes: 1024
-                        - choice: Objective-C
-                          votes: 512
-                        - choice: Ruby
-                          votes: 256
-                      published_at: 2015-08-05T08:40:51.620Z
-                      question: Favourite programming language?
+        '200':
           description: OK
           headers: {}
       summary: List All Questions
       tags: []
     post:
+      consumes:
+        - application/json
       description: |-
         You may create your own question using this action. It takes a JSON
         object containing a question and a collection of answers in the
         form of choices.
       operationId: Create a New Question
-      requestBody:
-        content:
-          application/json:
-            schema:
-              example:
-                choices:
-                  - Swift
-                  - Python
-                  - Objective-C
-                  - Ruby
-                question: Favourite programming language?
-              properties:
-                choices:
-                  items:
-                    type: string
-                  type: array
-                question:
+      parameters:
+        - in: body
+          name: body
+          schema:
+            example:
+              choices:
+                - Swift
+                - Python
+                - Objective-C
+                - Ruby
+              question: Favourite programming language?
+            properties:
+              choices:
+                items:
                   type: string
-              type: object
+                type: array
+              question:
+                type: string
+            type: object
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              examples:
-                response:
-                  value:
-                    choices:
-                      - choice: Swift
-                        votes: 0
-                      - choice: Python
-                        votes: 0
-                      - choice: Objective-C
-                        votes: 0
-                      - choice: Ruby
-                        votes: 0
-                    published_at: 2015-08-05T08:40:51.620Z
-                    question: Favourite programming language?
+        '201':
           description: Created
           headers:
             Location:
-              schema:
-                type: string
+              type: string
       summary: Create a New Question
       tags: []
-components:
-  schemas:
-    Questions_Collection: {}
+schemes:
+  - https
+swagger: '2.0'
+tags: []
+x-components: {}
+

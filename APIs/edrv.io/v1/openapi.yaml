@@ -1,11 +1,23 @@
-openapi: 3.0.0
-servers:
-  - url: //api.edrv.io
+basePath: /api.edrv.io
+definitions:
+  schema1:
+    properties:
+      location:
+        type: string
+      manufacturer:
+        type: string
+      model:
+        type: string
+      protocol:
+        type: string
+      public:
+        type: boolean
+    type: object
 info:
   contact:
     email: hello@edrv.io
     name: eDRV
-    url: https://edrv.io
+    url: 'https://edrv.io'
   description: edrv.io API Documentation
   title: eDRV API
   version: v1
@@ -14,14 +26,13 @@ info:
     - transport
     - location
   x-logo:
-    url: https://uploads-ssl.webflow.com/5eb5ba31ecd0593f18002773/5edcf57799287361407a98a4_Untitled%20(3)-p-500.png
+    url: >-
+      https://uploads-ssl.webflow.com/5eb5ba31ecd0593f18002773/5edcf57799287361407a98a4_Untitled%20(3)-p-500.png
   x-origin:
     - format: openapi
-      url: https://developers.edrv.io/openapi/5f15c43c87b0d6001ea97414
-      version: "3.0"
+      url: 'https://developers.edrv.io/openapi/5f15c43c87b0d6001ea97414'
+      version: '3.0'
   x-providerName: edrv.io
-security:
-  - oauth2: []
 paths:
   /v1/chargestations:
     get:
@@ -31,82 +42,120 @@ paths:
         - description: Filter by Org. Id
           in: query
           name: organization
-          schema:
-            type: string
+          type: string
         - description: Filter by Location Id
           in: query
           name: location
-          schema:
-            type: string
+          type: string
         - description: Filter by Online Status
           in: query
           name: online
-          schema:
-            type: boolean
+          type: boolean
         - description: Chargestations that have been activated/deactivated by the admin
           in: query
           name: active
-          schema:
-            type: boolean
+          type: boolean
         - description: Chargestations that are public
           in: query
           name: public
-          schema:
-            type: boolean
-        - $ref: "#/components/parameters/paginate_limit1"
-        - $ref: "#/components/parameters/paginate_page1"
-        - $ref: "#/components/parameters/paginate_enabled1"
-        - $ref: "#/components/parameters/sort_by1"
-        - $ref: "#/components/parameters/sort_order1"
-        - $ref: "#/components/parameters/parameter1"
-        - $ref: "#/components/parameters/parameter2"
-        - $ref: "#/components/parameters/parameter3"
-        - $ref: "#/components/parameters/parameter4"
+          type: boolean
+        - default: 20
+          description: Number of results per page
+          in: query
+          maximum: 1000
+          minimum: 1
+          name: paginate_limit
+          type: integer
+        - description: The queried page index
+          in: query
+          name: paginate_page
+          type: string
+        - default: true
+          description: Enable pagination
+          in: query
+          name: paginate_enabled
+          type: boolean
+        - default: createdAt
+          description: Sort data by this key
+          in: query
+          name: sort_by
+          type: string
+        - default: desc
+          description: asc to sort ascending (default is desc - descending)
+          enum:
+            - desc
+            - asc
+          in: query
+          name: sort_order
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$lte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$lte]'
+          type: string
         - description: Populate location
           in: query
           name: include_location
-          schema:
-            type: boolean
+          type: boolean
         - description: Populate evses
           in: query
           name: include_evses
-          schema:
-            type: boolean
-        - $ref: "#/components/parameters/include_organization1"
+          type: boolean
+        - description: Populate organization
+          in: query
+          name: include_organization
+          type: boolean
       responses:
-        "200":
+        '200':
           description: An array of chargestation objects
       tags:
         - Charge Stations
     post:
+      consumes:
+        - application/json
       description: Create a new charge station
       operationId: postChargeStations
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/schema1"
-        description: Include charge station properties to create here
-        required: true
+      parameters:
+        - description: Include charge station properties to create here
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/schema1'
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                properties:
-                  chargestation:
-                    type: object
-                  message:
-                    type: string
-                  ok:
-                    type: boolean
-                type: object
+        '201':
           description: Returns the newly created chargestion object
-        "400":
+          schema:
+            properties:
+              chargestation:
+                type: object
+              message:
+                type: string
+              ok:
+                type: boolean
+            type: object
+        '400':
           description: A failure response
       tags:
         - Charge Stations
-  "/v1/chargestations/{id}":
+  '/v1/chargestations/{id}':
     delete:
       description: Use to delete a charge station
       operationId: deleteChargeStation
@@ -115,12 +164,11 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Returns the deleted chargestion object
-        "400":
+        '400':
           description: Request Error
       tags:
         - Charge Stations
@@ -132,29 +180,27 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - description: Populate location
           in: query
           name: include_location
-          schema:
-            type: boolean
+          type: boolean
         - description: Populate evses
           in: query
           name: include_evses
-          schema:
-            type: boolean
+          type: boolean
         - description: Populate organization
           in: query
           name: include_organization
-          schema:
-            type: boolean
+          type: boolean
       responses:
-        "200":
+        '200':
           description: Returns a chargestion object
       tags:
         - Charge Stations
     patch:
+      consumes:
+        - application/json
       description: Update a charge station's data
       operationId: patchChargeStation
       parameters:
@@ -162,34 +208,32 @@ paths:
           in: path
           name: id
           required: true
+          type: string
+        - description: Include charge station properties to update here
+          in: body
+          name: body
+          required: true
           schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/schema1"
-        description: Include charge station properties to update here
-        required: true
+            $ref: '#/definitions/schema1'
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  message:
-                    type: string
-                  ok:
-                    type: boolean
-                  result:
-                    type: object
-                type: object
+        '200':
           description: Returns the updated chargestion object
-        "400":
+          schema:
+            properties:
+              message:
+                type: string
+              ok:
+                type: boolean
+              result:
+                type: object
+            type: object
+        '400':
           description: A failure response
       tags:
         - Charge Stations
-  "/v1/chargestations/{id}/connectors":
+  '/v1/chargestations/{id}/connectors':
     get:
       description: List connectors for a chargestation
       operationId: getChargeStationConnectors
@@ -198,14 +242,19 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
-        - $ref: "#/components/parameters/include_evse1"
-        - $ref: "#/components/parameters/include_organization1"
+          type: string
+        - description: Populate evse
+          in: query
+          name: include_evse
+          type: boolean
+        - description: Populate organization
+          in: query
+          name: include_organization
+          type: boolean
       responses:
-        "200":
+        '200':
           description: Returns an array of connector objects
-        "400":
+        '400':
           description: A failure response
       tags:
         - Charge Stations
@@ -214,300 +263,380 @@ paths:
       description: Get Commands data
       operationId: getCommands
       parameters:
-        - $ref: "#/components/parameters/paginate_limit1"
-        - $ref: "#/components/parameters/paginate_page1"
-        - $ref: "#/components/parameters/paginate_enabled1"
-        - $ref: "#/components/parameters/sort_by1"
-        - $ref: "#/components/parameters/sort_order1"
-        - $ref: "#/components/parameters/parameter1"
-        - $ref: "#/components/parameters/parameter2"
-        - $ref: "#/components/parameters/parameter3"
-        - $ref: "#/components/parameters/parameter4"
-        - $ref: "#/components/parameters/include_chargestation1"
-        - $ref: "#/components/parameters/include_driver1"
+        - default: 20
+          description: Number of results per page
+          in: query
+          maximum: 1000
+          minimum: 1
+          name: paginate_limit
+          type: integer
+        - description: The queried page index
+          in: query
+          name: paginate_page
+          type: string
+        - default: true
+          description: Enable pagination
+          in: query
+          name: paginate_enabled
+          type: boolean
+        - default: createdAt
+          description: Sort data by this key
+          in: query
+          name: sort_by
+          type: string
+        - default: desc
+          description: asc to sort ascending (default is desc - descending)
+          enum:
+            - desc
+            - asc
+          in: query
+          name: sort_order
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$lte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$lte]'
+          type: string
+        - description: Populate chargestation
+          in: query
+          name: include_chargestation
+          type: boolean
+        - description: Populate driver
+          in: query
+          name: include_driver
+          type: boolean
         - description: Populate transaction
           in: query
           name: include_transaction
-          schema:
-            type: boolean
-        - $ref: "#/components/parameters/include_organization1"
+          type: boolean
+        - description: Populate organization
+          in: query
+          name: include_organization
+          type: boolean
       responses:
-        "200":
+        '200':
           description: Success
       tags:
         - Commands
   /v1/commands/cancelreservation:
     post:
-      description: Use to request a delete an existing reservation. The request will wait for the charge station to process the command. It will timeout after 60 seconds.
+      consumes:
+        - application/json
+      description: >-
+        Use to request a delete an existing reservation. The request will wait
+        for the charge station to process the command. It will timeout after 60
+        seconds.
       operationId: cancelreservation
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                reservation:
-                  type: string
-              type: object
-        required: true
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              reservation:
+                type: string
+            type: object
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                properties:
-                  message:
-                    type: string
-                  ok:
-                    type: boolean
-                  result:
-                    type: object
-                type: object
+        '201':
           description: A successful response
-        "400":
+          schema:
+            properties:
+              message:
+                type: string
+              ok:
+                type: boolean
+              result:
+                type: object
+            type: object
+        '400':
           description: A failure response
       tags:
         - Commands
   /v1/commands/chargingschedule:
     delete:
+      consumes:
+        - application/json
       description: Delete a smart charging schedule
       operationId: deletechargingschedule
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                id:
-                  type: string
-              type: object
-        required: true
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              id:
+                type: string
+            type: object
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                properties:
-                  command:
-                    type: object
-                  message:
-                    type: string
-                  ok:
-                    type: boolean
-                type: object
+        '201':
           description: A successful response
-        "400":
+          schema:
+            properties:
+              command:
+                type: object
+              message:
+                type: string
+              ok:
+                type: boolean
+            type: object
+        '400':
           description: Schedule not found
       tags:
         - Smart Charging
     post:
-      description: Set one of charging power or current of a specific chargestation connector
+      consumes:
+        - application/json
+      description: >-
+        Set one of charging power or current of a specific chargestation
+        connector
       operationId: setchargingschedule
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                connector:
-                  type: string
-                schedule:
-                  items:
-                    properties:
-                      endDate:
-                        type: string
-                      limit:
-                        type: number
-                      startDate:
-                        type: string
-                      unit:
-                        type: string
-                    type: object
-                  type: array
-        required: true
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              connector:
+                type: string
+              schedule:
+                items:
+                  properties:
+                    endDate:
+                      type: string
+                    limit:
+                      type: number
+                    startDate:
+                      type: string
+                    unit:
+                      type: string
+                  type: object
+                type: array
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                properties:
-                  command:
-                    type: object
-                  message:
-                    type: string
-                  ok:
-                    type: boolean
-                type: object
+        '201':
           description: A successful response
-        "400":
+          schema:
+            properties:
+              command:
+                type: object
+              message:
+                type: string
+              ok:
+                type: boolean
+            type: object
+        '400':
           description: A failure response
       tags:
         - Smart Charging
   /v1/commands/remotestart:
     post:
-      description: Use to request a remote start command. The request will wait for the charge station to process the command. It will timeout after 60 seconds.
+      consumes:
+        - application/json
+      description: >-
+        Use to request a remote start command. The request will wait for the
+        charge station to process the command. It will timeout after 60 seconds.
       operationId: remotestart
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                chargestation:
-                  type: string
-                connector:
-                  type: string
-                driver:
-                  type: string
-                token:
-                  type: string
-              type: object
-        required: true
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              chargestation:
+                type: string
+              connector:
+                type: string
+              driver:
+                type: string
+              token:
+                type: string
+            type: object
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                properties:
-                  command:
-                    type: object
-                  message:
-                    type: string
-                  ok:
-                    type: boolean
-                type: object
+        '201':
           description: A successful response
-        "400":
+          schema:
+            properties:
+              command:
+                type: object
+              message:
+                type: string
+              ok:
+                type: boolean
+            type: object
+        '400':
           description: A failure response
       tags:
         - Commands
   /v1/commands/remotestop:
     post:
-      description: Use to request a remote stop command. The request will wait for the charge station to process the command. It will timeout after 60 seconds.
+      consumes:
+        - application/json
+      description: >-
+        Use to request a remote stop command. The request will wait for the
+        charge station to process the command. It will timeout after 60 seconds.
       operationId: remotestop
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                chargestation:
-                  type: string
-                driver:
-                  type: string
-                transaction:
-                  type: string
-              type: object
-        description: Remote stop transaction info here.
-        required: true
+      parameters:
+        - description: Remote stop transaction info here.
+          in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              chargestation:
+                type: string
+              driver:
+                type: string
+              transaction:
+                type: string
+            type: object
       responses:
-        "201":
+        '201':
           description: A successful response
-        "400":
+        '400':
           description: A failure response
       tags:
         - Commands
   /v1/commands/reserve:
     post:
-      description: Use to request a reserve command. The request will wait for the charge station to process the command. It will timeout after 60 seconds.
+      consumes:
+        - application/json
+      description: >-
+        Use to request a reserve command. The request will wait for the charge
+        station to process the command. It will timeout after 60 seconds.
       operationId: reserve
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                chargestation:
-                  type: string
-                connector:
-                  type: string
-                driver:
-                  type: string
-                endDate:
-                  type: string
-                token:
-                  type: string
-              type: object
-        required: true
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              chargestation:
+                type: string
+              connector:
+                type: string
+              driver:
+                type: string
+              endDate:
+                type: string
+              token:
+                type: string
+            type: object
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                properties:
-                  command:
-                    type: object
-                  message:
-                    type: string
-                  ok:
-                    type: boolean
-                type: object
+        '201':
           description: A successful response
-        "400":
+          schema:
+            properties:
+              command:
+                type: object
+              message:
+                type: string
+              ok:
+                type: boolean
+            type: object
+        '400':
           description: A failure response
       tags:
         - Commands
   /v1/commands/reset:
     post:
-      description: Use to request a reset command. The request will wait for the charge station to process the command. It will timeout after 60 seconds.
+      consumes:
+        - application/json
+      description: >-
+        Use to request a reset command. The request will wait for the charge
+        station to process the command. It will timeout after 60 seconds.
       operationId: reset
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                chargestation:
-                  type: string
-                type:
-                  type: string
-              type: object
-        required: true
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              chargestation:
+                type: string
+              type:
+                type: string
+            type: object
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                properties:
-                  message:
-                    type: string
-                  ok:
-                    type: boolean
-                  result:
-                    type: object
-                type: object
+        '201':
           description: A successful response
-        "400":
+          schema:
+            properties:
+              message:
+                type: string
+              ok:
+                type: boolean
+              result:
+                type: object
+            type: object
+        '400':
           description: A failure response
       tags:
         - Commands
   /v1/commands/unlockconnector:
     post:
-      description: Use to request an unlock command for a connector. The request will wait for the charge station to process the command. It will timeout after 60 seconds.
+      consumes:
+        - application/json
+      description: >-
+        Use to request an unlock command for a connector. The request will wait
+        for the charge station to process the command. It will timeout after 60
+        seconds.
       operationId: unlockconnector
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                chargestation:
-                  type: string
-                connector:
-                  type: string
-              type: object
-        required: true
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              chargestation:
+                type: string
+              connector:
+                type: string
+            type: object
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                properties:
-                  command:
-                    type: object
-                  message:
-                    type: string
-                  ok:
-                    type: boolean
-                type: object
+        '201':
           description: A successful response
-        "400":
+          schema:
+            properties:
+              command:
+                type: object
+              message:
+                type: string
+              ok:
+                type: boolean
+            type: object
+        '400':
           description: A failure response
       tags:
         - Commands
-  "/v1/commands/{id}/variables":
+  '/v1/commands/{id}/variables':
     get:
       description: Get a charge station's config variables
       operationId: getVariables
@@ -516,14 +645,15 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Returns Cs configurations array
       tags:
         - Commands
     patch:
+      consumes:
+        - application/json
       description: Update config variables for a chargestation
       operationId: patchChargeStationVariable
       parameters:
@@ -531,42 +661,40 @@ paths:
           in: path
           name: id
           required: true
+          type: string
+        - description: Charge Station Variable to set
+          in: body
+          name: body
+          required: true
           schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                value:
-                  type: string
-                variable:
-                  enum:
-                    - MeterValueSampleInterval
-                    - HeartbeatInterval
-                    - ConnectionTimeOut
-                    - WebSocketPingInterval
-                    - TransactionMessageRetryInterval
-                    - TransactionMessageAttempts
-                  type: string
-              type: object
-        description: Charge Station Variable to set
-        required: true
+            properties:
+              value:
+                type: string
+              variable:
+                enum:
+                  - MeterValueSampleInterval
+                  - HeartbeatInterval
+                  - ConnectionTimeOut
+                  - WebSocketPingInterval
+                  - TransactionMessageRetryInterval
+                  - TransactionMessageAttempts
+                type: string
+            type: object
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                properties:
-                  message:
-                    type: string
-                  ok:
-                    type: boolean
-                  result:
-                    type: object
-                type: object
+        '201':
           description: A successful response
-        "400":
+          schema:
+            properties:
+              message:
+                type: string
+              ok:
+                type: boolean
+              result:
+                type: object
+            type: object
+        '400':
           description: A failure response
       tags:
         - Commands
@@ -575,54 +703,96 @@ paths:
       description: Get Configurations data
       operationId: getConfigurations
       parameters:
-        - $ref: "#/components/parameters/paginate_limit1"
-        - $ref: "#/components/parameters/paginate_page1"
-        - $ref: "#/components/parameters/paginate_enabled1"
-        - $ref: "#/components/parameters/sort_by1"
-        - $ref: "#/components/parameters/sort_order1"
-        - $ref: "#/components/parameters/parameter1"
-        - $ref: "#/components/parameters/parameter2"
-        - $ref: "#/components/parameters/parameter3"
-        - $ref: "#/components/parameters/parameter4"
+        - default: 20
+          description: Number of results per page
+          in: query
+          maximum: 1000
+          minimum: 1
+          name: paginate_limit
+          type: integer
+        - description: The queried page index
+          in: query
+          name: paginate_page
+          type: string
+        - default: true
+          description: Enable pagination
+          in: query
+          name: paginate_enabled
+          type: boolean
+        - default: createdAt
+          description: Sort data by this key
+          in: query
+          name: sort_by
+          type: string
+        - default: desc
+          description: asc to sort ascending (default is desc - descending)
+          enum:
+            - desc
+            - asc
+          in: query
+          name: sort_order
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$lte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$lte]'
+          type: string
       responses:
-        "200":
+        '200':
           description: Success
       tags:
         - Configurations
     post:
+      consumes:
+        - application/json
       description: Create connector with parameters
       operationId: postConfigurations
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                key:
-                  type: string
-                value:
-                  type: string
-              type: object
-        description: Include Configuration properties to create here
-        required: true
+      parameters:
+        - description: Include Configuration properties to create here
+          in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+            type: object
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                properties:
-                  message:
-                    type: string
-                  ok:
-                    type: boolean
-                  result:
-                    type: object
-                type: object
+        '201':
           description: A successful response
-        "400":
+          schema:
+            properties:
+              message:
+                type: string
+              ok:
+                type: boolean
+              result:
+                type: object
+            type: object
+        '400':
           description: A failure response
       tags:
         - Configurations
-  "/v1/configurations/{id}":
+  '/v1/configurations/{id}':
     get:
       description: Get one Configuration data
       operationId: getConfiguration
@@ -631,10 +801,9 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Success
       tags:
         - Configurations
@@ -643,65 +812,116 @@ paths:
       description: List connectors
       operationId: getConnectors
       parameters:
-        - $ref: "#/components/parameters/paginate_limit1"
-        - $ref: "#/components/parameters/paginate_page1"
-        - $ref: "#/components/parameters/paginate_enabled1"
-        - $ref: "#/components/parameters/sort_by1"
-        - $ref: "#/components/parameters/sort_order1"
-        - $ref: "#/components/parameters/parameter1"
-        - $ref: "#/components/parameters/parameter2"
-        - $ref: "#/components/parameters/parameter3"
-        - $ref: "#/components/parameters/parameter4"
-        - $ref: "#/components/parameters/include_evse1"
-        - $ref: "#/components/parameters/include_organization1"
-        - $ref: "#/components/parameters/include_rate1"
+        - default: 20
+          description: Number of results per page
+          in: query
+          maximum: 1000
+          minimum: 1
+          name: paginate_limit
+          type: integer
+        - description: The queried page index
+          in: query
+          name: paginate_page
+          type: string
+        - default: true
+          description: Enable pagination
+          in: query
+          name: paginate_enabled
+          type: boolean
+        - default: createdAt
+          description: Sort data by this key
+          in: query
+          name: sort_by
+          type: string
+        - default: desc
+          description: asc to sort ascending (default is desc - descending)
+          enum:
+            - desc
+            - asc
+          in: query
+          name: sort_order
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$lte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$lte]'
+          type: string
+        - description: Populate evse
+          in: query
+          name: include_evse
+          type: boolean
+        - description: Populate organization
+          in: query
+          name: include_organization
+          type: boolean
+        - description: Populate rate
+          in: query
+          name: include_rate
+          type: boolean
       responses:
-        "200":
+        '200':
           description: Returns an array of connector objects
       tags:
         - Connectors
     post:
+      consumes:
+        - application/json
       description: Create a new connector
       operationId: postConnectors
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                chargestation:
-                  type: string
-                format:
-                  type: string
-                power:
-                  type: integer
-                power_type:
-                  type: string
-                rate:
-                  type: string
-                type:
-                  type: string
-              type: object
-        description: Include Connector properties to create here
-        required: true
+      parameters:
+        - description: Include Connector properties to create here
+          in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              chargestation:
+                type: string
+              format:
+                type: string
+              power:
+                type: integer
+              power_type:
+                type: string
+              rate:
+                type: string
+              type:
+                type: string
+            type: object
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  message:
-                    type: string
-                  ok:
-                    type: boolean
-                  result:
-                    type: object
-                type: object
+        '200':
           description: Returns the new connector object
-        "400":
+          schema:
+            properties:
+              message:
+                type: string
+              ok:
+                type: boolean
+              result:
+                type: object
+            type: object
+        '400':
           description: A failure response
       tags:
         - Connectors
-  "/v1/connectors/{id}":
+  '/v1/connectors/{id}':
     delete:
       description: Delete a connector
       operationId: deleteConnector
@@ -710,10 +930,9 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Returns the deleted connector object
       tags:
         - Connectors
@@ -725,17 +944,27 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
-        - $ref: "#/components/parameters/include_evse1"
-        - $ref: "#/components/parameters/include_organization1"
-        - $ref: "#/components/parameters/include_rate1"
+          type: string
+        - description: Populate evse
+          in: query
+          name: include_evse
+          type: boolean
+        - description: Populate organization
+          in: query
+          name: include_organization
+          type: boolean
+        - description: Populate rate
+          in: query
+          name: include_rate
+          type: boolean
       responses:
-        "200":
+        '200':
           description: Returns a connector object
       tags:
         - Connectors
     patch:
+      consumes:
+        - application/json
       description: Update a connector's data
       operationId: patchConnector
       parameters:
@@ -743,43 +972,41 @@ paths:
           in: path
           name: id
           required: true
+          type: string
+        - description: Include connector properties to update here
+          in: body
+          name: body
+          required: true
           schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                chargestation:
-                  type: string
-                format:
-                  type: string
-                power:
-                  type: integer
-                power_type:
-                  type: string
-                rate:
-                  type: string
-                type:
-                  type: string
-              type: object
-        description: Include connector properties to update here
-        required: true
+            properties:
+              chargestation:
+                type: string
+              format:
+                type: string
+              power:
+                type: integer
+              power_type:
+                type: string
+              rate:
+                type: string
+              type:
+                type: string
+            type: object
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                properties:
-                  message:
-                    type: string
-                  ok:
-                    type: boolean
-                  result:
-                    type: object
-                type: object
+        '201':
           description: Returns the updated connector object
-        "400":
+          schema:
+            properties:
+              message:
+                type: string
+              ok:
+                type: boolean
+              result:
+                type: object
+            type: object
+        '400':
           description: A failure response
       tags:
         - Connectors
@@ -791,117 +1018,159 @@ paths:
         - description: Get a list of active drivers
           in: query
           name: active
-          schema:
-            type: boolean
-        - $ref: "#/components/parameters/paginate_limit1"
-        - $ref: "#/components/parameters/paginate_page1"
-        - $ref: "#/components/parameters/paginate_enabled1"
-        - $ref: "#/components/parameters/sort_by1"
-        - $ref: "#/components/parameters/sort_order1"
-        - $ref: "#/components/parameters/parameter1"
-        - $ref: "#/components/parameters/parameter2"
-        - $ref: "#/components/parameters/parameter3"
-        - $ref: "#/components/parameters/parameter4"
+          type: boolean
+        - default: 20
+          description: Number of results per page
+          in: query
+          maximum: 1000
+          minimum: 1
+          name: paginate_limit
+          type: integer
+        - description: The queried page index
+          in: query
+          name: paginate_page
+          type: string
+        - default: true
+          description: Enable pagination
+          in: query
+          name: paginate_enabled
+          type: boolean
+        - default: createdAt
+          description: Sort data by this key
+          in: query
+          name: sort_by
+          type: string
+        - default: desc
+          description: asc to sort ascending (default is desc - descending)
+          enum:
+            - desc
+            - asc
+          in: query
+          name: sort_order
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$lte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$lte]'
+          type: string
         - description: Populate tokens
           in: query
           name: include_tokens
-          schema:
-            type: boolean
+          type: boolean
         - description: Populate group
           in: query
           name: include_group
-          schema:
-            type: boolean
-        - $ref: "#/components/parameters/include_organization1"
+          type: boolean
+        - description: Populate organization
+          in: query
+          name: include_organization
+          type: boolean
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  message:
-                    type: string
-                  ok:
-                    type: boolean
-                  result:
-                    items: {}
-                    type: array
-                type: object
+        '200':
           description: Returns a list of driver objects
-        "400":
+          schema:
+            properties:
+              message:
+                type: string
+              ok:
+                type: boolean
+              result:
+                items: {}
+                type: array
+            type: object
+        '400':
           description: A failure response
       tags:
         - Drivers
     post:
+      consumes:
+        - application/json
       description: Create a new driver
       operationId: postDrivers
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                active:
-                  default: true
-                  type: boolean
-                address:
-                  properties:
-                    city:
-                      type: string
-                    country:
-                      type: string
-                    postalCode:
-                      type: string
-                    streetAndNumber:
-                      type: string
-                  type: object
-                email:
-                  type: string
-                firstname:
-                  type: string
-                lastname:
-                  type: string
-                phone:
-                  properties:
-                    home:
-                      type: string
-                    mobile:
-                      type: string
-                    work:
-                      type: string
-                  type: object
-                source:
-                  enum:
-                    - physical
-                    - slack
-                    - telegram
-                    - sms
-                  type: string
-              required:
-                - firstname
-                - lastname
-                - source
-              type: object
-        description: Include driver properties to create here
-        required: true
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
+      parameters:
+        - description: Include driver properties to create here
+          in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              active:
+                default: true
+                type: boolean
+              address:
                 properties:
-                  message:
+                  city:
                     type: string
-                  ok:
-                    type: boolean
-                  result:
-                    type: object
+                  country:
+                    type: string
+                  postalCode:
+                    type: string
+                  streetAndNumber:
+                    type: string
                 type: object
+              email:
+                type: string
+              firstname:
+                type: string
+              lastname:
+                type: string
+              phone:
+                properties:
+                  home:
+                    type: string
+                  mobile:
+                    type: string
+                  work:
+                    type: string
+                type: object
+              source:
+                enum:
+                  - physical
+                  - slack
+                  - telegram
+                  - sms
+                type: string
+            required:
+              - firstname
+              - lastname
+              - source
+            type: object
+      produces:
+        - application/json
+      responses:
+        '200':
           description: Returns the newly created driver object
-        "400":
+          schema:
+            properties:
+              message:
+                type: string
+              ok:
+                type: boolean
+              result:
+                type: object
+            type: object
+        '400':
           description: A failure response
       tags:
         - Drivers
-  "/v1/drivers/{id}":
+  '/v1/drivers/{id}':
     delete:
       description: Delete a driver
       operationId: deleteDriver
@@ -910,10 +1179,9 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Returns the deleted driver object
       tags:
         - Drivers
@@ -925,29 +1193,27 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - description: Populate tokens
           in: query
           name: include_tokens
-          schema:
-            type: boolean
+          type: boolean
         - description: Populate group
           in: query
           name: include_group
-          schema:
-            type: boolean
+          type: boolean
         - description: Populate organization
           in: query
           name: include_organization
-          schema:
-            type: boolean
+          type: boolean
       responses:
-        "200":
+        '200':
           description: Returns a driver object
       tags:
         - Drivers
     patch:
+      consumes:
+        - application/json
       description: Update a driver's data
       operationId: patchDriver
       parameters:
@@ -955,69 +1221,67 @@ paths:
           in: path
           name: id
           required: true
+          type: string
+        - description: Include driver properties to create here
+          in: body
+          name: body
+          required: true
           schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                active:
-                  type: boolean
-                address:
-                  properties:
-                    city:
-                      type: string
-                    country:
-                      type: string
-                    postalCode:
-                      type: string
-                    streetAndNumber:
-                      type: string
-                  type: object
-                email:
-                  type: string
-                firstname:
-                  type: string
-                lastname:
-                  type: string
-                phone:
-                  properties:
-                    home:
-                      type: string
-                    mobile:
-                      type: string
-                    work:
-                      type: string
-                  type: object
-                source:
-                  type: string
-                tokens:
-                  items: {}
-                  type: array
-              type: object
-        description: Include driver properties to create here
-        required: true
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
+            properties:
+              active:
+                type: boolean
+              address:
                 properties:
-                  message:
+                  city:
                     type: string
-                  ok:
-                    type: boolean
-                  result:
-                    items: {}
-                    type: array
+                  country:
+                    type: string
+                  postalCode:
+                    type: string
+                  streetAndNumber:
+                    type: string
                 type: object
+              email:
+                type: string
+              firstname:
+                type: string
+              lastname:
+                type: string
+              phone:
+                properties:
+                  home:
+                    type: string
+                  mobile:
+                    type: string
+                  work:
+                    type: string
+                type: object
+              source:
+                type: string
+              tokens:
+                items: {}
+                type: array
+            type: object
+      produces:
+        - application/json
+      responses:
+        '200':
           description: Returns the updated driver object
-        "400":
+          schema:
+            properties:
+              message:
+                type: string
+              ok:
+                type: boolean
+              result:
+                items: {}
+                type: array
+            type: object
+        '400':
           description: A failure response
       tags:
         - Drivers
-  "/v1/location/{id}":
+  '/v1/location/{id}':
     delete:
       description: Delete a location
       operationId: deleteLocation
@@ -1026,10 +1290,9 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Returns the deleted location object
       tags:
         - Locations
@@ -1041,24 +1304,23 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - description: Populate chargestations
           in: query
           name: include_chargestations
-          schema:
-            type: boolean
+          type: boolean
         - description: Populate organization
           in: query
           name: include_organization
-          schema:
-            type: boolean
+          type: boolean
       responses:
-        "200":
+        '200':
           description: Returns a location object
       tags:
         - Locations
     patch:
+      consumes:
+        - application/json
       description: Update a location's data
       operationId: patchLocation
       parameters:
@@ -1066,128 +1328,126 @@ paths:
           in: path
           name: id
           required: true
+          type: string
+        - description: Include location properties to create here
+          in: body
+          name: body
+          required: true
           schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                active:
-                  default: true
-                  type: boolean
-                address:
-                  properties:
-                    city:
-                      type: string
-                    country:
-                      type: string
-                    postalCode:
-                      type: string
-                    state:
-                      type: string
-                    streetAndNumber:
-                      type: string
-                  type: object
-                chargestations:
-                  items: {}
-                  type: array
-                coordinates:
-                  properties:
-                    latitude:
-                      type: number
-                    longitude:
-                      type: number
-                  type: object
-                openingHours:
-                  properties:
-                    "0":
-                      items:
-                        properties:
-                          endTime:
-                            type: string
-                          startTime:
-                            type: string
-                        type: object
-                      type: array
-                    "1":
-                      items:
-                        properties:
-                          endTime:
-                            type: string
-                          startTime:
-                            type: string
-                        type: object
-                      type: array
-                    "2":
-                      items:
-                        properties:
-                          endTime:
-                            type: string
-                          startTime:
-                            type: string
-                        type: object
-                      type: array
-                    "3":
-                      items:
-                        properties:
-                          endTime:
-                            type: string
-                          startTime:
-                            type: string
-                        type: object
-                      type: array
-                    "4":
-                      items:
-                        properties:
-                          endTime:
-                            type: string
-                          startTime:
-                            type: string
-                        type: object
-                      type: array
-                    "5":
-                      items:
-                        properties:
-                          endTime:
-                            type: string
-                          startTime:
-                            type: string
-                        type: object
-                      type: array
-                    "6":
-                      items:
-                        properties:
-                          endTime:
-                            type: string
-                          startTime:
-                            type: string
-                        type: object
-                      type: array
-                  type: object
-                operatorName:
-                  type: string
-                timezone:
-                  type: string
-              type: object
-        description: Include location properties to create here
-        required: true
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
+            properties:
+              active:
+                default: true
+                type: boolean
+              address:
                 properties:
-                  message:
+                  city:
                     type: string
-                  ok:
-                    type: boolean
-                  result:
-                    items: {}
+                  country:
+                    type: string
+                  postalCode:
+                    type: string
+                  state:
+                    type: string
+                  streetAndNumber:
+                    type: string
+                type: object
+              chargestations:
+                items: {}
+                type: array
+              coordinates:
+                properties:
+                  latitude:
+                    type: number
+                  longitude:
+                    type: number
+                type: object
+              openingHours:
+                properties:
+                  '0':
+                    items:
+                      properties:
+                        endTime:
+                          type: string
+                        startTime:
+                          type: string
+                      type: object
+                    type: array
+                  '1':
+                    items:
+                      properties:
+                        endTime:
+                          type: string
+                        startTime:
+                          type: string
+                      type: object
+                    type: array
+                  '2':
+                    items:
+                      properties:
+                        endTime:
+                          type: string
+                        startTime:
+                          type: string
+                      type: object
+                    type: array
+                  '3':
+                    items:
+                      properties:
+                        endTime:
+                          type: string
+                        startTime:
+                          type: string
+                      type: object
+                    type: array
+                  '4':
+                    items:
+                      properties:
+                        endTime:
+                          type: string
+                        startTime:
+                          type: string
+                      type: object
+                    type: array
+                  '5':
+                    items:
+                      properties:
+                        endTime:
+                          type: string
+                        startTime:
+                          type: string
+                      type: object
+                    type: array
+                  '6':
+                    items:
+                      properties:
+                        endTime:
+                          type: string
+                        startTime:
+                          type: string
+                      type: object
                     type: array
                 type: object
+              operatorName:
+                type: string
+              timezone:
+                type: string
+            type: object
+      produces:
+        - application/json
+      responses:
+        '200':
           description: Returns the updated location object
-        "400":
+          schema:
+            properties:
+              message:
+                type: string
+              ok:
+                type: boolean
+              result:
+                items: {}
+                type: array
+            type: object
+        '400':
           description: A failure response
       tags:
         - Locations
@@ -1196,79 +1456,124 @@ paths:
       description: Get Locations data
       operationId: getLocations
       parameters:
-        - $ref: "#/components/parameters/paginate_limit1"
-        - $ref: "#/components/parameters/paginate_page1"
-        - $ref: "#/components/parameters/paginate_enabled1"
-        - $ref: "#/components/parameters/sort_by1"
-        - $ref: "#/components/parameters/sort_order1"
-        - $ref: "#/components/parameters/parameter1"
-        - $ref: "#/components/parameters/parameter2"
-        - $ref: "#/components/parameters/parameter3"
-        - $ref: "#/components/parameters/parameter4"
-        - $ref: "#/components/parameters/include_organization1"
+        - default: 20
+          description: Number of results per page
+          in: query
+          maximum: 1000
+          minimum: 1
+          name: paginate_limit
+          type: integer
+        - description: The queried page index
+          in: query
+          name: paginate_page
+          type: string
+        - default: true
+          description: Enable pagination
+          in: query
+          name: paginate_enabled
+          type: boolean
+        - default: createdAt
+          description: Sort data by this key
+          in: query
+          name: sort_by
+          type: string
+        - default: desc
+          description: asc to sort ascending (default is desc - descending)
+          enum:
+            - desc
+            - asc
+          in: query
+          name: sort_order
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$lte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$lte]'
+          type: string
+        - description: Populate organization
+          in: query
+          name: include_organization
+          type: boolean
       responses:
-        "200":
+        '200':
           description: Success
-        "400":
+        '400':
           description: A failure response
       tags:
         - Locations
     post:
+      consumes:
+        - application/json
       description: Create a new location
       operationId: postLocations
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                active:
-                  default: true
-                  type: boolean
-                address:
-                  properties:
-                    city:
-                      type: string
-                    country:
-                      type: string
-                    postalCode:
-                      type: string
-                    streetAndNumber:
-                      type: string
-                  type: object
-                chargestations:
-                  items: {}
-                  type: array
-                coordinates:
-                  properties:
-                    latitude:
-                      type: number
-                    longitude:
-                      type: number
-                  type: object
-                operatorName:
-                  type: string
-              required:
-                - operatorName
-                - address
-                - coordinates
-              type: object
-        description: Include location properties to create here
-        required: true
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
+      parameters:
+        - description: Include location properties to create here
+          in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              active:
+                default: true
+                type: boolean
+              address:
                 properties:
-                  message:
+                  city:
                     type: string
-                  ok:
-                    type: boolean
-                  result:
-                    type: object
+                  country:
+                    type: string
+                  postalCode:
+                    type: string
+                  streetAndNumber:
+                    type: string
                 type: object
+              chargestations:
+                items: {}
+                type: array
+              coordinates:
+                properties:
+                  latitude:
+                    type: number
+                  longitude:
+                    type: number
+                type: object
+              operatorName:
+                type: string
+            required:
+              - operatorName
+              - address
+              - coordinates
+            type: object
+      produces:
+        - application/json
+      responses:
+        '200':
           description: Returns the newly created location object
-        "400":
+          schema:
+            properties:
+              message:
+                type: string
+              ok:
+                type: boolean
+              result:
+                type: object
+            type: object
+        '400':
           description: A failure response
       tags:
         - Locations
@@ -1277,26 +1582,65 @@ paths:
       description: Get an array of all Organizations
       operationId: getOrganizations
       parameters:
-        - $ref: "#/components/parameters/paginate_limit1"
-        - $ref: "#/components/parameters/paginate_page1"
-        - $ref: "#/components/parameters/paginate_enabled1"
-        - $ref: "#/components/parameters/sort_by1"
-        - $ref: "#/components/parameters/sort_order1"
-        - $ref: "#/components/parameters/parameter1"
-        - $ref: "#/components/parameters/parameter2"
-        - $ref: "#/components/parameters/parameter3"
-        - $ref: "#/components/parameters/parameter4"
+        - default: 20
+          description: Number of results per page
+          in: query
+          maximum: 1000
+          minimum: 1
+          name: paginate_limit
+          type: integer
+        - description: The queried page index
+          in: query
+          name: paginate_page
+          type: string
+        - default: true
+          description: Enable pagination
+          in: query
+          name: paginate_enabled
+          type: boolean
+        - default: createdAt
+          description: Sort data by this key
+          in: query
+          name: sort_by
+          type: string
+        - default: desc
+          description: asc to sort ascending (default is desc - descending)
+          enum:
+            - desc
+            - asc
+          in: query
+          name: sort_order
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$lte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$lte]'
+          type: string
         - description: Populate locations
           in: query
           name: include_locations
-          schema:
-            type: boolean
+          type: boolean
       responses:
-        "200":
+        '200':
           description: Returns an array of Organization Objects
       tags:
         - Organizations
-  "/v1/organizations/{id}":
+  '/v1/organizations/{id}':
     get:
       description: Get one organization's data by id
       operationId: getOrganization
@@ -1305,19 +1649,19 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - description: Populate locations
           in: query
           name: include_locations
-          schema:
-            type: boolean
+          type: boolean
       responses:
-        "200":
+        '200':
           description: Returns an Organization Object
       tags:
         - Organizations
     patch:
+      consumes:
+        - application/json
       description: Update an organization's data
       operationId: patchOrganization
       parameters:
@@ -1325,108 +1669,106 @@ paths:
           in: path
           name: id
           required: true
+          type: string
+        - description: Include organization properties to create here
+          in: body
+          name: body
+          required: true
           schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                active:
-                  type: boolean
-                address:
-                  properties:
-                    city:
-                      type: string
-                    country:
-                      type: string
-                    postalCode:
-                      type: string
-                    streetAndNumber:
-                      type: string
-                  type: object
-                channels:
-                  properties:
-                    slack:
-                      type: object
-                    telegram:
-                      type: object
-                  type: object
-                configurations:
-                  properties:
-                    basicAuthEnabled:
-                      type: boolean
-                    basicAuthPassword:
-                      type: boolean
-                  type: object
-                links:
-                  properties:
-                    about:
-                      type: string
-                    contact:
-                      type: string
-                    privacy:
-                      type: string
-                    support:
-                      type: string
-                  type: object
-                locations:
-                  items: {}
-                  type: array
-                logo:
-                  type: string
-                name:
-                  type: string
-                otp:
-                  type: string
-                stripe_connected_account_id:
-                  type: string
-                stripe_country:
-                  type: string
-                stripe_currency:
-                  type: string
-                stripe_reserve_amount:
-                  type: integer
-                support:
-                  properties:
-                    business_hours:
-                      type: string
-                    chat:
-                      properties:
-                        type:
-                          type: string
-                        value:
-                          type: string
-                      type: object
-                    contact_number:
-                      type: string
-                    email:
-                      type: string
-                  type: object
-                supportChat:
-                  properties:
-                    id:
-                      type: string
-                    name:
-                      type: string
-                  type: object
-                theme:
-                  properties:
-                    colors:
-                      properties:
-                        primary:
-                          type: string
-                        secondary:
-                          type: string
-                      type: object
-                  type: object
-              type: object
-        description: Include organization properties to create here
-        required: true
+            properties:
+              active:
+                type: boolean
+              address:
+                properties:
+                  city:
+                    type: string
+                  country:
+                    type: string
+                  postalCode:
+                    type: string
+                  streetAndNumber:
+                    type: string
+                type: object
+              channels:
+                properties:
+                  slack:
+                    type: object
+                  telegram:
+                    type: object
+                type: object
+              configurations:
+                properties:
+                  basicAuthEnabled:
+                    type: boolean
+                  basicAuthPassword:
+                    type: boolean
+                type: object
+              links:
+                properties:
+                  about:
+                    type: string
+                  contact:
+                    type: string
+                  privacy:
+                    type: string
+                  support:
+                    type: string
+                type: object
+              locations:
+                items: {}
+                type: array
+              logo:
+                type: string
+              name:
+                type: string
+              otp:
+                type: string
+              stripe_connected_account_id:
+                type: string
+              stripe_country:
+                type: string
+              stripe_currency:
+                type: string
+              stripe_reserve_amount:
+                type: integer
+              support:
+                properties:
+                  business_hours:
+                    type: string
+                  chat:
+                    properties:
+                      type:
+                        type: string
+                      value:
+                        type: string
+                    type: object
+                  contact_number:
+                    type: string
+                  email:
+                    type: string
+                type: object
+              supportChat:
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                type: object
+              theme:
+                properties:
+                  colors:
+                    properties:
+                      primary:
+                        type: string
+                      secondary:
+                        type: string
+                    type: object
+                type: object
+            type: object
       responses:
-        "201":
+        '201':
           description: Returns the modified Organization Object
-        "400":
+        '400':
           description: A failure response
       tags:
         - Organizations
@@ -1439,10 +1781,9 @@ paths:
           in: header
           name: sec-websocket-protocol
           required: true
-          schema:
-            type: string
+          type: string
       responses:
-        "101":
+        '101':
           description: Upgrade connection
       tags:
         - Realtime
@@ -1451,23 +1792,69 @@ paths:
       description: Get Reservations data
       operationId: getReservations
       parameters:
-        - $ref: "#/components/parameters/paginate_limit1"
-        - $ref: "#/components/parameters/paginate_page1"
-        - $ref: "#/components/parameters/paginate_enabled1"
-        - $ref: "#/components/parameters/sort_by1"
-        - $ref: "#/components/parameters/sort_order1"
-        - $ref: "#/components/parameters/parameter1"
-        - $ref: "#/components/parameters/parameter2"
-        - $ref: "#/components/parameters/parameter3"
-        - $ref: "#/components/parameters/parameter4"
-        - $ref: "#/components/parameters/include_chargestation1"
-        - $ref: "#/components/parameters/include_organization1"
+        - default: 20
+          description: Number of results per page
+          in: query
+          maximum: 1000
+          minimum: 1
+          name: paginate_limit
+          type: integer
+        - description: The queried page index
+          in: query
+          name: paginate_page
+          type: string
+        - default: true
+          description: Enable pagination
+          in: query
+          name: paginate_enabled
+          type: boolean
+        - default: createdAt
+          description: Sort data by this key
+          in: query
+          name: sort_by
+          type: string
+        - default: desc
+          description: asc to sort ascending (default is desc - descending)
+          enum:
+            - desc
+            - asc
+          in: query
+          name: sort_order
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$lte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$lte]'
+          type: string
+        - description: Populate chargestation
+          in: query
+          name: include_chargestation
+          type: boolean
+        - description: Populate organization
+          in: query
+          name: include_organization
+          type: boolean
       responses:
-        "200":
+        '200':
           description: Success
       tags:
         - Reservations
-  "/v1/reservations/{id}":
+  '/v1/reservations/{id}':
     get:
       description: Get one reservation data
       operationId: getReservation
@@ -1476,65 +1863,65 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - description: Populate chargestation
           in: query
           name: include_chargestation
-          schema:
-            type: boolean
+          type: boolean
         - description: Populate organization
           in: query
           name: include_organization
-          schema:
-            type: boolean
+          type: boolean
       responses:
-        "200":
+        '200':
           description: Success
       tags:
         - Reservations
     patch:
-      description: Use to request a update an existing reservation. The request will wait for the charge station to process the command. It will timeout after 60 seconds.
+      consumes:
+        - application/json
+      description: >-
+        Use to request a update an existing reservation. The request will wait
+        for the charge station to process the command. It will timeout after 60
+        seconds.
       operationId: updatereservation
       parameters:
         - description: ID of the reservation that needs to be fetched
           in: path
           name: id
           required: true
+          type: string
+        - in: body
+          name: body
+          required: true
           schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                connector:
-                  minimum: 1
-                  type: integer
-                driver:
-                  type: string
-                endDate:
-                  type: string
-                evse:
-                  minimum: 1
-                  type: integer
-              type: object
-        required: true
+            properties:
+              connector:
+                minimum: 1
+                type: integer
+              driver:
+                type: string
+              endDate:
+                type: string
+              evse:
+                minimum: 1
+                type: integer
+            type: object
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                properties:
-                  message:
-                    type: string
-                  ok:
-                    type: boolean
-                  result:
-                    type: object
-                type: object
+        '201':
           description: A successful response
-        "400":
+          schema:
+            properties:
+              message:
+                type: string
+              ok:
+                type: boolean
+              result:
+                type: object
+            type: object
+        '400':
           description: A failure response
       tags:
         - Reservations
@@ -1543,88 +1930,136 @@ paths:
       description: List tokens
       operationId: getTokens
       parameters:
-        - $ref: "#/components/parameters/paginate_limit1"
-        - $ref: "#/components/parameters/paginate_page1"
-        - $ref: "#/components/parameters/paginate_enabled1"
-        - $ref: "#/components/parameters/sort_by1"
-        - $ref: "#/components/parameters/sort_order1"
-        - $ref: "#/components/parameters/parameter1"
-        - $ref: "#/components/parameters/parameter2"
-        - $ref: "#/components/parameters/parameter3"
-        - $ref: "#/components/parameters/parameter4"
-        - $ref: "#/components/parameters/include_driver1"
-        - $ref: "#/components/parameters/include_organization1"
+        - default: 20
+          description: Number of results per page
+          in: query
+          maximum: 1000
+          minimum: 1
+          name: paginate_limit
+          type: integer
+        - description: The queried page index
+          in: query
+          name: paginate_page
+          type: string
+        - default: true
+          description: Enable pagination
+          in: query
+          name: paginate_enabled
+          type: boolean
+        - default: createdAt
+          description: Sort data by this key
+          in: query
+          name: sort_by
+          type: string
+        - default: desc
+          description: asc to sort ascending (default is desc - descending)
+          enum:
+            - desc
+            - asc
+          in: query
+          name: sort_order
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$lte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$lte]'
+          type: string
+        - description: Populate driver
+          in: query
+          name: include_driver
+          type: boolean
+        - description: Populate organization
+          in: query
+          name: include_organization
+          type: boolean
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  message:
-                    type: string
-                  ok:
-                    type: boolean
-                  result:
-                    items: {}
-                    type: array
-                type: object
+        '200':
           description: Returns an array of token objects
-        "401":
+          schema:
+            properties:
+              message:
+                type: string
+              ok:
+                type: boolean
+              result:
+                items: {}
+                type: array
+            type: object
+        '401':
           description: A failure response
       tags:
         - Tokens
     post:
+      consumes:
+        - application/json
       description: Create a new token
       operationId: postTokens
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                active:
-                  default: true
-                  type: boolean
-                channel:
-                  enum:
-                    - physical
-                    - slack
-                    - telegram
-                    - sms
-                  type: string
-                driver:
-                  type: string
-                physicalId:
-                  type: string
-                type:
-                  type: string
-              required:
-                - active
-                - physicalId
-                - driver
-                - channel
-              type: object
-        description: Include token properties to create here
-        required: true
+      parameters:
+        - description: Include token properties to create here
+          in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              active:
+                default: true
+                type: boolean
+              channel:
+                enum:
+                  - physical
+                  - slack
+                  - telegram
+                  - sms
+                type: string
+              driver:
+                type: string
+              physicalId:
+                type: string
+              type:
+                type: string
+            required:
+              - active
+              - physicalId
+              - driver
+              - channel
+            type: object
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                properties:
-                  message:
-                    type: string
-                  ok:
-                    type: boolean
-                  result:
-                    items: {}
-                    type: array
-                type: object
+        '201':
           description: Returns a newly created token object
-        "400":
+          schema:
+            properties:
+              message:
+                type: string
+              ok:
+                type: boolean
+              result:
+                items: {}
+                type: array
+            type: object
+        '400':
           description: A failure response
       tags:
         - Tokens
-  "/v1/tokens/{id}":
+  '/v1/tokens/{id}':
     delete:
       description: Use to delete a token
       operationId: deleteToken
@@ -1633,10 +2068,9 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Returns the deleted token object
       tags:
         - Tokens
@@ -1648,24 +2082,23 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - description: Populate driver
           in: query
           name: include_driver
-          schema:
-            type: boolean
+          type: boolean
         - description: Populate organization
           in: query
           name: include_organization
-          schema:
-            type: boolean
+          type: boolean
       responses:
-        "200":
+        '200':
           description: Returns a token object
       tags:
         - Tokens
     patch:
+      consumes:
+        - application/json
       description: Update a token
       operationId: patchToken
       parameters:
@@ -1673,48 +2106,46 @@ paths:
           in: path
           name: id
           required: true
+          type: string
+        - description: Include token properties to create here
+          in: body
+          name: body
+          required: true
           schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                active:
-                  default: true
-                  type: boolean
-                channel:
-                  enum:
-                    - physical
-                    - slack
-                    - telegram
-                    - sms
-                  type: string
-                driver:
-                  type: string
-                physicalId:
-                  type: string
-                type:
-                  type: string
-              type: object
-        description: Include token properties to create here
-        required: true
+            properties:
+              active:
+                default: true
+                type: boolean
+              channel:
+                enum:
+                  - physical
+                  - slack
+                  - telegram
+                  - sms
+                type: string
+              driver:
+                type: string
+              physicalId:
+                type: string
+              type:
+                type: string
+            type: object
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                properties:
-                  message:
-                    type: string
-                  ok:
-                    type: boolean
-                  result:
-                    items: {}
-                    type: array
-                type: object
+        '201':
           description: Returns the updated token
-        "400":
+          schema:
+            properties:
+              message:
+                type: string
+              ok:
+                type: boolean
+              result:
+                items: {}
+                type: array
+            type: object
+        '400':
           description: A failure response
       tags:
         - Tokens
@@ -1724,54 +2155,117 @@ paths:
       operationId: getTransactions
       parameters:
         - description: Started to get only active transactions
+          enum:
+            - Started
+            - Ended
           in: query
           name: status
-          schema:
-            enum:
-              - Started
-              - Ended
-            type: string
-        - $ref: "#/components/parameters/paginate_limit1"
-        - $ref: "#/components/parameters/paginate_page1"
-        - $ref: "#/components/parameters/paginate_enabled1"
-        - $ref: "#/components/parameters/sort_by1"
-        - $ref: "#/components/parameters/sort_order1"
-        - $ref: "#/components/parameters/parameter1"
-        - $ref: "#/components/parameters/parameter2"
-        - $ref: "#/components/parameters/parameter3"
-        - $ref: "#/components/parameters/parameter4"
-        - $ref: "#/components/parameters/include_chargestation1"
-        - $ref: "#/components/parameters/include_evse1"
-        - $ref: "#/components/parameters/include_connector1"
-        - $ref: "#/components/parameters/include_driver1"
-        - $ref: "#/components/parameters/include_token1"
-        - $ref: "#/components/parameters/include_reservation1"
-        - $ref: "#/components/parameters/include_organization1"
-        - $ref: "#/components/parameters/include_rate1"
+          type: string
+        - default: 20
+          description: Number of results per page
+          in: query
+          maximum: 1000
+          minimum: 1
+          name: paginate_limit
+          type: integer
+        - description: The queried page index
+          in: query
+          name: paginate_page
+          type: string
+        - default: true
+          description: Enable pagination
+          in: query
+          name: paginate_enabled
+          type: boolean
+        - default: createdAt
+          description: Sort data by this key
+          in: query
+          name: sort_by
+          type: string
+        - default: desc
+          description: asc to sort ascending (default is desc - descending)
+          enum:
+            - desc
+            - asc
+          in: query
+          name: sort_order
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$lte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$lte]'
+          type: string
+        - description: Populate chargestation
+          in: query
+          name: include_chargestation
+          type: boolean
+        - description: Populate evse
+          in: query
+          name: include_evse
+          type: boolean
+        - description: Populate connector
+          in: query
+          name: include_connector
+          type: boolean
+        - description: Populate driver
+          in: query
+          name: include_driver
+          type: boolean
+        - description: Populate token
+          in: query
+          name: include_token
+          type: boolean
+        - description: Populate reservation
+          in: query
+          name: include_reservation
+          type: boolean
+        - description: Populate organization
+          in: query
+          name: include_organization
+          type: boolean
+        - description: Populate rate
+          in: query
+          name: include_rate
+          type: boolean
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  hasNext:
-                    type: boolean
-                  hasPrevious:
-                    type: boolean
-                  message:
-                    type: string
-                  ok:
-                    type: boolean
-                  result:
-                    items: {}
-                    type: array
-                type: object
+        '200':
           description: Returns an array of transaction objects
-        "400":
+          schema:
+            properties:
+              hasNext:
+                type: boolean
+              hasPrevious:
+                type: boolean
+              message:
+                type: string
+              ok:
+                type: boolean
+              result:
+                items: {}
+                type: array
+            type: object
+        '400':
           description: Not Found
       tags:
         - Transactions
-  "/v1/transactions/{id}":
+  '/v1/transactions/{id}':
     get:
       description: Get a specific transaction
       operationId: getTransaction
@@ -1780,24 +2274,47 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
-        - $ref: "#/components/parameters/include_chargestation1"
-        - $ref: "#/components/parameters/include_evse1"
-        - $ref: "#/components/parameters/include_connector1"
-        - $ref: "#/components/parameters/include_driver1"
-        - $ref: "#/components/parameters/include_token1"
-        - $ref: "#/components/parameters/include_reservation1"
-        - $ref: "#/components/parameters/include_organization1"
-        - $ref: "#/components/parameters/include_rate1"
+          type: string
+        - description: Populate chargestation
+          in: query
+          name: include_chargestation
+          type: boolean
+        - description: Populate evse
+          in: query
+          name: include_evse
+          type: boolean
+        - description: Populate connector
+          in: query
+          name: include_connector
+          type: boolean
+        - description: Populate driver
+          in: query
+          name: include_driver
+          type: boolean
+        - description: Populate token
+          in: query
+          name: include_token
+          type: boolean
+        - description: Populate reservation
+          in: query
+          name: include_reservation
+          type: boolean
+        - description: Populate organization
+          in: query
+          name: include_organization
+          type: boolean
+        - description: Populate rate
+          in: query
+          name: include_rate
+          type: boolean
       responses:
-        "200":
+        '200':
           description: Returns a transaction object
-        "401":
+        '401':
           description: Not Found
       tags:
         - Transactions
-  "/v1/transactions/{id}/cost":
+  '/v1/transactions/{id}/cost':
     get:
       description: Get a specific transaction's cost
       operationId: getTransactionCost
@@ -1806,12 +2323,11 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Returns a transaction's cost object
-        "401":
+        '401':
           description: Not Found
       tags:
         - Transactions
@@ -1823,40 +2339,88 @@ paths:
         - description: Get a list of active vehicles
           in: query
           name: active
-          schema:
-            type: boolean
-        - $ref: "#/components/parameters/paginate_limit1"
-        - $ref: "#/components/parameters/paginate_page1"
-        - $ref: "#/components/parameters/paginate_enabled1"
-        - $ref: "#/components/parameters/sort_by1"
-        - $ref: "#/components/parameters/sort_order1"
-        - $ref: "#/components/parameters/parameter1"
-        - $ref: "#/components/parameters/parameter2"
-        - $ref: "#/components/parameters/parameter3"
-        - $ref: "#/components/parameters/parameter4"
-        - $ref: "#/components/parameters/include_driver1"
-        - $ref: "#/components/parameters/include_token1"
-        - $ref: "#/components/parameters/include_organization1"
+          type: boolean
+        - default: 20
+          description: Number of results per page
+          in: query
+          maximum: 1000
+          minimum: 1
+          name: paginate_limit
+          type: integer
+        - description: The queried page index
+          in: query
+          name: paginate_page
+          type: string
+        - default: true
+          description: Enable pagination
+          in: query
+          name: paginate_enabled
+          type: boolean
+        - default: createdAt
+          description: Sort data by this key
+          in: query
+          name: sort_by
+          type: string
+        - default: desc
+          description: asc to sort ascending (default is desc - descending)
+          enum:
+            - desc
+            - asc
+          in: query
+          name: sort_order
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'createdAt[$lte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$gte]'
+          type: string
+        - description: Date as ISO String
+          format: date-time
+          in: query
+          name: 'updatedAt[$lte]'
+          type: string
+        - description: Populate driver
+          in: query
+          name: include_driver
+          type: boolean
+        - description: Populate token
+          in: query
+          name: include_token
+          type: boolean
+        - description: Populate organization
+          in: query
+          name: include_organization
+          type: boolean
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  message:
-                    type: string
-                  ok:
-                    type: boolean
-                  result:
-                    items: {}
-                    type: array
-                type: object
+        '200':
           description: Returns a list of vehicle objects
-        "400":
+          schema:
+            properties:
+              message:
+                type: string
+              ok:
+                type: boolean
+              result:
+                items: {}
+                type: array
+            type: object
+        '400':
           description: A failure response
       tags:
         - Vehicles
-  "/v1/vehicles/{id}":
+  '/v1/vehicles/{id}':
     get:
       description: Get a vehicle's data
       operationId: getVehicle
@@ -1865,17 +2429,25 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
-        - $ref: "#/components/parameters/include_driver1"
-        - $ref: "#/components/parameters/include_token1"
-        - $ref: "#/components/parameters/include_organization1"
+          type: string
+        - description: Populate driver
+          in: query
+          name: include_driver
+          type: boolean
+        - description: Populate token
+          in: query
+          name: include_token
+          type: boolean
+        - description: Populate organization
+          in: query
+          name: include_organization
+          type: boolean
       responses:
-        "200":
+        '200':
           description: Returns a vehicle object
       tags:
         - Vehicles
-  "/v1/vehicles/{id}/battery":
+  '/v1/vehicles/{id}/battery':
     get:
       description: Get a vehicle's battery
       operationId: getVehicleBattery
@@ -1884,14 +2456,13 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Returns a vehicle object
       tags:
         - Vehicles
-  "/v1/vehicles/{id}/charge":
+  '/v1/vehicles/{id}/charge':
     get:
       description: Get a vehicle's charge
       operationId: getVehicleCharge
@@ -1900,14 +2471,15 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Returns a vehicle object
       tags:
         - Vehicles
     post:
+      consumes:
+        - application/json
       description: Change charge
       operationId: postCharge
       parameters:
@@ -1915,42 +2487,40 @@ paths:
           in: path
           name: id
           required: true
+          type: string
+        - description: Include command properties to send here
+          in: body
+          name: body
+          required: true
           schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                action:
-                  enum:
-                    - START
-                    - STOP
-                  type: string
-              required:
-                - action
-              type: object
-        description: Include command properties to send here
-        required: true
+            properties:
+              action:
+                enum:
+                  - START
+                  - STOP
+                type: string
+            required:
+              - action
+            type: object
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  message:
-                    type: string
-                  ok:
-                    type: boolean
-                  result:
-                    type: object
-                type: object
+        '200':
           description: Returns the status of the command
-        "400":
+          schema:
+            properties:
+              message:
+                type: string
+              ok:
+                type: boolean
+              result:
+                type: object
+            type: object
+        '400':
           description: A failure response
       tags:
         - Vehicles
-  "/v1/vehicles/{id}/location":
+  '/v1/vehicles/{id}/location':
     get:
       description: Get a vehicle's location
       operationId: getVehicleLocation
@@ -1959,14 +2529,13 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Returns a vehicle object
       tags:
         - Vehicles
-  "/v1/vehicles/{id}/odometer":
+  '/v1/vehicles/{id}/odometer':
     get:
       description: Get a vehicle's odometer
       operationId: getVehicleOdometer
@@ -1975,191 +2544,161 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Returns a vehicle object
       tags:
         - Vehicles
-components:
+security:
+  - oauth2: []
+securityDefinitions:
+  oauth2:
+    authorizationUrl: 'https://auth.edrv.io/authorize'
+    flow: implicit
+    scopes:
+      'read:chargestations': Read chargestations
+      'read:chargestations/:id': Read a chargestation
+      'read:chargestations/:id/connectors': Read connectors for a chargestation
+      'read:connectors': Read connectors
+      'read:connectors/:id': Read a connector
+      'read:drivers': Read drivers
+      'read:drivers/:id': Read a driver
+      'read:locations': Read locations
+      'read:locations/:id': Read a location
+      'read:organizations': Read organizations
+      'read:organizations/:id': Read an organization
+      'read:realtime': Read realtime
+      'read:reservations': Read reservations
+      'read:reservations/:id': Read a reservations
+      'read:stats/:asset/:statistic': Read a statistic
+      'read:tokens': Read tokens
+      'read:tokens/:id': Read a token
+      'read:transactions': Read transactions
+      'read:transactions/:id': Read a transaction
+      'write:chargestations': Write chargestations
+      'write:chargestations/:id': Write a chargestation
+      'write:commands/remotestart': Write remotestart for commands
+      'write:commands/remotestop': Write remotestop for commands
+      'write:commands/reserve': Write reserve for commands
+      'write:commands/reset': Write reset for commands
+      'write:commands/unlockconnector': Write unlockconnector for commands
+      'write:connectors': Write connectors
+      'write:connectors/:id': Write a connector
+      'write:drivers': Write drivers
+      'write:drivers/:id': Write a driver
+      'write:locations': Write locations
+      'write:locations/:id': Write a location
+      'write:organizations': Write organizations
+      'write:organizations/:id': Writen an organization
+      'write:reservations': Write reservations
+      'write:reservations/:id': Write a reservation
+      'write:tokens': Write tokens
+      'write:tokens/:id': Write a token
+      'write:transactions': Write transactions
+      'write:transactions/:id': Write a transactions
+    type: oauth2
+swagger: '2.0'
+x-components:
   parameters:
     include_chargestation1:
       description: Populate chargestation
       in: query
       name: include_chargestation
-      schema:
-        type: boolean
+      type: boolean
     include_connector1:
       description: Populate connector
       in: query
       name: include_connector
-      schema:
-        type: boolean
+      type: boolean
     include_driver1:
       description: Populate driver
       in: query
       name: include_driver
-      schema:
-        type: boolean
+      type: boolean
     include_evse1:
       description: Populate evse
       in: query
       name: include_evse
-      schema:
-        type: boolean
+      type: boolean
     include_organization1:
       description: Populate organization
       in: query
       name: include_organization
-      schema:
-        type: boolean
+      type: boolean
     include_rate1:
       description: Populate rate
       in: query
       name: include_rate
-      schema:
-        type: boolean
+      type: boolean
     include_reservation1:
       description: Populate reservation
       in: query
       name: include_reservation
-      schema:
-        type: boolean
+      type: boolean
     include_token1:
       description: Populate token
       in: query
       name: include_token
-      schema:
-        type: boolean
+      type: boolean
     paginate_enabled1:
+      default: true
       description: Enable pagination
       in: query
       name: paginate_enabled
-      schema:
-        default: true
-        type: boolean
+      type: boolean
     paginate_limit1:
+      default: 20
       description: Number of results per page
       in: query
+      maximum: 1000
+      minimum: 1
       name: paginate_limit
-      schema:
-        default: 20
-        maximum: 1000
-        minimum: 1
-        type: integer
+      type: integer
     paginate_page1:
       description: The queried page index
       in: query
       name: paginate_page
-      schema:
-        type: string
+      type: string
     parameter1:
       description: Date as ISO String
+      format: date-time
       in: query
-      name: createdAt[$gte]
-      schema:
-        format: date-time
-        type: string
+      name: 'createdAt[$gte]'
+      type: string
     parameter2:
       description: Date as ISO String
+      format: date-time
       in: query
-      name: createdAt[$lte]
-      schema:
-        format: date-time
-        type: string
+      name: 'createdAt[$lte]'
+      type: string
     parameter3:
       description: Date as ISO String
+      format: date-time
       in: query
-      name: updatedAt[$gte]
-      schema:
-        format: date-time
-        type: string
+      name: 'updatedAt[$gte]'
+      type: string
     parameter4:
       description: Date as ISO String
+      format: date-time
       in: query
-      name: updatedAt[$lte]
-      schema:
-        format: date-time
-        type: string
+      name: 'updatedAt[$lte]'
+      type: string
     sort_by1:
+      default: createdAt
       description: Sort data by this key
       in: query
       name: sort_by
-      schema:
-        default: createdAt
-        type: string
+      type: string
     sort_order1:
+      default: desc
       description: asc to sort ascending (default is desc - descending)
+      enum:
+        - desc
+        - asc
       in: query
       name: sort_order
-      schema:
-        default: desc
-        enum:
-          - desc
-          - asc
-        type: string
-  schemas:
-    schema1:
-      properties:
-        location:
-          type: string
-        manufacturer:
-          type: string
-        model:
-          type: string
-        protocol:
-          type: string
-        public:
-          type: boolean
-      type: object
-  securitySchemes:
-    oauth2:
-      flows:
-        implicit:
-          authorizationUrl: https://auth.edrv.io/authorize
-          scopes:
-            read:chargestations: Read chargestations
-            read:chargestations/:id: Read a chargestation
-            read:chargestations/:id/connectors: Read connectors for a chargestation
-            read:connectors: Read connectors
-            read:connectors/:id: Read a connector
-            read:drivers: Read drivers
-            read:drivers/:id: Read a driver
-            read:locations: Read locations
-            read:locations/:id: Read a location
-            read:organizations: Read organizations
-            read:organizations/:id: Read an organization
-            read:realtime: Read realtime
-            read:reservations: Read reservations
-            read:reservations/:id: Read a reservations
-            read:stats/:asset/:statistic: Read a statistic
-            read:tokens: Read tokens
-            read:tokens/:id: Read a token
-            read:transactions: Read transactions
-            read:transactions/:id: Read a transaction
-            write:chargestations: Write chargestations
-            write:chargestations/:id: Write a chargestation
-            write:commands/remotestart: Write remotestart for commands
-            write:commands/remotestop: Write remotestop for commands
-            write:commands/reserve: Write reserve for commands
-            write:commands/reset: Write reset for commands
-            write:commands/unlockconnector: Write unlockconnector for commands
-            write:connectors: Write connectors
-            write:connectors/:id: Write a connector
-            write:drivers: Write drivers
-            write:drivers/:id: Write a driver
-            write:locations: Write locations
-            write:locations/:id: Write a location
-            write:organizations: Write organizations
-            write:organizations/:id: Writen an organization
-            write:reservations: Write reservations
-            write:reservations/:id: Write a reservation
-            write:tokens: Write tokens
-            write:tokens/:id: Write a token
-            write:transactions: Write transactions
-            write:transactions/:id: Write a transactions
-      type: oauth2
+      type: string
 x-explorer-enabled: true
 x-github-repo: rsafaya-edrv/edrv-api
 x-github-sha: 2df8793f7607c6d41b7c8c4c552d6423896000ca
@@ -2172,3 +2711,4 @@ x-samples-languages:
   - javascript
   - python
 x-si-base: /home/runner/work/edrv-api/edrv-api/swagger.yml
+

@@ -1,4 +1,57 @@
-openapi: 3.0.1
+definitions:
+  CaseType:
+    enum:
+      - LowerCase
+      - UpperCase
+      - SentenceCase
+      - TitleCase
+    type: string
+  IdType:
+    enum:
+      - VAT
+      - SSN
+    type: string
+  LoremType:
+    enum:
+      - normal
+      - business
+    type: string
+  NameType:
+    enum:
+      - firstname
+      - surname
+      - fullname
+    type: string
+  NumberValidation:
+    additionalProperties: false
+    properties:
+      country:
+        maxLength: 2
+        type: string
+      number:
+        maxLength: 100
+        type: string
+    required:
+      - country
+      - number
+    type: object
+  TextActionType:
+    enum:
+      - Transform
+      - Replace
+    type: string
+  TextDto:
+    additionalProperties: false
+    properties:
+      text:
+        type: string
+        x-nullable: true
+    type: object
+  TextType:
+    enum:
+      - paragraphs
+      - words
+    type: string
 info:
   title: Randommer API
   version: v1
@@ -6,25 +59,23 @@ info:
     - developer_tools
   x-origin:
     - format: openapi
-      url: https://randommer.io/api/docs/v1/swagger.json
-      version: "3.0"
+      url: 'https://randommer.io/api/docs/v1/swagger.json'
+      version: '3.0'
   x-providerName: randommer.io
 paths:
   /api/Card:
     get:
       parameters:
-        - description: ""
+        - description: ''
           in: query
           name: type
-          schema:
-            type: string
+          type: string
         - description: Enter your key
           in: header
           name: X-Api-Key
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Success
       summary: Get Card
       tags:
@@ -35,10 +86,9 @@ paths:
         - description: Enter your key
           in: header
           name: X-Api-Key
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Success
       summary: Get available card types
       tags:
@@ -49,65 +99,62 @@ paths:
         - description: Enter your key
           in: header
           name: X-Api-Key
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Success
       tags:
         - Misc
   /api/Misc/Random-Address:
     get:
       parameters:
-        - in: query
+        - format: int32
+          in: query
+          maximum: 1000
+          minimum: 1
           name: number
           required: true
-          schema:
-            format: int32
-            maximum: 1000
-            minimum: 1
-            type: integer
-        - in: query
+          type: integer
+        - default: en
+          in: query
+          maxLength: 100
           name: culture
-          schema:
-            default: en
-            maxLength: 100
-            type: string
+          type: string
         - description: Enter your key
           in: header
           name: X-Api-Key
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Success
       tags:
         - Misc
   /api/Name:
     get:
       parameters:
-        - description: ""
+        - description: ''
+          enum:
+            - firstname
+            - surname
+            - fullname
           in: query
           name: nameType
           required: true
-          schema:
-            $ref: "#/components/schemas/NameType"
-        - description: ""
+          type: string
+        - description: ''
+          format: int32
           in: query
+          maximum: 5000
+          minimum: 1
           name: quantity
           required: true
-          schema:
-            format: int32
-            maximum: 5000
-            minimum: 1
-            type: integer
+          type: integer
         - description: Enter your key
           in: header
           name: X-Api-Key
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Success
       summary: Get name
       tags:
@@ -115,20 +162,18 @@ paths:
   /api/Name/Suggestions:
     get:
       parameters:
-        - description: ""
+        - description: ''
           in: query
+          maxLength: 100
           name: startingWords
           required: true
-          schema:
-            maxLength: 100
-            type: string
+          type: string
         - description: Enter your key
           in: header
           name: X-Api-Key
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Success
       summary: Get business name suggestions
       tags:
@@ -139,10 +184,9 @@ paths:
         - description: Enter your key
           in: header
           name: X-Api-Key
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Success
       summary: Get available countries
       tags:
@@ -150,29 +194,26 @@ paths:
   /api/Phone/Generate:
     get:
       parameters:
-        - description: ""
+        - description: ''
           in: query
+          maxLength: 2
           name: CountryCode
           required: true
-          schema:
-            maxLength: 2
-            type: string
-        - description: ""
+          type: string
+        - description: ''
+          format: int32
           in: query
+          maximum: 1000
+          minimum: 1
           name: Quantity
           required: true
-          schema:
-            format: int32
-            maximum: 1000
-            minimum: 1
-            type: integer
+          type: integer
         - description: Enter your key
           in: header
           name: X-Api-Key
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Success
       summary: Get bulk telephone numbers for a country
       tags:
@@ -180,26 +221,23 @@ paths:
   /api/Phone/Validate:
     get:
       parameters:
-        - description: ""
+        - description: ''
           in: query
+          maxLength: 25
           name: telephone
           required: true
-          schema:
-            maxLength: 25
-            type: string
-        - description: ""
+          type: string
+        - description: ''
           in: query
+          maxLength: 2
           name: CountryCode
-          schema:
-            maxLength: 2
-            type: string
+          type: string
         - description: Enter your key
           in: header
           name: X-Api-Key
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Success
       summary: Validate a phone number
       tags:
@@ -210,73 +248,60 @@ paths:
         - description: Enter your key
           in: header
           name: X-Api-Key
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Success
       summary: Generate a social security number
       tags:
         - SocialNumber
     post:
+      consumes:
+        - application/json
+        - application/json-patch+json
+        - text/json
       parameters:
-        - in: query
+        - enum:
+            - VAT
+            - SSN
+          in: query
           name: idType
           required: true
-          schema:
-            $ref: "#/components/schemas/IdType"
+          type: string
         - description: Enter your key
           in: header
           name: X-Api-Key
+          type: string
+        - in: body
+          name: body
+          required: true
           schema:
-            type: string
-      requestBody:
-        content:
-          application/*+json:
-            schema:
-              $ref: "#/components/schemas/NumberValidation"
-          application/json:
-            schema:
-              $ref: "#/components/schemas/NumberValidation"
-          application/json-patch+json:
-            schema:
-              $ref: "#/components/schemas/NumberValidation"
-          text/json:
-            schema:
-              $ref: "#/components/schemas/NumberValidation"
-        required: true
+            $ref: '#/definitions/NumberValidation'
       responses:
-        "200":
+        '200':
           description: Success
       summary: Validate VAT/identity numbers
       tags:
         - SocialNumber
   /api/Text/Humanize:
     post:
+      consumes:
+        - application/json
+        - application/json-patch+json
+        - text/json
       parameters:
         - description: Enter your key
           in: header
           name: X-Api-Key
+          type: string
+        - description: ''
+          in: body
+          name: body
+          required: true
           schema:
-            type: string
-      requestBody:
-        content:
-          application/*+json:
-            schema:
-              $ref: "#/components/schemas/TextDto"
-          application/json:
-            schema:
-              $ref: "#/components/schemas/TextDto"
-          application/json-patch+json:
-            schema:
-              $ref: "#/components/schemas/TextDto"
-          text/json:
-            schema:
-              $ref: "#/components/schemas/TextDto"
-        description: ""
-        required: true
+            $ref: '#/definitions/TextDto'
       responses:
-        "200":
+        '200':
           description: Success
       summary: Humanize text
       tags:
@@ -284,34 +309,36 @@ paths:
   /api/Text/LoremIpsum:
     get:
       parameters:
-        - description: ""
+        - description: ''
+          enum:
+            - normal
+            - business
           in: query
           name: loremType
           required: true
-          schema:
-            $ref: "#/components/schemas/LoremType"
-        - description: ""
+          type: string
+        - description: ''
+          enum:
+            - paragraphs
+            - words
           in: query
           name: type
           required: true
-          schema:
-            $ref: "#/components/schemas/TextType"
-        - description: ""
+          type: string
+        - description: ''
+          format: int32
           in: query
+          maximum: 2147483647
+          minimum: 1
           name: number
           required: true
-          schema:
-            format: int32
-            maximum: 2147483647
-            minimum: 1
-            type: integer
+          type: integer
         - description: Enter your key
           in: header
           name: X-Api-Key
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Success
       summary: Generate lorem ipsum
       tags:
@@ -319,147 +346,87 @@ paths:
   /api/Text/Password:
     get:
       parameters:
-        - description: ""
+        - description: ''
+          format: int32
           in: query
+          maximum: 250
+          minimum: 3
           name: length
           required: true
-          schema:
-            format: int32
-            maximum: 250
-            minimum: 3
-            type: integer
-        - description: ""
+          type: integer
+        - description: ''
           in: query
           name: hasDigits
           required: true
-          schema:
-            type: boolean
-        - description: ""
+          type: boolean
+        - description: ''
           in: query
           name: hasUppercase
           required: true
-          schema:
-            type: boolean
-        - description: ""
+          type: boolean
+        - description: ''
           in: query
           name: hasSpecial
           required: true
-          schema:
-            type: boolean
+          type: boolean
         - description: Enter your key
           in: header
           name: X-Api-Key
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: Success
       summary: Generate password
       tags:
         - Text
   /api/Text/Transform:
     post:
+      consumes:
+        - application/json
+        - application/json-patch+json
+        - text/json
       parameters:
-        - description: ""
+        - description: ''
+          enum:
+            - Transform
+            - Replace
           in: query
           name: textActionType
           required: true
-          schema:
-            $ref: "#/components/schemas/TextActionType"
-        - description: ""
+          type: string
+        - description: ''
+          enum:
+            - LowerCase
+            - UpperCase
+            - SentenceCase
+            - TitleCase
           in: query
           name: caseType
-          schema:
-            $ref: "#/components/schemas/CaseType"
-        - description: ""
+          type: string
+        - description: ''
           in: query
           name: find
-          schema:
-            type: string
-        - description: ""
+          type: string
+        - description: ''
           in: query
           name: replace
-          schema:
-            type: string
+          type: string
         - description: Enter your key
           in: header
           name: X-Api-Key
+          type: string
+        - description: ''
+          in: body
+          name: body
+          required: true
           schema:
-            type: string
-      requestBody:
-        content:
-          application/*+json:
-            schema:
-              $ref: "#/components/schemas/TextDto"
-          application/json:
-            schema:
-              $ref: "#/components/schemas/TextDto"
-          application/json-patch+json:
-            schema:
-              $ref: "#/components/schemas/TextDto"
-          text/json:
-            schema:
-              $ref: "#/components/schemas/TextDto"
-        description: ""
-        required: true
+            $ref: '#/definitions/TextDto'
       responses:
-        "200":
+        '200':
           description: Success
       summary: Transform text
       tags:
         - Text
-components:
-  schemas:
-    CaseType:
-      enum:
-        - LowerCase
-        - UpperCase
-        - SentenceCase
-        - TitleCase
-      type: string
-    IdType:
-      enum:
-        - VAT
-        - SSN
-      type: string
-    LoremType:
-      enum:
-        - normal
-        - business
-      type: string
-    NameType:
-      enum:
-        - firstname
-        - surname
-        - fullname
-      type: string
-    NumberValidation:
-      additionalProperties: false
-      properties:
-        country:
-          maxLength: 2
-          type: string
-        number:
-          maxLength: 100
-          type: string
-      required:
-        - country
-        - number
-      type: object
-    TextActionType:
-      enum:
-        - Transform
-        - Replace
-      type: string
-    TextDto:
-      additionalProperties: false
-      properties:
-        text:
-          nullable: true
-          type: string
-      type: object
-    TextType:
-      enum:
-        - paragraphs
-        - words
-      type: string
+swagger: '2.0'
+x-components: {}
+

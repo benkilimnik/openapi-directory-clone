@@ -1,6 +1,5 @@
-openapi: 3.0.0
-servers:
-  - url: https://api.tomtom.com
+basePath: /
+host: api.tomtom.com
 info:
   contact:
     x-twitter: TomTom
@@ -16,20 +15,18 @@ info:
   x-apisguru-categories:
     - location
   x-logo:
-    url: https://twitter.com/TomTom/profile_image?size=original
+    url: 'https://twitter.com/TomTom/profile_image?size=original'
   x-origin:
     - converter:
-        url: https://github.com/lucybot/api-spec-converter
+        url: 'https://github.com/lucybot/api-spec-converter'
         version: 2.7.31
       format: openapi
-      url: https://developer.tomtom.com/system/files/swagger_models/maps_api_0.yaml
-      version: "3.0"
+      url: 'https://developer.tomtom.com/system/files/swagger_models/maps_api_0.yaml'
+      version: '3.0'
   x-providerName: tomtom.com
   x-serviceName: maps
-security:
-  - api_key: []
 paths:
-  "/map/{versionNumber}/copyrights.{format}":
+  '/map/{versionNumber}/copyrights.{format}':
     get:
       description: |-
         The Copyrights API returns copyright information for
@@ -37,100 +34,98 @@ paths:
         This call returns copyright information for the whole world.
       parameters:
         - description: Version of the service to call. The current version is 1
+          enum:
+            - 1
           in: path
           name: versionNumber
           required: true
-          schema:
-            enum:
-              - 1
-            type: integer
-        - description: Format of the response
+          type: integer
+        - default: xml
+          description: Format of the response
+          enum:
+            - json
+            - jsonp
+            - xml
           in: path
           name: format
           required: true
-          schema:
-            default: xml
-            enum:
-              - json
-              - jsonp
-              - xml
-            type: string
+          type: string
         - description: Specifies the jsonp callback method. Only used when format is jsonp
           in: query
           name: callback
           required: false
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: <b>OK</b>
-        "304":
+        '304':
           description: <b>Not Modified</b>
-        "400":
+        '400':
           description: |-
             <b>Malformed request</b>: malformed syntax. Possible causes include:
               - requested syntax is not available
-        "403":
-          description: "<b>Forbidden</b>: Supplied API key is not valid for this request"
-        "410":
-          description: "<b>Gone</b>: Request for unsupported format"
-        "500":
-          description: |-
-            <b>Internal Server Error</b>: There is a problem with the TomTom Copyrights
+        '403':
+          description: '<b>Forbidden</b>: Supplied API key is not valid for this request'
+        '410':
+          description: '<b>Gone</b>: Request for unsupported format'
+        '500':
+          description: >-
+            <b>Internal Server Error</b>: There is a problem with the TomTom
+            Copyrights
+
             API service
       summary: Copyrights whole world
       tags:
         - Copyrights
-  "/map/{versionNumber}/copyrights/caption.{format}":
+  '/map/{versionNumber}/copyrights/caption.{format}':
     get:
       description: This API returns copyright captions for the map service.
       parameters:
         - description: Version of the service to call. The current version is 1.
+          enum:
+            - 1
           in: path
           name: versionNumber
           required: true
-          schema:
-            enum:
-              - 1
-            type: integer
-        - description: Format of the response
+          type: integer
+        - default: xml
+          description: Format of the response
+          enum:
+            - json
+            - jsonp
+            - xml
           in: path
           name: format
           required: true
-          schema:
-            default: xml
-            enum:
-              - json
-              - jsonp
-              - xml
-            type: string
+          type: string
         - description: Specifies the jsonp callback method. Only used when format is jsonp
           in: query
           name: callback
           required: false
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: <b>OK</b>
-        "304":
+        '304':
           description: <b>Not Modified</b>
-        "400":
+        '400':
           description: |-
             <b>Malformed request</b>: malformed syntax. Possible causes include:
               - requested syntax is not available
-        "403":
-          description: "<b>Forbidden</b>: Supplied API key is not valid for this request"
-        "410":
-          description: "<b>Gone</b>: Request for unsupported format"
-        "500":
-          description: |-
-            <b>Internal Server Error</b>: There is a problem with the TomTom Copyrights
+        '403':
+          description: '<b>Forbidden</b>: Supplied API key is not valid for this request'
+        '410':
+          description: '<b>Gone</b>: Request for unsupported format'
+        '500':
+          description: >-
+            <b>Internal Server Error</b>: There is a problem with the TomTom
+            Copyrights
+
             API service
       summary: Captions
       tags:
         - Copyrights
-  "/map/{versionNumber}/copyrights/{minLon}/{minLat}/{maxLon}/{maxLat}.{format}":
+  '/map/{versionNumber}/copyrights/{minLon}/{minLat}/{maxLon}/{maxLat}.{format}':
     get:
       description: |-
         The Copyrights API returns copyright information for
@@ -138,86 +133,90 @@ paths:
         This call returns copyright information for a specific bounding box.
       parameters:
         - description: Version of the service to call. The current version is 1
+          enum:
+            - 1
           in: path
           name: versionNumber
           required: true
-          schema:
-            enum:
-              - 1
-            type: integer
-        - description: Format of the response
+          type: integer
+        - default: xml
+          description: Format of the response
+          enum:
+            - json
+            - jsonp
+            - xml
           in: path
           name: format
           required: true
-          schema:
-            default: xml
-            enum:
-              - json
-              - jsonp
-              - xml
-            type: string
-        - description: Minimum longitude coordinate of bounding box defined in terms of latitude/longitude.
-          example: -179.1506
+          type: string
+        - description: >-
+            Minimum longitude coordinate of bounding box defined in terms of
+            latitude/longitude.
           in: path
           name: minLon
           required: true
-          schema:
-            type: number
-        - description: Minimum latitude coordinate of bounding box defined in terms of latitude/longitude.
-          example: 18.9117
+          type: number
+          x-example: -179.1506
+        - description: >-
+            Minimum latitude coordinate of bounding box defined in terms of
+            latitude/longitude.
           in: path
           name: minLat
           required: true
-          schema:
-            type: number
-        - description: Maximum longitude coordinate of bounding box defined in terms of latitude/longitude.
-          example: -66.9406
+          type: number
+          x-example: 18.9117
+        - description: >-
+            Maximum longitude coordinate of bounding box defined in terms of
+            latitude/longitude.
           in: path
           name: maxLon
           required: true
-          schema:
-            type: number
-        - description: Maximum latitude coordinate of bounding box defined in terms of latitude/longitude.
-          example: 71.441
+          type: number
+          x-example: -66.9406
+        - description: >-
+            Maximum latitude coordinate of bounding box defined in terms of
+            latitude/longitude.
           in: path
           name: maxLat
           required: true
-          schema:
-            type: number
+          type: number
+          x-example: 71.441
         - description: Specifies the jsonp callback method. Only used when format is jsonp.
           in: query
           name: callback
           required: false
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: <b>OK</b>
-        "304":
+        '304':
           description: <b>Not Modified</b>
-        "400":
+        '400':
           description: |-
             <b>Malformed request</b>: malformed syntax. Possible causes include:
               - requested syntax is not available
-        "401":
-          description: |-
-            <b>Bad request</b>: Parameters out of range. Possible causes include:
+        '401':
+          description: >-
+            <b>Bad request</b>: Parameters out of range. Possible causes
+            include:
               - minLon n is out of range [-180,180]: the requested minimum longitude coordinate is out of possible range
               - minLat n is out of range [-90,90]: the requested minimum latitude coordinate is out of possible range
               - maxLon n is out of range [-180,180]: the requested maximum longitude coordinate is out of possible range
               - maxLat n is out of range [-90,90]: the requested minimum latitude coordinate is out of possible range
-        "403":
-          description: "<b>Forbidden</b>: Supplied API key is not valid for this request"
-        "410":
-          description: "<b>Gone</b>: Request for unsupported format"
-        "500":
-          description: |-
-            <b>Internal Server Error</b>: There is a problem with the TomTom Copyrights
+        '403':
+          description: '<b>Forbidden</b>: Supplied API key is not valid for this request'
+        '410':
+          description: '<b>Gone</b>: Request for unsupported format'
+        '500':
+          description: >-
+            <b>Internal Server Error</b>: There is a problem with the TomTom
+            Copyrights
+
             API service
       summary: Copyrights bounding box
       tags:
         - Copyrights
-  "/map/{versionNumber}/copyrights/{zoom}/{X}/{Y}.{format}":
+  '/map/{versionNumber}/copyrights/{zoom}/{X}/{Y}.{format}':
     get:
       description: |-
         The Copyrights API returns copyright information for
@@ -225,104 +224,101 @@ paths:
         This call returns copyright information for the a specific map tile.
       parameters:
         - description: Version of the service to call. The current version is 1
+          enum:
+            - 1
           in: path
           name: versionNumber
           required: true
-          schema:
-            enum:
-              - 1
-            type: integer
-        - description: Format of the response
+          type: integer
+        - default: xml
+          description: Format of the response
+          enum:
+            - json
+            - jsonp
+            - xml
           in: path
           name: format
           required: true
-          schema:
-            default: xml
-            enum:
-              - json
-              - jsonp
-              - xml
-            type: string
+          type: string
         - description: |-
             Zoom level of tile to be rendered. Only used for tile-level
             copyright calls.
-          example: 0
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+            - 9
+            - 10
+            - 11
+            - 12
+            - 13
+            - 14
+            - 15
+            - 16
+            - 17
+            - 18
           in: path
           name: zoom
           required: true
-          schema:
-            enum:
-              - 0
-              - 1
-              - 2
-              - 3
-              - 4
-              - 5
-              - 6
-              - 7
-              - 8
-              - 9
-              - 10
-              - 11
-              - 12
-              - 13
-              - 14
-              - 15
-              - 16
-              - 17
-              - 18
-            type: integer
+          type: integer
+          x-example: 0
         - description: |-
             X coordinate of the tile on zoom grid. Only used for tile-level
             copyright calls.
-          example: 0
           in: path
           name: X
           required: true
-          schema:
-            type: integer
+          type: integer
+          x-example: 0
         - description: |-
             Y coordinate of the tile on zoom grid. Only used for tile-level
             copyright calls.
-          example: 0
           in: path
-          name: Y
+          name: 'Y'
           required: true
-          schema:
-            type: integer
+          type: integer
+          x-example: 0
         - description: Specifies the jsonp callback method. Only used when format is jsonp.
           in: query
           name: callback
           required: false
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: <b>OK</b>
-        "304":
+        '304':
           description: <b>Not Modified</b>
-        "400":
+        '400':
           description: |-
             <b>Malformed request</b>: malformed syntax. Possible causes include:
               - requested syntax is not available
-        "401":
-          description: |-
-            <b>Bad request</b>: Parameters out of range. Possible causes include:
+        '401':
+          description: >-
+            <b>Bad request</b>: Parameters out of range. Possible causes
+            include:
               - zoom n is out of range 0 <= zoom < 19: the requested zoom level is out of the possible range
               - x n is out of range [0,m]: the requested x coordinate is out of the possible range (the value of m will vary depending on zoom level)
               - y n is out of range [0,m]: the requested y coordinate is out of the possible range (the value of m will vary depending on zoom level)
-        "403":
-          description: "<b>Forbidden</b>: Supplied API key is not valid for this request"
-        "410":
-          description: "<b>Gone</b>: Request for unsupported format"
-        "500":
-          description: |-
-            <b>Internal Server Error</b>: There is a problem with the TomTom Copyrights
+        '403':
+          description: '<b>Forbidden</b>: Supplied API key is not valid for this request'
+        '410':
+          description: '<b>Gone</b>: Request for unsupported format'
+        '500':
+          description: >-
+            <b>Internal Server Error</b>: There is a problem with the TomTom
+            Copyrights
+
             API service
       summary: Copyrights tile
       tags:
         - Copyrights
-  "/map/{versionNumber}/staticimage":
+  '/map/{versionNumber}/staticimage':
     get:
       description: |-
         The Static Image service renders a rectangular raster image
@@ -330,138 +326,149 @@ paths:
         using either a center point plus width and height or a bounding box.
       parameters:
         - description: Version of the service to call. The current version is 1.
+          enum:
+            - 1
           in: path
           name: versionNumber
           required: true
-          schema:
-            enum:
-              - 1
-            type: integer
-        - description: |-
+          type: integer
+        - default: basic
+          description: >-
             Layer of image to be rendered. <em>Hybrid</em> and <em>labels</em>
-            are intended for layering with other data and are only available in <em>png</em> format.
-          example: basic
+
+            are intended for layering with other data and are only available in
+            <em>png</em> format.
+          enum:
+            - basic
+            - hybrid
+            - labels
           in: query
           name: layer
           required: false
-          schema:
-            default: basic
-            enum:
-              - basic
-              - hybrid
-              - labels
-            type: string
-        - description: Map style to be returned
-          example: main
+          type: string
+          x-example: basic
+        - default: main
+          description: Map style to be returned
+          enum:
+            - main
+            - night
           in: query
           name: style
           required: false
-          schema:
-            default: main
-            enum:
-              - main
-              - night
-            type: string
-        - description: Image format to be returned
-          example: png
+          type: string
+          x-example: main
+        - default: png
+          description: Image format to be returned
+          enum:
+            - png
+            - jpg
+            - jpeg
           in: query
           name: format
           required: false
-          schema:
-            default: png
-            enum:
-              - png
-              - jpg
-              - jpeg
-            type: string
-        - description: Zoom level of map image to be returned.
+          type: string
+          x-example: png
+        - default: 12
+          description: Zoom level of map image to be returned.
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+            - 9
+            - 10
+            - 11
+            - 12
+            - 13
+            - 14
+            - 15
+            - 16
+            - 17
+            - 18
+            - 19
+            - 20
+            - 21
+            - 22
           in: query
           name: zoom
           required: false
-          schema:
-            default: 12
-            enum:
-              - 0
-              - 1
-              - 2
-              - 3
-              - 4
-              - 5
-              - 6
-              - 7
-              - 8
-              - 9
-              - 10
-              - 11
-              - 12
-              - 13
-              - 14
-              - 15
-              - 16
-              - 17
-              - 18
-              - 19
-              - 20
-              - 21
-              - 22
-            type: integer
-        - description: |-
+          type: integer
+        - description: >-
             Coordinates for the center point of the image.
+
             Must be used with the <strong>width</strong> and
-            <strong>height</strong> parameters; cannot be used with <strong>bbox</strong>.
+
+            <strong>height</strong> parameters; cannot be used with
+            <strong>bbox</strong>.
+
             Uses EPSG:3857 projection (functionally equivalent to EPSG:900910).
-          example: 4.899886, 52.379031
           in: query
           name: center
+          pattern: '^-*\d+\.*\d*, *-*\d+\.*\d*$'
           required: false
-          schema:
-            pattern: ^-*\d+\.*\d*, *-*\d+\.*\d*$
-            type: string
-        - description: Width of the resulting image in pixels. Width must be a positive integer between 1 and 8192.
-          example: 512
+          type: string
+          x-example: '4.899886, 52.379031'
+        - default: 512
+          description: >-
+            Width of the resulting image in pixels. Width must be a positive
+            integer between 1 and 8192.
           in: query
+          maximum: 8192
+          minimum: 1
           name: width
           required: false
-          schema:
-            default: 512
-            maximum: 8192
-            minimum: 1
-            type: integer
-        - description: Height of the resulting image in pixels. Height must be a positive integer between 1 and 8192.
-          example: 512
+          type: integer
+          x-example: 512
+        - default: 512
+          description: >-
+            Height of the resulting image in pixels. Height must be a positive
+            integer between 1 and 8192.
           in: query
+          maximum: 8192
+          minimum: 1
           name: height
           required: false
-          schema:
-            default: 512
-            maximum: 8192
-            minimum: 1
-            type: integer
-        - description: |-
-            Bounding box for the image, using EPSG:3857 projection (functionally equivalent to EPSG:900910).
-            Values <strong>must</strong> be in the order of minLon, minLat, maxLon, maxLat.
-            MaxLat must be greater than minLat. Longitude values can be on both sides of the 180th meridian.
-            Cannot be used with <strong>center</strong>, <strong>width</strong>, or <strong>height</strong> parameters.
+          type: integer
+          x-example: 512
+        - description: >-
+            Bounding box for the image, using EPSG:3857 projection (functionally
+            equivalent to EPSG:900910).
+
+            Values <strong>must</strong> be in the order of minLon, minLat,
+            maxLon, maxLat.
+
+            MaxLat must be greater than minLat. Longitude values can be on both
+            sides of the 180th meridian.
+
+            Cannot be used with <strong>center</strong>, <strong>width</strong>,
+            or <strong>height</strong> parameters.
           in: query
           name: bbox
+          pattern: '^(-*\d+\.*\d*,){3}(-*\d+\.*\d*)$'
           required: false
-          schema:
-            pattern: ^(-*\d+\.*\d*,){3}(-*\d+\.*\d*)$
-            type: string
-        - description: Geopolitical view. Determines rendering of disputed areas. See the <a href="/maps-api/maps-api-documentation-raster/raster-tile">documentation</a> for an explanation of how this works in live services.
-          example: Unified
+          type: string
+        - description: >-
+            Geopolitical view. Determines rendering of disputed areas. See the
+            <a
+            href="/maps-api/maps-api-documentation-raster/raster-tile">documentation</a>
+            for an explanation of how this works in live services.
+          enum:
+            - Unified
+            - IN
           in: query
           name: view
           required: false
-          schema:
-            enum:
-              - Unified
-              - IN
-            type: string
+          type: string
+          x-example: Unified
       responses:
-        "200":
+        '200':
           description: <b>OK</b>
-        "400":
+        '400':
           description: |-
             <b>Bad Request</b>: Received by the interface, but there is an error
             in the request, such as:
@@ -473,118 +480,121 @@ paths:
             This code is returned if the required parameters of the request were
             malformed. A detailed exception explanation is returned in a
             response in form of Service Exception Report.
-        "403":
+        '403':
           description: |-
             <b>Forbidden</b>:
               - supplied API key is not valid for the request
               - the requested view is not available in the country where the request was sent from
-        "500":
+        '500':
           description: |-
             <b>Internal Server Error</b>: There is a problem with the Static Map
             Service.
-        "503":
+        '503':
           description: <b>Service currently unavailable.</b>
       summary: Static Image
       tags:
         - Raster
-  "/map/{versionNumber}/tile/{layer}/{style}/{zoom}/{X}/{Y}.pbf":
+  '/map/{versionNumber}/tile/{layer}/{style}/{zoom}/{X}/{Y}.pbf':
     get:
-      description: The Maps API Vector Service delivers vector tiles, which are representations of square sections of map data.
+      description: >-
+        The Maps API Vector Service delivers vector tiles, which are
+        representations of square sections of map data.
       parameters:
         - description: Version of the service to call. The current version is 1
+          enum:
+            - 1
           in: path
           name: versionNumber
           required: true
-          schema:
-            enum:
-              - 1
-            type: integer
+          type: integer
         - description: Layer of tile to be rendered
-          example: basic
+          enum:
+            - basic
+            - hybrid
+            - labels
           in: path
           name: layer
           required: true
-          schema:
-            enum:
-              - basic
-              - hybrid
-              - labels
-            type: string
+          type: string
+          x-example: basic
         - description: Style of tile to be rendered
-          example: main
+          enum:
+            - main
           in: path
           name: style
           required: true
-          schema:
-            enum:
-              - main
-            type: string
+          type: string
+          x-example: main
         - description: Zoom level of tile to be rendered
-          example: 0
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+            - 9
+            - 10
+            - 11
+            - 12
+            - 13
+            - 14
+            - 15
+            - 16
+            - 17
+            - 18
+            - 19
+            - 20
+            - 21
+            - 22
           in: path
           name: zoom
           required: true
-          schema:
-            enum:
-              - 0
-              - 1
-              - 2
-              - 3
-              - 4
-              - 5
-              - 6
-              - 7
-              - 8
-              - 9
-              - 10
-              - 11
-              - 12
-              - 13
-              - 14
-              - 15
-              - 16
-              - 17
-              - 18
-              - 19
-              - 20
-              - 21
-              - 22
-            type: integer
+          type: integer
+          x-example: 0
         - description: x coordinate of tile on zoom grid
-          example: 0
           in: path
           name: X
           required: true
-          schema:
-            type: integer
+          type: integer
+          x-example: 0
         - description: y coordinate of tile on zoom grid
-          example: 0
           in: path
-          name: Y
+          name: 'Y'
           required: true
-          schema:
-            type: integer
-        - description: Geopolitical view. Determines rendering of disputed areas. See the <a href="/maps-api/maps-api-documentation-vector/tile">documentation</a> for an explanation of how this works in live services.
-          example: Unified
+          type: integer
+          x-example: 0
+        - description: >-
+            Geopolitical view. Determines rendering of disputed areas. See the
+            <a
+            href="/maps-api/maps-api-documentation-vector/tile">documentation</a>
+            for an explanation of how this works in live services.
+          enum:
+            - Unified
+            - IL
+            - IN
           in: query
           name: view
           required: false
-          schema:
-            enum:
-              - Unified
-              - IL
-              - IN
-            type: string
-        - description: "Language to be used for labels in the response. The default is NGT: Neutral Ground Truth, which uses each place's local official language and script (where available). See the <a href=\"/maps-api/maps-api-documentation-vector/tile\">documentation</a> for a full list of options."
+          type: string
+          x-example: Unified
+        - default: NGT
+          description: >-
+            Language to be used for labels in the response. The default is NGT:
+            Neutral Ground Truth, which uses each place's local official
+            language and script (where available). See the <a
+            href="/maps-api/maps-api-documentation-vector/tile">documentation</a>
+            for a full list of options.
           in: query
           name: language
-          schema:
-            default: NGT
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: <b>OK</b>
-        "400":
+        '400':
           description: |-
             <b>Bad request</b>: Usually the result of malformed syntax:
               - the given combination of layer, style, and query parameters is not supported
@@ -592,134 +602,136 @@ paths:
               - x n is out of range [0,m]: the requested x coordinate is out of the possible range (the value of m will vary depending on zoom level)
               - y n is out of range [0,m]: the requested y coordinate is out of the possible range (the value of m will vary depending on zoom level)
               - the requested view is not supported
-        "403":
+        '403':
           description: |-
             <b>Forbidden</b>: 
               - the supplied API key is not valid for this request
               - the requested view is not available in your country
-        "500":
+        '500':
           description: |-
             <b>Internal Server Error</b>: There is a problem with the TomTom
             Maps API Vector Tile service
-        "503":
+        '503':
           description: <b>Service currently unavailable</b>.
       summary: Tile
       tags:
         - Vector
-  "/map/{versionNumber}/tile/{layer}/{style}/{zoom}/{X}/{Y}.{format}":
+  '/map/{versionNumber}/tile/{layer}/{style}/{zoom}/{X}/{Y}.{format}':
     get:
-      description: The Maps API Raster Service delivers raster tiles, which are representations of square sections of map data.
+      description: >-
+        The Maps API Raster Service delivers raster tiles, which are
+        representations of square sections of map data.
       parameters:
         - description: Version of the service to call. The current version is 1.
+          enum:
+            - 1
           in: path
           name: versionNumber
           required: true
-          schema:
-            enum:
-              - 1
-            type: integer
-        - description: Layer of tile to be rendered. <em>Hybrid</em> and <em>labels</em> are intended for layering with other data and are only available in <em>png</em> format.
-          example: basic
+          type: integer
+        - description: >-
+            Layer of tile to be rendered. <em>Hybrid</em> and <em>labels</em>
+            are intended for layering with other data and are only available in
+            <em>png</em> format.
+          enum:
+            - basic
+            - hybrid
+            - labels
           in: path
           name: layer
           required: true
-          schema:
-            enum:
-              - basic
-              - hybrid
-              - labels
-            type: string
+          type: string
+          x-example: basic
         - description: Style of tile to be rendered
-          example: main
+          enum:
+            - main
+            - night
           in: path
           name: style
           required: true
-          schema:
-            enum:
-              - main
-              - night
-            type: string
+          type: string
+          x-example: main
         - description: Zoom level of tile to be rendered
-          example: 0
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+            - 9
+            - 10
+            - 11
+            - 12
+            - 13
+            - 14
+            - 15
+            - 16
+            - 17
+            - 18
+            - 19
+            - 20
+            - 21
+            - 22
           in: path
           name: zoom
           required: true
-          schema:
-            enum:
-              - 0
-              - 1
-              - 2
-              - 3
-              - 4
-              - 5
-              - 6
-              - 7
-              - 8
-              - 9
-              - 10
-              - 11
-              - 12
-              - 13
-              - 14
-              - 15
-              - 16
-              - 17
-              - 18
-              - 19
-              - 20
-              - 21
-              - 22
-            type: integer
+          type: integer
+          x-example: 0
         - description: x coordinate of tile on zoom grid
-          example: 0
           in: path
           name: X
           required: true
-          schema:
-            type: integer
+          type: integer
+          x-example: 0
         - description: y coordinate of tile on zoom grid
-          example: 0
           in: path
-          name: Y
+          name: 'Y'
           required: true
-          schema:
-            type: integer
+          type: integer
+          x-example: 0
         - description: Format of the response.
-          example: png
+          enum:
+            - jpg
+            - png
           in: path
           name: format
           required: true
-          schema:
-            enum:
-              - jpg
-              - png
-            type: string
-        - description: Tile dimensions in pixels. <em>512</em> is only available for the <em>main</em> style and <em>basic</em> or <em>labels</em> layers.
+          type: string
+          x-example: png
+        - default: 256
+          description: >-
+            Tile dimensions in pixels. <em>512</em> is only available for the
+            <em>main</em> style and <em>basic</em> or <em>labels</em> layers.
+          enum:
+            - 256
+            - 512
           in: query
           name: tileSize
           required: false
-          schema:
-            default: 256
-            enum:
-              - 256
-              - 512
-            type: integer
-        - description: Geopolitical view. Determines rendering of disputed areas. See the <a href="/maps-sdk-web/functional-examples#geopolitical-views">documentation</a> for an explanation of how this works in live services.
-          example: Unified
+          type: integer
+        - description: >-
+            Geopolitical view. Determines rendering of disputed areas. See the
+            <a
+            href="/maps-sdk-web/functional-examples#geopolitical-views">documentation</a>
+            for an explanation of how this works in live services.
+          enum:
+            - Unified
+            - IN
           in: query
           name: view
           required: false
-          schema:
-            enum:
-              - Unified
-              - IN
-            type: string
+          type: string
+          x-example: Unified
       responses:
-        "200":
+        '200':
           description: <b>OK</b>
-        "302":
-          description: "<b>Found</b>: URL redirection"
-        "400":
+        '302':
+          description: '<b>Found</b>: URL redirection'
+        '400':
           description: |-
             <b>Bad request</b>: Usually the result of malformed syntax:
               - the given combination of layer, style, and query parameters is not supported
@@ -727,21 +739,21 @@ paths:
               - x n is out of range [0,m]: the requested x coordinate is out of the possible range (the value of m will vary depending on zoom level)
               - y n is out of range [0,m]: the requested y coordinate is out of the possible range (the value of m will vary depending on zoom level)
               - the requested view is not supported
-        "403":
+        '403':
           description: |-
             <b>Forbidden</b>:
               - the supplied API key is not valid for this request
               - the requested view is not available in the country where the request was sent from
-        "410":
-          description: "<b>Gone</b>: Request for unsupported format"
-        "500":
+        '410':
+          description: '<b>Gone</b>: Request for unsupported format'
+        '500':
           description: |-
             <b>Internal Server Error</b>: There is a problem with the TomTom
             Maps API Raster Tile service
       summary: Tile
       tags:
         - Raster
-  "/map/{versionNumber}/wms/":
+  '/map/{versionNumber}/wms/':
     get:
       description: |-
         The GetMap call implements the Web Map Service 1.1.1 standard
@@ -750,110 +762,101 @@ paths:
       operationId: GetMap
       parameters:
         - description: Version of the service to call. The current version is 1
+          enum:
+            - 1
           in: path
           name: versionNumber
           required: true
-          schema:
-            enum:
-              - 1
-            type: integer
+          type: integer
         - description: Request type
+          enum:
+            - GetMap
           in: query
           name: request
           required: true
-          schema:
-            enum:
-              - GetMap
-            type: string
+          type: string
         - description: |-
             Projection used in describing the <b>bbox</b> EPSG:3857 is
             recommended, particularly at higher zoom levels. (Note that
             EPSG:3857 is functionally equivalent to EPSG:900913/EPSG:3785)
-          example: EPSG:4326
+          enum:
+            - 'EPSG:3857'
+            - 'EPSG:4326'
           in: query
           name: srs
           required: true
-          schema:
-            enum:
-              - EPSG:3857
-              - EPSG:4326
-            type: string
+          type: string
+          x-example: 'EPSG:4326'
         - description: |-
             Bounding box in the projection stated in <b>srs</b>
             (minLon,minLat,maxLon,maxLat)
-          example: -0.489,51.28,0.236,51.686
           in: query
           name: bbox
+          pattern: '^(-*\d+\.*\d*, *){3}(-*\d+\.*\d*)$'
           required: true
-          schema:
-            pattern: ^(-*\d+\.*\d*, *){3}(-*\d+\.*\d*)$
-            type: string
-        - description: Width of the resulting image, in pixels Maximum value is 2048
-          example: 512
+          type: string
+          x-example: '-0.489,51.28,0.236,51.686'
+        - description: 'Width of the resulting image, in pixels Maximum value is 2048'
           in: query
           name: width
           required: true
-          schema:
-            type: integer
-        - description: Height of the resulting image, in pixels Maximum value is 2048
-          example: 512
+          type: integer
+          x-example: 512
+        - description: 'Height of the resulting image, in pixels Maximum value is 2048'
           in: query
           name: height
           required: true
-          schema:
-            type: integer
+          type: integer
+          x-example: 512
         - description: Image format to be returned
-          example: image/png
+          enum:
+            - image/jpeg
+            - image/png
           in: query
           name: format
           required: true
-          schema:
-            enum:
-              - image/jpeg
-              - image/png
-            type: string
+          type: string
+          x-example: image/png
         - description: Map layers requested Currently only the basic layer is available
+          enum:
+            - basic
           in: query
           name: layers
           required: true
-          schema:
-            enum:
-              - basic
-            type: string
+          type: string
         - allowEmptyValue: true
           description: |-
             Map styles to be returned. Currently, no styles are available. This
             parameter is present for forward compatibility; it must be used and
             left blank.
+          enum:
+            - ''
           in: query
           name: styles
           required: false
-          schema:
-            enum:
-              - ""
-            type: string
+          type: string
         - description: Service type
+          enum:
+            - WMS
           in: query
           name: service
           required: false
-          schema:
-            enum:
-              - WMS
-            type: string
+          type: string
         - description: WMS service version
+          enum:
+            - 1.1.1
           in: query
           name: version
           required: true
-          schema:
-            enum:
-              - 1.1.1
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: <b>OK</b>
-        "202":
-          description: |-
-            <b>Accepted</b>: Received by the interface, but there is a WMS exception in
+        '202':
+          description: >-
+            <b>Accepted</b>: Received by the interface, but there is a WMS
+            exception in
+
             processing it. Possible causes include:
               - one or more required parameters is missing
               - unsupported or unrecognized parameter value
@@ -891,60 +894,64 @@ paths:
 
 
               
-            This code is returned if the parameters of the request were malformed.
-            The response includes a detailed explanation in the Service Exception Report.
-        "401":
-          description: "<b>Unauthorized</b>: Supplied API key is not valid for the request"
-        "500":
+            This code is returned if the parameters of the request were
+            malformed.
+
+            The response includes a detailed explanation in the Service
+            Exception Report.
+        '401':
+          description: '<b>Unauthorized</b>: Supplied API key is not valid for the request'
+        '500':
           description: |-
             <b>Internal Server Error</b>: There is a problem with the TomTom WMS
             service
       summary: GetMap
       tags:
         - WMS / WMTS
-  "/map/{versionNumber}/wms//":
+  '/map/{versionNumber}/wms//':
     get:
-      description: |-
-        The GetCapabilities call is part of TomTom's implementation of version 1.1.1
+      description: >-
+        The GetCapabilities call is part of TomTom's implementation of version
+        1.1.1
+
         the Web Map Service (WMS). It provides descriptions of the other calls
+
         that are available in the implementation.
       operationId: GetCapabilities
       parameters:
-        - in: path
+        - enum:
+            - 1
+          in: path
           name: versionNumber
           required: true
-          schema:
-            enum:
-              - 1
-            type: integer
-        - in: query
+          type: integer
+        - enum:
+            - WMS
+          in: query
           name: service
           required: true
-          schema:
-            enum:
-              - WMS
-            type: string
-        - in: query
+          type: string
+        - enum:
+            - GetCapabilities
+          in: query
           name: request
           required: true
-          schema:
-            enum:
-              - GetCapabilities
-            type: string
+          type: string
         - description: WMS service version
+          enum:
+            - 1.1.1
           in: query
           name: version
           required: false
-          schema:
-            enum:
-              - 1.1.1
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: <b>OK</b>
-        "202":
-          description: |-
-            <b>Accepted</b>: Received by the interface, but there is a WMS exception in
+        '202':
+          description: >-
+            <b>Accepted</b>: Received by the interface, but there is a WMS
+            exception in
+
             processing it. Possible causes include:
               - one or more required parameters is missing
               - unsupported or unrecognized parameter value
@@ -982,64 +989,79 @@ paths:
 
 
               
-            This code is returned if the parameters of the request were malformed.
-            The response includes a detailed explanation in the Service Exception Report.
-        "401":
-          description: "<b>Unauthorized</b>: Supplied API key is not valid for the request"
-        "500":
+            This code is returned if the parameters of the request were
+            malformed.
+
+            The response includes a detailed explanation in the Service
+            Exception Report.
+        '401':
+          description: '<b>Unauthorized</b>: Supplied API key is not valid for the request'
+        '500':
           description: |-
             <b>Internal Server Error</b>: There is a problem with the TomTom WMS
             service
       summary: GetCapabilities
       tags:
         - WMS / WMTS
-  "/map/{versionNumber}/wmts/{key}/{wmtsVersion}/WMTSCapabilities.xml":
+  '/map/{versionNumber}/wmts/{key}/{wmtsVersion}/WMTSCapabilities.xml':
     get:
-      description: |-
+      description: >-
         The WMTS GetCapabilities call implements version 1.0.0 of
-        the <a href="http://www.opengeospatial.org/standards/wmts">Web Map Tile Service</a>
-        (WMTS) standard. It returns metadata that allows compatible calling systems to construct
+
+        the <a href="http://www.opengeospatial.org/standards/wmts">Web Map Tile
+        Service</a>
+
+        (WMTS) standard. It returns metadata that allows compatible calling
+        systems to construct
+
         calls to TomTom's raster map tile service. See the
+
         <a href="/maps-api/maps-api-documentation-raster/wmts">documentation</a>
+
         for more information on WMTS.
       parameters:
         - description: Version of the service to call. The current version is 1
+          enum:
+            - 1
           in: path
           name: versionNumber
           required: true
-          schema:
-            enum:
-              - 1
-            type: integer
+          type: integer
         - description: Your API key for calling this service.
           in: path
           name: key
           required: true
-          schema:
-            type: string
-        - in: path
+          type: string
+        - enum:
+            - 1.0.0
+          in: path
           name: wmtsVersion
           required: true
-          schema:
-            enum:
-              - 1.0.0
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: <b>OK</b>
-        "400":
-          description: "<b>Bad request</b>: Probably malformed syntax"
-        "401":
-          description: "<b>Unauthorized</b>: Supplied API key is not valid for this request"
-        "500":
-          description: "<b>Internal Server Error</b>: There is a problem with the TomTom WMTS service"
+        '400':
+          description: '<b>Bad request</b>: Probably malformed syntax'
+        '401':
+          description: '<b>Unauthorized</b>: Supplied API key is not valid for this request'
+        '500':
+          description: >-
+            <b>Internal Server Error</b>: There is a problem with the TomTom
+            WMTS service
       security: []
       summary: WMTS
       tags:
         - WMS / WMTS
-components:
-  securitySchemes:
-    api_key:
-      in: query
-      name: key
-      type: apiKey
+schemes:
+  - https
+security:
+  - api_key: []
+securityDefinitions:
+  api_key:
+    in: query
+    name: key
+    type: apiKey
+swagger: '2.0'
+x-components: {}
+

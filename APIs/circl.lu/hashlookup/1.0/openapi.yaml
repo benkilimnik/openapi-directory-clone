@@ -1,34 +1,37 @@
-openapi: 3.0.0
-servers:
-  - url: /
+basePath: /
 info:
-  description: |-
+  description: >-
     ![](https://www.circl.lu/assets/images/circl-logo.png)
-    [CIRCL hash lookup](https://hashlookup.circl.lu/) is a public API to lookup hash values against known database of files. NSRL RDS database is included. More database will be included in the future. The API is accessible via HTTP ReST API and the API is also [described as an OpenAPI](https://hashlookup.circl.lu/swagger.json). A [documentation is available with](https://www.circl.lu/services/hashlookup/) some sample queries. The API can be tested live in the interface below.
+
+    [CIRCL hash lookup](https://hashlookup.circl.lu/) is a public API to lookup
+    hash values against known database of files. NSRL RDS database is included.
+    More database will be included in the future. The API is accessible via HTTP
+    ReST API and the API is also [described as an
+    OpenAPI](https://hashlookup.circl.lu/swagger.json). A [documentation is
+    available with](https://www.circl.lu/services/hashlookup/) some sample
+    queries. The API can be tested live in the interface below.
   license:
     name: CC-BY
   title: hashlookup CIRCL API
-  version: "1.0"
+  version: '1.0'
   x-apisguru-categories:
     - security
   x-logo:
-    url: https://www.circl.lu/assets/images/circl-logo.png
+    url: 'https://www.circl.lu/assets/images/circl-logo.png'
   x-origin:
     - format: openapi
-      url: https://hashlookup.circl.lu/swagger.json
-      version: "3.0"
+      url: 'https://hashlookup.circl.lu/swagger.json'
+      version: '3.0'
   x-providerName: circl.lu
   x-serviceName: hashlookup
-tags:
-  - description: Default namespace
-    name: default
 paths:
   /bulk/md5:
     post:
       description: Bulk search of MD5 hashes in a JSON array with the key 'hashes'.
       operationId: post_bulkmd5
+      parameters: []
       responses:
-        "200":
+        '200':
           description: Success
       tags:
         - default
@@ -36,8 +39,9 @@ paths:
     post:
       description: Bulk search of SHA1 hashes in a JSON array with the 'hashes'.
       operationId: post_bulksha1
+      parameters: []
       responses:
-        "200":
+        '200':
           description: Success
       tags:
         - default
@@ -45,17 +49,19 @@ paths:
     get:
       description: Info about the hashlookup database
       operationId: get_info
+      parameters: []
       responses:
-        "200":
+        '200':
           description: Success
       tags:
         - default
-  "/lookup/md5/{md5}":
+  '/lookup/md5/{md5}':
     get:
       description: Lookup MD5.
       operationId: get_lookup
+      parameters: []
       responses:
-        "200":
+        '200':
           description: Success
       tags:
         - default
@@ -63,13 +69,13 @@ paths:
       - in: path
         name: md5
         required: true
-        schema:
-          type: string
-  "/lookup/sha1/{sha1}":
+        type: string
+  '/lookup/sha1/{sha1}':
     get:
       description: Lookup SHA-1.
+      parameters: []
       responses:
-        "200":
+        '200':
           description: Success
       tags:
         - default
@@ -77,14 +83,17 @@ paths:
       - in: path
         name: sha1
         required: true
-        schema:
-          type: string
-  "/session/create/{name}":
+        type: string
+  '/session/create/{name}':
     get:
-      description: Create a session key to keep search context. The session is attached to a name. After the session is created, the header `hashlookup_session` can be set to the session name.
+      description: >-
+        Create a session key to keep search context. The session is attached to
+        a name. After the session is created, the header `hashlookup_session`
+        can be set to the session name.
       operationId: get_sessioncreate
+      parameters: []
       responses:
-        "200":
+        '200':
           description: Success
       tags:
         - default
@@ -92,13 +101,13 @@ paths:
       - in: path
         name: name
         required: true
-        schema:
-          type: string
-  "/session/get/{name}":
+        type: string
+  '/session/get/{name}':
     get:
       description: Return set of matching and non-matching hashes from a session.
+      parameters: []
       responses:
-        "200":
+        '200':
           description: Success
       tags:
         - default
@@ -106,11 +115,15 @@ paths:
       - in: path
         name: name
         required: true
-        schema:
-          type: string
-components:
+        type: string
+swagger: '2.0'
+tags:
+  - description: Default namespace
+    name: default
+x-components:
   responses:
     MaskError:
       description: When any error occurs on mask
     ParseError:
       description: When a mask can't be parsed
+

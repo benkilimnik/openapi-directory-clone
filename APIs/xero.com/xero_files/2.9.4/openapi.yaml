@@ -1,54 +1,263 @@
-openapi: 3.0.0
-servers:
-  - description: Xero Files API
-    url: https://api.xero.com/files.xro/1.0/
+basePath: /files.xro/1.0/
+definitions:
+  Association:
+    properties:
+      FileId:
+        description: The unique identifier of the file
+        format: uuid
+        type: string
+      ObjectGroup:
+        $ref: '#/definitions/ObjectGroup'
+      ObjectId:
+        description: >-
+          The identifier of the object that the file is being associated with
+          (e.g. InvoiceID, BankTransactionID, ContactID)
+        format: uuid
+        type: string
+      ObjectType:
+        $ref: '#/definitions/ObjectType'
+    type: object
+  FileObject:
+    properties:
+      CreatedDateUtc:
+        description: Created date in UTC
+        example: '2020-12-03T19:04:58.697Z'
+        type: string
+      FolderId:
+        description: Folder relation object's UUID
+        example: 0f8ccf21-7267-4268-9167-a1e2c40c84c8
+        format: uuid
+        type: string
+      Id:
+        description: File object's UUID
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        format: uuid
+        type: string
+      MimeType:
+        description: 'MimeType of the file (image/png, image/jpeg, application/pdf, etc..)'
+        example: image/jpeg
+        type: string
+      Name:
+        description: File Name
+        example: File2.jpg
+        type: string
+      Size:
+        description: Numeric value in bytes
+        example: 3615
+        type: integer
+      UpdatedDateUtc:
+        description: Updated date in UTC
+        example: '2020-12-03T19:04:58.697Z'
+        type: string
+      User:
+        $ref: '#/definitions/User'
+    required:
+      - id
+      - name
+      - manufacturer
+      - releaseDate
+    type: object
+  Files:
+    properties:
+      Items:
+        items:
+          $ref: '#/definitions/FileObject'
+        type: array
+      Page:
+        example: 1
+        type: integer
+      PerPage:
+        example: 50
+        type: integer
+      TotalCount:
+        example: 2
+        type: integer
+    type: object
+  Folder:
+    properties:
+      Email:
+        description: >-
+          The email address used to email files to the inbox. Only the inbox
+          will have this element.
+        example: foo@bar.com
+        type: string
+      FileCount:
+        description: The number of files in the folder
+        example: 5
+        type: integer
+      Id:
+        description: Xero unique identifier for a folder  Files
+        example: 4ff1e5cc-9835-40d5-bb18-09fdb118db9c
+        format: uuid
+        type: string
+      IsInbox:
+        description: >-
+          to indicate if the folder is the Inbox. The Inbox cannot be renamed or
+          deleted.
+        example: true
+        type: boolean
+      Name:
+        description: The name of the folder
+        example: assets
+        type: string
+    required:
+      - name
+  Folders:
+    properties:
+      Folders:
+        items:
+          $ref: '#/definitions/Folder'
+        type: array
+    type: object
+  ObjectGroup:
+    description: >-
+      The Object Group that the object is in. These roughly correlate to the
+      endpoints that can be used to retrieve the object via the core accounting
+      API.
+    enum:
+      - Account
+      - BankTransaction
+      - Contact
+      - CreditNote
+      - Invoice
+      - Item
+      - ManualJournal
+      - Overpayment
+      - Payment
+      - Prepayment
+      - Receipt
+    type: string
+  ObjectType:
+    description: The Object Type
+    enum:
+      - Unknown
+      - Accpay
+      - AccPayCredit
+      - AccPayPayment
+      - AccRec
+      - AccRecCredit
+      - AccRecPayment
+      - Adjustment
+      - ApCreditPayment
+      - ApOverPayment
+      - ApOverPaymentPayment
+      - ApOverPaymentSourcePayment
+      - ApPrepayment
+      - ApPrepaymentPayment
+      - ApPrepaymentSourcePayment
+      - ArCreditPayment
+      - ArOverPayment
+      - ArOverpaymentPayment
+      - ArOverpaymentSourcePayment
+      - ArPrepayment
+      - ArPrepaymentPayment
+      - ArPrepaymentSourcePayment
+      - CashPaid
+      - CashRec
+      - ExpPayment
+      - ManJournal
+      - PurchaseOrder
+      - Receipt
+      - Transfer
+      - Account
+      - Contact
+      - Business
+      - Employee
+      - Person
+      - User
+      - Org
+      - FixedAsset
+      - PayRun
+      - PriceListItem
+      - Bank
+      - Current
+      - Equity
+      - Expense
+      - Fixed
+      - Liability
+      - Prepayment
+      - Revenue
+      - Sales
+      - Overheads
+      - Depreciatn
+      - OtherIncome
+      - DirectCosts
+      - Currliab
+      - Termliab
+      - NonCurrent
+    type: string
+  User:
+    properties:
+      FirstName:
+        description: First name of user
+        example: John
+        type: string
+      FullName:
+        description: Last name of user
+        example: Smith
+        type: string
+      Id:
+        description: Xero identifier
+        example: 4ff1e5cc-9835-40d5-bb18-09fdb118db9c
+        format: uuid
+        type: string
+      LastName:
+        description: Last name of user
+        example: Smith
+        type: string
+      Name:
+        description: 'Key is Name, but returns Email address of user who created the file'
+        example: john.smith@mail.com
+        type: string
+    required:
+      - Id
+    type: object
+host: api.xero.com
 info:
   contact:
     email: api@xero.com
     name: Xero Platform Team
-    url: https://developer.xero.com
+    url: 'https://developer.xero.com'
     x-twitter: XeroAPI
   description: These endpoints are specific to Xero Files API
-  termsOfService: https://developer.xero.com/xero-developer-platform-terms-conditions/
+  termsOfService: 'https://developer.xero.com/xero-developer-platform-terms-conditions/'
   title: Xero Files API
   version: 2.9.4
   x-apisguru-categories:
     - financial
   x-origin:
     - format: openapi
-      url: https://raw.githubusercontent.com/XeroAPI/Xero-OpenAPI/master/xero_files.yaml
-      version: "3.0"
+      url: >-
+        https://raw.githubusercontent.com/XeroAPI/Xero-OpenAPI/master/xero_files.yaml
+      version: '3.0'
   x-providerName: xero.com
   x-serviceName: xero_files
-tags:
-  - description: Operations available to regular developers
-    name: Files
 paths:
-  "/Associations/{ObjectId}":
+  '/Associations/{ObjectId}':
     get:
-      description: By passing in the appropriate options,
+      description: 'By passing in the appropriate options,'
       operationId: getAssociationsByObject
       parameters:
         - description: Object id for single object
+          format: uuid
           in: path
           name: ObjectId
           required: true
-          schema:
-            example: 4ff1e5cc-9835-40d5-bb18-09fdb118db9c
-            format: uuid
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              example: '[ { "FileId":"6beccb4a-0d7d-4518-93f3-e0cd1dccb254",
-                "ObjectId":"1270bf7c-5d18-473a-9231-1e36c4bd33ed",
-                "ObjectType":"Business", "ObjectGroup":"Contact" } ]'
-              schema:
-                items:
-                  $ref: "#/components/schemas/Association"
-                type: array
+        '200':
           description: search results matching criteria
+          examples:
+            application/json: >-
+              [ { "FileId":"6beccb4a-0d7d-4518-93f3-e0cd1dccb254",
+              "ObjectId":"1270bf7c-5d18-473a-9231-1e36c4bd33ed",
+              "ObjectType":"Business", "ObjectGroup":"Contact" } ]
+          schema:
+            items:
+              $ref: '#/definitions/Association'
+            type: array
       security:
         - OAuth2:
             - files.read
@@ -56,59 +265,60 @@ paths:
       tags:
         - Files
     parameters:
-      - $ref: "#/components/parameters/requiredHeader"
+      - description: Xero identifier for Tenant
+        in: header
+        name: xero-tenant-id
+        required: true
+        type: string
+        x-example: YOUR_XERO_TENANT_ID
   /Files:
     get:
       operationId: getFiles
       parameters:
         - description: pass an optional page size value
           in: query
+          maximum: 100
           name: pagesize
-          schema:
-            example: 50
-            maximum: 100
-            type: integer
+          type: integer
         - description: number of records to skip for pagination
           in: query
+          minimum: 1
           name: page
-          schema:
-            example: 2
-            minimum: 1
-            type: integer
+          type: integer
         - description: values to sort by
+          enum:
+            - Name
+            - Size
+            - CreatedDateUTC
           in: query
           name: sort
-          schema:
-            enum:
-              - Name
-              - Size
-              - CreatedDateUTC
-            example: CreatedDateUTC DESC
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              example: '{ "TotalCount": 100, "Page": 1, "PerPage": 2, "Items": [ { "Name":
-                "helo-heros.jpg", "MimeType": "application/jpg", "Size":
-                2878711, "CreatedDateUtc": "2021-02-10T16:02:54.9930000",
-                "UpdatedDateUtc": "2021-02-10T16:02:54.9930000", "User": {
-                "Name": "sid.maestre@xero.com", "FirstName": "Sidney",
-                "LastName": "Maestre", "FullName": "Sidney Maestre", "Id":
-                "740add2a-a703-4b8a-a670-1093919c2040" }, "FolderId":
-                "bf924975-7097-46f2-a143-1ecfbab3c8c3", "Id":
-                "3d413bfe-f40f-4807-b953-9a42f834ff15" }, { "Name":
-                "helo-heros.jpg", "MimeType": "application/jpg", "Size":
-                2878711, "CreatedDateUtc": "2021-02-09T21:16:00.6130000",
-                "UpdatedDateUtc": "2021-02-09T21:16:00.6130000", "User": {
-                "Name": "sid.maestre@xero.com", "FirstName": "Sidney",
-                "LastName": "Maestre", "FullName": "Sidney Maestre", "Id":
-                "740add2a-a703-4b8a-a670-1093919c2040" }, "FolderId":
-                "bf924975-7097-46f2-a143-1ecfbab3c8c3", "Id":
-                "22f87409-cdfd-4813-a868-559481bcb052" } ] }'
-              schema:
-                $ref: "#/components/schemas/Files"
+        '200':
           description: search results matching criteria
+          examples:
+            application/json: >-
+              { "TotalCount": 100, "Page": 1, "PerPage": 2, "Items": [ { "Name":
+              "helo-heros.jpg", "MimeType": "application/jpg", "Size": 2878711,
+              "CreatedDateUtc": "2021-02-10T16:02:54.9930000", "UpdatedDateUtc":
+              "2021-02-10T16:02:54.9930000", "User": { "Name":
+              "sid.maestre@xero.com", "FirstName": "Sidney", "LastName":
+              "Maestre", "FullName": "Sidney Maestre", "Id":
+              "740add2a-a703-4b8a-a670-1093919c2040" }, "FolderId":
+              "bf924975-7097-46f2-a143-1ecfbab3c8c3", "Id":
+              "3d413bfe-f40f-4807-b953-9a42f834ff15" }, { "Name":
+              "helo-heros.jpg", "MimeType": "application/jpg", "Size": 2878711,
+              "CreatedDateUtc": "2021-02-09T21:16:00.6130000", "UpdatedDateUtc":
+              "2021-02-09T21:16:00.6130000", "User": { "Name":
+              "sid.maestre@xero.com", "FirstName": "Sidney", "LastName":
+              "Maestre", "FullName": "Sidney Maestre", "Id":
+              "740add2a-a703-4b8a-a670-1093919c2040" }, "FolderId":
+              "bf924975-7097-46f2-a143-1ecfbab3c8c3", "Id":
+              "22f87409-cdfd-4813-a868-559481bcb052" } ] }
+          schema:
+            $ref: '#/definitions/Files'
       security:
         - OAuth2:
             - files.read
@@ -116,75 +326,78 @@ paths:
       tags:
         - Files
     parameters:
-      - $ref: "#/components/parameters/requiredHeader"
+      - description: Xero identifier for Tenant
+        in: header
+        name: xero-tenant-id
+        required: true
+        type: string
+        x-example: YOUR_XERO_TENANT_ID
     post:
+      consumes:
+        - multipart/form-data
       operationId: uploadFile
       parameters:
         - description: pass an optional folder id to save file to specific folder
+          format: uuid
           in: query
           name: FolderId
-          schema:
-            example: 4ff1e5cc-9835-40d5-bb18-09fdb118db9c
-            format: uuid
-            type: string
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              properties:
-                body:
-                  format: byte
-                  type: string
-                filename:
-                  type: string
-                mimeType:
-                  type: string
-                name:
-                  description: exact name of the file you are uploading
-                  type: string
-              type: object
+          type: string
+        - format: byte
+          in: formData
+          name: body
+          type: string
+        - in: formData
+          name: filename
+          type: string
+        - in: formData
+          name: mimeType
+          type: string
+        - description: exact name of the file you are uploading
+          in: formData
+          name: name
+          type: string
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              example: '{ "Name": "helo-heros.jpg", "MimeType": "application/jpg", "Size":
-                2878711, "CreatedDateUtc": "2021-02-10T23:17:50.1930000",
-                "UpdatedDateUtc": "2021-02-10T23:17:50.1930000", "User": {
-                "Name": "sid.maestre@xero.com", "FirstName": "Sidney",
-                "LastName": "Maestre", "FullName": "Sidney Maestre", "Id":
-                "740add2a-a703-4b8a-a670-1093919c2040" }, "FolderId":
-                "bf924975-7097-46f2-a143-1ecfbab3c8c3", "Id":
-                "22f87409-cdfd-4813-a868-559481bcb052" }'
-              schema:
-                $ref: "#/components/schemas/FileObject"
+        '201':
           description: A successful request
-        "400":
-          content:
-            application/json:
-              example: '[ { "type":"Validation", "title":"Validation failure",
-                "detail":"Extension: boo is not a valid File extension." } ]'
-          description: invalid input, object invalid
+          examples:
+            application/json: >-
+              { "Name": "helo-heros.jpg", "MimeType": "application/jpg", "Size":
+              2878711, "CreatedDateUtc": "2021-02-10T23:17:50.1930000",
+              "UpdatedDateUtc": "2021-02-10T23:17:50.1930000", "User": { "Name":
+              "sid.maestre@xero.com", "FirstName": "Sidney", "LastName":
+              "Maestre", "FullName": "Sidney Maestre", "Id":
+              "740add2a-a703-4b8a-a670-1093919c2040" }, "FolderId":
+              "bf924975-7097-46f2-a143-1ecfbab3c8c3", "Id":
+              "22f87409-cdfd-4813-a868-559481bcb052" }
+          schema:
+            $ref: '#/definitions/FileObject'
+        '400':
+          description: 'invalid input, object invalid'
+          examples:
+            application/json: >-
+              [ { "type":"Validation", "title":"Validation failure",
+              "detail":"Extension: boo is not a valid File extension." } ]
       security:
         - OAuth2:
             - files
       summary: Uploads a File
       tags:
         - Files
-  "/Files/{FileId}":
+  '/Files/{FileId}':
     delete:
       description: Delete a specific file
       operationId: deleteFile
       parameters:
         - description: File id for single object
+          format: uuid
           in: path
           name: FileId
           required: true
-          schema:
-            example: 4ff1e5cc-9835-40d5-bb18-09fdb118db9c
-            format: uuid
-            type: string
+          type: string
       responses:
-        "204":
+        '204':
           description: Successful deletion - return response 204 no content
           x-isEmpty: true
       security:
@@ -197,28 +410,28 @@ paths:
       operationId: getFile
       parameters:
         - description: File id for single object
+          format: uuid
           in: path
           name: FileId
           required: true
-          schema:
-            example: 4ff1e5cc-9835-40d5-bb18-09fdb118db9c
-            format: uuid
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              example: '{ "Name": "helo-heros.jpg", "MimeType": "application/jpg", "Size":
-                2878711, "CreatedDateUtc": "2021-02-10T23:17:50.1930000",
-                "UpdatedDateUtc": "2021-02-10T23:17:50.1930000", "User": {
-                "Name": "sid.maestre@xero.com", "FirstName": "Sidney",
-                "LastName": "Maestre", "FullName": "Sidney Maestre", "Id":
-                "740add2a-a703-4b8a-a670-1093919c2040" }, "FolderId":
-                "bf924975-7097-46f2-a143-1ecfbab3c8c3", "Id":
-                "efd77bfc-7018-4da1-b251-7aa2d438382c" }'
-              schema:
-                $ref: "#/components/schemas/FileObject"
+        '200':
           description: search results matching criteria
+          examples:
+            application/json: >-
+              { "Name": "helo-heros.jpg", "MimeType": "application/jpg", "Size":
+              2878711, "CreatedDateUtc": "2021-02-10T23:17:50.1930000",
+              "UpdatedDateUtc": "2021-02-10T23:17:50.1930000", "User": { "Name":
+              "sid.maestre@xero.com", "FirstName": "Sidney", "LastName":
+              "Maestre", "FullName": "Sidney Maestre", "Id":
+              "740add2a-a703-4b8a-a670-1093919c2040" }, "FolderId":
+              "bf924975-7097-46f2-a143-1ecfbab3c8c3", "Id":
+              "efd77bfc-7018-4da1-b251-7aa2d438382c" }
+          schema:
+            $ref: '#/definitions/FileObject'
       security:
         - OAuth2:
             - files.read
@@ -226,78 +439,83 @@ paths:
       tags:
         - Files
     parameters:
-      - $ref: "#/components/parameters/requiredHeader"
+      - description: Xero identifier for Tenant
+        in: header
+        name: xero-tenant-id
+        required: true
+        type: string
+        x-example: YOUR_XERO_TENANT_ID
     put:
+      consumes:
+        - application/json
       description: Updates file properties of a single file
       operationId: updateFile
       parameters:
         - description: File id for single object
+          format: uuid
           in: path
           name: FileId
           required: true
+          type: string
+        - in: body
+          name: body
           schema:
-            example: 4ff1e5cc-9835-40d5-bb18-09fdb118db9c
-            format: uuid
-            type: string
-      requestBody:
-        content:
-          application/json:
-            example: '{ "FolderId": "bf924975-7097-46f2-a143-1ecfbab3c8c3" }'
-            schema:
-              $ref: "#/components/schemas/FileObject"
+            $ref: '#/definitions/FileObject'
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              example: '{ "Name": "helo-heros.jpg", "MimeType": "application/jpg", "Size":
-                2878711, "CreatedDateUtc": "2021-02-10T23:17:50.1930000",
-                "UpdatedDateUtc": "2021-02-10T23:58:54.1000000", "User": {
-                "Name": "sid.maestre@xero.com", "FirstName": "Sidney",
-                "LastName": "Maestre", "FullName": "Sidney Maestre", "Id":
-                "740add2a-a703-4b8a-a670-1093919c2040" }, "FolderId":
-                "bf924975-7097-46f2-a143-1ecfbab3c8c3", "Id":
-                "efd77bfc-7018-4da1-b251-7aa2d438382c" }'
-              schema:
-                $ref: "#/components/schemas/FileObject"
+        '200':
           description: A successful request
-        "400":
-          content:
-            application/json:
-              example: '[ { "type":"Rename", "title":"Rename failed", "detail":"Unable to
-                rename efd77bfc-7018-4da1-b251-7aa2d438382c to FooBar" } ]'
-          description: invalid input, object invalid
+          examples:
+            application/json: >-
+              { "Name": "helo-heros.jpg", "MimeType": "application/jpg", "Size":
+              2878711, "CreatedDateUtc": "2021-02-10T23:17:50.1930000",
+              "UpdatedDateUtc": "2021-02-10T23:58:54.1000000", "User": { "Name":
+              "sid.maestre@xero.com", "FirstName": "Sidney", "LastName":
+              "Maestre", "FullName": "Sidney Maestre", "Id":
+              "740add2a-a703-4b8a-a670-1093919c2040" }, "FolderId":
+              "bf924975-7097-46f2-a143-1ecfbab3c8c3", "Id":
+              "efd77bfc-7018-4da1-b251-7aa2d438382c" }
+          schema:
+            $ref: '#/definitions/FileObject'
+        '400':
+          description: 'invalid input, object invalid'
+          examples:
+            application/json: >-
+              [ { "type":"Rename", "title":"Rename failed", "detail":"Unable to
+              rename efd77bfc-7018-4da1-b251-7aa2d438382c to FooBar" } ]
       security:
         - OAuth2:
             - files
       summary: Update a file
       tags:
         - Files
-  "/Files/{FileId}/Associations":
+  '/Files/{FileId}/Associations':
     get:
       description: |
         By passing in the appropriate options, 
       operationId: getFileAssociations
       parameters:
         - description: File id for single object
+          format: uuid
           in: path
           name: FileId
           required: true
-          schema:
-            example: 4ff1e5cc-9835-40d5-bb18-09fdb118db9c
-            format: uuid
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              example: '[ { "FileId":"6beccb4a-0d7d-4518-93f3-e0cd1dccb254",
-                "ObjectId":"1270bf7c-5d18-473a-9231-1e36c4bd33ed",
-                "ObjectType":"Business", "ObjectGroup":"Contact" } ]'
-              schema:
-                items:
-                  $ref: "#/components/schemas/Association"
-                type: array
+        '200':
           description: search results matching criteria
+          examples:
+            application/json: >-
+              [ { "FileId":"6beccb4a-0d7d-4518-93f3-e0cd1dccb254",
+              "ObjectId":"1270bf7c-5d18-473a-9231-1e36c4bd33ed",
+              "ObjectType":"Business", "ObjectGroup":"Contact" } ]
+          schema:
+            items:
+              $ref: '#/definitions/Association'
+            type: array
       security:
         - OAuth2:
             - files.read
@@ -305,71 +523,71 @@ paths:
       tags:
         - Files
     parameters:
-      - $ref: "#/components/parameters/requiredHeader"
+      - description: Xero identifier for Tenant
+        in: header
+        name: xero-tenant-id
+        required: true
+        type: string
+        x-example: YOUR_XERO_TENANT_ID
     post:
-      description: By passing in the appropriate options, you can create a new folder
+      consumes:
+        - application/json
+      description: 'By passing in the appropriate options, you can create a new folder'
       operationId: createFileAssociation
       parameters:
         - description: File id for single object
+          format: uuid
           in: path
           name: FileId
           required: true
+          type: string
+        - in: body
+          name: body
           schema:
-            example: 4ff1e5cc-9835-40d5-bb18-09fdb118db9c
-            format: uuid
-            type: string
-      requestBody:
-        content:
-          application/json:
-            example: '{ "ObjectId": "1270bf7c-5d18-473a-9231-1e36c4bd33ed", "ObjectGroup":
-              "Contact", "ObjectType": "Business" }'
-            schema:
-              $ref: "#/components/schemas/Association"
+            $ref: '#/definitions/Association'
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              example: '{ "FileId": "6beccb4a-0d7d-4518-93f3-e0cd1dccb254", "ObjectId":
-                "1270bf7c-5d18-473a-9231-1e36c4bd33ed", "ObjectType":
-                "Business", "ObjectGroup": "Contact" }'
-              schema:
-                $ref: "#/components/schemas/Association"
+        '201':
           description: A successful request
-        "400":
-          content:
-            application/json:
-              example: '[ { "type":"Validation", "title":"Validation failure",
-                "detail":"Object is not a Account" } ]'
-          description: invalid input, object invalid
+          examples:
+            application/json: >-
+              { "FileId": "6beccb4a-0d7d-4518-93f3-e0cd1dccb254", "ObjectId":
+              "1270bf7c-5d18-473a-9231-1e36c4bd33ed", "ObjectType": "Business",
+              "ObjectGroup": "Contact" }
+          schema:
+            $ref: '#/definitions/Association'
+        '400':
+          description: 'invalid input, object invalid'
+          examples:
+            application/json: >-
+              [ { "type":"Validation", "title":"Validation failure",
+              "detail":"Object is not a Account" } ]
       security:
         - OAuth2:
             - files
       summary: Creates a new file association
       tags:
         - Files
-  "/Files/{FileId}/Associations/{ObjectId}":
+  '/Files/{FileId}/Associations/{ObjectId}':
     delete:
-      description: By passing in the appropriate options, you can create a new folder
+      description: 'By passing in the appropriate options, you can create a new folder'
       operationId: deleteFileAssociation
       parameters:
         - description: File id for single object
+          format: uuid
           in: path
           name: FileId
           required: true
-          schema:
-            example: 4ff1e5cc-9835-40d5-bb18-09fdb118db9c
-            format: uuid
-            type: string
+          type: string
         - description: Object id for single object
+          format: uuid
           in: path
           name: ObjectId
           required: true
-          schema:
-            example: 4ff1e5cc-9835-40d5-bb18-09fdb118db9c
-            format: uuid
-            type: string
+          type: string
       responses:
-        "204":
+        '204':
           description: Successful deletion - return response 204 no content
           x-isEmpty: true
       security:
@@ -379,28 +597,31 @@ paths:
       tags:
         - Files
     parameters:
-      - $ref: "#/components/parameters/requiredHeader"
-  "/Files/{FileId}/Content":
+      - description: Xero identifier for Tenant
+        in: header
+        name: xero-tenant-id
+        required: true
+        type: string
+        x-example: YOUR_XERO_TENANT_ID
+  '/Files/{FileId}/Content':
     get:
-      description: By passing in the appropriate options, retrieve data for specific file
+      description: 'By passing in the appropriate options, retrieve data for specific file'
       operationId: getFileContent
       parameters:
         - description: File id for single object
+          format: uuid
           in: path
           name: FileId
           required: true
-          schema:
-            example: 4ff1e5cc-9835-40d5-bb18-09fdb118db9c
-            format: uuid
-            type: string
+          type: string
+      produces:
+        - application/octet-stream
       responses:
-        "200":
-          content:
-            application/octet-stream:
-              schema:
-                format: binary
-                type: string
+        '200':
           description: returns the byte array of the specific file based on id
+          schema:
+            format: binary
+            type: string
       security:
         - OAuth2:
             - files.read
@@ -408,37 +629,43 @@ paths:
       tags:
         - Files
     parameters:
-      - $ref: "#/components/parameters/requiredHeader"
+      - description: Xero identifier for Tenant
+        in: header
+        name: xero-tenant-id
+        required: true
+        type: string
+        x-example: YOUR_XERO_TENANT_ID
   /Folders:
     get:
-      description: By passing in the appropriate options, you can search for available
+      description: >-
+        By passing in the appropriate options, you can search for available
         folders
       operationId: getFolders
       parameters:
         - description: values to sort by
+          enum:
+            - Name
+            - Size
+            - CreatedDateUTC
           in: query
           name: sort
-          schema:
-            enum:
-              - Name
-              - Size
-              - CreatedDateUTC
-            example: CreatedDateUTC DESC
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              example: '[ { "Name":"Inbox", "FileCount":14,
-                "Email":"xero.inbox.jpf4.6oo29retajkhtfus@xerofiles.com",
-                "IsInbox":true, "Id":"bf924975-7097-46f2-a143-1ecfbab3c8c3" }, {
-                "Name":"Contracts", "FileCount":7, "IsInbox":false,
-                "Id":"554ff1ad-4b94-4266-9b45-e29bcb75e6bf" } ]'
-              schema:
-                items:
-                  $ref: "#/components/schemas/Folder"
-                type: array
+        '200':
           description: search results matching criteria
+          examples:
+            application/json: >-
+              [ { "Name":"Inbox", "FileCount":14,
+              "Email":"xero.inbox.jpf4.6oo29retajkhtfus@xerofiles.com",
+              "IsInbox":true, "Id":"bf924975-7097-46f2-a143-1ecfbab3c8c3" }, {
+              "Name":"Contracts", "FileCount":7, "IsInbox":false,
+              "Id":"554ff1ad-4b94-4266-9b45-e29bcb75e6bf" } ]
+          schema:
+            items:
+              $ref: '#/definitions/Folder'
+            type: array
       security:
         - OAuth2:
             - files.read
@@ -446,52 +673,58 @@ paths:
       tags:
         - Files
     parameters:
-      - $ref: "#/components/parameters/requiredHeader"
+      - description: Xero identifier for Tenant
+        in: header
+        name: xero-tenant-id
+        required: true
+        type: string
+        x-example: YOUR_XERO_TENANT_ID
     post:
-      description: By passing in the appropriate properties, you can create a new folder
+      consumes:
+        - application/json
+      description: 'By passing in the appropriate properties, you can create a new folder'
       operationId: createFolder
-      requestBody:
-        content:
-          application/json:
-            example: '{ "Name": "My Docs" }'
-            schema:
-              $ref: "#/components/schemas/Folder"
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/Folder'
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              example: '{ "Name": "My Docs", "FileCount": 0, "IsInbox": false, "Id":
-                "913970ad-8c8e-4666-8294-35b9cac23206" }'
-              schema:
-                $ref: "#/components/schemas/Folder"
+        '200':
           description: search results matching criteria
-        "400":
-          content:
-            application/json:
-              example: '[ { "type":"Validation", "title":"Validation failure", "detail":"Name
-                contains one or more bad characters" } ]'
-          description: invalid input, object invalid
+          examples:
+            application/json: >-
+              { "Name": "My Docs", "FileCount": 0, "IsInbox": false, "Id":
+              "913970ad-8c8e-4666-8294-35b9cac23206" }
+          schema:
+            $ref: '#/definitions/Folder'
+        '400':
+          description: 'invalid input, object invalid'
+          examples:
+            application/json: >-
+              [ { "type":"Validation", "title":"Validation failure",
+              "detail":"Name contains one or more bad characters" } ]
       security:
         - OAuth2:
             - files
       summary: Creates a new folder
       tags:
         - Files
-  "/Folders/{FolderId}":
+  '/Folders/{FolderId}':
     delete:
-      description: By passing in the appropriate ID, you can delete a folder
+      description: 'By passing in the appropriate ID, you can delete a folder'
       operationId: deleteFolder
       parameters:
         - description: Folder id for single object
+          format: uuid
           in: path
           name: FolderId
           required: true
-          schema:
-            example: 4ff1e5cc-9835-40d5-bb18-09fdb118db9c
-            format: uuid
-            type: string
+          type: string
       responses:
-        "204":
+        '204':
           description: Successful deletion - return response 204 no content
           x-isEmpty: true
       security:
@@ -501,26 +734,26 @@ paths:
       tags:
         - Files
     get:
-      description: By passing in the appropriate ID, you can search for specific folder
+      description: 'By passing in the appropriate ID, you can search for specific folder'
       operationId: getFolder
       parameters:
         - description: Folder id for single object
+          format: uuid
           in: path
           name: FolderId
           required: true
-          schema:
-            example: 4ff1e5cc-9835-40d5-bb18-09fdb118db9c
-            format: uuid
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              example: '{ "Name": "My Docs", "FileCount": 0, "IsInbox": false, "Id":
-                "4c5f3fe4-2516-4863-ac88-3029351773bf" }'
-              schema:
-                $ref: "#/components/schemas/Folder"
+        '200':
           description: search results matching criteria
+          examples:
+            application/json: >-
+              { "Name": "My Docs", "FileCount": 0, "IsInbox": false, "Id":
+              "4c5f3fe4-2516-4863-ac88-3029351773bf" }
+          schema:
+            $ref: '#/definitions/Folder'
       security:
         - OAuth2:
             - files.read
@@ -528,41 +761,46 @@ paths:
       tags:
         - Files
     parameters:
-      - $ref: "#/components/parameters/requiredHeader"
+      - description: Xero identifier for Tenant
+        in: header
+        name: xero-tenant-id
+        required: true
+        type: string
+        x-example: YOUR_XERO_TENANT_ID
     put:
-      description: By passing in the appropriate ID and properties, you can update a folder
+      consumes:
+        - application/json
+      description: 'By passing in the appropriate ID and properties, you can update a folder'
       operationId: updateFolder
       parameters:
         - description: Folder id for single object
+          format: uuid
           in: path
           name: FolderId
           required: true
+          type: string
+        - in: body
+          name: body
+          required: true
           schema:
-            example: 4ff1e5cc-9835-40d5-bb18-09fdb118db9c
-            format: uuid
-            type: string
-      requestBody:
-        content:
-          application/json:
-            example: '{ "Name": "Your Docs" }'
-            schema:
-              $ref: "#/components/schemas/Folder"
-        required: true
+            $ref: '#/definitions/Folder'
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              example: '{ "Name": "Your Docs", "FileCount": 0, "IsInbox": false, "Id":
-                "4c5f3fe4-2516-4863-ac88-3029351773bf" }'
-              schema:
-                $ref: "#/components/schemas/Folder"
+        '200':
           description: return the updated object
-        "400":
-          content:
-            application/json:
-              example: '[ { "type":"Validation", "title":"Validation failure", "detail":"Name
-                contains one or more bad characters" } ]'
-          description: invalid input, object invalid
+          examples:
+            application/json: >-
+              { "Name": "Your Docs", "FileCount": 0, "IsInbox": false, "Id":
+              "4c5f3fe4-2516-4863-ac88-3029351773bf" }
+          schema:
+            $ref: '#/definitions/Folder'
+        '400':
+          description: 'invalid input, object invalid'
+          examples:
+            application/json: >-
+              [ { "type":"Validation", "title":"Validation failure",
+              "detail":"Name contains one or more bad characters" } ]
       security:
         - OAuth2:
             - files
@@ -573,16 +811,19 @@ paths:
     get:
       description: Search for the user inbox
       operationId: getInbox
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              example: '{ "Name": "Inbox", "FileCount": 14, "Email":
-                "xero.inbox.jpf4.6oo29retajkhtfus@xerofiles.com", "IsInbox":
-                true, "Id": "bf924975-7097-46f2-a143-1ecfbab3c8c3" }'
-              schema:
-                $ref: "#/components/schemas/Folder"
+        '200':
           description: search results matching criteria
+          examples:
+            application/json: >-
+              { "Name": "Inbox", "FileCount": 14, "Email":
+              "xero.inbox.jpf4.6oo29retajkhtfus@xerofiles.com", "IsInbox": true,
+              "Id": "bf924975-7097-46f2-a143-1ecfbab3c8c3" }
+          schema:
+            $ref: '#/definitions/Folder'
       security:
         - OAuth2:
             - files.read
@@ -590,237 +831,38 @@ paths:
       tags:
         - Files
     parameters:
-      - $ref: "#/components/parameters/requiredHeader"
-components:
+      - description: Xero identifier for Tenant
+        in: header
+        name: xero-tenant-id
+        required: true
+        type: string
+        x-example: YOUR_XERO_TENANT_ID
+schemes:
+  - https
+securityDefinitions:
+  OAuth2:
+    authorizationUrl: 'https://login.xero.com/identity/connect/authorize'
+    description: For more information
+    flow: accessCode
+    scopes:
+      email: Grant read-only access to your email
+      files: Grant read-write access to files and folders
+      files.read: Grant read-only access to files and folders
+      openid: Grant read-only access to your open id
+      profile: your profile information
+    tokenUrl: 'https://identity.xero.com/connect/token'
+    type: oauth2
+swagger: '2.0'
+tags:
+  - description: Operations available to regular developers
+    name: Files
+x-components:
   parameters:
     requiredHeader:
       description: Xero identifier for Tenant
-      example: YOUR_XERO_TENANT_ID
       in: header
       name: xero-tenant-id
       required: true
-      schema:
-        type: string
-  schemas:
-    Association:
-      properties:
-        FileId:
-          description: The unique identifier of the file
-          format: uuid
-          type: string
-        ObjectGroup:
-          $ref: "#/components/schemas/ObjectGroup"
-        ObjectId:
-          description: The identifier of the object that the file is being associated with
-            (e.g. InvoiceID, BankTransactionID, ContactID)
-          format: uuid
-          type: string
-        ObjectType:
-          $ref: "#/components/schemas/ObjectType"
-      type: object
-    FileObject:
-      properties:
-        CreatedDateUtc:
-          description: Created date in UTC
-          example: 2020-12-03T19:04:58.6970000
-          type: string
-        FolderId:
-          description: Folder relation object's UUID
-          example: 0f8ccf21-7267-4268-9167-a1e2c40c84c8
-          format: uuid
-          type: string
-        Id:
-          description: File object's UUID
-          example: d290f1ee-6c54-4b01-90e6-d701748f0851
-          format: uuid
-          type: string
-        MimeType:
-          description: MimeType of the file (image/png, image/jpeg, application/pdf, etc..)
-          example: image/jpeg
-          type: string
-        Name:
-          description: File Name
-          example: File2.jpg
-          type: string
-        Size:
-          description: Numeric value in bytes
-          example: 3615
-          type: integer
-        UpdatedDateUtc:
-          description: Updated date in UTC
-          example: 2020-12-03T19:04:58.6970000
-          type: string
-        User:
-          $ref: "#/components/schemas/User"
-      required:
-        - id
-        - name
-        - manufacturer
-        - releaseDate
-      type: object
-    Files:
-      properties:
-        Items:
-          items:
-            $ref: "#/components/schemas/FileObject"
-          type: array
-        Page:
-          example: 1
-          type: integer
-        PerPage:
-          example: 50
-          type: integer
-        TotalCount:
-          example: 2
-          type: integer
-      type: object
-    Folder:
-      properties:
-        Email:
-          description: The email address used to email files to the inbox. Only the inbox
-            will have this element.
-          example: foo@bar.com
-          type: string
-        FileCount:
-          description: The number of files in the folder
-          example: 5
-          type: integer
-        Id:
-          description: Xero unique identifier for a folder  Files
-          example: 4ff1e5cc-9835-40d5-bb18-09fdb118db9c
-          format: uuid
-          type: string
-        IsInbox:
-          description: to indicate if the folder is the Inbox. The Inbox cannot be renamed
-            or deleted.
-          example: true
-          type: boolean
-        Name:
-          description: The name of the folder
-          example: assets
-          type: string
-      required:
-        - name
-    Folders:
-      properties:
-        Folders:
-          items:
-            $ref: "#/components/schemas/Folder"
-          type: array
-      type: object
-    ObjectGroup:
-      description: The Object Group that the object is in. These roughly correlate to
-        the endpoints that can be used to retrieve the object via the core
-        accounting API.
-      enum:
-        - Account
-        - BankTransaction
-        - Contact
-        - CreditNote
-        - Invoice
-        - Item
-        - ManualJournal
-        - Overpayment
-        - Payment
-        - Prepayment
-        - Receipt
       type: string
-    ObjectType:
-      description: The Object Type
-      enum:
-        - Unknown
-        - Accpay
-        - AccPayCredit
-        - AccPayPayment
-        - AccRec
-        - AccRecCredit
-        - AccRecPayment
-        - Adjustment
-        - ApCreditPayment
-        - ApOverPayment
-        - ApOverPaymentPayment
-        - ApOverPaymentSourcePayment
-        - ApPrepayment
-        - ApPrepaymentPayment
-        - ApPrepaymentSourcePayment
-        - ArCreditPayment
-        - ArOverPayment
-        - ArOverpaymentPayment
-        - ArOverpaymentSourcePayment
-        - ArPrepayment
-        - ArPrepaymentPayment
-        - ArPrepaymentSourcePayment
-        - CashPaid
-        - CashRec
-        - ExpPayment
-        - ManJournal
-        - PurchaseOrder
-        - Receipt
-        - Transfer
-        - Account
-        - Contact
-        - Business
-        - Employee
-        - Person
-        - User
-        - Org
-        - FixedAsset
-        - PayRun
-        - PriceListItem
-        - Bank
-        - Current
-        - Equity
-        - Expense
-        - Fixed
-        - Liability
-        - Prepayment
-        - Revenue
-        - Sales
-        - Overheads
-        - Depreciatn
-        - OtherIncome
-        - DirectCosts
-        - Currliab
-        - Termliab
-        - NonCurrent
-      type: string
-    User:
-      properties:
-        FirstName:
-          description: First name of user
-          example: John
-          type: string
-        FullName:
-          description: Last name of user
-          example: Smith
-          type: string
-        Id:
-          description: Xero identifier
-          example: 4ff1e5cc-9835-40d5-bb18-09fdb118db9c
-          format: uuid
-          type: string
-        LastName:
-          description: Last name of user
-          example: Smith
-          type: string
-        Name:
-          description: Key is Name, but returns Email address of user who created the file
-          example: john.smith@mail.com
-          type: string
-      required:
-        - Id
-      type: object
-  securitySchemes:
-    OAuth2:
-      description: For more information
-      flows:
-        authorizationCode:
-          authorizationUrl: https://login.xero.com/identity/connect/authorize
-          scopes:
-            email: Grant read-only access to your email
-            files: Grant read-write access to files and folders
-            files.read: Grant read-only access to files and folders
-            openid: Grant read-only access to your open id
-            profile: your profile information
-          tokenUrl: https://identity.xero.com/connect/token
-      type: oauth2
+      x-example: YOUR_XERO_TENANT_ID
+

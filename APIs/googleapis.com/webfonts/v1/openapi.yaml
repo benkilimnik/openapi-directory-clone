@@ -1,193 +1,249 @@
-openapi: 3.0.0
-servers:
-  - url: https://webfonts.googleapis.com/
+basePath: /
+definitions:
+  Webfont:
+    description: Metadata describing a family of fonts.
+    properties:
+      category:
+        description: The category of the font.
+        type: string
+      family:
+        description: The name of the font.
+        type: string
+      files:
+        additionalProperties:
+          type: string
+        description: >-
+          The font files (with all supported scripts) for each one of the
+          available variants, as a key : value map.
+        type: object
+      kind:
+        description: This kind represents a webfont object in the webfonts service.
+        type: string
+      lastModified:
+        description: >-
+          The date (format "yyyy-MM-dd") the font was modified for the last
+          time.
+        type: string
+      subsets:
+        description: The scripts supported by the font.
+        items:
+          type: string
+        type: array
+      variants:
+        description: The available variants for the font.
+        items:
+          type: string
+        type: array
+      version:
+        description: The font version.
+        type: string
+    type: object
+  WebfontList:
+    description: >-
+      Response containing the list of fonts currently served by the Google Fonts
+      API.
+    properties:
+      items:
+        description: The list of fonts currently served by the Google Fonts API.
+        items:
+          $ref: '#/definitions/Webfont'
+        type: array
+      kind:
+        description: >-
+          This kind represents a list of webfont objects in the webfonts
+          service.
+        type: string
+    type: object
+externalDocs:
+  url: 'https://developers.google.com/fonts/docs/developer_api'
+host: webfonts.googleapis.com
 info:
   contact:
     name: Google
-    url: https://google.com
+    url: 'https://google.com'
     x-twitter: youtube
-  description: The Google Web Fonts Developer API lets you retrieve information about web fonts served by Google.
+  description: >-
+    The Google Web Fonts Developer API lets you retrieve information about web
+    fonts served by Google.
   license:
     name: Creative Commons Attribution 3.0
-    url: http://creativecommons.org/licenses/by/3.0/
-  termsOfService: https://developers.google.com/terms/
+    url: 'http://creativecommons.org/licenses/by/3.0/'
+  termsOfService: 'https://developers.google.com/terms/'
   title: Web Fonts Developer API
   version: v1
   x-apiClientRegistration:
-    url: https://console.developers.google.com
+    url: 'https://console.developers.google.com'
   x-apisguru-categories:
     - analytics
     - media
   x-logo:
-    url: https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png
+    url: >-
+      https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png
   x-origin:
     - format: google
-      url: https://webfonts.googleapis.com/$discovery/rest?version=v1
+      url: 'https://webfonts.googleapis.com/$discovery/rest?version=v1'
       version: v1
   x-providerName: googleapis.com
   x-serviceName: webfonts
-externalDocs:
-  url: https://developers.google.com/fonts/docs/developer_api
-tags:
-  - name: webfonts
 paths:
   /v1/webfonts:
     get:
-      description: Retrieves the list of fonts currently served by the Google Fonts Developer API.
+      description: >-
+        Retrieves the list of fonts currently served by the Google Fonts
+        Developer API.
       operationId: webfonts.webfonts.list
       parameters:
         - description: Enables sorting of the list.
+          enum:
+            - SORT_UNDEFINED
+            - ALPHA
+            - DATE
+            - POPULARITY
+            - STYLE
+            - TRENDING
           in: query
           name: sort
-          schema:
-            enum:
-              - SORT_UNDEFINED
-              - ALPHA
-              - DATE
-              - POPULARITY
-              - STYLE
-              - TRENDING
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/WebfontList"
+        '200':
           description: Successful response
+          schema:
+            $ref: '#/definitions/WebfontList'
       tags:
         - webfonts
     parameters:
-      - $ref: "#/components/parameters/_.xgafv"
-      - $ref: "#/components/parameters/access_token"
-      - $ref: "#/components/parameters/alt"
-      - $ref: "#/components/parameters/callback"
-      - $ref: "#/components/parameters/fields"
-      - $ref: "#/components/parameters/key"
-      - $ref: "#/components/parameters/oauth_token"
-      - $ref: "#/components/parameters/prettyPrint"
-      - $ref: "#/components/parameters/quotaUser"
-      - $ref: "#/components/parameters/upload_protocol"
-      - $ref: "#/components/parameters/uploadType"
-components:
-  parameters:
-    _.xgafv:
-      description: V1 error format.
-      in: query
-      name: $.xgafv
-      schema:
+      - description: V1 error format.
         enum:
-          - "1"
-          - "2"
+          - '1'
+          - '2'
+        in: query
+        name: $.xgafv
         type: string
-    access_token:
-      description: OAuth access token.
-      in: query
-      name: access_token
-      schema:
+      - description: OAuth access token.
+        in: query
+        name: access_token
         type: string
-    alt:
-      description: Data format for response.
-      in: query
-      name: alt
-      schema:
+      - description: Data format for response.
         enum:
           - json
           - media
           - proto
+        in: query
+        name: alt
         type: string
+      - description: JSONP
+        in: query
+        name: callback
+        type: string
+      - description: Selector specifying which fields to include in a partial response.
+        in: query
+        name: fields
+        type: string
+      - description: >-
+          API key. Your API key identifies your project and provides you with
+          API access, quota, and reports. Required unless you provide an OAuth
+          2.0 token.
+        in: query
+        name: key
+        type: string
+      - description: OAuth 2.0 token for the current user.
+        in: query
+        name: oauth_token
+        type: string
+      - description: Returns response with indentations and line breaks.
+        in: query
+        name: prettyPrint
+        type: boolean
+      - description: >-
+          Available to use for quota purposes for server-side applications. Can
+          be any arbitrary string assigned to a user, but should not exceed 40
+          characters.
+        in: query
+        name: quotaUser
+        type: string
+      - description: 'Upload protocol for media (e.g. "raw", "multipart").'
+        in: query
+        name: upload_protocol
+        type: string
+      - description: 'Legacy upload protocol for media (e.g. "media", "multipart").'
+        in: query
+        name: uploadType
+        type: string
+schemes:
+  - https
+swagger: '2.0'
+tags:
+  - name: webfonts
+x-components:
+  parameters:
+    _.xgafv:
+      description: V1 error format.
+      enum:
+        - '1'
+        - '2'
+      in: query
+      name: $.xgafv
+      type: string
+    access_token:
+      description: OAuth access token.
+      in: query
+      name: access_token
+      type: string
+    alt:
+      description: Data format for response.
+      enum:
+        - json
+        - media
+        - proto
+      in: query
+      name: alt
+      type: string
     callback:
       description: JSONP
       in: query
       name: callback
-      schema:
-        type: string
+      type: string
     fields:
       description: Selector specifying which fields to include in a partial response.
       in: query
       name: fields
-      schema:
-        type: string
+      type: string
     key:
-      description: API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+      description: >-
+        API key. Your API key identifies your project and provides you with API
+        access, quota, and reports. Required unless you provide an OAuth 2.0
+        token.
       in: query
       name: key
-      schema:
-        type: string
+      type: string
     oauth_token:
       description: OAuth 2.0 token for the current user.
       in: query
       name: oauth_token
-      schema:
-        type: string
+      type: string
     prettyPrint:
       description: Returns response with indentations and line breaks.
       in: query
       name: prettyPrint
-      schema:
-        type: boolean
+      type: boolean
     quotaUser:
-      description: Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
+      description: >-
+        Available to use for quota purposes for server-side applications. Can be
+        any arbitrary string assigned to a user, but should not exceed 40
+        characters.
       in: query
       name: quotaUser
-      schema:
-        type: string
+      type: string
     uploadType:
-      description: Legacy upload protocol for media (e.g. "media", "multipart").
+      description: 'Legacy upload protocol for media (e.g. "media", "multipart").'
       in: query
       name: uploadType
-      schema:
-        type: string
+      type: string
     upload_protocol:
-      description: Upload protocol for media (e.g. "raw", "multipart").
+      description: 'Upload protocol for media (e.g. "raw", "multipart").'
       in: query
       name: upload_protocol
-      schema:
-        type: string
-  schemas:
-    Webfont:
-      description: Metadata describing a family of fonts.
-      properties:
-        category:
-          description: The category of the font.
-          type: string
-        family:
-          description: The name of the font.
-          type: string
-        files:
-          additionalProperties:
-            type: string
-          description: "The font files (with all supported scripts) for each one of the available variants, as a key : value map."
-          type: object
-        kind:
-          description: This kind represents a webfont object in the webfonts service.
-          type: string
-        lastModified:
-          description: The date (format "yyyy-MM-dd") the font was modified for the last time.
-          type: string
-        subsets:
-          description: The scripts supported by the font.
-          items:
-            type: string
-          type: array
-        variants:
-          description: The available variants for the font.
-          items:
-            type: string
-          type: array
-        version:
-          description: The font version.
-          type: string
-      type: object
-    WebfontList:
-      description: Response containing the list of fonts currently served by the Google Fonts API.
-      properties:
-        items:
-          description: The list of fonts currently served by the Google Fonts API.
-          items:
-            $ref: "#/components/schemas/Webfont"
-          type: array
-        kind:
-          description: This kind represents a list of webfont objects in the webfonts service.
-          type: string
-      type: object
+      type: string
+

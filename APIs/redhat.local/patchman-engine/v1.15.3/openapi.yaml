@@ -1,24 +1,515 @@
-openapi: 3.0.1
-servers:
-  - url: http://redhat.local
-  - url: /
+basePath: /
+definitions:
+  controllers.AdvisoriesResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/controllers.AdvisoryItem'
+        type: array
+      links:
+        $ref: '#/definitions/controllers.Links'
+      meta:
+        $ref: '#/definitions/controllers.ListMeta'
+    type: object
+  controllers.AdvisoriesSystemsResponse:
+    properties:
+      data:
+        additionalProperties:
+          items:
+            type: string
+          type: array
+        type: object
+    type: object
+  controllers.AdvisoryDetailAttributes:
+    properties:
+      cves:
+        items:
+          type: string
+        type: array
+      description:
+        type: string
+      fixes:
+        type: string
+      modified_date:
+        type: string
+      packages:
+        additionalProperties:
+          type: string
+        type: object
+      public_date:
+        type: string
+      references:
+        items:
+          type: string
+        type: array
+      severity:
+        type: integer
+      solution:
+        type: string
+      synopsis:
+        type: string
+      topic:
+        type: string
+    type: object
+  controllers.AdvisoryDetailItem:
+    properties:
+      attributes:
+        $ref: '#/definitions/controllers.AdvisoryDetailAttributes'
+      id:
+        type: string
+      type:
+        type: string
+    type: object
+  controllers.AdvisoryDetailResponse:
+    properties:
+      data:
+        $ref: '#/definitions/controllers.AdvisoryDetailItem'
+    type: object
+  controllers.AdvisoryInlineItem:
+    properties:
+      advisory_type:
+        type: integer
+      applicable_systems:
+        type: integer
+      cve_count:
+        type: integer
+      description:
+        type: string
+      id:
+        type: string
+      public_date:
+        type: string
+      severity:
+        type: integer
+      synopsis:
+        type: string
+    type: object
+  controllers.AdvisoryItem:
+    properties:
+      attributes:
+        $ref: '#/definitions/controllers.AdvisoryItemAttributes'
+      id:
+        type: string
+      type:
+        type: string
+    type: object
+  controllers.AdvisoryItemAttributes:
+    properties:
+      advisory_type:
+        type: integer
+      applicable_systems:
+        type: integer
+      cve_count:
+        type: integer
+      description:
+        type: string
+      public_date:
+        type: string
+      severity:
+        type: integer
+      synopsis:
+        type: string
+    type: object
+  controllers.AdvisorySystemsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/controllers.SystemItem'
+        type: array
+      links:
+        $ref: '#/definitions/controllers.Links'
+      meta:
+        $ref: '#/definitions/controllers.ListMeta'
+    type: object
+  controllers.FilterData:
+    properties:
+      op:
+        type: string
+      values:
+        items:
+          type: string
+        type: array
+    type: object
+  controllers.Links:
+    properties:
+      first:
+        type: string
+      last:
+        type: string
+      next:
+        type: string
+      previous:
+        type: string
+    type: object
+  controllers.ListMeta:
+    properties:
+      filter:
+        additionalProperties:
+          $ref: '#/definitions/controllers.FilterData'
+        type: object
+      limit:
+        type: integer
+      offset:
+        type: integer
+      search:
+        type: string
+      sort:
+        items:
+          type: string
+        type: array
+      subtotals:
+        additionalProperties:
+          type: integer
+        type: object
+      total_items:
+        type: integer
+    type: object
+  controllers.PackageDetailAttributes:
+    properties:
+      advisory_id:
+        type: string
+      description:
+        type: string
+      name:
+        type: string
+      summary:
+        type: string
+      version:
+        type: string
+    type: object
+  controllers.PackageDetailItem:
+    properties:
+      attributes:
+        $ref: '#/definitions/controllers.PackageDetailAttributes'
+      id:
+        type: string
+      type:
+        type: string
+    type: object
+  controllers.PackageDetailResponse:
+    properties:
+      data:
+        $ref: '#/definitions/controllers.PackageDetailItem'
+    type: object
+  controllers.PackageItem:
+    properties:
+      name:
+        type: string
+      summary:
+        type: string
+      systems_installed:
+        type: integer
+      systems_updatable:
+        type: integer
+    type: object
+  controllers.PackageSystemItem:
+    properties:
+      available_evra:
+        type: string
+      display_name:
+        type: string
+      id:
+        type: string
+      installed_evra:
+        type: string
+      updatable:
+        type: boolean
+    type: object
+  controllers.PackageSystemsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/controllers.PackageSystemItem'
+        type: array
+      links:
+        $ref: '#/definitions/controllers.Links'
+      meta:
+        $ref: '#/definitions/controllers.ListMeta'
+    type: object
+  controllers.PackageVersionItem:
+    properties:
+      evra:
+        type: string
+    type: object
+  controllers.PackageVersionsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/controllers.PackageVersionItem'
+        type: array
+      links:
+        $ref: '#/definitions/controllers.Links'
+      meta:
+        $ref: '#/definitions/controllers.ListMeta'
+    type: object
+  controllers.PackagesResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/controllers.PackageItem'
+        type: array
+      links:
+        $ref: '#/definitions/controllers.Links'
+      meta:
+        $ref: '#/definitions/controllers.ListMeta'
+    type: object
+  controllers.SystemAdvisoriesDBLookup:
+    properties:
+      advisory_type:
+        type: integer
+      cve_count:
+        type: integer
+      description:
+        type: string
+      id:
+        type: string
+      public_date:
+        type: string
+      severity:
+        type: integer
+      synopsis:
+        type: string
+    type: object
+  controllers.SystemAdvisoriesResponse:
+    properties:
+      data:
+        description: advisories items
+        items:
+          $ref: '#/definitions/controllers.SystemAdvisoryItem'
+        type: array
+      links:
+        $ref: '#/definitions/controllers.Links'
+      meta:
+        $ref: '#/definitions/controllers.ListMeta'
+    type: object
+  controllers.SystemAdvisoryItem:
+    properties:
+      attributes:
+        $ref: '#/definitions/controllers.SystemAdvisoryItemAttributes'
+      id:
+        type: string
+      type:
+        type: string
+    type: object
+  controllers.SystemAdvisoryItemAttributes:
+    properties:
+      advisory_type:
+        type: integer
+      cve_count:
+        type: integer
+      description:
+        type: string
+      public_date:
+        type: string
+      severity:
+        type: integer
+      synopsis:
+        type: string
+    type: object
+  controllers.SystemDetailResponse:
+    properties:
+      data:
+        $ref: '#/definitions/controllers.SystemItem'
+    type: object
+  controllers.SystemInlineItem:
+    properties:
+      created:
+        type: string
+      culled_timestamp:
+        type: string
+      display_name:
+        type: string
+      id:
+        type: string
+      insights_id:
+        type: string
+      last_evaluation:
+        type: string
+      last_upload:
+        type: string
+      os_major:
+        type: string
+      os_minor:
+        type: string
+      os_name:
+        type: string
+      other_count:
+        type: integer
+      packages_installed:
+        type: integer
+      packages_updatable:
+        type: integer
+      rhba_count:
+        type: integer
+      rhea_count:
+        type: integer
+      rhsa_count:
+        type: integer
+      rhsm:
+        type: string
+      stale:
+        type: boolean
+      stale_timestamp:
+        type: string
+      stale_warning_timestamp:
+        type: string
+      third_party:
+        type: boolean
+    type: object
+  controllers.SystemItem:
+    properties:
+      attributes:
+        $ref: '#/definitions/controllers.SystemItemAttributes'
+      id:
+        type: string
+      type:
+        type: string
+    type: object
+  controllers.SystemItemAttributes:
+    properties:
+      created:
+        type: string
+      culled_timestamp:
+        type: string
+      display_name:
+        type: string
+      insights_id:
+        type: string
+      last_evaluation:
+        type: string
+      last_upload:
+        type: string
+      os_major:
+        type: string
+      os_minor:
+        type: string
+      os_name:
+        type: string
+      other_count:
+        type: integer
+      packages_installed:
+        type: integer
+      packages_updatable:
+        type: integer
+      rhba_count:
+        type: integer
+      rhea_count:
+        type: integer
+      rhsa_count:
+        type: integer
+      rhsm:
+        type: string
+      stale:
+        type: boolean
+      stale_timestamp:
+        type: string
+      stale_warning_timestamp:
+        type: string
+      third_party:
+        type: boolean
+    type: object
+  controllers.SystemPackageData:
+    properties:
+      description:
+        type: string
+      evra:
+        type: string
+      name:
+        type: string
+      summary:
+        type: string
+      updatable:
+        type: boolean
+      updates:
+        items:
+          $ref: '#/definitions/models.PackageUpdate'
+        type: array
+    type: object
+  controllers.SystemPackageInline:
+    properties:
+      description:
+        type: string
+      evra:
+        type: string
+      latest_evra:
+        type: string
+      name:
+        type: string
+      summary:
+        type: string
+      updatable:
+        type: boolean
+    type: object
+  controllers.SystemPackageResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/controllers.SystemPackageData'
+        type: array
+      links:
+        $ref: '#/definitions/controllers.Links'
+      meta:
+        $ref: '#/definitions/controllers.ListMeta'
+    type: object
+  controllers.SystemsAdvisoriesRequest:
+    properties:
+      advisories:
+        items:
+          type: string
+        type: array
+      systems:
+        items:
+          type: string
+        type: array
+    type: object
+  controllers.SystemsAdvisoriesResponse:
+    properties:
+      data:
+        additionalProperties:
+          items:
+            type: string
+          type: array
+        type: object
+    type: object
+  controllers.SystemsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/controllers.SystemItem'
+        type: array
+      links:
+        $ref: '#/definitions/controllers.Links'
+      meta:
+        $ref: '#/definitions/controllers.ListMeta'
+    type: object
+  models.PackageUpdate:
+    properties:
+      advisory:
+        type: string
+      evra:
+        type: string
+    type: object
+host: redhat.local
 info:
   contact: {}
-  description: |-
+  description: >-
     API of the Patch application on [cloud.redhat.com](cloud.redhat.com)
 
-    Syntax of the `filter[name]` query parameters is described in  [Filters documentation](https://github.com/RedHatInsights/patchman-engine/wiki/API-custom-filters)
+
+    Syntax of the `filter[name]` query parameters is described in  [Filters
+    documentation](https://github.com/RedHatInsights/patchman-engine/wiki/API-custom-filters)
   license:
     name: GPLv3
-    url: https://www.gnu.org/licenses/gpl-3.0.en.html
+    url: 'https://www.gnu.org/licenses/gpl-3.0.en.html'
   title: Patchman-engine API
   version: v1.15.3
   x-apisguru-categories:
     - developer_tools
   x-origin:
     - format: openapi
-      url: https://raw.githubusercontent.com/RedHatInsights/patchman-engine/master/docs/openapi.json
-      version: "3.0"
+      url: >-
+        https://raw.githubusercontent.com/RedHatInsights/patchman-engine/master/docs/openapi.json
+      version: '3.0'
   x-providerName: redhat.local
   x-serviceName: patchman-engine
 paths:
@@ -27,102 +518,86 @@ paths:
       description: Show me all applicable advisories for all my systems
       operationId: listAdvisories
       parameters:
-        - description: Limit for paging, set -1 to return all
+        - description: 'Limit for paging, set -1 to return all'
           in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - description: Offset for paging
           in: query
           name: offset
-          schema:
-            type: integer
+          type: integer
         - description: Sort field
+          enum:
+            - id
+            - name
+            - advisory_type
+            - synopsis
+            - public_date
+            - applicable_systems
           in: query
           name: sort
-          schema:
-            enum:
-              - id
-              - name
-              - advisory_type
-              - synopsis
-              - public_date
-              - applicable_systems
-            type: string
+          type: string
         - description: Find matching text
           in: query
           name: search
-          schema:
-            type: string
-        - description: "Filter "
+          type: string
+        - description: 'Filter '
           in: query
-          name: filter[id]
-          schema:
-            type: string
+          name: 'filter[id]'
+          type: string
         - description: Filter
           in: query
-          name: filter[description]
-          schema:
-            type: string
+          name: 'filter[description]'
+          type: string
         - description: Filter
           in: query
-          name: filter[public_date]
-          schema:
-            type: string
+          name: 'filter[public_date]'
+          type: string
         - description: Filter
           in: query
-          name: filter[synopsis]
-          schema:
-            type: string
+          name: 'filter[synopsis]'
+          type: string
         - description: Filter
           in: query
-          name: filter[advisory_type]
-          schema:
-            type: string
+          name: 'filter[advisory_type]'
+          type: string
         - description: Filter
           in: query
-          name: filter[severity]
-          schema:
-            type: string
+          name: 'filter[severity]'
+          type: string
         - description: Filter
           in: query
-          name: filter[applicable_systems]
-          schema:
-            type: string
-        - description: Tag filter
-          explode: true
+          name: 'filter[applicable_systems]'
+          type: string
+        - collectionFormat: multi
+          description: Tag filter
           in: query
+          items:
+            type: string
           name: tags
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          type: array
         - description: Filter only SAP systems
           in: query
-          name: filter[system_profile][sap_system]
-          schema:
-            type: string
-        - description: Filter systems by their SAP SIDs
-          explode: true
+          name: 'filter[system_profile][sap_system]'
+          type: string
+        - collectionFormat: multi
+          description: Filter systems by their SAP SIDs
           in: query
-          name: filter[system_profile][sap_sids][in]
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          items:
+            type: string
+          name: 'filter[system_profile][sap_sids][in]'
+          type: array
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/controllers.AdvisoriesResponse"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/controllers.AdvisoriesResponse'
       security:
         - RhIdentity: []
       summary: Show me all applicable advisories for all my systems
-  "/api/patch/v1/advisories/{advisory_id}":
+  '/api/patch/v1/advisories/{advisory_id}':
     get:
       description: Show me details an advisory by given advisory name
       operationId: detailAdvisory
@@ -131,19 +606,18 @@ paths:
           in: path
           name: advisory_id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/controllers.AdvisoryDetailResponse"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/controllers.AdvisoryDetailResponse'
       security:
         - RhIdentity: []
       summary: Show me details an advisory by given advisory name
-  "/api/patch/v1/advisories/{advisory_id}/systems":
+  '/api/patch/v1/advisories/{advisory_id}/systems':
     get:
       description: Show me systems on which the given advisory is applicable
       operationId: listAdvisorySystems
@@ -152,138 +626,114 @@ paths:
           in: path
           name: advisory_id
           required: true
-          schema:
-            type: string
-        - description: Limit for paging, set -1 to return all
+          type: string
+        - description: 'Limit for paging, set -1 to return all'
           in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - description: Offset for paging
           in: query
           name: offset
-          schema:
-            type: integer
+          type: integer
         - description: Sort field
+          enum:
+            - id
+            - display_name
+            - last_evaluation
+            - last_upload
+            - rhsa_count
+            - rhba_count
+            - rhea_count
+            - other_count
+            - stale
           in: query
           name: sort
-          schema:
-            enum:
-              - id
-              - display_name
-              - last_evaluation
-              - last_upload
-              - rhsa_count
-              - rhba_count
-              - rhea_count
-              - other_count
-              - stale
-            type: string
+          type: string
         - description: Find matching text
           in: query
           name: search
-          schema:
-            type: string
+          type: string
         - description: Filter
           in: query
-          name: filter[id]
-          schema:
-            type: string
+          name: 'filter[id]'
+          type: string
         - description: Filter
           in: query
-          name: filter[insights_id]
-          schema:
-            type: string
+          name: 'filter[insights_id]'
+          type: string
         - description: Filter
           in: query
-          name: filter[display_name]
-          schema:
-            type: string
+          name: 'filter[display_name]'
+          type: string
         - description: Filter
           in: query
-          name: filter[last_evaluation]
-          schema:
-            type: string
+          name: 'filter[last_evaluation]'
+          type: string
         - description: Filter
           in: query
-          name: filter[last_upload]
-          schema:
-            type: string
+          name: 'filter[last_upload]'
+          type: string
         - description: Filter
           in: query
-          name: filter[rhsa_count]
-          schema:
-            type: string
+          name: 'filter[rhsa_count]'
+          type: string
         - description: Filter
           in: query
-          name: filter[rhba_count]
-          schema:
-            type: string
+          name: 'filter[rhba_count]'
+          type: string
         - description: Filter
           in: query
-          name: filter[rhea_count]
-          schema:
-            type: string
+          name: 'filter[rhea_count]'
+          type: string
         - description: Filter
           in: query
-          name: filter[other_count]
-          schema:
-            type: string
+          name: 'filter[other_count]'
+          type: string
         - description: Filter
           in: query
-          name: filter[stale]
-          schema:
-            type: string
+          name: 'filter[stale]'
+          type: string
         - description: Filter
           in: query
-          name: filter[stale_timestamp]
-          schema:
-            type: string
+          name: 'filter[stale_timestamp]'
+          type: string
         - description: Filter
           in: query
-          name: filter[stale_warning_timestamp]
-          schema:
-            type: string
+          name: 'filter[stale_warning_timestamp]'
+          type: string
         - description: Filter
           in: query
-          name: filter[culled_timestamp]
-          schema:
-            type: string
+          name: 'filter[culled_timestamp]'
+          type: string
         - description: Filter
           in: query
-          name: filter[created]
-          schema:
-            type: string
-        - description: Tag filter
-          explode: true
+          name: 'filter[created]'
+          type: string
+        - collectionFormat: multi
+          description: Tag filter
           in: query
+          items:
+            type: string
           name: tags
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          type: array
         - description: Filter only SAP systems
           in: query
-          name: filter[system_profile][sap_system]
-          schema:
-            type: string
-        - description: Filter systems by their SAP SIDs
-          explode: true
+          name: 'filter[system_profile][sap_system]'
+          type: string
+        - collectionFormat: multi
+          description: Filter systems by their SAP SIDs
           in: query
-          name: filter[system_profile][sap_sids][in]
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          items:
+            type: string
+          name: 'filter[system_profile][sap_sids][in]'
+          type: array
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/controllers.AdvisorySystemsResponse"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/controllers.AdvisorySystemsResponse'
       security:
         - RhIdentity: []
       summary: Show me systems on which the given advisory is applicable
@@ -295,61 +745,49 @@ paths:
         - description: Find matching text
           in: query
           name: search
-          schema:
-            type: string
+          type: string
         - description: Filter
           in: query
-          name: filter[id]
-          schema:
-            type: string
+          name: 'filter[id]'
+          type: string
         - description: Filter
           in: query
-          name: filter[description]
-          schema:
-            type: string
+          name: 'filter[description]'
+          type: string
         - description: Filter
           in: query
-          name: filter[public_date]
-          schema:
-            type: string
+          name: 'filter[public_date]'
+          type: string
         - description: Filter
           in: query
-          name: filter[synopsis]
-          schema:
-            type: string
+          name: 'filter[synopsis]'
+          type: string
         - description: Filter
           in: query
-          name: filter[advisory_type]
-          schema:
-            type: string
+          name: 'filter[advisory_type]'
+          type: string
         - description: Filter
           in: query
-          name: filter[severity]
-          schema:
-            type: string
+          name: 'filter[severity]'
+          type: string
         - description: Filter
           in: query
-          name: filter[applicable_systems]
-          schema:
-            type: string
+          name: 'filter[applicable_systems]'
+          type: string
+      produces:
+        - application/json
+        - text/csv
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/controllers.AdvisoryInlineItem"
-                type: array
-            text/csv:
-              schema:
-                items:
-                  $ref: "#/components/schemas/controllers.AdvisoryInlineItem"
-                type: array
+        '200':
           description: OK
+          schema:
+            items:
+              $ref: '#/definitions/controllers.AdvisoryInlineItem'
+            type: array
       security:
         - RhIdentity: []
       summary: Export applicable advisories for all my systems
-  "/api/patch/v1/export/advisories/{advisory_id}/systems":
+  '/api/patch/v1/export/advisories/{advisory_id}/systems':
     get:
       description: Export systems for my account
       operationId: exportAdvisorySystems
@@ -358,105 +796,83 @@ paths:
           in: path
           name: advisory_id
           required: true
-          schema:
-            type: string
+          type: string
         - description: Find matching text
           in: query
           name: search
-          schema:
-            type: string
+          type: string
         - description: Filter
           in: query
-          name: filter[id]
-          schema:
-            type: string
+          name: 'filter[id]'
+          type: string
         - description: Filter
           in: query
-          name: filter[display_name]
-          schema:
-            type: string
+          name: 'filter[display_name]'
+          type: string
         - description: Filter
           in: query
-          name: filter[last_evaluation]
-          schema:
-            type: string
+          name: 'filter[last_evaluation]'
+          type: string
         - description: Filter
           in: query
-          name: filter[last_upload]
-          schema:
-            type: string
+          name: 'filter[last_upload]'
+          type: string
         - description: Filter
           in: query
-          name: filter[rhsa_count]
-          schema:
-            type: string
+          name: 'filter[rhsa_count]'
+          type: string
         - description: Filter
           in: query
-          name: filter[rhba_count]
-          schema:
-            type: string
+          name: 'filter[rhba_count]'
+          type: string
         - description: Filter
           in: query
-          name: filter[rhea_count]
-          schema:
-            type: string
+          name: 'filter[rhea_count]'
+          type: string
         - description: Filter
           in: query
-          name: filter[other_count]
-          schema:
-            type: string
+          name: 'filter[other_count]'
+          type: string
         - description: Filter
           in: query
-          name: filter[stale]
-          schema:
-            type: string
+          name: 'filter[stale]'
+          type: string
         - description: Filter
           in: query
-          name: filter[packages_installed]
-          schema:
-            type: string
+          name: 'filter[packages_installed]'
+          type: string
         - description: Filter
           in: query
-          name: filter[packages_updatable]
-          schema:
-            type: string
+          name: 'filter[packages_updatable]'
+          type: string
         - description: Filter only SAP systems
           in: query
-          name: filter[system_profile][sap_system]
-          schema:
+          name: 'filter[system_profile][sap_system]'
+          type: string
+        - collectionFormat: multi
+          description: Filter systems by their SAP SIDs
+          in: query
+          items:
             type: string
-        - description: Filter systems by their SAP SIDs
-          explode: true
+          name: 'filter[system_profile][sap_sids][in]'
+          type: array
+        - collectionFormat: multi
+          description: Tag filter
           in: query
-          name: filter[system_profile][sap_sids][in]
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
-        - description: Tag filter
-          explode: true
-          in: query
+          items:
+            type: string
           name: tags
+          type: array
+      produces:
+        - application/json
+        - text/csv
+      responses:
+        '200':
+          description: OK
           schema:
             items:
-              type: string
+              $ref: '#/definitions/controllers.SystemInlineItem'
             type: array
-          style: form
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/controllers.SystemInlineItem"
-                type: array
-            text/csv:
-              schema:
-                items:
-                  $ref: "#/components/schemas/controllers.SystemInlineItem"
-                type: array
-          description: OK
       security:
         - RhIdentity: []
       summary: Export systems for my account
@@ -466,58 +882,48 @@ paths:
       operationId: exportPackages
       parameters:
         - description: Sort field
+          enum:
+            - id
+            - name
+            - systems_installed
+            - systems_updatable
           in: query
           name: sort
-          schema:
-            enum:
-              - id
-              - name
-              - systems_installed
-              - systems_updatable
-            type: string
+          type: string
         - description: Find matching text
           in: query
           name: search
-          schema:
-            type: string
+          type: string
         - description: Filter
           in: query
-          name: filter[name]
-          schema:
-            type: string
+          name: 'filter[name]'
+          type: string
         - description: Filter
           in: query
-          name: filter[systems_installed]
-          schema:
-            type: string
+          name: 'filter[systems_installed]'
+          type: string
         - description: Filter
           in: query
-          name: filter[systems_updatable]
-          schema:
-            type: string
+          name: 'filter[systems_updatable]'
+          type: string
         - description: Filter
           in: query
-          name: filter[summary]
-          schema:
-            type: string
+          name: 'filter[summary]'
+          type: string
+      produces:
+        - application/json
+        - text/csv
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/controllers.PackageItem"
-                type: array
-            text/csv:
-              schema:
-                items:
-                  $ref: "#/components/schemas/controllers.PackageItem"
-                type: array
+        '200':
           description: OK
+          schema:
+            items:
+              $ref: '#/definitions/controllers.PackageItem'
+            type: array
       security:
         - RhIdentity: []
       summary: Show me all installed packages across my systems
-  "/api/patch/v1/export/packages/{package_name}/systems":
+  '/api/patch/v1/export/packages/{package_name}/systems':
     get:
       description: Show me all my systems which have a package installed
       operationId: exportPackageSystems
@@ -526,40 +932,34 @@ paths:
           in: path
           name: package_name
           required: true
-          schema:
-            type: string
+          type: string
         - description: Filter only SAP systems
           in: query
-          name: filter[system_profile][sap_system]
-          schema:
+          name: 'filter[system_profile][sap_system]'
+          type: string
+        - collectionFormat: multi
+          description: Filter systems by their SAP SIDs
+          in: query
+          items:
             type: string
-        - description: Filter systems by their SAP SIDs
-          explode: true
+          name: 'filter[system_profile][sap_sids][in]'
+          type: array
+        - collectionFormat: multi
+          description: Tag filter
           in: query
-          name: filter[system_profile][sap_sids][in]
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
-        - description: Tag filter
-          explode: true
-          in: query
+          items:
+            type: string
           name: tags
+          type: array
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
           schema:
             items:
-              type: string
+              $ref: '#/definitions/controllers.PackageSystemItem'
             type: array
-          style: form
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/controllers.PackageSystemItem"
-                type: array
-          description: OK
       security:
         - RhIdentity: []
       summary: Show me all my systems which have a package installed
@@ -571,104 +971,83 @@ paths:
         - description: Find matching text
           in: query
           name: search
-          schema:
-            type: string
+          type: string
         - description: Filter
           in: query
-          name: filter[id]
-          schema:
-            type: string
+          name: 'filter[id]'
+          type: string
         - description: Filter
           in: query
-          name: filter[display_name]
-          schema:
-            type: string
+          name: 'filter[display_name]'
+          type: string
         - description: Filter
           in: query
-          name: filter[last_evaluation]
-          schema:
-            type: string
+          name: 'filter[last_evaluation]'
+          type: string
         - description: Filter
           in: query
-          name: filter[last_upload]
-          schema:
-            type: string
+          name: 'filter[last_upload]'
+          type: string
         - description: Filter
           in: query
-          name: filter[rhsa_count]
-          schema:
-            type: string
+          name: 'filter[rhsa_count]'
+          type: string
         - description: Filter
           in: query
-          name: filter[rhba_count]
-          schema:
-            type: string
+          name: 'filter[rhba_count]'
+          type: string
         - description: Filter
           in: query
-          name: filter[rhea_count]
-          schema:
-            type: string
+          name: 'filter[rhea_count]'
+          type: string
         - description: Filter
           in: query
-          name: filter[other_count]
-          schema:
-            type: string
+          name: 'filter[other_count]'
+          type: string
         - description: Filter
           in: query
-          name: filter[stale]
-          schema:
-            type: string
+          name: 'filter[stale]'
+          type: string
         - description: Filter
           in: query
-          name: filter[packages_installed]
-          schema:
-            type: string
+          name: 'filter[packages_installed]'
+          type: string
         - description: Filter
           in: query
-          name: filter[packages_updatable]
-          schema:
-            type: string
+          name: 'filter[packages_updatable]'
+          type: string
         - description: Filter only SAP systems
           in: query
-          name: filter[system_profile][sap_system]
-          schema:
+          name: 'filter[system_profile][sap_system]'
+          type: string
+        - collectionFormat: multi
+          description: Filter systems by their SAP SIDs
+          in: query
+          items:
             type: string
-        - description: Filter systems by their SAP SIDs
-          explode: true
+          name: 'filter[system_profile][sap_sids][in]'
+          type: array
+        - collectionFormat: multi
+          description: Tag filter
           in: query
-          name: filter[system_profile][sap_sids][in]
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
-        - description: Tag filter
-          explode: true
-          in: query
+          items:
+            type: string
           name: tags
+          type: array
+      produces:
+        - application/json
+        - text/csv
+      responses:
+        '200':
+          description: OK
           schema:
             items:
-              type: string
+              $ref: '#/definitions/controllers.SystemInlineItem'
             type: array
-          style: form
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/controllers.SystemInlineItem"
-                type: array
-            text/csv:
-              schema:
-                items:
-                  $ref: "#/components/schemas/controllers.SystemInlineItem"
-                type: array
-          description: OK
       security:
         - RhIdentity: []
       summary: Export systems for my account
-  "/api/patch/v1/export/systems/{inventory_id}/advisories":
+  '/api/patch/v1/export/systems/{inventory_id}/advisories':
     get:
       description: Export applicable advisories for all my systems
       operationId: exportSystemAdvisories
@@ -677,61 +1056,49 @@ paths:
           in: path
           name: inventory_id
           required: true
-          schema:
-            type: string
+          type: string
         - description: Find matching text
           in: query
           name: search
-          schema:
-            type: string
+          type: string
         - description: Filter
           in: query
-          name: filter[id]
-          schema:
-            type: string
+          name: 'filter[id]'
+          type: string
         - description: Filter
           in: query
-          name: filter[description]
-          schema:
-            type: string
+          name: 'filter[description]'
+          type: string
         - description: Filter
           in: query
-          name: filter[public_date]
-          schema:
-            type: string
+          name: 'filter[public_date]'
+          type: string
         - description: Filter
           in: query
-          name: filter[synopsis]
-          schema:
-            type: string
+          name: 'filter[synopsis]'
+          type: string
         - description: Filter
           in: query
-          name: filter[advisory_type]
-          schema:
-            type: string
+          name: 'filter[advisory_type]'
+          type: string
         - description: Filter
           in: query
-          name: filter[severity]
-          schema:
-            type: string
+          name: 'filter[severity]'
+          type: string
+      produces:
+        - application/json
+        - text/csv
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/controllers.SystemAdvisoriesDBLookup"
-                type: array
-            text/csv:
-              schema:
-                items:
-                  $ref: "#/components/schemas/controllers.SystemAdvisoriesDBLookup"
-                type: array
+        '200':
           description: OK
+          schema:
+            items:
+              $ref: '#/definitions/controllers.SystemAdvisoriesDBLookup'
+            type: array
       security:
         - RhIdentity: []
       summary: Export applicable advisories for all my systems
-  "/api/patch/v1/export/systems/{inventory_id}/packages":
+  '/api/patch/v1/export/systems/{inventory_id}/packages':
     get:
       description: Show me details about a system packages by given inventory id
       operationId: exportSystemPackages
@@ -740,47 +1107,40 @@ paths:
           in: path
           name: inventory_id
           required: true
-          schema:
-            type: string
+          type: string
         - description: Find matching text
           in: query
           name: search
-          schema:
-            type: string
+          type: string
         - description: Filter
           in: query
-          name: filter[name]
-          schema:
-            type: string
+          name: 'filter[name]'
+          type: string
         - description: Filter
           in: query
-          name: filter[description]
-          schema:
-            type: string
+          name: 'filter[description]'
+          type: string
         - description: Filter
           in: query
-          name: filter[evra]
-          schema:
-            type: string
+          name: 'filter[evra]'
+          type: string
         - description: Filter
           in: query
-          name: filter[summary]
-          schema:
-            type: string
+          name: 'filter[summary]'
+          type: string
         - description: Filter
           in: query
-          name: filter[updatable]
-          schema:
-            type: boolean
+          name: 'filter[updatable]'
+          type: boolean
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/controllers.SystemPackageInline"
-                type: array
+        '200':
           description: OK
+          schema:
+            items:
+              $ref: '#/definitions/controllers.SystemPackageInline'
+            type: array
       security:
         - RhIdentity: []
       summary: Show me details about a system packages by given inventory id
@@ -789,187 +1149,162 @@ paths:
       description: Show me all installed packages across my systems
       operationId: listPackages
       parameters:
-        - description: Limit for paging, set -1 to return all
+        - description: 'Limit for paging, set -1 to return all'
           in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - description: Offset for paging
           in: query
           name: offset
-          schema:
-            type: integer
+          type: integer
         - description: Sort field
+          enum:
+            - id
+            - name
+            - systems_installed
+            - systems_updatable
           in: query
           name: sort
-          schema:
-            enum:
-              - id
-              - name
-              - systems_installed
-              - systems_updatable
-            type: string
+          type: string
         - description: Find matching text
           in: query
           name: search
-          schema:
-            type: string
+          type: string
         - description: Filter
           in: query
-          name: filter[name]
-          schema:
-            type: string
+          name: 'filter[name]'
+          type: string
         - description: Filter
           in: query
-          name: filter[systems_installed]
-          schema:
-            type: string
+          name: 'filter[systems_installed]'
+          type: string
         - description: Filter
           in: query
-          name: filter[systems_updatable]
-          schema:
-            type: string
+          name: 'filter[systems_updatable]'
+          type: string
         - description: Filter
           in: query
-          name: filter[summary]
-          schema:
-            type: string
-        - description: Tag filter
-          explode: true
+          name: 'filter[summary]'
+          type: string
+        - collectionFormat: multi
+          description: Tag filter
           in: query
+          items:
+            type: string
           name: tags
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          type: array
         - description: Filter only SAP systems
           in: query
-          name: filter[system_profile][sap_system]
-          schema:
-            type: string
-        - description: Filter systems by their SAP SIDs
-          explode: true
+          name: 'filter[system_profile][sap_system]'
+          type: string
+        - collectionFormat: multi
+          description: Filter systems by their SAP SIDs
           in: query
-          name: filter[system_profile][sap_sids][in]
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          items:
+            type: string
+          name: 'filter[system_profile][sap_sids][in]'
+          type: array
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/controllers.PackagesResponse"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/controllers.PackagesResponse'
       security:
         - RhIdentity: []
       summary: Show me all installed packages across my systems
-  "/api/patch/v1/packages/{package_name}":
+  '/api/patch/v1/packages/{package_name}':
     get:
       description: Show me metadata of selected package
       operationId: LatestPackage
       parameters:
-        - description: package_name - latest, nevra - exact version
+        - description: 'package_name - latest, nevra - exact version'
           in: path
           name: package_name
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/controllers.PackageDetailResponse"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/controllers.PackageDetailResponse'
       security:
         - RhIdentity: []
       summary: Show me metadata of selected package
-  "/api/patch/v1/packages/{package_name}/systems":
+  '/api/patch/v1/packages/{package_name}/systems':
     get:
       description: Show me all my systems which have a package installed
       operationId: packageSystems
       parameters:
-        - description: Limit for paging, set -1 to return all
+        - description: 'Limit for paging, set -1 to return all'
           in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - description: Offset for paging
           in: query
           name: offset
-          schema:
-            type: integer
+          type: integer
         - description: Package name
           in: path
           name: package_name
           required: true
-          schema:
-            type: string
-        - description: Tag filter
-          explode: true
+          type: string
+        - collectionFormat: multi
+          description: Tag filter
           in: query
+          items:
+            type: string
           name: tags
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          type: array
         - description: Filter only SAP systems
           in: query
-          name: filter[system_profile][sap_system]
-          schema:
-            type: string
-        - description: Filter systems by their SAP SIDs
-          explode: true
+          name: 'filter[system_profile][sap_system]'
+          type: string
+        - collectionFormat: multi
+          description: Filter systems by their SAP SIDs
           in: query
-          name: filter[system_profile][sap_sids][in]
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          items:
+            type: string
+          name: 'filter[system_profile][sap_sids][in]'
+          type: array
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/controllers.PackageSystemsResponse"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/controllers.PackageSystemsResponse'
       security:
         - RhIdentity: []
       summary: Show me all my systems which have a package installed
-  "/api/patch/v1/packages/{package_name}/versions":
+  '/api/patch/v1/packages/{package_name}/versions':
     get:
       description: Show me all package versions installed on some system
       operationId: packageVersions
       parameters:
-        - description: Limit for paging, set -1 to return all
+        - description: 'Limit for paging, set -1 to return all'
           in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - description: Offset for paging
           in: query
           name: offset
-          schema:
-            type: integer
+          type: integer
         - description: Package name
           in: path
           name: package_name
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/controllers.PackageVersionsResponse"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/controllers.PackageVersionsResponse'
       security:
         - RhIdentity: []
       summary: Show me all package versions installed on some system
@@ -978,152 +1313,127 @@ paths:
       description: Show me all my systems
       operationId: listSystems
       parameters:
-        - description: Limit for paging, set -1 to return all
+        - description: 'Limit for paging, set -1 to return all'
           in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - description: Offset for paging
           in: query
           name: offset
-          schema:
-            type: integer
+          type: integer
         - description: Sort field
+          enum:
+            - id
+            - display_name
+            - last_evaluation
+            - last_upload
+            - rhsa_count
+            - rhba_count
+            - rhea_count
+            - other_count
+            - stale
+            - packages_installed
+            - packages_updatable
           in: query
           name: sort
-          schema:
-            enum:
-              - id
-              - display_name
-              - last_evaluation
-              - last_upload
-              - rhsa_count
-              - rhba_count
-              - rhea_count
-              - other_count
-              - stale
-              - packages_installed
-              - packages_updatable
-            type: string
+          type: string
         - description: Find matching text
           in: query
           name: search
-          schema:
-            type: string
+          type: string
         - description: Filter
           in: query
-          name: filter[insights_id]
-          schema:
-            type: string
+          name: 'filter[insights_id]'
+          type: string
         - description: Filter
           in: query
-          name: filter[id]
-          schema:
-            type: string
+          name: 'filter[id]'
+          type: string
         - description: Filter
           in: query
-          name: filter[display_name]
-          schema:
-            type: string
+          name: 'filter[display_name]'
+          type: string
         - description: Filter
           in: query
-          name: filter[last_evaluation]
-          schema:
-            type: string
+          name: 'filter[last_evaluation]'
+          type: string
         - description: Filter
           in: query
-          name: filter[last_upload]
-          schema:
-            type: string
+          name: 'filter[last_upload]'
+          type: string
         - description: Filter
           in: query
-          name: filter[rhsa_count]
-          schema:
-            type: string
+          name: 'filter[rhsa_count]'
+          type: string
         - description: Filter
           in: query
-          name: filter[rhba_count]
-          schema:
-            type: string
+          name: 'filter[rhba_count]'
+          type: string
         - description: Filter
           in: query
-          name: filter[rhea_count]
-          schema:
-            type: string
+          name: 'filter[rhea_count]'
+          type: string
         - description: Filter
           in: query
-          name: filter[other_count]
-          schema:
-            type: string
+          name: 'filter[other_count]'
+          type: string
         - description: Filter
           in: query
-          name: filter[stale]
-          schema:
-            type: string
+          name: 'filter[stale]'
+          type: string
         - description: Filter
           in: query
-          name: filter[packages_installed]
-          schema:
-            type: string
+          name: 'filter[packages_installed]'
+          type: string
         - description: Filter
           in: query
-          name: filter[packages_updatable]
-          schema:
-            type: string
+          name: 'filter[packages_updatable]'
+          type: string
         - description: Filter
           in: query
-          name: filter[stale_timestamp]
-          schema:
-            type: string
+          name: 'filter[stale_timestamp]'
+          type: string
         - description: Filter
           in: query
-          name: filter[stale_warning_timestamp]
-          schema:
-            type: string
+          name: 'filter[stale_warning_timestamp]'
+          type: string
         - description: Filter
           in: query
-          name: filter[culled_timestamp]
-          schema:
-            type: string
+          name: 'filter[culled_timestamp]'
+          type: string
         - description: Filter
           in: query
-          name: filter[created]
-          schema:
-            type: string
-        - description: Tag filter
-          explode: true
+          name: 'filter[created]'
+          type: string
+        - collectionFormat: multi
+          description: Tag filter
           in: query
+          items:
+            type: string
           name: tags
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          type: array
         - description: Filter only SAP systems
           in: query
-          name: filter[system_profile][sap_system]
-          schema:
-            type: string
-        - description: Filter systems by their SAP SIDs
-          explode: true
+          name: 'filter[system_profile][sap_system]'
+          type: string
+        - collectionFormat: multi
+          description: Filter systems by their SAP SIDs
           in: query
-          name: filter[system_profile][sap_sids][in]
-          schema:
-            items:
-              type: string
-            type: array
-          style: form
+          items:
+            type: string
+          name: 'filter[system_profile][sap_sids][in]'
+          type: array
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/controllers.SystemsResponse"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/controllers.SystemsResponse'
       security:
         - RhIdentity: []
       summary: Show me all my systems
-  "/api/patch/v1/systems/{inventory_id}":
+  '/api/patch/v1/systems/{inventory_id}':
     delete:
       description: Delete system by inventory id
       operationId: deletesystem
@@ -1132,11 +1442,9 @@ paths:
           in: path
           name: inventory_id
           required: true
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
-          content: {}
+        '200':
           description: Ok
       security:
         - RhIdentity: []
@@ -1149,19 +1457,18 @@ paths:
           in: path
           name: inventory_id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/controllers.SystemDetailResponse"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/controllers.SystemDetailResponse'
       security:
         - RhIdentity: []
       summary: Show me details about a system by given inventory id
-  "/api/patch/v1/systems/{inventory_id}/advisories":
+  '/api/patch/v1/systems/{inventory_id}/advisories':
     get:
       description: Show me advisories for a system by given inventory id
       operationId: listSystemAdvisories
@@ -1170,75 +1477,64 @@ paths:
           in: path
           name: inventory_id
           required: true
-          schema:
-            type: string
-        - description: Limit for paging, set -1 to return all
+          type: string
+        - description: 'Limit for paging, set -1 to return all'
           in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - description: Offset for paging
           in: query
           name: offset
-          schema:
-            type: integer
+          type: integer
         - description: Sort field
+          enum:
+            - id
+            - name
+            - type
+            - synopsis
+            - public_date
           in: query
           name: sort
-          schema:
-            enum:
-              - id
-              - name
-              - type
-              - synopsis
-              - public_date
-            type: string
+          type: string
         - description: Find matching text
           in: query
           name: search
-          schema:
-            type: string
+          type: string
         - description: Filter
           in: query
-          name: filter[id]
-          schema:
-            type: string
+          name: 'filter[id]'
+          type: string
         - description: Filter
           in: query
-          name: filter[description]
-          schema:
-            type: string
+          name: 'filter[description]'
+          type: string
         - description: Filter
           in: query
-          name: filter[public_date]
-          schema:
-            type: string
+          name: 'filter[public_date]'
+          type: string
         - description: Filter
           in: query
-          name: filter[synopsis]
-          schema:
-            type: string
+          name: 'filter[synopsis]'
+          type: string
         - description: Filter
           in: query
-          name: filter[advisory_type]
-          schema:
-            type: string
+          name: 'filter[advisory_type]'
+          type: string
         - description: Filter
           in: query
-          name: filter[severity]
-          schema:
-            type: string
+          name: 'filter[severity]'
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/controllers.SystemAdvisoriesResponse"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/controllers.SystemAdvisoriesResponse'
       security:
         - RhIdentity: []
       summary: Show me advisories for a system by given inventory id
-  "/api/patch/v1/systems/{inventory_id}/packages":
+  '/api/patch/v1/systems/{inventory_id}/packages':
     get:
       description: Show me details about a system packages by given inventory id
       operationId: systemPackages
@@ -1247,595 +1543,104 @@ paths:
           in: path
           name: inventory_id
           required: true
-          schema:
-            type: string
-        - description: Limit for paging, set -1 to return all
+          type: string
+        - description: 'Limit for paging, set -1 to return all'
           in: query
           name: limit
-          schema:
-            type: integer
+          type: integer
         - description: Offset for paging
           in: query
           name: offset
-          schema:
-            type: integer
+          type: integer
         - description: Find matching text
           in: query
           name: search
-          schema:
-            type: string
+          type: string
         - description: Filter
           in: query
-          name: filter[name]
-          schema:
-            type: string
+          name: 'filter[name]'
+          type: string
         - description: Filter
           in: query
-          name: filter[description]
-          schema:
-            type: string
+          name: 'filter[description]'
+          type: string
         - description: Filter
           in: query
-          name: filter[evra]
-          schema:
-            type: string
+          name: 'filter[evra]'
+          type: string
         - description: Filter
           in: query
-          name: filter[summary]
-          schema:
-            type: string
+          name: 'filter[summary]'
+          type: string
         - description: Filter
           in: query
-          name: filter[updatable]
-          schema:
-            type: boolean
+          name: 'filter[updatable]'
+          type: boolean
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/controllers.SystemPackageResponse"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/controllers.SystemPackageResponse'
       security:
         - RhIdentity: []
       summary: Show me details about a system packages by given inventory id
   /api/patch/v1/views/advisories/systems:
     post:
+      consumes:
+        - application/json
       description: View advisory-system pairs for selected systems and advisories
       operationId: viewAdvisoriesSystems
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/controllers.SystemsAdvisoriesRequest"
-        description: Request body
-        required: true
+      parameters:
+        - description: Request body
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/controllers.SystemsAdvisoriesRequest'
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/controllers.AdvisoriesSystemsResponse"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/controllers.AdvisoriesSystemsResponse'
       security:
         - RhIdentity: []
       summary: View advisory-system pairs for selected systems and advisories
       x-codegen-request-body-name: body
   /api/patch/v1/views/systems/advisories:
     post:
+      consumes:
+        - application/json
       description: View system-advisory pairs for selected systems and advisories
       operationId: viewSystemsAdvisories
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/controllers.SystemsAdvisoriesRequest"
-        description: Request body
-        required: true
+      parameters:
+        - description: Request body
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/controllers.SystemsAdvisoriesRequest'
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/controllers.SystemsAdvisoriesResponse"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/controllers.SystemsAdvisoriesResponse'
       security:
         - RhIdentity: []
       summary: View system-advisory pairs for selected systems and advisories
       x-codegen-request-body-name: body
-components:
-  schemas:
-    controllers.AdvisoriesResponse:
-      properties:
-        data:
-          items:
-            $ref: "#/components/schemas/controllers.AdvisoryItem"
-          type: array
-        links:
-          $ref: "#/components/schemas/controllers.Links"
-        meta:
-          $ref: "#/components/schemas/controllers.ListMeta"
-      type: object
-    controllers.AdvisoriesSystemsResponse:
-      properties:
-        data:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-          type: object
-      type: object
-    controllers.AdvisoryDetailAttributes:
-      properties:
-        cves:
-          items:
-            type: string
-          type: array
-        description:
-          type: string
-        fixes:
-          type: string
-        modified_date:
-          type: string
-        packages:
-          additionalProperties:
-            type: string
-          type: object
-        public_date:
-          type: string
-        references:
-          items:
-            type: string
-          type: array
-        severity:
-          type: integer
-        solution:
-          type: string
-        synopsis:
-          type: string
-        topic:
-          type: string
-      type: object
-    controllers.AdvisoryDetailItem:
-      properties:
-        attributes:
-          $ref: "#/components/schemas/controllers.AdvisoryDetailAttributes"
-        id:
-          type: string
-        type:
-          type: string
-      type: object
-    controllers.AdvisoryDetailResponse:
-      properties:
-        data:
-          $ref: "#/components/schemas/controllers.AdvisoryDetailItem"
-      type: object
-    controllers.AdvisoryInlineItem:
-      properties:
-        advisory_type:
-          type: integer
-        applicable_systems:
-          type: integer
-        cve_count:
-          type: integer
-        description:
-          type: string
-        id:
-          type: string
-        public_date:
-          type: string
-        severity:
-          type: integer
-        synopsis:
-          type: string
-      type: object
-    controllers.AdvisoryItem:
-      properties:
-        attributes:
-          $ref: "#/components/schemas/controllers.AdvisoryItemAttributes"
-        id:
-          type: string
-        type:
-          type: string
-      type: object
-    controllers.AdvisoryItemAttributes:
-      properties:
-        advisory_type:
-          type: integer
-        applicable_systems:
-          type: integer
-        cve_count:
-          type: integer
-        description:
-          type: string
-        public_date:
-          type: string
-        severity:
-          type: integer
-        synopsis:
-          type: string
-      type: object
-    controllers.AdvisorySystemsResponse:
-      properties:
-        data:
-          items:
-            $ref: "#/components/schemas/controllers.SystemItem"
-          type: array
-        links:
-          $ref: "#/components/schemas/controllers.Links"
-        meta:
-          $ref: "#/components/schemas/controllers.ListMeta"
-      type: object
-    controllers.FilterData:
-      properties:
-        op:
-          type: string
-        values:
-          items:
-            type: string
-          type: array
-      type: object
-    controllers.Links:
-      properties:
-        first:
-          type: string
-        last:
-          type: string
-        next:
-          type: string
-        previous:
-          type: string
-      type: object
-    controllers.ListMeta:
-      properties:
-        filter:
-          additionalProperties:
-            $ref: "#/components/schemas/controllers.FilterData"
-          type: object
-        limit:
-          type: integer
-        offset:
-          type: integer
-        search:
-          type: string
-        sort:
-          items:
-            type: string
-          type: array
-        subtotals:
-          additionalProperties:
-            type: integer
-          type: object
-        total_items:
-          type: integer
-      type: object
-    controllers.PackageDetailAttributes:
-      properties:
-        advisory_id:
-          type: string
-        description:
-          type: string
-        name:
-          type: string
-        summary:
-          type: string
-        version:
-          type: string
-      type: object
-    controllers.PackageDetailItem:
-      properties:
-        attributes:
-          $ref: "#/components/schemas/controllers.PackageDetailAttributes"
-        id:
-          type: string
-        type:
-          type: string
-      type: object
-    controllers.PackageDetailResponse:
-      properties:
-        data:
-          $ref: "#/components/schemas/controllers.PackageDetailItem"
-      type: object
-    controllers.PackageItem:
-      properties:
-        name:
-          type: string
-        summary:
-          type: string
-        systems_installed:
-          type: integer
-        systems_updatable:
-          type: integer
-      type: object
-    controllers.PackageSystemItem:
-      properties:
-        available_evra:
-          type: string
-        display_name:
-          type: string
-        id:
-          type: string
-        installed_evra:
-          type: string
-        updatable:
-          type: boolean
-      type: object
-    controllers.PackageSystemsResponse:
-      properties:
-        data:
-          items:
-            $ref: "#/components/schemas/controllers.PackageSystemItem"
-          type: array
-        links:
-          $ref: "#/components/schemas/controllers.Links"
-        meta:
-          $ref: "#/components/schemas/controllers.ListMeta"
-      type: object
-    controllers.PackageVersionItem:
-      properties:
-        evra:
-          type: string
-      type: object
-    controllers.PackageVersionsResponse:
-      properties:
-        data:
-          items:
-            $ref: "#/components/schemas/controllers.PackageVersionItem"
-          type: array
-        links:
-          $ref: "#/components/schemas/controllers.Links"
-        meta:
-          $ref: "#/components/schemas/controllers.ListMeta"
-      type: object
-    controllers.PackagesResponse:
-      properties:
-        data:
-          items:
-            $ref: "#/components/schemas/controllers.PackageItem"
-          type: array
-        links:
-          $ref: "#/components/schemas/controllers.Links"
-        meta:
-          $ref: "#/components/schemas/controllers.ListMeta"
-      type: object
-    controllers.SystemAdvisoriesDBLookup:
-      properties:
-        advisory_type:
-          type: integer
-        cve_count:
-          type: integer
-        description:
-          type: string
-        id:
-          type: string
-        public_date:
-          type: string
-        severity:
-          type: integer
-        synopsis:
-          type: string
-      type: object
-    controllers.SystemAdvisoriesResponse:
-      properties:
-        data:
-          description: advisories items
-          items:
-            $ref: "#/components/schemas/controllers.SystemAdvisoryItem"
-          type: array
-        links:
-          $ref: "#/components/schemas/controllers.Links"
-        meta:
-          $ref: "#/components/schemas/controllers.ListMeta"
-      type: object
-    controllers.SystemAdvisoryItem:
-      properties:
-        attributes:
-          $ref: "#/components/schemas/controllers.SystemAdvisoryItemAttributes"
-        id:
-          type: string
-        type:
-          type: string
-      type: object
-    controllers.SystemAdvisoryItemAttributes:
-      properties:
-        advisory_type:
-          type: integer
-        cve_count:
-          type: integer
-        description:
-          type: string
-        public_date:
-          type: string
-        severity:
-          type: integer
-        synopsis:
-          type: string
-      type: object
-    controllers.SystemDetailResponse:
-      properties:
-        data:
-          $ref: "#/components/schemas/controllers.SystemItem"
-      type: object
-    controllers.SystemInlineItem:
-      properties:
-        created:
-          type: string
-        culled_timestamp:
-          type: string
-        display_name:
-          type: string
-        id:
-          type: string
-        insights_id:
-          type: string
-        last_evaluation:
-          type: string
-        last_upload:
-          type: string
-        os_major:
-          type: string
-        os_minor:
-          type: string
-        os_name:
-          type: string
-        other_count:
-          type: integer
-        packages_installed:
-          type: integer
-        packages_updatable:
-          type: integer
-        rhba_count:
-          type: integer
-        rhea_count:
-          type: integer
-        rhsa_count:
-          type: integer
-        rhsm:
-          type: string
-        stale:
-          type: boolean
-        stale_timestamp:
-          type: string
-        stale_warning_timestamp:
-          type: string
-        third_party:
-          type: boolean
-      type: object
-    controllers.SystemItem:
-      properties:
-        attributes:
-          $ref: "#/components/schemas/controllers.SystemItemAttributes"
-        id:
-          type: string
-        type:
-          type: string
-      type: object
-    controllers.SystemItemAttributes:
-      properties:
-        created:
-          type: string
-        culled_timestamp:
-          type: string
-        display_name:
-          type: string
-        insights_id:
-          type: string
-        last_evaluation:
-          type: string
-        last_upload:
-          type: string
-        os_major:
-          type: string
-        os_minor:
-          type: string
-        os_name:
-          type: string
-        other_count:
-          type: integer
-        packages_installed:
-          type: integer
-        packages_updatable:
-          type: integer
-        rhba_count:
-          type: integer
-        rhea_count:
-          type: integer
-        rhsa_count:
-          type: integer
-        rhsm:
-          type: string
-        stale:
-          type: boolean
-        stale_timestamp:
-          type: string
-        stale_warning_timestamp:
-          type: string
-        third_party:
-          type: boolean
-      type: object
-    controllers.SystemPackageData:
-      properties:
-        description:
-          type: string
-        evra:
-          type: string
-        name:
-          type: string
-        summary:
-          type: string
-        updatable:
-          type: boolean
-        updates:
-          items:
-            $ref: "#/components/schemas/models.PackageUpdate"
-          type: array
-      type: object
-    controllers.SystemPackageInline:
-      properties:
-        description:
-          type: string
-        evra:
-          type: string
-        latest_evra:
-          type: string
-        name:
-          type: string
-        summary:
-          type: string
-        updatable:
-          type: boolean
-      type: object
-    controllers.SystemPackageResponse:
-      properties:
-        data:
-          items:
-            $ref: "#/components/schemas/controllers.SystemPackageData"
-          type: array
-        links:
-          $ref: "#/components/schemas/controllers.Links"
-        meta:
-          $ref: "#/components/schemas/controllers.ListMeta"
-      type: object
-    controllers.SystemsAdvisoriesRequest:
-      properties:
-        advisories:
-          items:
-            type: string
-          type: array
-        systems:
-          items:
-            type: string
-          type: array
-      type: object
-    controllers.SystemsAdvisoriesResponse:
-      properties:
-        data:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-          type: object
-      type: object
-    controllers.SystemsResponse:
-      properties:
-        data:
-          items:
-            $ref: "#/components/schemas/controllers.SystemItem"
-          type: array
-        links:
-          $ref: "#/components/schemas/controllers.Links"
-        meta:
-          $ref: "#/components/schemas/controllers.ListMeta"
-      type: object
-    models.PackageUpdate:
-      properties:
-        advisory:
-          type: string
-        evra:
-          type: string
-      type: object
-  securitySchemes:
-    RhIdentity:
-      in: header
-      name: x-rh-identity
-      type: apiKey
+schemes:
+  - http
+securityDefinitions:
+  RhIdentity:
+    in: header
+    name: x-rh-identity
+    type: apiKey
+swagger: '2.0'
+x-components: {}
+

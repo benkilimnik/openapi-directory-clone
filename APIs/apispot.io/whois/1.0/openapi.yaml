@@ -1,78 +1,105 @@
-openapi: 3.0.2
-servers:
-  - url: http://localhost:5000
-  - url: https://apispot.io/api
+basePath: /
+definitions:
+  ArrayOfBatch:
+    properties:
+      batches:
+        items:
+          $ref: '#/definitions/Batch'
+        type: array
+  Batch:
+    properties:
+      completed:
+        type: boolean
+      count:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: string
+      operation:
+        type: string
+      results:
+        items: {}
+        type: array
+      status:
+        type: string
+host: 'localhost:5000'
 info:
-  description: Domain API (WHOIS, Check, Batch)
+  description: 'Domain API (WHOIS, Check, Batch)'
   title: Bulk WHOIS API
-  version: "1.0"
+  version: '1.0'
   x-apisguru-categories:
     - developer_tools
   x-logo:
-    url: https://s3.amazonaws.com/rapidapi-prod-user/e7a9c6f8-f01f-4dca-8fda-68f7424ad817
+    url: >-
+      https://s3.amazonaws.com/rapidapi-prod-user/e7a9c6f8-f01f-4dca-8fda-68f7424ad817
   x-origin:
     - format: openapi
-      url: https://apispot.io/static/whois.yml
-      version: "3.0"
+      url: 'https://apispot.io/static/whois.yml'
+      version: '3.0'
   x-providerName: apispot.io
   x-serviceName: whois
-security:
-  - ApiKeyAuth: []
 paths:
   /batch:
     get:
       description: Get your batches
       operationId: getBatches
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ArrayOfBatch"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/ArrayOfBatch'
     post:
-      description: Create batch. Batch is then being processed until all provided items have been completed. At any time it can be `get` to provide current status with results optionally.
+      consumes:
+        - application/json
+      description: >-
+        Create batch. Batch is then being processed until all provided items
+        have been completed. At any time it can be `get` to provide current
+        status with results optionally.
       operationId: createBatch
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                domains:
-                  example:
-                    - foo.com
-                    - foo.net
-                    - foo.io
-                  items:
-                    type: string
-                  type: array
-                operation:
-                  enum:
-                    - whois
-                    - check
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              domains:
+                example:
+                  - foo.com
+                  - foo.net
+                  - foo.io
+                items:
                   type: string
-                options:
-                  properties:
-                    format:
-                      enum:
-                        - raw
-                        - formatted
-                        - json
-                      type: string
-                  type: object
-              required:
-                - operation
-                - domains
-              type: object
-        required: true
+                type: array
+              operation:
+                enum:
+                  - whois
+                  - check
+                type: string
+              options:
+                properties:
+                  format:
+                    enum:
+                      - raw
+                      - formatted
+                      - json
+                    type: string
+                type: object
+            required:
+              - operation
+              - domains
+            type: object
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Batch"
+        '200':
           description: OK
-  "/batch/{id}":
+          schema:
+            $ref: '#/definitions/Batch'
+  '/batch/{id}':
     delete:
       description: Delete batch
       operationId: deleteBatch
@@ -81,10 +108,9 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: OK
     get:
       description: Get batch
@@ -94,34 +120,32 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Batch"
+        '200':
           description: OK
+          schema:
+            $ref: '#/definitions/Batch'
   /db:
     get:
       description: Query domain database
       operationId: queryDb
       parameters:
-        - description: Query (contact name, dns, domain etc)
+        - description: 'Query (contact name, dns, domain etc)'
           in: query
           name: query
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                type: object
+        '200':
           description: OK
-  "/domains/{domain}/check":
+          schema:
+            type: object
+  '/domains/{domain}/check':
     get:
       description: Check domain availability
       operationId: checkDomain
@@ -130,19 +154,18 @@ paths:
           in: path
           name: domain
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  isAvailable:
-                    type: boolean
-                type: object
+        '200':
           description: OK
-  "/domains/{domain}/rank":
+          schema:
+            properties:
+              isAvailable:
+                type: boolean
+            type: object
+  '/domains/{domain}/rank':
     get:
       description: Check domain rank (authority).
       operationId: domainRank
@@ -151,19 +174,18 @@ paths:
           in: path
           name: domain
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                properties:
-                  rank:
-                    type: number
-                type: object
+        '200':
           description: OK
-  "/domains/{domain}/whois":
+          schema:
+            properties:
+              rank:
+                type: number
+            type: object
+  '/domains/{domain}/whois':
     get:
       description: WHOIS query for a domain
       operationId: whois
@@ -172,47 +194,27 @@ paths:
           in: path
           name: domain
           required: true
-          schema:
-            type: string
-        - in: query
+          type: string
+        - enum:
+            - raw
+            - formatted
+            - json
+          in: query
           name: format
-          schema:
-            enum:
-              - raw
-              - formatted
-              - json
-            type: string
+          type: string
       responses:
-        "200":
+        '200':
           description: OK
-components:
-  schemas:
-    ArrayOfBatch:
-      properties:
-        batches:
-          items:
-            $ref: "#/components/schemas/Batch"
-          type: array
-    Batch:
-      properties:
-        completed:
-          type: boolean
-        count:
-          type: integer
-        created_at:
-          type: string
-        id:
-          type: string
-        operation:
-          type: string
-        results:
-          items: {}
-          type: array
-        status:
-          type: string
-  securitySchemes:
-    ApiKeyAuth:
-      description: API Key can be found on your 'Account' page upon login.
-      in: header
-      name: X-API-KEY
-      type: apiKey
+schemes:
+  - http
+security:
+  - ApiKeyAuth: []
+securityDefinitions:
+  ApiKeyAuth:
+    description: API Key can be found on your 'Account' page upon login.
+    in: header
+    name: X-API-KEY
+    type: apiKey
+swagger: '2.0'
+x-components: {}
+

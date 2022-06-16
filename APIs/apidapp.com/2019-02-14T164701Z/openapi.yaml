@@ -1,102 +1,101 @@
-openapi: 3.0.0
-servers:
-  - url: https://ethereum.apidapp.com/1
+basePath: /1
+definitions:
+  Empty:
+    title: Empty Schema
+    type: object
+host: ethereum.apidapp.com
 info:
   contact:
     x-twitter: api_dapp
   title: ApiDapp
-  version: 2019-02-14T16:47:01Z
+  version: '2019-02-14T16:47:01.000Z'
   x-apisguru-categories:
     - financial
   x-logo:
-    url: https://i2.wp.com/apidapp.com/wp-content/uploads/2019/03/cropped-ApiDappIcon.png?fit=180%2C180&ssl=1
+    url: >-
+      https://i2.wp.com/apidapp.com/wp-content/uploads/2019/03/cropped-ApiDappIcon.png?fit=180%2C180&ssl=1
   x-origin:
     - format: openapi
-      url: https://apidapp.s3.amazonaws.com/ApiDapp-Start-swagger-7/ApiDapp-Start-swagger+(7).json
-      version: "3.0"
+      url: >-
+        https://apidapp.s3.amazonaws.com/ApiDapp-Start-swagger-7/ApiDapp-Start-swagger+(7).json
+      version: '3.0'
   x-providerName: apidapp.com
 paths:
   /:
     options:
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
     x-amazon-apigateway-any-method:
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Empty"
+                $ref: '#/definitions/Empty'
           description: 200 response
   /account:
     options:
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
     post:
       description: Create new account
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
       security:
         - Key2: []
-  "/account/{id}":
+  '/account/{id}':
     get:
       description: Get account balance
       parameters:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
       security:
         - Key2: []
     options:
@@ -105,79 +104,71 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
   /block:
     get:
       description: Access detailed block information
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
       security:
         - Key2: []
     options:
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
-  "/block/{id}":
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
+  '/block/{id}':
     get:
       description: Get information about particular block
       parameters:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
       security:
         - Key2: []
     options:
@@ -186,45 +177,39 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
-  "/block/{id}/transaction":
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
+  '/block/{id}/transaction':
     get:
       description: Get transaction count within block
       parameters:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
       security:
         - Key2: []
     options:
@@ -233,50 +218,43 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
-  "/block/{id}/transaction/{index}":
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
+  '/block/{id}/transaction/{index}':
     get:
       description: Get information about particular transaction within block
       parameters:
         - in: path
           name: index
           required: true
-          schema:
-            type: string
+          type: string
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
       security:
         - Key2: []
     options:
@@ -285,85 +263,76 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
         - description: Automatically added
           in: path
           name: index
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
   /blockchain:
     get:
       description: Get a list of supported blockchains
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
       security:
         - Key2: []
     options:
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
-  "/blockchain/{id}":
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
+  '/blockchain/{id}':
     get:
       description: Get information about blockchain woth given id
       parameters:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
       security:
         - Key2: []
     options:
@@ -372,73 +341,66 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
   /contract:
     options:
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
     post:
       description: Create a new smart contract
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
-  "/contract/{id}":
+          schema:
+            $ref: '#/definitions/Empty'
+  '/contract/{id}':
     get:
       description: Get contract balance
       parameters:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
       security:
         - Key2: []
     options:
@@ -447,300 +409,275 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
     post:
       description: Call the contract
       parameters:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
       security:
         - Key2: []
   /echo:
     options:
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
     x-amazon-apigateway-any-method:
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Empty"
+                $ref: '#/definitions/Empty'
           description: 200 response
   /erc20:
     get:
-      description: Get token information such as name, total amount in circulation, etc
+      description: 'Get token information such as name, total amount in circulation, etc'
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
+          schema:
+            $ref: '#/definitions/Empty'
     options:
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
     post:
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
-  "/erc20/{address}":
+          schema:
+            $ref: '#/definitions/Empty'
+  '/erc20/{address}':
     get:
       description: Get information amout token balance in the account
       parameters:
         - in: path
           name: address
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
+          schema:
+            $ref: '#/definitions/Empty'
     options:
       parameters:
         - description: Automatically added
           in: path
           name: address
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
     post:
       description: Transfer tokens to another account
       parameters:
         - in: path
           name: address
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
+          schema:
+            $ref: '#/definitions/Empty'
   /key:
     get:
       parameters:
         - in: query
           name: token
           required: false
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
+          schema:
+            $ref: '#/definitions/Empty'
     options:
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
     post:
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
-  "/key/{key}":
+          schema:
+            $ref: '#/definitions/Empty'
+  '/key/{key}':
     delete:
       parameters:
         - in: path
           name: key
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
+          schema:
+            $ref: '#/definitions/Empty'
     options:
       parameters:
         - description: Automatically added
           in: path
           name: key
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
   /transaction:
     options:
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
     post:
       description: Create a new transaction. Transfer Ether between accounts
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
       security:
         - Key2: []
-  "/transaction/{hash}":
+  '/transaction/{hash}':
     get:
       description: Get information about transaction by the transaction hash value
       parameters:
         - in: path
           name: hash
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
       security:
         - Key2: []
     options:
@@ -749,45 +686,39 @@ paths:
           in: path
           name: hash
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
-  "/transaction/{hash}/receipt":
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
+  '/transaction/{hash}/receipt':
     get:
       description: Get receipt detail information
       parameters:
         - in: path
           name: hash
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
       security:
         - Key2: []
     options:
@@ -796,249 +727,231 @@ paths:
           in: path
           name: hash
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
   /version:
     get:
       description: Get API version info
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
     options:
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
   /wallet:
     get:
       description: Get current account balance
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
+          schema:
+            $ref: '#/definitions/Empty'
     options:
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
     post:
       description: Create personal wallet
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
+          schema:
+            $ref: '#/definitions/Empty'
   /wallet/account:
     get:
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
+          schema:
+            $ref: '#/definitions/Empty'
     options:
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
     post:
+      parameters: []
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
-  "/wallet/account/{id}":
+          schema:
+            $ref: '#/definitions/Empty'
+  '/wallet/account/{id}':
     get:
       description: Get account balance
       parameters:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
+          schema:
+            $ref: '#/definitions/Empty'
     options:
       parameters:
         - description: Automatically added
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
-  "/wallet/account/{id}/contract":
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
+  '/wallet/account/{id}/contract':
     post:
       parameters:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
-  "/wallet/account/{id}/erc20":
+          schema:
+            $ref: '#/definitions/Empty'
+  '/wallet/account/{id}/erc20':
     post:
       parameters:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
-  "/wallet/account/{id}/pay":
+          schema:
+            $ref: '#/definitions/Empty'
+  '/wallet/account/{id}/pay':
     options:
       parameters:
         - description: Automatically added
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
           headers:
             Access-Control-Allow-Headers:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Methods:
-              schema:
-                type: string
+              type: string
             Access-Control-Allow-Origin:
-              schema:
-                type: string
+              type: string
+          schema:
+            $ref: '#/definitions/Empty'
     post:
       description: Send payment from the account held within the wallet
       parameters:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
+        '200':
           description: 200 response
-components:
-  schemas:
-    Empty:
-      title: Empty Schema
-      type: object
-  securitySchemes:
-    Key2:
-      in: header
-      name: X-Api-Key
-      type: apiKey
-      x-amazon-apigateway-authtype: custom
+          schema:
+            $ref: '#/definitions/Empty'
+schemes:
+  - https
+securityDefinitions:
+  Key2:
+    in: header
+    name: X-Api-Key
+    type: apiKey
+    x-amazon-apigateway-authtype: custom
+swagger: '2.0'
+x-components: {}
+

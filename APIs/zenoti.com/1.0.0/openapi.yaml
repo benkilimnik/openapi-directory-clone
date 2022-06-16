@@ -1,6 +1,5 @@
-openapi: 3.0.0
-servers:
-  - url: https://api.zenoti.com
+basePath: /
+host: api.zenoti.com
 info:
   contact:
     email: apisupport@zenoti.com
@@ -14,9 +13,13 @@ info:
     - customer_relation
   x-origin:
     - format: openapi
-      url: https://zenotiopenapi.docs.apiary.io/api-description-document
-      version: "3.0"
+      url: 'https://zenotiopenapi.docs.apiary.io/api-description-document'
+      version: '3.0'
   x-providerName: zenoti.com
+paths: {}
+schemes:
+  - https
 security:
   - {}
-paths: {}
+swagger: '2.0'
+

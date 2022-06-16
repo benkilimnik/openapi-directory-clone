@@ -1,2032 +1,2258 @@
-openapi: 3.0.0
-info:
-  version: '2020-06-24'
-  x-release: v4
-  title: AWS Service Catalog App Registry
-  description: ' Amazon Web Services Service Catalog AppRegistry enables organizations to understand the application context of their Amazon Web Services resources. AppRegistry provides a repository of your applications, their resources, and the application metadata that you use within your enterprise.'
-  x-logo:
-    url: 'https://twitter.com/awscloud/profile_image?size=original'
-    backgroundColor: '#FFFFFF'
-  termsOfService: 'https://aws.amazon.com/service-terms/'
-  contact:
-    name: Mike Ralphson
-    email: mike.ralphson@gmail.com
-    url: 'https://github.com/mermade/aws2openapi'
-    x-twitter: PermittedSoc
-  license:
-    name: Apache 2.0 License
-    url: 'http://www.apache.org/licenses/'
-  x-providerName: amazonaws.com
-  x-serviceName: servicecatalog-appregistry
-  x-aws-signingName: servicecatalog
-  x-origin:
-    - contentType: application/json
-      url: 'https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/servicecatalog-appregistry-2020-06-24.normal.json'
-      converter:
-        url: 'https://github.com/mermade/aws2openapi'
-        version: 1.0.0
-      x-apisguru-driver: external
-  x-apiClientRegistration:
-    url: 'https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct'
-  x-apisguru-categories:
-    - cloud
-  x-preferred: true
+basePath: /
+definitions:
+  Application:
+    description: >-
+      Represents a Amazon Web Services Service Catalog AppRegistry application
+      that is the top-level node in a hierarchy of related cloud resource
+      abstractions.
+    properties:
+      arn:
+        allOf:
+          - $ref: '#/definitions/ApplicationArn'
+          - description: >-
+              The Amazon resource name (ARN) that specifies the application
+              across services.
+      creationTime:
+        allOf:
+          - $ref: '#/definitions/Timestamp'
+          - description: >-
+              The ISO-8601 formatted timestamp of the moment when the
+              application was created.
+      description:
+        allOf:
+          - $ref: '#/definitions/Description'
+          - description: The description of the application.
+      id:
+        allOf:
+          - $ref: '#/definitions/ApplicationId'
+          - description: The identifier of the application.
+      lastUpdateTime:
+        allOf:
+          - $ref: '#/definitions/Timestamp'
+          - description: ' The ISO-8601 formatted timestamp of the moment when the application was last updated.'
+      name:
+        allOf:
+          - $ref: '#/definitions/Name'
+          - description: >-
+              The name of the application. The name must be unique in the region
+              in which you are creating the application.
+      tags:
+        allOf:
+          - $ref: '#/definitions/Tags'
+          - description: Key-value pairs you can use to associate with the application.
+    type: object
+  ApplicationArn:
+    pattern: >-
+      arn:aws[-a-z]*:servicecatalog:[a-z]{2}(-gov)?-[a-z]+-\d:\d{12}:/applications/[a-z0-9]+
+    type: string
+  ApplicationId:
+    maxLength: 26
+    minLength: 26
+    pattern: '[a-z0-9]+'
+    type: string
+  ApplicationSpecifier:
+    maxLength: 256
+    minLength: 1
+    pattern: '[-.\w]+'
+    type: string
+  ApplicationSummaries:
+    items:
+      $ref: '#/definitions/ApplicationSummary'
+    type: array
+  ApplicationSummary:
+    description: Summary of a Amazon Web Services Service Catalog AppRegistry application.
+    properties:
+      arn:
+        allOf:
+          - $ref: '#/definitions/ApplicationArn'
+          - description: >-
+              The Amazon resource name (ARN) that specifies the application
+              across services.
+      creationTime:
+        allOf:
+          - $ref: '#/definitions/Timestamp'
+          - description: >-
+              The ISO-8601 formatted timestamp of the moment when the
+              application was created.
+      description:
+        allOf:
+          - $ref: '#/definitions/Description'
+          - description: The description of the application.
+      id:
+        allOf:
+          - $ref: '#/definitions/ApplicationId'
+          - description: The identifier of the application.
+      lastUpdateTime:
+        allOf:
+          - $ref: '#/definitions/Timestamp'
+          - description: ' The ISO-8601 formatted timestamp of the moment when the application was last updated.'
+      name:
+        allOf:
+          - $ref: '#/definitions/Name'
+          - description: >-
+              The name of the application. The name must be unique in the region
+              in which you are creating the application.
+    type: object
+  Arn:
+    maxLength: 1600
+    minLength: 1
+    pattern: >-
+      arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\-])+:([a-z]{2}(-gov)?-[a-z]+-\d{1})?:(\d{12})?:(.*)
+    type: string
+  AssociateAttributeGroupRequest:
+    properties: {}
+    title: AssociateAttributeGroupRequest
+    type: object
+  AssociateAttributeGroupResponse:
+    properties:
+      applicationArn:
+        allOf:
+          - $ref: '#/definitions/ApplicationArn'
+          - description: >-
+              The Amazon resource name (ARN) of the application that was
+              augmented with attributes.
+      attributeGroupArn:
+        allOf:
+          - $ref: '#/definitions/AttributeGroupArn'
+          - description: >-
+              The Amazon resource name (ARN) of the attribute group that
+              contains the application's new attributes.
+    type: object
+  AssociateResourceRequest:
+    properties: {}
+    title: AssociateResourceRequest
+    type: object
+  AssociateResourceResponse:
+    properties:
+      applicationArn:
+        allOf:
+          - $ref: '#/definitions/ApplicationArn'
+          - description: >-
+              The Amazon resource name (ARN) of the application that was
+              augmented with attributes.
+      resourceArn:
+        allOf:
+          - $ref: '#/definitions/Arn'
+          - description: The Amazon resource name (ARN) that specifies the resource.
+    type: object
+  AssociationCount:
+    minimum: 0
+    type: integer
+  AttributeGroup:
+    description: >-
+      Represents a Amazon Web Services Service Catalog AppRegistry attribute
+      group that is rich metadata which describes an application and its
+      components.
+    properties:
+      arn:
+        allOf:
+          - $ref: '#/definitions/AttributeGroupArn'
+          - description: >-
+              The Amazon resource name (ARN) that specifies the attribute group
+              across services.
+      creationTime:
+        allOf:
+          - $ref: '#/definitions/Timestamp'
+          - description: >-
+              The ISO-8601 formatted timestamp of the moment the attribute group
+              was created.
+      description:
+        allOf:
+          - $ref: '#/definitions/Description'
+          - description: The description of the attribute group that the user provides.
+      id:
+        allOf:
+          - $ref: '#/definitions/AttributeGroupId'
+          - description: >-
+              The globally unique attribute group identifier of the attribute
+              group.
+      lastUpdateTime:
+        allOf:
+          - $ref: '#/definitions/Timestamp'
+          - description: >-
+              The ISO-8601 formatted timestamp of the moment the attribute group
+              was last updated. This time is the same as the creationTime for a
+              newly created attribute group.
+      name:
+        allOf:
+          - $ref: '#/definitions/Name'
+          - description: The name of the attribute group.
+      tags:
+        allOf:
+          - $ref: '#/definitions/Tags'
+          - description: Key-value pairs you can use to associate with the attribute group.
+    type: object
+  AttributeGroupArn:
+    pattern: >-
+      arn:aws[-a-z]*:servicecatalog:[a-z]{2}(-gov)?-[a-z]+-\d:\d{12}:/attribute-groups/[a-z0-9]+
+    type: string
+  AttributeGroupId:
+    maxLength: 26
+    minLength: 26
+    pattern: '[a-z0-9]+'
+    type: string
+  AttributeGroupIds:
+    items:
+      $ref: '#/definitions/AttributeGroupId'
+    type: array
+  AttributeGroupSpecifier:
+    maxLength: 256
+    minLength: 1
+    pattern: '[-.\w]+'
+    type: string
+  AttributeGroupSummaries:
+    items:
+      $ref: '#/definitions/AttributeGroupSummary'
+    type: array
+  AttributeGroupSummary:
+    description: >-
+      Summary of a Amazon Web Services Service Catalog AppRegistry attribute
+      group.
+    properties:
+      arn:
+        allOf:
+          - $ref: '#/definitions/AttributeGroupArn'
+          - description: >-
+              The Amazon resource name (ARN) that specifies the attribute group
+              across services.
+      creationTime:
+        allOf:
+          - $ref: '#/definitions/Timestamp'
+          - description: >-
+              The ISO-8601 formatted timestamp of the moment the attribute group
+              was created.
+      description:
+        allOf:
+          - $ref: '#/definitions/Description'
+          - description: The description of the attribute group that the user provides.
+      id:
+        allOf:
+          - $ref: '#/definitions/AttributeGroupId'
+          - description: >-
+              The globally unique attribute group identifier of the attribute
+              group.
+      lastUpdateTime:
+        allOf:
+          - $ref: '#/definitions/Timestamp'
+          - description: >-
+              The ISO-8601 formatted timestamp of the moment the attribute group
+              was last updated. This time is the same as the creationTime for a
+              newly created attribute group.
+      name:
+        allOf:
+          - $ref: '#/definitions/Name'
+          - description: The name of the attribute group.
+    type: object
+  Attributes:
+    maxLength: 8000
+    minLength: 1
+    pattern: '[\u0009\u000A\u000D\u0020-\u00FF]+'
+    type: string
+  ClientToken:
+    maxLength: 128
+    minLength: 1
+    pattern: '[a-zA-Z0-9][a-zA-Z0-9_-]*'
+    type: string
+  ConflictException: {}
+  CreateApplicationRequest:
+    properties:
+      clientToken:
+        allOf:
+          - $ref: '#/definitions/ClientToken'
+          - description: >-
+              A unique identifier that you provide to ensure idempotency. If you
+              retry a request that completed successfully using the same client
+              token and the same parameters, the retry succeeds without
+              performing any further actions. If you retry a successful request
+              using the same client token, but one or more of the parameters are
+              different, the retry fails.
+      description:
+        allOf:
+          - $ref: '#/definitions/Description'
+          - description: The description of the application.
+      name:
+        allOf:
+          - $ref: '#/definitions/Name'
+          - description: >-
+              The name of the application. The name must be unique in the region
+              in which you are creating the application.
+      tags:
+        allOf:
+          - $ref: '#/definitions/Tags'
+          - description: Key-value pairs you can use to associate with the application.
+    required:
+      - name
+      - clientToken
+    title: CreateApplicationRequest
+    type: object
+  CreateApplicationResponse:
+    properties:
+      application:
+        allOf:
+          - $ref: '#/definitions/Application'
+          - description: Information about the application.
+    type: object
+  CreateAttributeGroupRequest:
+    properties:
+      attributes:
+        allOf:
+          - $ref: '#/definitions/Attributes'
+          - description: >-
+              A JSON string in the form of nested key-value pairs that represent
+              the attributes in the group and describes an application and its
+              components.
+      clientToken:
+        allOf:
+          - $ref: '#/definitions/ClientToken'
+          - description: >-
+              A unique identifier that you provide to ensure idempotency. If you
+              retry a request that completed successfully using the same client
+              token and the same parameters, the retry succeeds without
+              performing any further actions. If you retry a successful request
+              using the same client token, but one or more of the parameters are
+              different, the retry fails.
+      description:
+        allOf:
+          - $ref: '#/definitions/Description'
+          - description: The description of the attribute group that the user provides.
+      name:
+        allOf:
+          - $ref: '#/definitions/Name'
+          - description: The name of the attribute group.
+      tags:
+        allOf:
+          - $ref: '#/definitions/Tags'
+          - description: Key-value pairs you can use to associate with the attribute group.
+    required:
+      - name
+      - attributes
+      - clientToken
+    title: CreateAttributeGroupRequest
+    type: object
+  CreateAttributeGroupResponse:
+    properties:
+      attributeGroup:
+        allOf:
+          - $ref: '#/definitions/AttributeGroup'
+          - description: Information about the attribute group.
+    type: object
+  DeleteApplicationRequest:
+    properties: {}
+    title: DeleteApplicationRequest
+    type: object
+  DeleteApplicationResponse:
+    properties:
+      application:
+        allOf:
+          - $ref: '#/definitions/ApplicationSummary'
+          - description: Information about the deleted application.
+    type: object
+  DeleteAttributeGroupRequest:
+    properties: {}
+    title: DeleteAttributeGroupRequest
+    type: object
+  DeleteAttributeGroupResponse:
+    properties:
+      attributeGroup:
+        allOf:
+          - $ref: '#/definitions/AttributeGroupSummary'
+          - description: Information about the deleted attribute group.
+    type: object
+  Description:
+    maxLength: 1024
+    type: string
+  DisassociateAttributeGroupRequest:
+    properties: {}
+    title: DisassociateAttributeGroupRequest
+    type: object
+  DisassociateAttributeGroupResponse:
+    properties:
+      applicationArn:
+        allOf:
+          - $ref: '#/definitions/ApplicationArn'
+          - description: The Amazon resource name (ARN) that specifies the application.
+      attributeGroupArn:
+        allOf:
+          - $ref: '#/definitions/AttributeGroupArn'
+          - description: The Amazon resource name (ARN) that specifies the attribute group.
+    type: object
+  DisassociateResourceRequest:
+    properties: {}
+    title: DisassociateResourceRequest
+    type: object
+  DisassociateResourceResponse:
+    properties:
+      applicationArn:
+        allOf:
+          - $ref: '#/definitions/ApplicationArn'
+          - description: The Amazon resource name (ARN) that specifies the application.
+      resourceArn:
+        allOf:
+          - $ref: '#/definitions/Arn'
+          - description: The Amazon resource name (ARN) that specifies the resource.
+    type: object
+  GetApplicationRequest:
+    properties: {}
+    title: GetApplicationRequest
+    type: object
+  GetApplicationResponse:
+    properties:
+      arn:
+        allOf:
+          - $ref: '#/definitions/ApplicationArn'
+          - description: >-
+              The Amazon resource name (ARN) that specifies the application
+              across services.
+      associatedResourceCount:
+        allOf:
+          - $ref: '#/definitions/AssociationCount'
+          - description: >-
+              The number of top-level resources that were registered as part of
+              this application.
+      creationTime:
+        allOf:
+          - $ref: '#/definitions/Timestamp'
+          - description: >-
+              The ISO-8601 formatted timestamp of the moment when the
+              application was created.
+      description:
+        allOf:
+          - $ref: '#/definitions/Description'
+          - description: The description of the application.
+      id:
+        allOf:
+          - $ref: '#/definitions/ApplicationId'
+          - description: The identifier of the application.
+      integrations:
+        allOf:
+          - $ref: '#/definitions/Integrations'
+          - description: >-
+              The information about the integration of the application with
+              other services, such as Resource Groups.
+      lastUpdateTime:
+        allOf:
+          - $ref: '#/definitions/Timestamp'
+          - description: >-
+              The ISO-8601 formatted timestamp of the moment when the
+              application was last updated.
+      name:
+        allOf:
+          - $ref: '#/definitions/Name'
+          - description: >-
+              The name of the application. The name must be unique in the region
+              in which you are creating the application.
+      tags:
+        allOf:
+          - $ref: '#/definitions/Tags'
+          - description: Key-value pairs associated with the application.
+    type: object
+  GetAssociatedResourceRequest:
+    properties: {}
+    title: GetAssociatedResourceRequest
+    type: object
+  GetAssociatedResourceResponse:
+    properties:
+      resource:
+        allOf:
+          - $ref: '#/definitions/Resource'
+          - description: The resource associated with the application.
+    type: object
+  GetAttributeGroupRequest:
+    properties: {}
+    title: GetAttributeGroupRequest
+    type: object
+  GetAttributeGroupResponse:
+    properties:
+      arn:
+        allOf:
+          - $ref: '#/definitions/AttributeGroupArn'
+          - description: >-
+              The Amazon resource name (ARN) that specifies the attribute group
+              across services.
+      attributes:
+        allOf:
+          - $ref: '#/definitions/Attributes'
+          - description: >-
+              A JSON string in the form of nested key-value pairs that represent
+              the attributes in the group and describes an application and its
+              components.
+      creationTime:
+        allOf:
+          - $ref: '#/definitions/Timestamp'
+          - description: >-
+              The ISO-8601 formatted timestamp of the moment the attribute group
+              was created.
+      description:
+        allOf:
+          - $ref: '#/definitions/Description'
+          - description: The description of the attribute group that the user provides.
+      id:
+        allOf:
+          - $ref: '#/definitions/AttributeGroupId'
+          - description: The identifier of the attribute group.
+      lastUpdateTime:
+        allOf:
+          - $ref: '#/definitions/Timestamp'
+          - description: >-
+              The ISO-8601 formatted timestamp of the moment the attribute group
+              was last updated. This time is the same as the creationTime for a
+              newly created attribute group.
+      name:
+        allOf:
+          - $ref: '#/definitions/Name'
+          - description: The name of the attribute group.
+      tags:
+        allOf:
+          - $ref: '#/definitions/Tags'
+          - description: Key-value pairs associated with the attribute group.
+    type: object
+  Integrations:
+    description: ' The information about the service integration.'
+    properties:
+      resourceGroup:
+        allOf:
+          - $ref: '#/definitions/ResourceGroup'
+          - description: ' The information about the resource group integration.'
+    type: object
+  InternalServerException: {}
+  ListApplicationsRequest:
+    properties: {}
+    title: ListApplicationsRequest
+    type: object
+  ListApplicationsResponse:
+    properties:
+      applications:
+        allOf:
+          - $ref: '#/definitions/ApplicationSummaries'
+          - description: This list of applications.
+      nextToken:
+        allOf:
+          - $ref: '#/definitions/NextToken'
+          - description: >-
+              The token to use to get the next page of results after a previous
+              API call. 
+    type: object
+  ListAssociatedAttributeGroupsRequest:
+    properties: {}
+    title: ListAssociatedAttributeGroupsRequest
+    type: object
+  ListAssociatedAttributeGroupsResponse:
+    properties:
+      attributeGroups:
+        allOf:
+          - $ref: '#/definitions/AttributeGroupIds'
+          - description: A list of attribute group IDs.
+      nextToken:
+        allOf:
+          - $ref: '#/definitions/NextToken'
+          - description: >-
+              The token to use to get the next page of results after a previous
+              API call. 
+    type: object
+  ListAssociatedResourcesRequest:
+    properties: {}
+    title: ListAssociatedResourcesRequest
+    type: object
+  ListAssociatedResourcesResponse:
+    properties:
+      nextToken:
+        allOf:
+          - $ref: '#/definitions/NextToken'
+          - description: >-
+              The token to use to get the next page of results after a previous
+              API call. 
+      resources:
+        allOf:
+          - $ref: '#/definitions/Resources'
+          - description: Information about the resources.
+    type: object
+  ListAttributeGroupsRequest:
+    properties: {}
+    title: ListAttributeGroupsRequest
+    type: object
+  ListAttributeGroupsResponse:
+    properties:
+      attributeGroups:
+        allOf:
+          - $ref: '#/definitions/AttributeGroupSummaries'
+          - description: This list of attribute groups.
+      nextToken:
+        allOf:
+          - $ref: '#/definitions/NextToken'
+          - description: >-
+              The token to use to get the next page of results after a previous
+              API call. 
+    type: object
+  ListTagsForResourceRequest:
+    properties: {}
+    title: ListTagsForResourceRequest
+    type: object
+  ListTagsForResourceResponse:
+    properties:
+      tags:
+        allOf:
+          - $ref: '#/definitions/Tags'
+          - description: The tags on the resource.
+    type: object
+  MaxResults:
+    maximum: 25
+    minimum: 1
+    type: integer
+  Name:
+    maxLength: 256
+    minLength: 1
+    pattern: '[-.\w]+'
+    type: string
+  NextToken:
+    maxLength: 2024
+    minLength: 1
+    pattern: '[A-Za-z0-9+/=]+'
+    type: string
+  Resource:
+    description: ' The information about the resource.'
+    properties:
+      arn:
+        allOf:
+          - $ref: '#/definitions/StackArn'
+          - description: The Amazon resource name (ARN) of the resource.
+      associationTime:
+        allOf:
+          - $ref: '#/definitions/Timestamp'
+          - description: The time the resource was associated with the application.
+      integrations:
+        allOf:
+          - $ref: '#/definitions/ResourceIntegrations'
+          - description: 'The service integration information about the resource. '
+      name:
+        allOf:
+          - $ref: '#/definitions/ResourceSpecifier'
+          - description: The name of the resource.
+    type: object
+  ResourceGroup:
+    description: The information about the resource group integration.
+    properties:
+      arn:
+        allOf:
+          - $ref: '#/definitions/Arn'
+          - description: The Amazon resource name (ARN) of the resource group.
+      errorMessage:
+        allOf:
+          - $ref: '#/definitions/String'
+          - description: >-
+              The error message that generates when the propagation process for
+              the resource group fails.
+      state:
+        allOf:
+          - $ref: '#/definitions/ResourceGroupState'
+          - description: >-
+              <p>The state of the propagation process for the resource group.
+              The states includes:</p> <p> <code>CREATING </code>if the resource
+              group is in the process of being created.</p> <p>
+              <code>CREATE_COMPLETE</code> if the resource group was created
+              successfully.</p> <p> <code>CREATE_FAILED</code> if the resource
+              group failed to be created.</p> <p> <code>UPDATING</code> if the
+              resource group is in the process of being updated.</p> <p>
+              <code>UPDATE_COMPLETE</code> if the resource group updated
+              successfully.</p> <p> <code>UPDATE_FAILED</code> if the resource
+              group could not update successfully.</p>
+    type: object
+  ResourceGroupState:
+    enum:
+      - CREATING
+      - CREATE_COMPLETE
+      - CREATE_FAILED
+      - UPDATING
+      - UPDATE_COMPLETE
+      - UPDATE_FAILED
+    type: string
+  ResourceInfo:
+    description: The information about the resource.
+    properties:
+      arn:
+        allOf:
+          - $ref: '#/definitions/StackArn'
+          - description: >-
+              The Amazon resource name (ARN) that specifies the resource across
+              services.
+      name:
+        allOf:
+          - $ref: '#/definitions/ResourceSpecifier'
+          - description: The name of the resource.
+    type: object
+  ResourceIntegrations:
+    description: The service integration information about the resource.
+    properties:
+      resourceGroup:
+        allOf:
+          - $ref: '#/definitions/ResourceGroup'
+          - description: The information about the integration of Resource Groups.
+    type: object
+  ResourceNotFoundException: {}
+  ResourceSpecifier:
+    maxLength: 256
+    minLength: 1
+    pattern: \S+
+    type: string
+  ResourceType:
+    enum:
+      - CFN_STACK
+    type: string
+  Resources:
+    items:
+      $ref: '#/definitions/ResourceInfo'
+    type: array
+  ServiceQuotaExceededException: {}
+  StackArn:
+    pattern: >-
+      arn:aws[-a-z]*:cloudformation:[a-z]{2}(-gov)?-[a-z]+-\d:\d{12}:stack/[a-zA-Z][-A-Za-z0-9]{0,127}/[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}
+    type: string
+  String:
+    type: string
+  SyncAction:
+    enum:
+      - START_SYNC
+      - NO_ACTION
+    type: string
+  SyncResourceRequest:
+    properties: {}
+    title: SyncResourceRequest
+    type: object
+  SyncResourceResponse:
+    properties:
+      actionTaken:
+        allOf:
+          - $ref: '#/definitions/SyncAction'
+          - description: >-
+              The results of the output if an application is associated with an
+              ARN value, which could be <code>syncStarted</code> or None.
+      applicationArn:
+        allOf:
+          - $ref: '#/definitions/ApplicationArn'
+          - description: The Amazon resource name (ARN) that specifies the application.
+      resourceArn:
+        allOf:
+          - $ref: '#/definitions/Arn'
+          - description: The Amazon resource name (ARN) that specifies the resource.
+    type: object
+  TagKey:
+    maxLength: 128
+    minLength: 1
+    pattern: '(?!aws:)[a-zA-Z+-=._:/]+'
+    type: string
+  TagKeys:
+    items:
+      $ref: '#/definitions/TagKey'
+    maxItems: 50
+    minItems: 0
+    type: array
+  TagResourceRequest:
+    properties:
+      tags:
+        allOf:
+          - $ref: '#/definitions/Tags'
+          - description: The new or modified tags for the resource.
+    required:
+      - tags
+    title: TagResourceRequest
+    type: object
+  TagResourceResponse:
+    properties: {}
+    type: object
+  TagValue:
+    maxLength: 256
+    pattern: '[\p{L}\p{Z}\p{N}_.:/=+\-@]*'
+    type: string
+  Tags:
+    additionalProperties:
+      $ref: '#/definitions/TagValue'
+    maxProperties: 50
+    minProperties: 0
+    type: object
+  Timestamp:
+    format: date-time
+    type: string
+  UntagResourceRequest:
+    properties: {}
+    title: UntagResourceRequest
+    type: object
+  UntagResourceResponse:
+    properties: {}
+    type: object
+  UpdateApplicationRequest:
+    properties:
+      description:
+        allOf:
+          - $ref: '#/definitions/Description'
+          - description: The new description of the application.
+      name:
+        allOf:
+          - $ref: '#/definitions/Name'
+          - description: >-
+              The new name of the application. The name must be unique in the
+              region in which you are updating the application.
+    title: UpdateApplicationRequest
+    type: object
+  UpdateApplicationResponse:
+    properties:
+      application:
+        allOf:
+          - $ref: '#/definitions/Application'
+          - description: The updated information of the application.
+    type: object
+  UpdateAttributeGroupRequest:
+    properties:
+      attributes:
+        allOf:
+          - $ref: '#/definitions/Attributes'
+          - description: >-
+              A JSON string in the form of nested key-value pairs that represent
+              the attributes in the group and describes an application and its
+              components.
+      description:
+        allOf:
+          - $ref: '#/definitions/Description'
+          - description: The description of the attribute group that the user provides.
+      name:
+        allOf:
+          - $ref: '#/definitions/Name'
+          - description: >-
+              The new name of the attribute group. The name must be unique in
+              the region in which you are updating the attribute group.
+    title: UpdateAttributeGroupRequest
+    type: object
+  UpdateAttributeGroupResponse:
+    properties:
+      attributeGroup:
+        allOf:
+          - $ref: '#/definitions/AttributeGroup'
+          - description: The updated information of the attribute group.
+    type: object
+  ValidationException: {}
 externalDocs:
   description: Amazon Web Services documentation
   url: 'https://docs.aws.amazon.com/servicecatalog-appregistry/'
-servers:
-  - url: 'http://servicecatalog-appregistry.{region}.amazonaws.com'
-    variables:
-      region:
-        description: The AWS region
-        enum:
-          - us-east-1
-          - us-east-2
-          - us-west-1
-          - us-west-2
-          - us-gov-west-1
-          - us-gov-east-1
-          - ca-central-1
-          - eu-north-1
-          - eu-west-1
-          - eu-west-2
-          - eu-west-3
-          - eu-central-1
-          - eu-south-1
-          - af-south-1
-          - ap-northeast-1
-          - ap-northeast-2
-          - ap-northeast-3
-          - ap-southeast-1
-          - ap-southeast-2
-          - ap-east-1
-          - ap-south-1
-          - sa-east-1
-          - me-south-1
-        default: us-east-1
-    description: The AppRegistry multi-region endpoint
-  - url: 'https://servicecatalog-appregistry.{region}.amazonaws.com'
-    variables:
-      region:
-        description: The AWS region
-        enum:
-          - us-east-1
-          - us-east-2
-          - us-west-1
-          - us-west-2
-          - us-gov-west-1
-          - us-gov-east-1
-          - ca-central-1
-          - eu-north-1
-          - eu-west-1
-          - eu-west-2
-          - eu-west-3
-          - eu-central-1
-          - eu-south-1
-          - af-south-1
-          - ap-northeast-1
-          - ap-northeast-2
-          - ap-northeast-3
-          - ap-southeast-1
-          - ap-southeast-2
-          - ap-east-1
-          - ap-south-1
-          - sa-east-1
-          - me-south-1
-        default: us-east-1
-    description: The AppRegistry multi-region endpoint
-  - url: 'http://servicecatalog-appregistry.{region}.amazonaws.com.cn'
-    variables:
-      region:
-        description: The AWS region
-        enum:
-          - cn-north-1
-          - cn-northwest-1
-        default: cn-north-1
-    description: The AppRegistry endpoint for China (Beijing) and China (Ningxia)
-  - url: 'https://servicecatalog-appregistry.{region}.amazonaws.com.cn'
-    variables:
-      region:
-        description: The AWS region
-        enum:
-          - cn-north-1
-          - cn-northwest-1
-        default: cn-north-1
-    description: The AppRegistry endpoint for China (Beijing) and China (Ningxia)
-x-hasEquivalentPaths: true
+host: servicecatalog-appregistry.us-east-1.amazonaws.com
+info:
+  contact:
+    email: mike.ralphson@gmail.com
+    name: Mike Ralphson
+    url: 'https://github.com/mermade/aws2openapi'
+    x-twitter: PermittedSoc
+  description: ' Amazon Web Services Service Catalog AppRegistry enables organizations to understand the application context of their Amazon Web Services resources. AppRegistry provides a repository of your applications, their resources, and the application metadata that you use within your enterprise.'
+  license:
+    name: Apache 2.0 License
+    url: 'http://www.apache.org/licenses/'
+  termsOfService: 'https://aws.amazon.com/service-terms/'
+  title: AWS Service Catalog App Registry
+  version: '2020-06-24'
+  x-apiClientRegistration:
+    url: >-
+      https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct
+  x-apisguru-categories:
+    - cloud
+  x-aws-signingName: servicecatalog
+  x-logo:
+    backgroundColor: '#FFFFFF'
+    url: 'https://twitter.com/awscloud/profile_image?size=original'
+  x-origin:
+    - contentType: application/json
+      converter:
+        url: 'https://github.com/mermade/aws2openapi'
+        version: 1.0.0
+      url: >-
+        https://raw.githubusercontent.com/aws/aws-sdk-js/master/apis/servicecatalog-appregistry-2020-06-24.normal.json
+      x-apisguru-driver: external
+  x-preferred: true
+  x-providerName: amazonaws.com
+  x-release: v4
+  x-serviceName: servicecatalog-appregistry
 paths:
-  '/applications/{application}/attribute-groups/{attributeGroup}':
-    put:
-      operationId: AssociateAttributeGroup
-      description: 'Associates an attribute group with an application to augment the application''s metadata with the group''s attributes. This feature enables applications to be described with user-defined details that are machine-readable, such as third-party integrations.'
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AssociateAttributeGroupResponse'
-        '480':
-          description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
-        '481':
-          description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-        '482':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-        '483':
-          description: ServiceQuotaExceededException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServiceQuotaExceededException'
-      parameters:
-        - name: application
-          in: path
-          required: true
-          description: The name or ID of the application.
-          schema:
-            type: string
-            pattern: '[-.\w]+'
-            minLength: 1
-            maxLength: 256
-        - name: attributeGroup
-          in: path
-          required: true
-          description: The name or ID of the attribute group that holds the attributes to describe the application.
-          schema:
-            type: string
-            pattern: '[-.\w]+'
-            minLength: 1
-            maxLength: 256
-    parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
-    delete:
-      operationId: DisassociateAttributeGroup
-      description: Disassociates an attribute group from an application to remove the extra attributes contained in the attribute group from the application's metadata. This operation reverts <code>AssociateAttributeGroup</code>.
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DisassociateAttributeGroupResponse'
-        '480':
-          description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
-        '481':
-          description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-        '482':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: application
-          in: path
-          required: true
-          description: The name or ID of the application.
-          schema:
-            type: string
-            pattern: '[-.\w]+'
-            minLength: 1
-            maxLength: 256
-        - name: attributeGroup
-          in: path
-          required: true
-          description: The name or ID of the attribute group that holds the attributes to describe the application.
-          schema:
-            type: string
-            pattern: '[-.\w]+'
-            minLength: 1
-            maxLength: 256
-  '/applications/{application}/resources/{resourceType}/{resource}':
-    put:
-      operationId: AssociateResource
-      description: Associates a resource with an application. Both the resource and the application can be specified either by ID or name.
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AssociateResourceResponse'
-        '480':
-          description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
-        '481':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-        '482':
-          description: ServiceQuotaExceededException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServiceQuotaExceededException'
-        '483':
-          description: ConflictException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConflictException'
-      parameters:
-        - name: application
-          in: path
-          required: true
-          description: The name or ID of the application.
-          schema:
-            type: string
-            pattern: '[-.\w]+'
-            minLength: 1
-            maxLength: 256
-        - name: resourceType
-          in: path
-          required: true
-          description: The type of resource of which the application will be associated.
-          schema:
-            type: string
-            enum:
-              - CFN_STACK
-        - name: resource
-          in: path
-          required: true
-          description: The name or ID of the resource of which the application will be associated.
-          schema:
-            type: string
-            pattern: \S+
-            minLength: 1
-            maxLength: 256
-    parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
-    delete:
-      operationId: DisassociateResource
-      description: Disassociates a resource from application. Both the resource and the application can be specified either by ID or name.
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DisassociateResourceResponse'
-        '480':
-          description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
-        '481':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: application
-          in: path
-          required: true
-          description: The name or ID of the application.
-          schema:
-            type: string
-            pattern: '[-.\w]+'
-            minLength: 1
-            maxLength: 256
-        - name: resourceType
-          in: path
-          required: true
-          description: The type of the resource that is being disassociated.
-          schema:
-            type: string
-            enum:
-              - CFN_STACK
-        - name: resource
-          in: path
-          required: true
-          description: The name or ID of the resource.
-          schema:
-            type: string
-            pattern: \S+
-            minLength: 1
-            maxLength: 256
-    get:
-      operationId: GetAssociatedResource
-      description: Gets the resource associated with the application.
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetAssociatedResourceResponse'
-        '480':
-          description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
-        '481':
-          description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-        '482':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: application
-          in: path
-          required: true
-          description: The name or ID of the application.
-          schema:
-            type: string
-            pattern: '[-.\w]+'
-            minLength: 1
-            maxLength: 256
-        - name: resourceType
-          in: path
-          required: true
-          description: The type of resource associated with the application.
-          schema:
-            type: string
-            enum:
-              - CFN_STACK
-        - name: resource
-          in: path
-          required: true
-          description: The name or ID of the resource associated with the application.
-          schema:
-            type: string
-            pattern: \S+
-            minLength: 1
-            maxLength: 256
   /applications:
-    post:
-      operationId: CreateApplication
-      description: Creates a new application that is the top-level node in a hierarchy of related cloud resource abstractions.
-      responses:
-        '201':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateApplicationResponse'
-        '480':
-          description: ServiceQuotaExceededException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServiceQuotaExceededException'
-        '481':
-          description: ConflictException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConflictException'
-        '482':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - name
-                - clientToken
-              properties:
-                name:
-                  description: The name of the application. The name must be unique in the region in which you are creating the application.
-                  type: string
-                  pattern: '[-.\w]+'
-                  minLength: 1
-                  maxLength: 256
-                description:
-                  description: The description of the application.
-                  type: string
-                  maxLength: 1024
-                tags:
-                  description: Key-value pairs you can use to associate with the application.
-                  type: object
-                  minProperties: 0
-                  maxProperties: 50
-                  additionalProperties:
-                    $ref: '#/components/schemas/TagValue'
-                clientToken:
-                  description: 'A unique identifier that you provide to ensure idempotency. If you retry a request that completed successfully using the same client token and the same parameters, the retry succeeds without performing any further actions. If you retry a successful request using the same client token, but one or more of the parameters are different, the retry fails.'
-                  type: string
-                  pattern: '[a-zA-Z0-9][a-zA-Z0-9_-]*'
-                  minLength: 1
-                  maxLength: 128
-    parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
     get:
-      operationId: ListApplications
       description: Retrieves a list of all of your applications. Results are paginated.
+      operationId: ListApplications
+      parameters:
+        - description: >-
+            The token to use to get the next page of results after a previous
+            API call. 
+          in: query
+          maxLength: 2024
+          minLength: 1
+          name: nextToken
+          pattern: '[A-Za-z0-9+/=]+'
+          required: false
+          type: string
+        - description: >-
+            The upper bound of the number of results to return (cannot exceed
+            25). If this parameter is omitted, it defaults to 25. This value is
+            optional.
+          in: query
+          maximum: 25
+          minimum: 1
+          name: maxResults
+          required: false
+          type: integer
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListApplicationsResponse'
+          schema:
+            $ref: '#/definitions/ListApplicationsResponse'
         '480':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
+          schema:
+            $ref: '#/definitions/ValidationException'
         '481':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: nextToken
-          in: query
-          required: false
-          description: 'The token to use to get the next page of results after a previous API call. '
           schema:
-            type: string
-            pattern: '[A-Za-z0-9+/=]+'
-            minLength: 1
-            maxLength: 2024
-        - name: maxResults
-          in: query
-          required: false
-          description: 'The upper bound of the number of results to return (cannot exceed 25). If this parameter is omitted, it defaults to 25. This value is optional.'
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 25
-  /attribute-groups:
+            $ref: '#/definitions/InternalServerException'
+    parameters:
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
     post:
-      operationId: CreateAttributeGroup
-      description: Creates a new attribute group as a container for user-defined attributes. This feature enables users to have full control over their cloud application's metadata in a rich machine-readable format to facilitate integration with automated workflows and third-party tools.
+      consumes:
+        - application/json
+      description: >-
+        Creates a new application that is the top-level node in a hierarchy of
+        related cloud resource abstractions.
+      operationId: CreateApplication
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              clientToken:
+                description: >-
+                  A unique identifier that you provide to ensure idempotency. If
+                  you retry a request that completed successfully using the same
+                  client token and the same parameters, the retry succeeds
+                  without performing any further actions. If you retry a
+                  successful request using the same client token, but one or
+                  more of the parameters are different, the retry fails.
+                maxLength: 128
+                minLength: 1
+                pattern: '[a-zA-Z0-9][a-zA-Z0-9_-]*'
+                type: string
+              description:
+                description: The description of the application.
+                maxLength: 1024
+                type: string
+              name:
+                description: >-
+                  The name of the application. The name must be unique in the
+                  region in which you are creating the application.
+                maxLength: 256
+                minLength: 1
+                pattern: '[-.\w]+'
+                type: string
+              tags:
+                additionalProperties:
+                  $ref: '#/definitions/TagValue'
+                description: Key-value pairs you can use to associate with the application.
+                maxProperties: 50
+                minProperties: 0
+                type: object
+            required:
+              - name
+              - clientToken
+            type: object
+      produces:
+        - application/json
       responses:
         '201':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateAttributeGroupResponse'
+          schema:
+            $ref: '#/definitions/CreateApplicationResponse'
         '480':
           description: ServiceQuotaExceededException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServiceQuotaExceededException'
+          schema:
+            $ref: '#/definitions/ServiceQuotaExceededException'
         '481':
           description: ConflictException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConflictException'
+          schema:
+            $ref: '#/definitions/ConflictException'
         '482':
-          description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-        '483':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - name
-                - attributes
-                - clientToken
-              properties:
-                name:
-                  description: The name of the attribute group.
-                  type: string
-                  pattern: '[-.\w]+'
-                  minLength: 1
-                  maxLength: 256
-                description:
-                  description: The description of the attribute group that the user provides.
-                  type: string
-                  maxLength: 1024
-                attributes:
-                  description: A JSON string in the form of nested key-value pairs that represent the attributes in the group and describes an application and its components.
-                  type: string
-                  pattern: '[\u0009\u000A\u000D\u0020-\u00FF]+'
-                  minLength: 1
-                  maxLength: 8000
-                tags:
-                  description: Key-value pairs you can use to associate with the attribute group.
-                  type: object
-                  minProperties: 0
-                  maxProperties: 50
-                  additionalProperties:
-                    $ref: '#/components/schemas/TagValue'
-                clientToken:
-                  description: 'A unique identifier that you provide to ensure idempotency. If you retry a request that completed successfully using the same client token and the same parameters, the retry succeeds without performing any further actions. If you retry a successful request using the same client token, but one or more of the parameters are different, the retry fails.'
-                  type: string
-                  pattern: '[a-zA-Z0-9][a-zA-Z0-9_-]*'
-                  minLength: 1
-                  maxLength: 128
-    parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
-    get:
-      operationId: ListAttributeGroups
-      description: Lists all attribute groups which you have access to. Results are paginated.
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListAttributeGroupsResponse'
-        '480':
-          description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-        '481':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: nextToken
-          in: query
-          required: false
-          description: 'The token to use to get the next page of results after a previous API call. '
           schema:
-            type: string
-            pattern: '[A-Za-z0-9+/=]+'
-            minLength: 1
-            maxLength: 2024
-        - name: maxResults
-          in: query
-          required: false
-          description: 'The upper bound of the number of results to return (cannot exceed 25). If this parameter is omitted, it defaults to 25. This value is optional.'
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 25
+            $ref: '#/definitions/InternalServerException'
   '/applications/{application}':
     delete:
+      description: >-
+        Deletes an application that is specified either by its application ID or
+        name. All associated attribute groups and resources must be
+        disassociated from it before deleting an application.
       operationId: DeleteApplication
-      description: Deletes an application that is specified either by its application ID or name. All associated attribute groups and resources must be disassociated from it before deleting an application.
+      parameters:
+        - description: The name or ID of the application.
+          in: path
+          maxLength: 256
+          minLength: 1
+          name: application
+          pattern: '[-.\w]+'
+          required: true
+          type: string
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DeleteApplicationResponse'
+          schema:
+            $ref: '#/definitions/DeleteApplicationResponse'
         '480':
           description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
         '481':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
+          schema:
+            $ref: '#/definitions/ValidationException'
         '482':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: application
-          in: path
-          required: true
-          description: The name or ID of the application.
           schema:
-            type: string
-            pattern: '[-.\w]+'
-            minLength: 1
-            maxLength: 256
-    parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
+            $ref: '#/definitions/InternalServerException'
     get:
+      description: >-
+        Retrieves metadata information about one of your applications. The
+        application can be specified either by its unique ID or by its name
+        (which is unique within one account in one region at a given point in
+        time). Specify by ID in automated workflows if you want to make sure
+        that the exact same application is returned or a
+        <code>ResourceNotFoundException</code> is thrown, avoiding the ABA
+        addressing problem.
       operationId: GetApplication
-      description: 'Retrieves metadata information about one of your applications. The application can be specified either by its unique ID or by its name (which is unique within one account in one region at a given point in time). Specify by ID in automated workflows if you want to make sure that the exact same application is returned or a <code>ResourceNotFoundException</code> is thrown, avoiding the ABA addressing problem.'
+      parameters:
+        - description: The name or ID of the application.
+          in: path
+          maxLength: 256
+          minLength: 1
+          name: application
+          pattern: '[-.\w]+'
+          required: true
+          type: string
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetApplicationResponse'
+          schema:
+            $ref: '#/definitions/GetApplicationResponse'
         '480':
           description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
         '481':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
+          schema:
+            $ref: '#/definitions/ValidationException'
         '482':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: application
-          in: path
-          required: true
-          description: The name or ID of the application.
           schema:
-            type: string
-            pattern: '[-.\w]+'
-            minLength: 1
-            maxLength: 256
-    patch:
-      operationId: UpdateApplication
-      description: Updates an existing application with new attributes.
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UpdateApplicationResponse'
-        '480':
-          description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
-        '481':
-          description: ConflictException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConflictException'
-        '482':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: application
-          in: path
-          required: true
-          description: The name or ID of the application that will be updated.
-          schema:
-            type: string
-            pattern: '[-.\w]+'
-            minLength: 1
-            maxLength: 256
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  description: The new name of the application. The name must be unique in the region in which you are updating the application.
-                  type: string
-                  pattern: '[-.\w]+'
-                  minLength: 1
-                  maxLength: 256
-                description:
-                  description: The new description of the application.
-                  type: string
-                  maxLength: 1024
-  '/attribute-groups/{attributeGroup}':
-    delete:
-      operationId: DeleteAttributeGroup
-      description: 'Deletes an attribute group, specified either by its attribute group ID or name.'
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DeleteAttributeGroupResponse'
-        '480':
-          description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
-        '481':
-          description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-        '482':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: attributeGroup
-          in: path
-          required: true
-          description: The name or ID of the attribute group that holds the attributes to describe the application.
-          schema:
-            type: string
-            pattern: '[-.\w]+'
-            minLength: 1
-            maxLength: 256
+            $ref: '#/definitions/InternalServerException'
     parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
-    get:
-      operationId: GetAttributeGroup
-      description: 'Retrieves an attribute group, either by its name or its ID. The attribute group can be specified either by its unique ID or by its name.'
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetAttributeGroupResponse'
-        '480':
-          description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
-        '481':
-          description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-        '482':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: attributeGroup
-          in: path
-          required: true
-          description: The name or ID of the attribute group that holds the attributes to describe the application.
-          schema:
-            type: string
-            pattern: '[-.\w]+'
-            minLength: 1
-            maxLength: 256
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
     patch:
-      operationId: UpdateAttributeGroup
-      description: 'Updates an existing attribute group with new details. '
+      consumes:
+        - application/json
+      description: Updates an existing application with new attributes.
+      operationId: UpdateApplication
+      parameters:
+        - description: The name or ID of the application that will be updated.
+          in: path
+          maxLength: 256
+          minLength: 1
+          name: application
+          pattern: '[-.\w]+'
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              description:
+                description: The new description of the application.
+                maxLength: 1024
+                type: string
+              name:
+                description: >-
+                  The new name of the application. The name must be unique in
+                  the region in which you are updating the application.
+                maxLength: 256
+                minLength: 1
+                pattern: '[-.\w]+'
+                type: string
+            type: object
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UpdateAttributeGroupResponse'
+          schema:
+            $ref: '#/definitions/UpdateApplicationResponse'
         '480':
           description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
-        '481':
-          description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-        '482':
-          description: ConflictException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConflictException'
-        '483':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: attributeGroup
-          in: path
-          required: true
-          description: The name or ID of the attribute group that holds the attributes to describe the application.
           schema:
-            type: string
-            pattern: '[-.\w]+'
-            minLength: 1
-            maxLength: 256
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  description: The new name of the attribute group. The name must be unique in the region in which you are updating the attribute group.
-                  type: string
-                  pattern: '[-.\w]+'
-                  minLength: 1
-                  maxLength: 256
-                description:
-                  description: The description of the attribute group that the user provides.
-                  type: string
-                  maxLength: 1024
-                attributes:
-                  description: A JSON string in the form of nested key-value pairs that represent the attributes in the group and describes an application and its components.
-                  type: string
-                  pattern: '[\u0009\u000A\u000D\u0020-\u00FF]+'
-                  minLength: 1
-                  maxLength: 8000
+            $ref: '#/definitions/ResourceNotFoundException'
+        '481':
+          description: ConflictException
+          schema:
+            $ref: '#/definitions/ConflictException'
+        '482':
+          description: InternalServerException
+          schema:
+            $ref: '#/definitions/InternalServerException'
   '/applications/{application}/attribute-groups':
     get:
+      description: >-
+        Lists all attribute groups that are associated with specified
+        application. Results are paginated.
       operationId: ListAssociatedAttributeGroups
-      description: Lists all attribute groups that are associated with specified application. Results are paginated.
+      parameters:
+        - description: The name or ID of the application.
+          in: path
+          maxLength: 256
+          minLength: 1
+          name: application
+          pattern: '[-.\w]+'
+          required: true
+          type: string
+        - description: >-
+            The token to use to get the next page of results after a previous
+            API call. 
+          in: query
+          maxLength: 2024
+          minLength: 1
+          name: nextToken
+          pattern: '[A-Za-z0-9+/=]+'
+          required: false
+          type: string
+        - description: >-
+            The upper bound of the number of results to return (cannot exceed
+            25). If this parameter is omitted, it defaults to 25. This value is
+            optional.
+          in: query
+          maximum: 25
+          minimum: 1
+          name: maxResults
+          required: false
+          type: integer
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListAssociatedAttributeGroupsResponse'
+          schema:
+            $ref: '#/definitions/ListAssociatedAttributeGroupsResponse'
         '480':
           description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
         '481':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
+          schema:
+            $ref: '#/definitions/ValidationException'
         '482':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: application
-          in: path
-          required: true
-          description: The name or ID of the application.
           schema:
-            type: string
-            pattern: '[-.\w]+'
-            minLength: 1
-            maxLength: 256
-        - name: nextToken
-          in: query
-          required: false
-          description: 'The token to use to get the next page of results after a previous API call. '
-          schema:
-            type: string
-            pattern: '[A-Za-z0-9+/=]+'
-            minLength: 1
-            maxLength: 2024
-        - name: maxResults
-          in: query
-          required: false
-          description: 'The upper bound of the number of results to return (cannot exceed 25). If this parameter is omitted, it defaults to 25. This value is optional.'
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 25
+            $ref: '#/definitions/InternalServerException'
     parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
+  '/applications/{application}/attribute-groups/{attributeGroup}':
+    delete:
+      description: >-
+        Disassociates an attribute group from an application to remove the extra
+        attributes contained in the attribute group from the application's
+        metadata. This operation reverts <code>AssociateAttributeGroup</code>.
+      operationId: DisassociateAttributeGroup
+      parameters:
+        - description: The name or ID of the application.
+          in: path
+          maxLength: 256
+          minLength: 1
+          name: application
+          pattern: '[-.\w]+'
+          required: true
+          type: string
+        - description: >-
+            The name or ID of the attribute group that holds the attributes to
+            describe the application.
+          in: path
+          maxLength: 256
+          minLength: 1
+          name: attributeGroup
+          pattern: '[-.\w]+'
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/DisassociateAttributeGroupResponse'
+        '480':
+          description: ResourceNotFoundException
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
+        '481':
+          description: ValidationException
+          schema:
+            $ref: '#/definitions/ValidationException'
+        '482':
+          description: InternalServerException
+          schema:
+            $ref: '#/definitions/InternalServerException'
+    parameters:
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
+    put:
+      description: >-
+        Associates an attribute group with an application to augment the
+        application's metadata with the group's attributes. This feature enables
+        applications to be described with user-defined details that are
+        machine-readable, such as third-party integrations.
+      operationId: AssociateAttributeGroup
+      parameters:
+        - description: The name or ID of the application.
+          in: path
+          maxLength: 256
+          minLength: 1
+          name: application
+          pattern: '[-.\w]+'
+          required: true
+          type: string
+        - description: >-
+            The name or ID of the attribute group that holds the attributes to
+            describe the application.
+          in: path
+          maxLength: 256
+          minLength: 1
+          name: attributeGroup
+          pattern: '[-.\w]+'
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/AssociateAttributeGroupResponse'
+        '480':
+          description: ResourceNotFoundException
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
+        '481':
+          description: ValidationException
+          schema:
+            $ref: '#/definitions/ValidationException'
+        '482':
+          description: InternalServerException
+          schema:
+            $ref: '#/definitions/InternalServerException'
+        '483':
+          description: ServiceQuotaExceededException
+          schema:
+            $ref: '#/definitions/ServiceQuotaExceededException'
   '/applications/{application}/resources':
     get:
+      description: >-
+        Lists all resources that are associated with specified application.
+        Results are paginated.
       operationId: ListAssociatedResources
-      description: Lists all resources that are associated with specified application. Results are paginated.
+      parameters:
+        - description: The name or ID of the application.
+          in: path
+          maxLength: 256
+          minLength: 1
+          name: application
+          pattern: '[-.\w]+'
+          required: true
+          type: string
+        - description: >-
+            The token to use to get the next page of results after a previous
+            API call. 
+          in: query
+          maxLength: 2024
+          minLength: 1
+          name: nextToken
+          pattern: '[A-Za-z0-9+/=]+'
+          required: false
+          type: string
+        - description: >-
+            The upper bound of the number of results to return (cannot exceed
+            25). If this parameter is omitted, it defaults to 25. This value is
+            optional.
+          in: query
+          maximum: 25
+          minimum: 1
+          name: maxResults
+          required: false
+          type: integer
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListAssociatedResourcesResponse'
+          schema:
+            $ref: '#/definitions/ListAssociatedResourcesResponse'
         '480':
           description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
         '481':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
+          schema:
+            $ref: '#/definitions/ValidationException'
         '482':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: application
-          in: path
-          required: true
-          description: The name or ID of the application.
           schema:
-            type: string
-            pattern: '[-.\w]+'
-            minLength: 1
-            maxLength: 256
-        - name: nextToken
-          in: query
-          required: false
-          description: 'The token to use to get the next page of results after a previous API call. '
-          schema:
-            type: string
-            pattern: '[A-Za-z0-9+/=]+'
-            minLength: 1
-            maxLength: 2024
-        - name: maxResults
-          in: query
-          required: false
-          description: 'The upper bound of the number of results to return (cannot exceed 25). If this parameter is omitted, it defaults to 25. This value is optional.'
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 25
+            $ref: '#/definitions/InternalServerException'
     parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
-  '/tags/{resourceArn}':
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
+  '/applications/{application}/resources/{resourceType}/{resource}':
+    delete:
+      description: >-
+        Disassociates a resource from application. Both the resource and the
+        application can be specified either by ID or name.
+      operationId: DisassociateResource
+      parameters:
+        - description: The name or ID of the application.
+          in: path
+          maxLength: 256
+          minLength: 1
+          name: application
+          pattern: '[-.\w]+'
+          required: true
+          type: string
+        - description: The type of the resource that is being disassociated.
+          enum:
+            - CFN_STACK
+          in: path
+          name: resourceType
+          required: true
+          type: string
+        - description: The name or ID of the resource.
+          in: path
+          maxLength: 256
+          minLength: 1
+          name: resource
+          pattern: \S+
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/DisassociateResourceResponse'
+        '480':
+          description: ResourceNotFoundException
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
+        '481':
+          description: InternalServerException
+          schema:
+            $ref: '#/definitions/InternalServerException'
     get:
-      operationId: ListTagsForResource
-      description: Lists all of the tags on the resource.
+      description: Gets the resource associated with the application.
+      operationId: GetAssociatedResource
+      parameters:
+        - description: The name or ID of the application.
+          in: path
+          maxLength: 256
+          minLength: 1
+          name: application
+          pattern: '[-.\w]+'
+          required: true
+          type: string
+        - description: The type of resource associated with the application.
+          enum:
+            - CFN_STACK
+          in: path
+          name: resourceType
+          required: true
+          type: string
+        - description: The name or ID of the resource associated with the application.
+          in: path
+          maxLength: 256
+          minLength: 1
+          name: resource
+          pattern: \S+
+          required: true
+          type: string
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListTagsForResourceResponse'
+          schema:
+            $ref: '#/definitions/GetAssociatedResourceResponse'
         '480':
-          description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-        '481':
           description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
+        '481':
+          description: ValidationException
+          schema:
+            $ref: '#/definitions/ValidationException'
         '482':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: resourceArn
-          in: path
-          required: true
-          description: The Amazon resource name (ARN) that specifies the resource.
           schema:
-            type: string
-            pattern: 'arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\-])+:([a-z]{2}(-gov)?-[a-z]+-\d{1})?:(\d{12})?:(.*)'
-            minLength: 1
-            maxLength: 1600
+            $ref: '#/definitions/InternalServerException'
     parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
-    post:
-      operationId: TagResource
-      description: '<p>Assigns one or more tags (key-value pairs) to the specified resource.</p> <p>Each tag consists of a key and an optional value. If a tag with the same key is already associated with the resource, this action updates its value.</p> <p>This operation returns an empty response if the call was successful.</p>'
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
+    put:
+      description: >-
+        Associates a resource with an application. Both the resource and the
+        application can be specified either by ID or name.
+      operationId: AssociateResource
+      parameters:
+        - description: The name or ID of the application.
+          in: path
+          maxLength: 256
+          minLength: 1
+          name: application
+          pattern: '[-.\w]+'
+          required: true
+          type: string
+        - description: The type of resource of which the application will be associated.
+          enum:
+            - CFN_STACK
+          in: path
+          name: resourceType
+          required: true
+          type: string
+        - description: >-
+            The name or ID of the resource of which the application will be
+            associated.
+          in: path
+          maxLength: 256
+          minLength: 1
+          name: resource
+          pattern: \S+
+          required: true
+          type: string
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TagResourceResponse'
+          schema:
+            $ref: '#/definitions/AssociateResourceResponse'
+        '480':
+          description: ResourceNotFoundException
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
+        '481':
+          description: InternalServerException
+          schema:
+            $ref: '#/definitions/InternalServerException'
+        '482':
+          description: ServiceQuotaExceededException
+          schema:
+            $ref: '#/definitions/ServiceQuotaExceededException'
+        '483':
+          description: ConflictException
+          schema:
+            $ref: '#/definitions/ConflictException'
+  /attribute-groups:
+    get:
+      description: >-
+        Lists all attribute groups which you have access to. Results are
+        paginated.
+      operationId: ListAttributeGroups
+      parameters:
+        - description: >-
+            The token to use to get the next page of results after a previous
+            API call. 
+          in: query
+          maxLength: 2024
+          minLength: 1
+          name: nextToken
+          pattern: '[A-Za-z0-9+/=]+'
+          required: false
+          type: string
+        - description: >-
+            The upper bound of the number of results to return (cannot exceed
+            25). If this parameter is omitted, it defaults to 25. This value is
+            optional.
+          in: query
+          maximum: 25
+          minimum: 1
+          name: maxResults
+          required: false
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/ListAttributeGroupsResponse'
         '480':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-        '481':
-          description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
-        '482':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: resourceArn
-          in: path
-          required: true
-          description: The Amazon resource name (ARN) that specifies the resource.
           schema:
-            type: string
-            pattern: 'arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\-])+:([a-z]{2}(-gov)?-[a-z]+-\d{1})?:(\d{12})?:(.*)'
-            minLength: 1
-            maxLength: 1600
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - tags
-              properties:
-                tags:
-                  description: The new or modified tags for the resource.
-                  type: object
-                  minProperties: 0
-                  maxProperties: 50
-                  additionalProperties:
-                    $ref: '#/components/schemas/TagValue'
-  '/sync/{resourceType}/{resource}':
+            $ref: '#/definitions/ValidationException'
+        '481':
+          description: InternalServerException
+          schema:
+            $ref: '#/definitions/InternalServerException'
+    parameters:
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
     post:
-      operationId: SyncResource
-      description: '<p>Syncs the resource with current AppRegistry records.</p> <p>Specifically, the resource’s AppRegistry system tags sync with its associated application. We remove the resource''s AppRegistry system tags if it does not associate with the application. The caller must have permissions to read and update the resource.</p>'
+      consumes:
+        - application/json
+      description: >-
+        Creates a new attribute group as a container for user-defined
+        attributes. This feature enables users to have full control over their
+        cloud application's metadata in a rich machine-readable format to
+        facilitate integration with automated workflows and third-party tools.
+      operationId: CreateAttributeGroup
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              attributes:
+                description: >-
+                  A JSON string in the form of nested key-value pairs that
+                  represent the attributes in the group and describes an
+                  application and its components.
+                maxLength: 8000
+                minLength: 1
+                pattern: '[\u0009\u000A\u000D\u0020-\u00FF]+'
+                type: string
+              clientToken:
+                description: >-
+                  A unique identifier that you provide to ensure idempotency. If
+                  you retry a request that completed successfully using the same
+                  client token and the same parameters, the retry succeeds
+                  without performing any further actions. If you retry a
+                  successful request using the same client token, but one or
+                  more of the parameters are different, the retry fails.
+                maxLength: 128
+                minLength: 1
+                pattern: '[a-zA-Z0-9][a-zA-Z0-9_-]*'
+                type: string
+              description:
+                description: The description of the attribute group that the user provides.
+                maxLength: 1024
+                type: string
+              name:
+                description: The name of the attribute group.
+                maxLength: 256
+                minLength: 1
+                pattern: '[-.\w]+'
+                type: string
+              tags:
+                additionalProperties:
+                  $ref: '#/definitions/TagValue'
+                description: >-
+                  Key-value pairs you can use to associate with the attribute
+                  group.
+                maxProperties: 50
+                minProperties: 0
+                type: object
+            required:
+              - name
+              - attributes
+              - clientToken
+            type: object
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Success
+          schema:
+            $ref: '#/definitions/CreateAttributeGroupResponse'
+        '480':
+          description: ServiceQuotaExceededException
+          schema:
+            $ref: '#/definitions/ServiceQuotaExceededException'
+        '481':
+          description: ConflictException
+          schema:
+            $ref: '#/definitions/ConflictException'
+        '482':
+          description: ValidationException
+          schema:
+            $ref: '#/definitions/ValidationException'
+        '483':
+          description: InternalServerException
+          schema:
+            $ref: '#/definitions/InternalServerException'
+  '/attribute-groups/{attributeGroup}':
+    delete:
+      description: >-
+        Deletes an attribute group, specified either by its attribute group ID
+        or name.
+      operationId: DeleteAttributeGroup
+      parameters:
+        - description: >-
+            The name or ID of the attribute group that holds the attributes to
+            describe the application.
+          in: path
+          maxLength: 256
+          minLength: 1
+          name: attributeGroup
+          pattern: '[-.\w]+'
+          required: true
+          type: string
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SyncResourceResponse'
+          schema:
+            $ref: '#/definitions/DeleteAttributeGroupResponse'
         '480':
           description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
         '481':
+          description: ValidationException
+          schema:
+            $ref: '#/definitions/ValidationException'
+        '482':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
+          schema:
+            $ref: '#/definitions/InternalServerException'
+    get:
+      description: >-
+        Retrieves an attribute group, either by its name or its ID. The
+        attribute group can be specified either by its unique ID or by its name.
+      operationId: GetAttributeGroup
+      parameters:
+        - description: >-
+            The name or ID of the attribute group that holds the attributes to
+            describe the application.
+          in: path
+          maxLength: 256
+          minLength: 1
+          name: attributeGroup
+          pattern: '[-.\w]+'
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/GetAttributeGroupResponse'
+        '480':
+          description: ResourceNotFoundException
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
+        '481':
+          description: ValidationException
+          schema:
+            $ref: '#/definitions/ValidationException'
+        '482':
+          description: InternalServerException
+          schema:
+            $ref: '#/definitions/InternalServerException'
+    parameters:
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
+    patch:
+      consumes:
+        - application/json
+      description: 'Updates an existing attribute group with new details. '
+      operationId: UpdateAttributeGroup
+      parameters:
+        - description: >-
+            The name or ID of the attribute group that holds the attributes to
+            describe the application.
+          in: path
+          maxLength: 256
+          minLength: 1
+          name: attributeGroup
+          pattern: '[-.\w]+'
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              attributes:
+                description: >-
+                  A JSON string in the form of nested key-value pairs that
+                  represent the attributes in the group and describes an
+                  application and its components.
+                maxLength: 8000
+                minLength: 1
+                pattern: '[\u0009\u000A\u000D\u0020-\u00FF]+'
+                type: string
+              description:
+                description: The description of the attribute group that the user provides.
+                maxLength: 1024
+                type: string
+              name:
+                description: >-
+                  The new name of the attribute group. The name must be unique
+                  in the region in which you are updating the attribute group.
+                maxLength: 256
+                minLength: 1
+                pattern: '[-.\w]+'
+                type: string
+            type: object
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/UpdateAttributeGroupResponse'
+        '480':
+          description: ResourceNotFoundException
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
+        '481':
+          description: ValidationException
+          schema:
+            $ref: '#/definitions/ValidationException'
         '482':
           description: ConflictException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConflictException'
-      parameters:
-        - name: resourceType
-          in: path
-          required: true
-          description: The type of resource of which the application will be associated.
           schema:
-            type: string
-            enum:
-              - CFN_STACK
-        - name: resource
-          in: path
-          required: true
-          description: 'An entity you can work with and specify with a name or ID. Examples include an Amazon EC2 instance, an Amazon Web Services CloudFormation stack, or an Amazon S3 bucket.'
+            $ref: '#/definitions/ConflictException'
+        '483':
+          description: InternalServerException
           schema:
-            type: string
-            pattern: \S+
-            minLength: 1
-            maxLength: 256
+            $ref: '#/definitions/InternalServerException'
+  '/sync/{resourceType}/{resource}':
     parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
-  '/tags/{resourceArn}#tagKeys':
-    delete:
-      operationId: UntagResource
-      description: <p>Removes tags from a resource.</p> <p>This operation returns an empty response if the call was successful.</p>
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
+    post:
+      description: >-
+        <p>Syncs the resource with current AppRegistry records.</p>
+        <p>Specifically, the resource’s AppRegistry system tags sync with its
+        associated application. We remove the resource's AppRegistry system tags
+        if it does not associate with the application. The caller must have
+        permissions to read and update the resource.</p>
+      operationId: SyncResource
+      parameters:
+        - description: The type of resource of which the application will be associated.
+          enum:
+            - CFN_STACK
+          in: path
+          name: resourceType
+          required: true
+          type: string
+        - description: >-
+            An entity you can work with and specify with a name or ID. Examples
+            include an Amazon EC2 instance, an Amazon Web Services
+            CloudFormation stack, or an Amazon S3 bucket.
+          in: path
+          maxLength: 256
+          minLength: 1
+          name: resource
+          pattern: \S+
+          required: true
+          type: string
+      produces:
+        - application/json
       responses:
         '200':
           description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UntagResourceResponse'
+          schema:
+            $ref: '#/definitions/SyncResourceResponse'
+        '480':
+          description: ResourceNotFoundException
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
+        '481':
+          description: InternalServerException
+          schema:
+            $ref: '#/definitions/InternalServerException'
+        '482':
+          description: ConflictException
+          schema:
+            $ref: '#/definitions/ConflictException'
+  '/tags/{resourceArn}':
+    get:
+      description: Lists all of the tags on the resource.
+      operationId: ListTagsForResource
+      parameters:
+        - description: The Amazon resource name (ARN) that specifies the resource.
+          in: path
+          maxLength: 1600
+          minLength: 1
+          name: resourceArn
+          pattern: >-
+            arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\-])+:([a-z]{2}(-gov)?-[a-z]+-\d{1})?:(\d{12})?:(.*)
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/ListTagsForResourceResponse'
         '480':
           description: ValidationException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationException'
+          schema:
+            $ref: '#/definitions/ValidationException'
         '481':
           description: ResourceNotFoundException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResourceNotFoundException'
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
         '482':
           description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-      parameters:
-        - name: resourceArn
-          in: path
-          required: true
-          description: The Amazon resource name (ARN) that specifies the resource.
           schema:
-            type: string
-            pattern: 'arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\-])+:([a-z]{2}(-gov)?-[a-z]+-\d{1})?:(\d{12})?:(.*)'
-            minLength: 1
-            maxLength: 1600
-        - name: tagKeys
-          in: query
-          required: true
-          description: A list of the tag keys to remove from the specified resource.
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/TagKey'
-            minItems: 0
-            maxItems: 50
+            $ref: '#/definitions/InternalServerException'
     parameters:
-      - $ref: '#/components/parameters/X-Amz-Content-Sha256'
-      - $ref: '#/components/parameters/X-Amz-Date'
-      - $ref: '#/components/parameters/X-Amz-Algorithm'
-      - $ref: '#/components/parameters/X-Amz-Credential'
-      - $ref: '#/components/parameters/X-Amz-Security-Token'
-      - $ref: '#/components/parameters/X-Amz-Signature'
-      - $ref: '#/components/parameters/X-Amz-SignedHeaders'
-components:
-  parameters:
-    X-Amz-Content-Sha256:
-      name: X-Amz-Content-Sha256
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
         type: string
-      required: false
-    X-Amz-Date:
-      name: X-Amz-Date
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Date
+        required: false
         type: string
-      required: false
-    X-Amz-Algorithm:
-      name: X-Amz-Algorithm
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
         type: string
-      required: false
-    X-Amz-Credential:
-      name: X-Amz-Credential
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Credential
+        required: false
         type: string
-      required: false
-    X-Amz-Security-Token:
-      name: X-Amz-Security-Token
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
         type: string
-      required: false
-    X-Amz-Signature:
-      name: X-Amz-Signature
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-Signature
+        required: false
         type: string
-      required: false
-    X-Amz-SignedHeaders:
-      name: X-Amz-SignedHeaders
-      in: header
-      schema:
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
         type: string
-      required: false
-  securitySchemes:
-    hmac:
-      type: apiKey
-      name: Authorization
-      in: header
-      description: Amazon Signature authorization v4
-      x-amazon-apigateway-authtype: awsSigv4
-  schemas:
-    AssociateAttributeGroupResponse:
-      type: object
-      properties:
-        applicationArn:
-          allOf:
-            - $ref: '#/components/schemas/ApplicationArn'
-            - description: The Amazon resource name (ARN) of the application that was augmented with attributes.
-        attributeGroupArn:
-          allOf:
-            - $ref: '#/components/schemas/AttributeGroupArn'
-            - description: The Amazon resource name (ARN) of the attribute group that contains the application's new attributes.
-    ResourceNotFoundException: {}
-    ValidationException: {}
-    InternalServerException: {}
-    ServiceQuotaExceededException: {}
-    AssociateResourceResponse:
-      type: object
-      properties:
-        applicationArn:
-          allOf:
-            - $ref: '#/components/schemas/ApplicationArn'
-            - description: The Amazon resource name (ARN) of the application that was augmented with attributes.
-        resourceArn:
-          allOf:
-            - $ref: '#/components/schemas/Arn'
-            - description: The Amazon resource name (ARN) that specifies the resource.
-    ConflictException: {}
-    CreateApplicationResponse:
-      type: object
-      properties:
-        application:
-          allOf:
-            - $ref: '#/components/schemas/Application'
-            - description: Information about the application.
-    TagValue:
-      type: string
-      pattern: '[\p{L}\p{Z}\p{N}_.:/=+\-@]*'
-      maxLength: 256
-    CreateAttributeGroupResponse:
-      type: object
-      properties:
-        attributeGroup:
-          allOf:
-            - $ref: '#/components/schemas/AttributeGroup'
-            - description: Information about the attribute group.
-    DeleteApplicationResponse:
-      type: object
-      properties:
-        application:
-          allOf:
-            - $ref: '#/components/schemas/ApplicationSummary'
-            - description: Information about the deleted application.
-    DeleteAttributeGroupResponse:
-      type: object
-      properties:
-        attributeGroup:
-          allOf:
-            - $ref: '#/components/schemas/AttributeGroupSummary'
-            - description: Information about the deleted attribute group.
-    DisassociateAttributeGroupResponse:
-      type: object
-      properties:
-        applicationArn:
-          allOf:
-            - $ref: '#/components/schemas/ApplicationArn'
-            - description: The Amazon resource name (ARN) that specifies the application.
-        attributeGroupArn:
-          allOf:
-            - $ref: '#/components/schemas/AttributeGroupArn'
-            - description: The Amazon resource name (ARN) that specifies the attribute group.
-    DisassociateResourceResponse:
-      type: object
-      properties:
-        applicationArn:
-          allOf:
-            - $ref: '#/components/schemas/ApplicationArn'
-            - description: The Amazon resource name (ARN) that specifies the application.
-        resourceArn:
-          allOf:
-            - $ref: '#/components/schemas/Arn'
-            - description: The Amazon resource name (ARN) that specifies the resource.
-    GetApplicationResponse:
-      type: object
-      properties:
-        id:
-          allOf:
-            - $ref: '#/components/schemas/ApplicationId'
-            - description: The identifier of the application.
-        arn:
-          allOf:
-            - $ref: '#/components/schemas/ApplicationArn'
-            - description: The Amazon resource name (ARN) that specifies the application across services.
-        name:
-          allOf:
-            - $ref: '#/components/schemas/Name'
-            - description: The name of the application. The name must be unique in the region in which you are creating the application.
-        description:
-          allOf:
-            - $ref: '#/components/schemas/Description'
-            - description: The description of the application.
-        creationTime:
-          allOf:
-            - $ref: '#/components/schemas/Timestamp'
-            - description: The ISO-8601 formatted timestamp of the moment when the application was created.
-        lastUpdateTime:
-          allOf:
-            - $ref: '#/components/schemas/Timestamp'
-            - description: The ISO-8601 formatted timestamp of the moment when the application was last updated.
-        associatedResourceCount:
-          allOf:
-            - $ref: '#/components/schemas/AssociationCount'
-            - description: The number of top-level resources that were registered as part of this application.
-        tags:
-          allOf:
-            - $ref: '#/components/schemas/Tags'
-            - description: Key-value pairs associated with the application.
-        integrations:
-          allOf:
-            - $ref: '#/components/schemas/Integrations'
-            - description: 'The information about the integration of the application with other services, such as Resource Groups.'
-    GetAssociatedResourceResponse:
-      type: object
-      properties:
-        resource:
-          allOf:
-            - $ref: '#/components/schemas/Resource'
-            - description: The resource associated with the application.
-    GetAttributeGroupResponse:
-      type: object
-      properties:
-        id:
-          allOf:
-            - $ref: '#/components/schemas/AttributeGroupId'
-            - description: The identifier of the attribute group.
-        arn:
-          allOf:
-            - $ref: '#/components/schemas/AttributeGroupArn'
-            - description: The Amazon resource name (ARN) that specifies the attribute group across services.
-        name:
-          allOf:
-            - $ref: '#/components/schemas/Name'
-            - description: The name of the attribute group.
-        description:
-          allOf:
-            - $ref: '#/components/schemas/Description'
-            - description: The description of the attribute group that the user provides.
-        attributes:
-          allOf:
-            - $ref: '#/components/schemas/Attributes'
-            - description: A JSON string in the form of nested key-value pairs that represent the attributes in the group and describes an application and its components.
-        creationTime:
-          allOf:
-            - $ref: '#/components/schemas/Timestamp'
-            - description: The ISO-8601 formatted timestamp of the moment the attribute group was created.
-        lastUpdateTime:
-          allOf:
-            - $ref: '#/components/schemas/Timestamp'
-            - description: The ISO-8601 formatted timestamp of the moment the attribute group was last updated. This time is the same as the creationTime for a newly created attribute group.
-        tags:
-          allOf:
-            - $ref: '#/components/schemas/Tags'
-            - description: Key-value pairs associated with the attribute group.
-    ListApplicationsResponse:
-      type: object
-      properties:
-        applications:
-          allOf:
-            - $ref: '#/components/schemas/ApplicationSummaries'
-            - description: This list of applications.
-        nextToken:
-          allOf:
-            - $ref: '#/components/schemas/NextToken'
-            - description: 'The token to use to get the next page of results after a previous API call. '
-    ListAssociatedAttributeGroupsResponse:
-      type: object
-      properties:
-        attributeGroups:
-          allOf:
-            - $ref: '#/components/schemas/AttributeGroupIds'
-            - description: A list of attribute group IDs.
-        nextToken:
-          allOf:
-            - $ref: '#/components/schemas/NextToken'
-            - description: 'The token to use to get the next page of results after a previous API call. '
-    ListAssociatedResourcesResponse:
-      type: object
-      properties:
-        resources:
-          allOf:
-            - $ref: '#/components/schemas/Resources'
-            - description: Information about the resources.
-        nextToken:
-          allOf:
-            - $ref: '#/components/schemas/NextToken'
-            - description: 'The token to use to get the next page of results after a previous API call. '
-    ListAttributeGroupsResponse:
-      type: object
-      properties:
-        attributeGroups:
-          allOf:
-            - $ref: '#/components/schemas/AttributeGroupSummaries'
-            - description: This list of attribute groups.
-        nextToken:
-          allOf:
-            - $ref: '#/components/schemas/NextToken'
-            - description: 'The token to use to get the next page of results after a previous API call. '
-    ListTagsForResourceResponse:
-      type: object
-      properties:
-        tags:
-          allOf:
-            - $ref: '#/components/schemas/Tags'
-            - description: The tags on the resource.
-    SyncResourceResponse:
-      type: object
-      properties:
-        applicationArn:
-          allOf:
-            - $ref: '#/components/schemas/ApplicationArn'
-            - description: The Amazon resource name (ARN) that specifies the application.
-        resourceArn:
-          allOf:
-            - $ref: '#/components/schemas/Arn'
-            - description: The Amazon resource name (ARN) that specifies the resource.
-        actionTaken:
-          allOf:
-            - $ref: '#/components/schemas/SyncAction'
-            - description: 'The results of the output if an application is associated with an ARN value, which could be <code>syncStarted</code> or None.'
-    TagResourceResponse:
-      type: object
-      properties: {}
-    UntagResourceResponse:
-      type: object
-      properties: {}
-    TagKey:
-      type: string
-      pattern: '(?!aws:)[a-zA-Z+-=._:/]+'
-      minLength: 1
-      maxLength: 128
-    UpdateApplicationResponse:
-      type: object
-      properties:
-        application:
-          allOf:
-            - $ref: '#/components/schemas/Application'
-            - description: The updated information of the application.
-    UpdateAttributeGroupResponse:
-      type: object
-      properties:
-        attributeGroup:
-          allOf:
-            - $ref: '#/components/schemas/AttributeGroup'
-            - description: The updated information of the attribute group.
-    ApplicationId:
-      type: string
-      pattern: '[a-z0-9]+'
-      minLength: 26
-      maxLength: 26
-    ApplicationArn:
-      type: string
-      pattern: 'arn:aws[-a-z]*:servicecatalog:[a-z]{2}(-gov)?-[a-z]+-\d:\d{12}:/applications/[a-z0-9]+'
-    Name:
-      type: string
-      pattern: '[-.\w]+'
-      minLength: 1
-      maxLength: 256
-    Description:
-      type: string
-      maxLength: 1024
-    Timestamp:
-      type: string
-      format: date-time
-    Tags:
-      type: object
-      minProperties: 0
-      maxProperties: 50
-      additionalProperties:
-        $ref: '#/components/schemas/TagValue'
-    Application:
-      type: object
-      properties:
-        id:
-          allOf:
-            - $ref: '#/components/schemas/ApplicationId'
-            - description: The identifier of the application.
-        arn:
-          allOf:
-            - $ref: '#/components/schemas/ApplicationArn'
-            - description: The Amazon resource name (ARN) that specifies the application across services.
-        name:
-          allOf:
-            - $ref: '#/components/schemas/Name'
-            - description: The name of the application. The name must be unique in the region in which you are creating the application.
-        description:
-          allOf:
-            - $ref: '#/components/schemas/Description'
-            - description: The description of the application.
-        creationTime:
-          allOf:
-            - $ref: '#/components/schemas/Timestamp'
-            - description: The ISO-8601 formatted timestamp of the moment when the application was created.
-        lastUpdateTime:
-          allOf:
-            - $ref: '#/components/schemas/Timestamp'
-            - description: ' The ISO-8601 formatted timestamp of the moment when the application was last updated.'
-        tags:
-          allOf:
-            - $ref: '#/components/schemas/Tags'
-            - description: Key-value pairs you can use to associate with the application.
-      description: Represents a Amazon Web Services Service Catalog AppRegistry application that is the top-level node in a hierarchy of related cloud resource abstractions.
-    ApplicationSpecifier:
-      type: string
-      pattern: '[-.\w]+'
-      minLength: 1
-      maxLength: 256
-    ApplicationSummary:
-      type: object
-      properties:
-        id:
-          allOf:
-            - $ref: '#/components/schemas/ApplicationId'
-            - description: The identifier of the application.
-        arn:
-          allOf:
-            - $ref: '#/components/schemas/ApplicationArn'
-            - description: The Amazon resource name (ARN) that specifies the application across services.
-        name:
-          allOf:
-            - $ref: '#/components/schemas/Name'
-            - description: The name of the application. The name must be unique in the region in which you are creating the application.
-        description:
-          allOf:
-            - $ref: '#/components/schemas/Description'
-            - description: The description of the application.
-        creationTime:
-          allOf:
-            - $ref: '#/components/schemas/Timestamp'
-            - description: The ISO-8601 formatted timestamp of the moment when the application was created.
-        lastUpdateTime:
-          allOf:
-            - $ref: '#/components/schemas/Timestamp'
-            - description: ' The ISO-8601 formatted timestamp of the moment when the application was last updated.'
-      description: Summary of a Amazon Web Services Service Catalog AppRegistry application.
-    ApplicationSummaries:
-      type: array
-      items:
-        $ref: '#/components/schemas/ApplicationSummary'
-    Arn:
-      type: string
-      pattern: 'arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\-])+:([a-z]{2}(-gov)?-[a-z]+-\d{1})?:(\d{12})?:(.*)'
-      minLength: 1
-      maxLength: 1600
-    AttributeGroupSpecifier:
-      type: string
-      pattern: '[-.\w]+'
-      minLength: 1
-      maxLength: 256
-    AssociateAttributeGroupRequest:
-      type: object
-      title: AssociateAttributeGroupRequest
-      properties: {}
-    AttributeGroupArn:
-      type: string
-      pattern: 'arn:aws[-a-z]*:servicecatalog:[a-z]{2}(-gov)?-[a-z]+-\d:\d{12}:/attribute-groups/[a-z0-9]+'
-    ResourceType:
-      type: string
-      enum:
-        - CFN_STACK
-    ResourceSpecifier:
-      type: string
-      pattern: \S+
-      minLength: 1
-      maxLength: 256
-    AssociateResourceRequest:
-      type: object
-      title: AssociateResourceRequest
-      properties: {}
-    AssociationCount:
-      type: integer
-      minimum: 0
-    AttributeGroupId:
-      type: string
-      pattern: '[a-z0-9]+'
-      minLength: 26
-      maxLength: 26
-    AttributeGroup:
-      type: object
-      properties:
-        id:
-          allOf:
-            - $ref: '#/components/schemas/AttributeGroupId'
-            - description: The globally unique attribute group identifier of the attribute group.
-        arn:
-          allOf:
-            - $ref: '#/components/schemas/AttributeGroupArn'
-            - description: The Amazon resource name (ARN) that specifies the attribute group across services.
-        name:
-          allOf:
-            - $ref: '#/components/schemas/Name'
-            - description: The name of the attribute group.
-        description:
-          allOf:
-            - $ref: '#/components/schemas/Description'
-            - description: The description of the attribute group that the user provides.
-        creationTime:
-          allOf:
-            - $ref: '#/components/schemas/Timestamp'
-            - description: The ISO-8601 formatted timestamp of the moment the attribute group was created.
-        lastUpdateTime:
-          allOf:
-            - $ref: '#/components/schemas/Timestamp'
-            - description: The ISO-8601 formatted timestamp of the moment the attribute group was last updated. This time is the same as the creationTime for a newly created attribute group.
-        tags:
-          allOf:
-            - $ref: '#/components/schemas/Tags'
-            - description: Key-value pairs you can use to associate with the attribute group.
-      description: Represents a Amazon Web Services Service Catalog AppRegistry attribute group that is rich metadata which describes an application and its components.
-    AttributeGroupIds:
-      type: array
-      items:
-        $ref: '#/components/schemas/AttributeGroupId'
-    AttributeGroupSummary:
-      type: object
-      properties:
-        id:
-          allOf:
-            - $ref: '#/components/schemas/AttributeGroupId'
-            - description: The globally unique attribute group identifier of the attribute group.
-        arn:
-          allOf:
-            - $ref: '#/components/schemas/AttributeGroupArn'
-            - description: The Amazon resource name (ARN) that specifies the attribute group across services.
-        name:
-          allOf:
-            - $ref: '#/components/schemas/Name'
-            - description: The name of the attribute group.
-        description:
-          allOf:
-            - $ref: '#/components/schemas/Description'
-            - description: The description of the attribute group that the user provides.
-        creationTime:
-          allOf:
-            - $ref: '#/components/schemas/Timestamp'
-            - description: The ISO-8601 formatted timestamp of the moment the attribute group was created.
-        lastUpdateTime:
-          allOf:
-            - $ref: '#/components/schemas/Timestamp'
-            - description: The ISO-8601 formatted timestamp of the moment the attribute group was last updated. This time is the same as the creationTime for a newly created attribute group.
-      description: Summary of a Amazon Web Services Service Catalog AppRegistry attribute group.
-    AttributeGroupSummaries:
-      type: array
-      items:
-        $ref: '#/components/schemas/AttributeGroupSummary'
-    Attributes:
-      type: string
-      pattern: '[\u0009\u000A\u000D\u0020-\u00FF]+'
-      minLength: 1
-      maxLength: 8000
-    ClientToken:
-      type: string
-      pattern: '[a-zA-Z0-9][a-zA-Z0-9_-]*'
-      minLength: 1
-      maxLength: 128
-    CreateApplicationRequest:
-      type: object
-      required:
-        - name
-        - clientToken
-      title: CreateApplicationRequest
-      properties:
-        name:
-          allOf:
-            - $ref: '#/components/schemas/Name'
-            - description: The name of the application. The name must be unique in the region in which you are creating the application.
-        description:
-          allOf:
-            - $ref: '#/components/schemas/Description'
-            - description: The description of the application.
-        tags:
-          allOf:
-            - $ref: '#/components/schemas/Tags'
-            - description: Key-value pairs you can use to associate with the application.
-        clientToken:
-          allOf:
-            - $ref: '#/components/schemas/ClientToken'
-            - description: 'A unique identifier that you provide to ensure idempotency. If you retry a request that completed successfully using the same client token and the same parameters, the retry succeeds without performing any further actions. If you retry a successful request using the same client token, but one or more of the parameters are different, the retry fails.'
-    CreateAttributeGroupRequest:
-      type: object
-      required:
-        - name
-        - attributes
-        - clientToken
-      title: CreateAttributeGroupRequest
-      properties:
-        name:
-          allOf:
-            - $ref: '#/components/schemas/Name'
-            - description: The name of the attribute group.
-        description:
-          allOf:
-            - $ref: '#/components/schemas/Description'
-            - description: The description of the attribute group that the user provides.
-        attributes:
-          allOf:
-            - $ref: '#/components/schemas/Attributes'
-            - description: A JSON string in the form of nested key-value pairs that represent the attributes in the group and describes an application and its components.
-        tags:
-          allOf:
-            - $ref: '#/components/schemas/Tags'
-            - description: Key-value pairs you can use to associate with the attribute group.
-        clientToken:
-          allOf:
-            - $ref: '#/components/schemas/ClientToken'
-            - description: 'A unique identifier that you provide to ensure idempotency. If you retry a request that completed successfully using the same client token and the same parameters, the retry succeeds without performing any further actions. If you retry a successful request using the same client token, but one or more of the parameters are different, the retry fails.'
-    DeleteApplicationRequest:
-      type: object
-      title: DeleteApplicationRequest
-      properties: {}
-    DeleteAttributeGroupRequest:
-      type: object
-      title: DeleteAttributeGroupRequest
-      properties: {}
-    DisassociateAttributeGroupRequest:
-      type: object
-      title: DisassociateAttributeGroupRequest
-      properties: {}
-    DisassociateResourceRequest:
-      type: object
-      title: DisassociateResourceRequest
-      properties: {}
-    GetApplicationRequest:
-      type: object
-      title: GetApplicationRequest
-      properties: {}
-    Integrations:
-      type: object
-      properties:
-        resourceGroup:
-          allOf:
-            - $ref: '#/components/schemas/ResourceGroup'
-            - description: ' The information about the resource group integration.'
-      description: ' The information about the service integration.'
-    GetAssociatedResourceRequest:
-      type: object
-      title: GetAssociatedResourceRequest
-      properties: {}
-    Resource:
-      type: object
-      properties:
-        name:
-          allOf:
-            - $ref: '#/components/schemas/ResourceSpecifier'
-            - description: The name of the resource.
-        arn:
-          allOf:
-            - $ref: '#/components/schemas/StackArn'
-            - description: The Amazon resource name (ARN) of the resource.
-        associationTime:
-          allOf:
-            - $ref: '#/components/schemas/Timestamp'
-            - description: The time the resource was associated with the application.
-        integrations:
-          allOf:
-            - $ref: '#/components/schemas/ResourceIntegrations'
-            - description: 'The service integration information about the resource. '
-      description: ' The information about the resource.'
-    GetAttributeGroupRequest:
-      type: object
-      title: GetAttributeGroupRequest
-      properties: {}
-    ResourceGroup:
-      type: object
-      properties:
-        state:
-          allOf:
-            - $ref: '#/components/schemas/ResourceGroupState'
-            - description: '<p>The state of the propagation process for the resource group. The states includes:</p> <p> <code>CREATING </code>if the resource group is in the process of being created.</p> <p> <code>CREATE_COMPLETE</code> if the resource group was created successfully.</p> <p> <code>CREATE_FAILED</code> if the resource group failed to be created.</p> <p> <code>UPDATING</code> if the resource group is in the process of being updated.</p> <p> <code>UPDATE_COMPLETE</code> if the resource group updated successfully.</p> <p> <code>UPDATE_FAILED</code> if the resource group could not update successfully.</p>'
-        arn:
-          allOf:
-            - $ref: '#/components/schemas/Arn'
-            - description: The Amazon resource name (ARN) of the resource group.
-        errorMessage:
-          allOf:
-            - $ref: '#/components/schemas/String'
-            - description: The error message that generates when the propagation process for the resource group fails.
-      description: The information about the resource group integration.
-    NextToken:
-      type: string
-      pattern: '[A-Za-z0-9+/=]+'
-      minLength: 1
-      maxLength: 2024
-    MaxResults:
-      type: integer
-      minimum: 1
-      maximum: 25
-    ListApplicationsRequest:
-      type: object
-      title: ListApplicationsRequest
-      properties: {}
-    ListAssociatedAttributeGroupsRequest:
-      type: object
-      title: ListAssociatedAttributeGroupsRequest
-      properties: {}
-    ListAssociatedResourcesRequest:
-      type: object
-      title: ListAssociatedResourcesRequest
-      properties: {}
-    Resources:
-      type: array
-      items:
-        $ref: '#/components/schemas/ResourceInfo'
-    ListAttributeGroupsRequest:
-      type: object
-      title: ListAttributeGroupsRequest
-      properties: {}
-    ListTagsForResourceRequest:
-      type: object
-      title: ListTagsForResourceRequest
-      properties: {}
-    StackArn:
-      type: string
-      pattern: 'arn:aws[-a-z]*:cloudformation:[a-z]{2}(-gov)?-[a-z]+-\d:\d{12}:stack/[a-zA-Z][-A-Za-z0-9]{0,127}/[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}'
-    ResourceIntegrations:
-      type: object
-      properties:
-        resourceGroup:
-          allOf:
-            - $ref: '#/components/schemas/ResourceGroup'
-            - description: The information about the integration of Resource Groups.
-      description: The service integration information about the resource.
-    ResourceGroupState:
-      type: string
-      enum:
-        - CREATING
-        - CREATE_COMPLETE
-        - CREATE_FAILED
-        - UPDATING
-        - UPDATE_COMPLETE
-        - UPDATE_FAILED
-    String:
-      type: string
-    ResourceInfo:
-      type: object
-      properties:
-        name:
-          allOf:
-            - $ref: '#/components/schemas/ResourceSpecifier'
-            - description: The name of the resource.
-        arn:
-          allOf:
-            - $ref: '#/components/schemas/StackArn'
-            - description: The Amazon resource name (ARN) that specifies the resource across services.
-      description: The information about the resource.
-    SyncAction:
-      type: string
-      enum:
-        - START_SYNC
-        - NO_ACTION
-    SyncResourceRequest:
-      type: object
-      title: SyncResourceRequest
-      properties: {}
-    TagKeys:
-      type: array
-      items:
-        $ref: '#/components/schemas/TagKey'
-      minItems: 0
-      maxItems: 50
-    TagResourceRequest:
-      type: object
-      required:
-        - tags
-      title: TagResourceRequest
-      properties:
-        tags:
-          allOf:
-            - $ref: '#/components/schemas/Tags'
-            - description: The new or modified tags for the resource.
-    UntagResourceRequest:
-      type: object
-      title: UntagResourceRequest
-      properties: {}
-    UpdateApplicationRequest:
-      type: object
-      title: UpdateApplicationRequest
-      properties:
-        name:
-          allOf:
-            - $ref: '#/components/schemas/Name'
-            - description: The new name of the application. The name must be unique in the region in which you are updating the application.
-        description:
-          allOf:
-            - $ref: '#/components/schemas/Description'
-            - description: The new description of the application.
-    UpdateAttributeGroupRequest:
-      type: object
-      title: UpdateAttributeGroupRequest
-      properties:
-        name:
-          allOf:
-            - $ref: '#/components/schemas/Name'
-            - description: The new name of the attribute group. The name must be unique in the region in which you are updating the attribute group.
-        description:
-          allOf:
-            - $ref: '#/components/schemas/Description'
-            - description: The description of the attribute group that the user provides.
-        attributes:
-          allOf:
-            - $ref: '#/components/schemas/Attributes'
-            - description: A JSON string in the form of nested key-value pairs that represent the attributes in the group and describes an application and its components.
+    post:
+      consumes:
+        - application/json
+      description: >-
+        <p>Assigns one or more tags (key-value pairs) to the specified
+        resource.</p> <p>Each tag consists of a key and an optional value. If a
+        tag with the same key is already associated with the resource, this
+        action updates its value.</p> <p>This operation returns an empty
+        response if the call was successful.</p>
+      operationId: TagResource
+      parameters:
+        - description: The Amazon resource name (ARN) that specifies the resource.
+          in: path
+          maxLength: 1600
+          minLength: 1
+          name: resourceArn
+          pattern: >-
+            arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\-])+:([a-z]{2}(-gov)?-[a-z]+-\d{1})?:(\d{12})?:(.*)
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              tags:
+                additionalProperties:
+                  $ref: '#/definitions/TagValue'
+                description: The new or modified tags for the resource.
+                maxProperties: 50
+                minProperties: 0
+                type: object
+            required:
+              - tags
+            type: object
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/TagResourceResponse'
+        '480':
+          description: ValidationException
+          schema:
+            $ref: '#/definitions/ValidationException'
+        '481':
+          description: ResourceNotFoundException
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
+        '482':
+          description: InternalServerException
+          schema:
+            $ref: '#/definitions/InternalServerException'
+  '/tags/{resourceArn}#tagKeys':
+    delete:
+      description: >-
+        <p>Removes tags from a resource.</p> <p>This operation returns an empty
+        response if the call was successful.</p>
+      operationId: UntagResource
+      parameters:
+        - description: The Amazon resource name (ARN) that specifies the resource.
+          in: path
+          maxLength: 1600
+          minLength: 1
+          name: resourceArn
+          pattern: >-
+            arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\-])+:([a-z]{2}(-gov)?-[a-z]+-\d{1})?:(\d{12})?:(.*)
+          required: true
+          type: string
+        - collectionFormat: multi
+          description: A list of the tag keys to remove from the specified resource.
+          in: query
+          items:
+            $ref: '#/definitions/TagKey'
+          maxItems: 50
+          minItems: 0
+          name: tagKeys
+          required: true
+          type: array
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/UntagResourceResponse'
+        '480':
+          description: ValidationException
+          schema:
+            $ref: '#/definitions/ValidationException'
+        '481':
+          description: ResourceNotFoundException
+          schema:
+            $ref: '#/definitions/ResourceNotFoundException'
+        '482':
+          description: InternalServerException
+          schema:
+            $ref: '#/definitions/InternalServerException'
+    parameters:
+      - in: header
+        name: X-Amz-Content-Sha256
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Date
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Algorithm
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Credential
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Security-Token
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-Signature
+        required: false
+        type: string
+      - in: header
+        name: X-Amz-SignedHeaders
+        required: false
+        type: string
+schemes:
+  - http
 security:
   - hmac: []
+securityDefinitions:
+  hmac:
+    description: Amazon Signature authorization v4
+    in: header
+    name: Authorization
+    type: apiKey
+    x-amazon-apigateway-authtype: awsSigv4
+swagger: '2.0'
+x-components:
+  parameters:
+    X-Amz-Algorithm:
+      in: header
+      name: X-Amz-Algorithm
+      required: false
+      type: string
+    X-Amz-Content-Sha256:
+      in: header
+      name: X-Amz-Content-Sha256
+      required: false
+      type: string
+    X-Amz-Credential:
+      in: header
+      name: X-Amz-Credential
+      required: false
+      type: string
+    X-Amz-Date:
+      in: header
+      name: X-Amz-Date
+      required: false
+      type: string
+    X-Amz-Security-Token:
+      in: header
+      name: X-Amz-Security-Token
+      required: false
+      type: string
+    X-Amz-Signature:
+      in: header
+      name: X-Amz-Signature
+      required: false
+      type: string
+    X-Amz-SignedHeaders:
+      in: header
+      name: X-Amz-SignedHeaders
+      required: false
+      type: string
+x-hasEquivalentPaths: true
+

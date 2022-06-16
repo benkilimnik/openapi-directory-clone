@@ -1,46 +1,334 @@
-openapi: 3.0.3
-servers:
-  - url: https://ob.nordigen.com
+basePath: /
+definitions:
+  Account:
+    description: The representation of a bank account.
+    properties:
+      aspsp_identifier:
+        description: The ASPSP associated with this account.
+        readOnly: true
+        title: ASPSP ID
+        type: string
+      created:
+        description: The date & time at which the account object was created.
+        format: date-time
+        readOnly: true
+        title: Created date/time
+        type: string
+      iban:
+        description: The Account IBAN
+        readOnly: true
+        type: string
+      id:
+        description: >-
+          The ID of this Account, used to refer to this account in other API
+          calls.
+        format: uuid
+        readOnly: true
+        title: Account ID
+        type: string
+      last_accessed:
+        description: The date & time at which the account object was last accessed.
+        format: date-time
+        readOnly: true
+        title: Last accessed date/time
+        type: string
+        x-nullable: true
+      status:
+        allOf:
+          - $ref: '#/definitions/AccountStatusEnum'
+        description: The processing status of this account.
+        readOnly: true
+        title: Account Status
+    required:
+      - aspsp_identifier
+      - created
+      - iban
+      - id
+      - last_accessed
+      - status
+    type: object
+  AccountStatusEnum:
+    enum:
+      - DISCOVERED
+      - PROCESSING
+      - READY
+      - ERROR
+      - SUSPENDED
+    type: string
+  Aspsp:
+    description: Represents an ASPSP.
+    properties:
+      bic:
+        type: string
+      countries:
+        items:
+          type: string
+        type: array
+      id:
+        type: string
+      logo:
+        type: string
+      name:
+        type: string
+      transaction_total_days:
+        default: '90'
+        type: string
+    required:
+      - countries
+      - id
+      - logo
+      - name
+    type: object
+  EndUserAgreement:
+    description: Represents an end-user agreement.
+    properties:
+      accepted:
+        description: The date & time at which the end user accepted the agreement.
+        format: date-time
+        readOnly: true
+        title: Accepted Date
+        type: string
+        x-nullable: true
+      access_scope:
+        default:
+          - balances
+          - details
+          - transactions
+        description: >-
+          Array containing one or several values of ['balances', 'details',
+          'transactions']
+        items:
+          default:
+            - balances
+            - details
+            - transactions
+          title: Level of information to access (by default all)
+          type: string
+        title: Level of information to access (by default all)
+        type: array
+      access_valid_for_days:
+        default: 90
+        description: Number of days from acceptance that the access can be used.
+        maximum: 2147483647
+        minimum: -2147483648
+        readOnly: true
+        title: Access Valid For (Days)
+        type: integer
+      aspsp_id:
+        description: an ASPSP ID for this EUA
+        type: string
+      created:
+        description: The date & time at which the end user agreement was created.
+        format: date-time
+        readOnly: true
+        title: Created Date
+        type: string
+      enduser_id:
+        description: >-
+          A unique ID that identifies this user in your system. For data
+          protection purposes, it must be possible to identify your users using
+          this value. Data protection related requests may quote this value to
+          identify data subjects.
+        maxLength: 256
+        title: End User ID
+        type: string
+        x-nullable: true
+      id:
+        description: >-
+          The ID of this End User Agreement, used to refer to this end user
+          agreement in other API calls.
+        format: uuid
+        readOnly: true
+        title: End User Agreement ID
+        type: string
+      max_historical_days:
+        default: 90
+        description: Maximum number of days of transaction data to retrieve.
+        maximum: 2147483647
+        minimum: -2147483648
+        title: Maximum Historical Days
+        type: integer
+    required:
+      - max_historical_days
+      - enduser_id
+      - aspsp_id
+    type: object
+  EnduserAcceptanceDetails:
+    description: Represents end-user details.
+    properties:
+      ip_address:
+        title: end user IP address
+        type: string
+      user_agent:
+        title: user agent string for the end user
+        type: string
+    required:
+      - ip_address
+      - user_agent
+    type: object
+  PaginatedEndUserAgreementList:
+    properties:
+      count:
+        example: 123
+        type: integer
+      next:
+        example: 'http://api.example.org/accounts/?offset=400&limit=100'
+        format: uri
+        type: string
+        x-nullable: true
+      previous:
+        example: 'http://api.example.org/accounts/?offset=200&limit=100'
+        format: uri
+        type: string
+        x-nullable: true
+      results:
+        items:
+          $ref: '#/definitions/EndUserAgreement'
+        type: array
+    type: object
+  PaginatedRequisitionList:
+    properties:
+      count:
+        example: 123
+        type: integer
+      next:
+        example: 'http://api.example.org/accounts/?offset=400&limit=100'
+        format: uri
+        type: string
+        x-nullable: true
+      previous:
+        example: 'http://api.example.org/accounts/?offset=200&limit=100'
+        format: uri
+        type: string
+        x-nullable: true
+      results:
+        items:
+          $ref: '#/definitions/Requisition'
+        type: array
+    type: object
+  Requisition:
+    description: RequisitionSerializer.
+    properties:
+      accounts:
+        description: array of account IDs retrieved within a scope of this requisition
+        items:
+          format: uuid
+          title: accounts
+          type: string
+        readOnly: true
+        type: array
+      agreements:
+        description: array of EUAs associated with this requisition
+        items:
+          format: uuid
+          title: agreements
+          type: string
+        type: array
+      enduser_id:
+        description: 'end-user id in client''s system, usually a UUID'
+        maxLength: 256
+        title: end user id
+        type: string
+      id:
+        format: uuid
+        readOnly: true
+        type: string
+      redirect:
+        description: >-
+          redirect URL to your application after end-user authorization with
+          ASPSP
+        format: uri
+        type: string
+        x-nullable: true
+      reference:
+        description: additional ID to identify the end user
+        maxLength: 256
+        type: string
+      status:
+        allOf:
+          - $ref: '#/definitions/RequisitionStatusEnum'
+        description: status of this requisition
+        readOnly: true
+      user_language:
+        description: user language for the views
+        maxLength: 5
+        type: string
+    required:
+      - enduser_id
+      - reference
+      - redirect
+    type: object
+  RequisitionLinkParams:
+    description: RequisitionLinkParamsSerializer.
+    properties:
+      aspsp_id:
+        description: >-
+          ASPSP ID. Should match one used while creating EUA, if it's linked to
+          this requisition
+        type: string
+    required:
+      - aspsp_id
+    type: object
+  RequisitionLinks:
+    description: RequisitionLinksSerializer.
+    properties:
+      initiate:
+        format: uri
+        readOnly: true
+        type: string
+    required:
+      - initiate
+    type: object
+  RequisitionStatusEnum:
+    enum:
+      - CR
+      - ID
+      - LN
+      - RJ
+      - ER
+      - SU
+    type: string
+host: ob.nordigen.com
 info:
   title: Nordigen Account Information Services API
-  version: "1.7"
+  version: '1.7'
   x-apisguru-categories:
     - financial
   x-logo:
-    url: https://assets.nordigen.com/static/assets/img/nordigen/favicon/favicon-196x196.png
+    url: >-
+      https://assets.nordigen.com/static/assets/img/nordigen/favicon/favicon-196x196.png
   x-origin:
     - format: openapi
-      url: https://ob.nordigen.com/api/swagger.json
-      version: "3.0"
+      url: 'https://ob.nordigen.com/api/swagger.json'
+      version: '3.0'
   x-providerName: nordigen.com
-security:
-  - tokenAuth: []
 paths:
-  "/api/accounts/{id}/":
+  '/api/accounts/{id}/':
     get:
-      description: |-
+      description: >-
         Access account metadata.
 
-        Information about the account record, such as the processing status and IBAN.
+
+        Information about the account record, such as the processing status and
+        IBAN.
       operationId: retrieve account metadata
       parameters:
-        - in: path
+        - description: A UUID string identifying this account.
+          format: uuid
+          in: path
           name: id
           required: true
-          schema:
-            description: A UUID string identifying this account.
-            format: uuid
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Account"
+        '200':
           description: sample account metadata
+          schema:
+            $ref: '#/definitions/Account'
       tags:
         - accounts
-  "/api/accounts/{id}/balances/":
+  '/api/accounts/{id}/balances/':
     get:
       description: |-
         Access account balances.
@@ -48,21 +336,20 @@ paths:
         Balances will be returned in Berlin Group PSD2 format.
       operationId: retrieve account balances
       parameters:
-        - in: path
+        - description: A UUID string identifying this account.
+          format: uuid
+          in: path
           name: id
           required: true
-          schema:
-            description: A UUID string identifying this account.
-            format: uuid
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json: {}
+        '200':
           description: sample account balances
       tags:
         - accounts
-  "/api/accounts/{id}/details/":
+  '/api/accounts/{id}/details/':
     get:
       description: |-
         Access account details.
@@ -70,21 +357,20 @@ paths:
         Account details will be returned in Berlin Group PSD2 format.
       operationId: retrieve account details
       parameters:
-        - in: path
+        - description: A UUID string identifying this account.
+          format: uuid
+          in: path
           name: id
           required: true
-          schema:
-            description: A UUID string identifying this account.
-            format: uuid
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json: {}
+        '200':
           description: sample account details
       tags:
         - accounts
-  "/api/accounts/{id}/transactions/":
+  '/api/accounts/{id}/transactions/':
     get:
       description: |-
         Access account transactions.
@@ -92,19 +378,18 @@ paths:
         Transactions will be returned in Berlin Group PSD2 format.
       operationId: retrieve account transactions
       parameters:
-        - in: path
+        - description: A UUID string identifying this account.
+          format: uuid
+          in: path
           name: id
           required: true
-          schema:
-            description: A UUID string identifying this account.
-            format: uuid
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json: {}
+        '200':
           description: sample transaction data
-        "409":
+        '409':
           description: Account state does not support this operation
       tags:
         - accounts
@@ -113,71 +398,65 @@ paths:
       description: API endpoints related to end-user agreements.
       operationId: retrieve all EUAs for an end user
       parameters:
-        - description: Your enduser ID, used for filtering results.
+        - description: 'Your enduser ID, used for filtering results.'
           in: query
           name: enduser_id
           required: true
-          schema:
-            type: string
+          type: string
         - description: Number of results to return per page.
           in: query
           name: limit
           required: false
-          schema:
-            type: integer
+          type: integer
         - description: The initial index from which to return the results.
           in: query
           name: offset
           required: false
-          schema:
-            type: integer
+          type: integer
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PaginatedEndUserAgreementList"
-          description: ""
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/PaginatedEndUserAgreementList'
       tags:
         - agreements
     post:
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+        - multipart/form-data
       description: API endpoints related to end-user agreements.
       operationId: create EUA
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/EndUserAgreement"
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: "#/components/schemas/EndUserAgreement"
-          multipart/form-data:
-            schema:
-              $ref: "#/components/schemas/EndUserAgreement"
-        required: true
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/EndUserAgreement'
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EndUserAgreement"
-          description: ""
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/EndUserAgreement'
       tags:
         - agreements
-  "/api/agreements/enduser/{id}/":
+  '/api/agreements/enduser/{id}/':
     delete:
       description: Delete End User Agreement.
       operationId: delete EUA by id
       parameters:
         - description: A UUID string identifying this end user agreement.
+          format: uuid
           in: path
           name: id
           required: true
-          schema:
-            format: uuid
-            type: string
+          type: string
       responses:
-        "204":
+        '204':
           description: No response body
       tags:
         - agreements
@@ -186,70 +465,64 @@ paths:
       operationId: retrieve EUA by id
       parameters:
         - description: A UUID string identifying this end user agreement.
+          format: uuid
           in: path
           name: id
           required: true
-          schema:
-            format: uuid
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EndUserAgreement"
+        '200':
           description: EUA
+          schema:
+            $ref: '#/definitions/EndUserAgreement'
       tags:
         - agreements
-  "/api/agreements/enduser/{id}/accept/":
+  '/api/agreements/enduser/{id}/accept/':
     put:
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+        - multipart/form-data
       description: Accept an end-user agreement via the API.
       operationId: accept EUA
       parameters:
         - description: A UUID string identifying this end user agreement.
+          format: uuid
           in: path
           name: id
           required: true
+          type: string
+        - in: body
+          name: body
+          required: true
           schema:
-            format: uuid
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/EnduserAcceptanceDetails"
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: "#/components/schemas/EnduserAcceptanceDetails"
-          multipart/form-data:
-            schema:
-              $ref: "#/components/schemas/EnduserAcceptanceDetails"
-        required: true
+            $ref: '#/definitions/EnduserAcceptanceDetails'
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/EndUserAgreement"
+        '200':
           description: EUA
+          schema:
+            $ref: '#/definitions/EndUserAgreement'
       tags:
         - agreements
-  "/api/agreements/enduser/{id}/text/":
+  '/api/agreements/enduser/{id}/text/':
     get:
       description: Show the text of the end-user agreement.
       operationId: retrieve EUA text
       parameters:
         - description: A UUID string identifying this end user agreement.
+          format: uuid
           in: path
           name: id
           required: true
-          schema:
-            format: uuid
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json: {}
+        '200':
           description: EUA Text
       tags:
         - agreements
@@ -271,41 +544,19 @@ paths:
           in: query
           name: country
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              examples:
-                SomeOfSupportedASPSPs:
-                  summary: some of supported ASPSPs
-                  value:
-                    - bic: NTSBDEB1
-                      countries:
-                        - NO
-                        - DE
-                        - ...
-                        - AT
-                      id: N26_NTSBDEB1
-                      logo: https://cdn.nordigen.com/ais/N26_SANDBOX_NTSBDEB1.png
-                      name: N26 Bank
-                      transaction_total_days: "90"
-                    - bic: FTSBDEFAXXX
-                      countries:
-                        - DE
-                      id: ABNAMRO_FTSBDEFAXXX
-                      logo: https://cdn.nordigen.com/ais/ABNAMRO_FTSBDEFAXXX.png
-                      name: ABN AMRO Bank Commercial
-                      transaction_total_days: "558"
-              schema:
-                items:
-                  $ref: "#/components/schemas/Aspsp"
-                type: array
+        '200':
           description: list of supported ASPSPs in the country
+          schema:
+            items:
+              $ref: '#/definitions/Aspsp'
+            type: array
       tags:
         - aspsps
-  "/api/aspsps/{id}/":
+  '/api/aspsps/{id}/':
     get:
       description: Get details about a specific ASPSP.
       operationId: retrieve details about specific ASPSP
@@ -318,41 +569,14 @@ paths:
           in: path
           name: id
           required: true
-          schema:
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              examples:
-                ABNAMROBank:
-                  description: ABN AMRO Bank
-                  summary: ABN AMRO Bank
-                  value:
-                    bic: FTSBDEFAXXX
-                    countries:
-                      - DE
-                    id: ABNAMRO_FTSBDEFAXXX
-                    logo: https://cdn.nordigen.com/ais/ABNAMRO_FTSBDEFAXXX.png
-                    name: ABN AMRO Bank Commercial
-                    transaction_total_days: "558"
-                N26Bank:
-                  description: N26 Bank
-                  summary: N26 Bank
-                  value:
-                    bic: NTSBDEB1
-                    countries:
-                      - NO
-                      - DE
-                      - ...
-                      - AT
-                    id: N26_NTSBDEB1
-                    logo: https://cdn.nordigen.com/ais/N26_SANDBOX_NTSBDEB1.png
-                    name: N26 Bank
-                    transaction_total_days: "90"
-              schema:
-                $ref: "#/components/schemas/Aspsp"
+        '200':
           description: ASPSP Representation
+          schema:
+            $ref: '#/definitions/Aspsp'
       tags:
         - aspsps
   /api/requisitions/:
@@ -364,61 +588,56 @@ paths:
           in: query
           name: limit
           required: false
-          schema:
-            type: integer
+          type: integer
         - description: The initial index from which to return the results.
           in: query
           name: offset
           required: false
-          schema:
-            type: integer
+          type: integer
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PaginatedRequisitionList"
-          description: ""
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/PaginatedRequisitionList'
       tags:
         - requisitions
     post:
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+        - multipart/form-data
       description: API endpoints related to requisitions.
       operationId: create a new requisition
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Requisition"
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: "#/components/schemas/Requisition"
-          multipart/form-data:
-            schema:
-              $ref: "#/components/schemas/Requisition"
-        required: true
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Requisition'
+      produces:
+        - application/json
       responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Requisition"
+        '201':
           description: requisition
+          schema:
+            $ref: '#/definitions/Requisition'
       tags:
         - requisitions
-  "/api/requisitions/{id}/":
+  '/api/requisitions/{id}/':
     delete:
       description: Delete Requisition and all End User Agreements.
       operationId: delete requisition
       parameters:
         - description: A UUID string identifying this requisition.
+          format: uuid
           in: path
           name: id
           required: true
-          schema:
-            format: uuid
-            type: string
+          type: string
       responses:
-        "204":
+        '204':
           description: No response body
       tags:
         - requisitions
@@ -427,333 +646,59 @@ paths:
       operationId: requisition by id
       parameters:
         - description: A UUID string identifying this requisition.
+          format: uuid
           in: path
           name: id
           required: true
-          schema:
-            format: uuid
-            type: string
+          type: string
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Requisition"
+        '200':
           description: requisition
+          schema:
+            $ref: '#/definitions/Requisition'
       tags:
         - requisitions
-  "/api/requisitions/{id}/links/":
+  '/api/requisitions/{id}/links/':
     post:
+      consumes:
+        - application/json
+        - application/x-www-form-urlencoded
+        - multipart/form-data
       description: Get links for user redirection.
       operationId: create ASPSP authorization link
       parameters:
         - description: A UUID string identifying this requisition.
+          format: uuid
           in: path
           name: id
           required: true
+          type: string
+        - in: body
+          name: body
+          required: true
           schema:
-            format: uuid
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/RequisitionLinkParams"
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: "#/components/schemas/RequisitionLinkParams"
-          multipart/form-data:
-            schema:
-              $ref: "#/components/schemas/RequisitionLinkParams"
-        required: true
+            $ref: '#/definitions/RequisitionLinkParams'
+      produces:
+        - application/json
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/RequisitionLinks"
+        '200':
           description: link to initiate authorization with ASPSP
+          schema:
+            $ref: '#/definitions/RequisitionLinks'
       tags:
         - requisitions
-components:
-  schemas:
-    Account:
-      description: The representation of a bank account.
-      properties:
-        aspsp_identifier:
-          description: The ASPSP associated with this account.
-          readOnly: true
-          title: ASPSP ID
-          type: string
-        created:
-          description: The date & time at which the account object was created.
-          format: date-time
-          readOnly: true
-          title: Created date/time
-          type: string
-        iban:
-          description: The Account IBAN
-          readOnly: true
-          type: string
-        id:
-          description: The ID of this Account, used to refer to this account in other API calls.
-          format: uuid
-          readOnly: true
-          title: Account ID
-          type: string
-        last_accessed:
-          description: The date & time at which the account object was last accessed.
-          format: date-time
-          nullable: true
-          readOnly: true
-          title: Last accessed date/time
-          type: string
-        status:
-          allOf:
-            - $ref: "#/components/schemas/AccountStatusEnum"
-          description: The processing status of this account.
-          readOnly: true
-          title: Account Status
-      required:
-        - aspsp_identifier
-        - created
-        - iban
-        - id
-        - last_accessed
-        - status
-      type: object
-    AccountStatusEnum:
-      enum:
-        - DISCOVERED
-        - PROCESSING
-        - READY
-        - ERROR
-        - SUSPENDED
-      type: string
-    Aspsp:
-      description: Represents an ASPSP.
-      properties:
-        bic:
-          type: string
-        countries:
-          items:
-            type: string
-          type: array
-        id:
-          type: string
-        logo:
-          type: string
-        name:
-          type: string
-        transaction_total_days:
-          default: "90"
-          type: string
-      required:
-        - countries
-        - id
-        - logo
-        - name
-      type: object
-    EndUserAgreement:
-      description: Represents an end-user agreement.
-      properties:
-        accepted:
-          description: The date & time at which the end user accepted the agreement.
-          format: date-time
-          nullable: true
-          readOnly: true
-          title: Accepted Date
-          type: string
-        access_scope:
-          default:
-            - balances
-            - details
-            - transactions
-          description: Array containing one or several values of ['balances', 'details', 'transactions']
-          items:
-            default:
-              - balances
-              - details
-              - transactions
-            title: Level of information to access (by default all)
-            type: string
-          title: Level of information to access (by default all)
-          type: array
-        access_valid_for_days:
-          default: 90
-          description: Number of days from acceptance that the access can be used.
-          maximum: 2147483647
-          minimum: -2147483648
-          readOnly: true
-          title: Access Valid For (Days)
-          type: integer
-        aspsp_id:
-          description: an ASPSP ID for this EUA
-          type: string
-        created:
-          description: The date & time at which the end user agreement was created.
-          format: date-time
-          readOnly: true
-          title: Created Date
-          type: string
-        enduser_id:
-          description: A unique ID that identifies this user in your system. For data protection purposes, it must be possible to identify your users using this value. Data protection related requests may quote this value to identify data subjects.
-          maxLength: 256
-          nullable: true
-          title: End User ID
-          type: string
-        id:
-          description: The ID of this End User Agreement, used to refer to this end user agreement in other API calls.
-          format: uuid
-          readOnly: true
-          title: End User Agreement ID
-          type: string
-        max_historical_days:
-          default: 90
-          description: Maximum number of days of transaction data to retrieve.
-          maximum: 2147483647
-          minimum: -2147483648
-          title: Maximum Historical Days
-          type: integer
-      required:
-        - max_historical_days
-        - enduser_id
-        - aspsp_id
-      type: object
-    EnduserAcceptanceDetails:
-      description: Represents end-user details.
-      properties:
-        ip_address:
-          title: end user IP address
-          type: string
-        user_agent:
-          title: user agent string for the end user
-          type: string
-      required:
-        - ip_address
-        - user_agent
-      type: object
-    PaginatedEndUserAgreementList:
-      properties:
-        count:
-          example: 123
-          type: integer
-        next:
-          example: http://api.example.org/accounts/?offset=400&limit=100
-          format: uri
-          nullable: true
-          type: string
-        previous:
-          example: http://api.example.org/accounts/?offset=200&limit=100
-          format: uri
-          nullable: true
-          type: string
-        results:
-          items:
-            $ref: "#/components/schemas/EndUserAgreement"
-          type: array
-      type: object
-    PaginatedRequisitionList:
-      properties:
-        count:
-          example: 123
-          type: integer
-        next:
-          example: http://api.example.org/accounts/?offset=400&limit=100
-          format: uri
-          nullable: true
-          type: string
-        previous:
-          example: http://api.example.org/accounts/?offset=200&limit=100
-          format: uri
-          nullable: true
-          type: string
-        results:
-          items:
-            $ref: "#/components/schemas/Requisition"
-          type: array
-      type: object
-    Requisition:
-      description: RequisitionSerializer.
-      properties:
-        accounts:
-          description: array of account IDs retrieved within a scope of this requisition
-          items:
-            format: uuid
-            title: accounts
-            type: string
-          readOnly: true
-          type: array
-        agreements:
-          description: array of EUAs associated with this requisition
-          items:
-            format: uuid
-            title: agreements
-            type: string
-          type: array
-        enduser_id:
-          description: end-user id in client's system, usually a UUID
-          maxLength: 256
-          title: end user id
-          type: string
-        id:
-          format: uuid
-          readOnly: true
-          type: string
-        redirect:
-          description: redirect URL to your application after end-user authorization with ASPSP
-          format: uri
-          nullable: true
-          type: string
-        reference:
-          description: additional ID to identify the end user
-          maxLength: 256
-          type: string
-        status:
-          allOf:
-            - $ref: "#/components/schemas/RequisitionStatusEnum"
-          description: status of this requisition
-          readOnly: true
-        user_language:
-          description: user language for the views
-          maxLength: 5
-          type: string
-      required:
-        - enduser_id
-        - reference
-        - redirect
-      type: object
-    RequisitionLinkParams:
-      description: RequisitionLinkParamsSerializer.
-      properties:
-        aspsp_id:
-          description: ASPSP ID. Should match one used while creating EUA, if it's linked to this requisition
-          type: string
-      required:
-        - aspsp_id
-      type: object
-    RequisitionLinks:
-      description: RequisitionLinksSerializer.
-      properties:
-        initiate:
-          format: uri
-          readOnly: true
-          type: string
-      required:
-        - initiate
-      type: object
-    RequisitionStatusEnum:
-      enum:
-        - CR
-        - ID
-        - LN
-        - RJ
-        - ER
-        - SU
-      type: string
-  securitySchemes:
-    tokenAuth:
-      description: Token-based authentication with required prefix "Token"
-      in: header
-      name: Authorization
-      type: apiKey
+schemes:
+  - https
+security:
+  - tokenAuth: []
+securityDefinitions:
+  tokenAuth:
+    description: Token-based authentication with required prefix "Token"
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: '2.0'
+x-components: {}
+
